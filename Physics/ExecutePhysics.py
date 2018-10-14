@@ -43,23 +43,21 @@ def run():
     rocket.position = x, y
     draw_options = pygame_util.DrawOptions(screen)
 
-    rocket_fire_thrust = 5255000
     fire_ticks = 480*50
     fire = False
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT or keyDown(event, pg.K_ESCAPE):
                 sys.exit(0)
-            elif keyDown(event, pg.K_f):
+            elif event.type == pg.KEYDOWN:
                 fire = True
-            elif keyUp(event, pg.K_f):
+                fireKey = event.key
+            elif event.type == pg.KEYUP:
                 fire = False
 
         if fire:
             fire_ticks -= 1
-            rocket.apply_force_at_local_point(
-                tr.getRocketThrust(rocket, rocket_fire_thrust), Vec2d((0, 0))
-            )
+            rocket.thrust(fireKey)
         updateGravity(space, rocket, groundLine)
         space.step(1/50.0)
         screen.fill((255, 255, 255))
