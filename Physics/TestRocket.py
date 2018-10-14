@@ -2,7 +2,7 @@ import pygame as pg
 import pymunk as pm
 import pymunk.pygame_util as pygame_util
 from pymunk.vec2d import Vec2d
-import math, random
+import random
 
 
 def genOrbiter(body):
@@ -21,11 +21,9 @@ def genTank(body):
     return tank
 
 
-def genRocket(space, ground):
+def genRocket(space):
     body = pm.Body()
     components = [genTank(body), genOrbiter(body)]
-    x, y = math.floor(res_x/2), math.floor(ground)
-    body.position = x, y
     space.add(body)
     for c in components:
         space.add(c)
@@ -35,7 +33,7 @@ def genRocket(space, ground):
 def getRocketThrust(rocket, netThrust):
     angle = rocket.rotation_vector
     # random.seed()
-    angle_perturbation = random.normalvariate(0, 0.01)
+    angle_perturbation = random.normalvariate(0, 0.001)
     thrust = Vec2d(0, netThrust)
     print("original: {0}\n", thrust)
     thrust.cpvrotate(angle)

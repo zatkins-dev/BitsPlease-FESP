@@ -4,6 +4,7 @@ import pymunk.pygame_util as pygame_util
 from pymunk.vec2d import Vec2d
 import sys
 import TestRocket as tr
+import math
 
 res_x, res_y = 1000, 1000
 EARTH_MASS = 5.97*10**24
@@ -37,7 +38,9 @@ def run():
         space.static_body, (0, GROUND_Y), (1000, GROUND_Y), 3
     )
     space.add(groundLine)
-    rocket = tr.genRocket(space, GROUND_Y)
+    rocket = tr.genRocket(space)
+    x, y = math.floor(res_x/2), math.floor(GROUND_Y)
+    rocket.position = x, y
     draw_options = pygame_util.DrawOptions(screen)
 
     rocket_fire_thrust = 5255000
