@@ -14,6 +14,7 @@ class Rocket(Body):
         self.thrusters = filter(lambda c: type(c) == Thruster, self.components)
         self.rotationLeftKey = pg.K_a
         self.rotationRightKey = pg.K_d
+        self.angular_velocity_limit = 400000
 
     def thrust(self, k):
         for t in self.components:
@@ -24,11 +25,11 @@ class Rocket(Body):
 
     def rotate(self, k):
         if self.rotationLeftKey == k :
-            self.angle = self.angle + 0.05
-            self.torque = self.torque + 1000
+            self.angular_velocity = self.angular_velocity + 0.05
+            
         if self.rotationRightKey == k :
-            self.angle = self.angle - 0.05
-            self.torque = self.torque -1000
+            self.angular_velocity = self.angular_velocity - 0.05
+            
 
     def addComponent(self, c):
         self.components.append(c)
