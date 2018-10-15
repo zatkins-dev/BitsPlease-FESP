@@ -17,7 +17,7 @@ class Rocket(Body):
             if t.key is None:
                 continue
             if t.key == k:
-                self.apply_force_at_local_point(t.thrust(), (0, 0))
+                self.apply_impulse_at_local_point(t.thrust(), (0, 0))
 
     def addComponent(self, c):
         self.components.append(c)
