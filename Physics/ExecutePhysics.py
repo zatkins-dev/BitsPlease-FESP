@@ -44,6 +44,7 @@ def run():
     rocket.position = x, y
     draw_options = pygame_util.DrawOptions(screen)
     space.gravity = 0, -9.8
+    space.damping = 0.9
     fire_ticks = 480*50
     fire = False
     while True:
@@ -59,7 +60,6 @@ def run():
         if fire:
             fire_ticks -= 1
             rocket.thrust(fireKey)
-        print(space.gravity)
         # updateGravity(space, rocket, groundLine)
         space.step(1/50.0)
         screen.fill((255, 255, 255))
