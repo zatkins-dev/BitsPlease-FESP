@@ -24,3 +24,12 @@ class Physics(object):
         fY = forceMagnitude * math.sin(angle)
 
         return (fX, fY)
+
+    @staticmethod
+    #Calculates the net force due to gravity on some target from a list of bodies
+    def netGravity(bodies, target):
+        fX, fY = 0, 0
+        for body in bodies:
+            fX, fY = Physics.gravity(body, target)
+
+        return (fX, fY)
