@@ -13,14 +13,11 @@ EARTH_MOMENT = pm.moment_for_circle(EARTH_MASS, 0, EARTH_RADIUS)
 GROUND_Y = res_y/20
 G = 6.67408*10**-11
 
-
 def keyDown(e, key):
     return e.type == pg.KEYDOWN and e.key == key
 
-
 def keyUp(e, key):
     return e.type == pg.KEYUP and e.key == key
-
 
 def updateGravity(space, rocket, ground):
     r_sqrd = rocket.position[1]**2
@@ -46,19 +43,32 @@ def run():
     space.gravity = 0, -9.8
     fire_ticks = 480*50
     fire = False
+    rotate = False
+    
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT or keyDown(event, pg.K_ESCAPE):
                 sys.exit(0)
             elif event.type == pg.KEYDOWN:
-                fire = True
-                fireKey = event.key
+                if event.key == pg.K_a or event.key == pg.K_d :
+                    rotKey = event.key
+                    rotate = True  
+                elif event.key == pg.K_f :
+                    fireKey = event.key
+                    fire = True
+        
             elif event.type == pg.KEYUP:
-                fire = False
+                if event.key == pg.K_a or event.key == pg.K_d :
+                    rotate = False  
+                elif event.key == pg.K_f :
+                    fire = False          
 
         if fire:
             fire_ticks -= 1
             rocket.thrust(fireKey)
+        if rotate:
+            rocket.rotate(rotKey)
+            
         print(space.gravity)
         # updateGravity(space, rocket, groundLine)
         space.step(1/50.0)
