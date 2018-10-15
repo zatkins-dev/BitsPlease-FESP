@@ -6,6 +6,7 @@ class Physics(object):
 
     @staticmethod
     #Calculates the force due to gravity between a body and a target
+    #Assumes that the body and target have "mass" property and "position" tuple property
     def gravity(body, target):
         #First, find the distance between the body and the target
         #Then, Use that distance to calculate gravity
@@ -27,6 +28,7 @@ class Physics(object):
 
     @staticmethod
     #Calculates the net force due to gravity on some target from a list of bodies
+    #Assumes that the body and target have "mass" property and "position" tuple property
     def netGravity(bodies, target):
         fX, fY = 0, 0
         for body in bodies:
