@@ -37,28 +37,25 @@ def run():
     clock = pg.time.Clock()
 
     space = pm.Space()
-    #earthBody = pm.Body(EARTH_MASS, EARTH_MOMENT, pm.Body.STATIC)
+
     earth = pm.Circle(space.static_body,EARTH_RADIUS)
-    #groundLine = pm.Segment(
-    #    space.static_body, (0, GROUND_Y), (1000, GROUND_Y), 50
-    #)
     earth.mass = 10**13
     space.add(earth)
-    earth.position = 0, 0
+    earth.position = 5000, 5000
 
-    #groundLine.mass = EARTH_MASS
-    #space.add(groundLine)
     rocket = tr.genRocket(space)
     x, y = EARTH_RADIUS*math.sin(math.pi/4), EARTH_RADIUS*math.sin(math.pi/4)
     rocket.position = x, y
+
     draw_options = pygame_util.DrawOptions(screen)
+
     space.gravity = 0, 0
     space.damping = 0.9
 
     fire_ticks = 480*50
     fire = False
     rotate = False
-    print(rocket.position)
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT or keyDown(event, pg.K_ESCAPE):
