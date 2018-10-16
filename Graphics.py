@@ -37,7 +37,7 @@ class Graphics(object):
         if(not pygame.font.get_init()):
             pygame.font.init()
         t_font = pygame.font.SysFont('lucidaconsole', buttonTextSize)
-        text = t_font.render(str(buttonText), True, (0,0,0))
+        text = t_font.render(str(buttonText), True, (255,255,255))
 
         button = pygame.surface.Surface(size, pygame.constants.SRCALPHA)
 
