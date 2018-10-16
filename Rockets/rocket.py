@@ -15,7 +15,7 @@ class Rocket(Body):
         self.thrusters = filter(lambda c: type(c) == Thruster, self.components)
         self.SASmodules = filter(lambda c: type(c) == SAS, self.components)
         self.angular_velocity_limit = 400000
-        self.fuel = 20
+       
 
     def thrust(self, k):
         for t in self.components:
@@ -33,11 +33,13 @@ class Rocket(Body):
                 if m.fuel > 0 :
                     if m.leftKey == k:
                         self.angular_velocity += m.SASpower
-                        m.fuel -= m.fuel
+                        m.fuel -= 1
                 
                     if m.rightKey == k:
                         self.angular_velocity -= m.SASpower
-                        m.fuel -= m.fuel
+                        m.fuel -= 1
+                else:
+                    print('SAS module is out of fuel')
                 
     def addComponent(self, c):
         self.components.append(c)
