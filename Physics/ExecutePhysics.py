@@ -49,6 +49,7 @@ def run():
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT or keyDown(event, pg.K_ESCAPE):
+                pg.quit()
                 sys.exit(0)
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_a or event.key == pg.K_d :
