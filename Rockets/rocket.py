@@ -1,8 +1,14 @@
 from pymunk import Body as Body
 import pygame as pg
 import pymunk as pm
+<<<<<<< HEAD:Rockets/rocket.py
 from Rockets.component import Component
 from Rockets.thruster import Thruster
+=======
+from component import Component
+from thruster import Thruster
+from SAS import SAS
+>>>>>>> SAS-module:Physics/rocket.py
 
 
 class Rocket(Body):
@@ -12,8 +18,7 @@ class Rocket(Body):
             c.body = self
         self.components = components
         self.thrusters = filter(lambda c: type(c) == Thruster, self.components)
-        self.rotationLeftKey = pg.K_a
-        self.rotationRightKey = pg.K_d
+        self.SASmodules = filter(lambda c: type(c) == SAS, self.components)
         self.angular_velocity_limit = 400000
 
     def thrust(self, k):
@@ -22,13 +27,18 @@ class Rocket(Body):
                 continue
             if t.key == k:
                 self.apply_impulse_at_local_point(t.thrust(), (0, 0))
+                
 
-    def rotate(self, k):
-        if self.rotationLeftKey == k:
-            self.angular_velocity = self.angular_velocity + 0.05
-
-        if self.rotationRightKey == k:
-            self.angular_velocity = self.angular_velocity - 0.05
-
+    def turn_SAS(self, k):
+        for m in self.components:
+            if not isinstance(m, SAS):
+                continue
+            else :    
+                if m.leftKey == k:
+                    m.SASforce = m.SASforce + m.SASpower
+            
+                if m.rightKey == k:
+                    m.SASforce = m.SASforce - m.SASpower
+                self.angular_velocity = m.SASforce
     def addComponent(self, c):
         self.components.append(c)
