@@ -59,3 +59,14 @@ class Graphics(object):
         (button, pos),
         (text, (pos[0] + size[0] / 2 - text.get_width() / 2, pos[1] + size[1] / 2 - text.get_height() / 2))
     ])
+
+    @classmethod
+    def drawText(cls, position, content, size=20, color=(0,0,0), font='lucidaconsole', surface=pygame.display.get_surface()):
+        textFont = font.SysFont('lucidaconsole', size)
+        textSurface = textFont.render(str(content), True, color)
+        x, y = pygame.display.get_surface().get_size()
+
+        x = x - textSurface.get_width() / 2
+        y = y - textSurface.get_height() / 2
+
+        surface.blit(textSurface, (x,y))
