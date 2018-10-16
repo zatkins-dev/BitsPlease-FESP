@@ -1,5 +1,5 @@
 import pygame as pg
-from component import Component
+from Rockets.component import Component
 
 class SAS(Component):
     def __init__(self, body, vertices, SASforce, SASpower, angle, transform=None, radius=0):
@@ -21,24 +21,24 @@ class SAS(Component):
     @property
     def SASpower(self):
         return self._SASpower
-    
+
     @SASpower.setter
     def SASpower(self, newPower):
-        self._SASpower = newPower  
+        self._SASpower = newPower
 
 
     @property
     def SASangle(self):
         return self._SASangle
-    
+
     @SASangle.setter
     def SASangle(self, newAngle):
-        self._SASangle = newAngle   
+        self._SASangle = newAngle
 
     @property
     def SASforce(self):
         return self._SASforce
-    
+
     @SASforce.setter
     def SASforce(self, newForce):
         #give me all your SASs
