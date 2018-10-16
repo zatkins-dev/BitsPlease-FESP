@@ -25,6 +25,7 @@ class menu(object):
         #In the future, may want to draw an image onto the surface as a background
         #for now, just draw text
         Graphics.drawText(surfaceCenter, "Flat Earth Space Program", 40, (255,255,255))
+        Graphics.drawText((surfaceCenter[0], surfaceCenter[1] + 50), "Click Anywhere to Continue", 20, (255,255,255))
 
     @classmethod
     def drawMenu(cls):
