@@ -22,7 +22,13 @@ def main():
                 pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
 
         if currentState == State.Splash:
-            menu.drawSplashScreen()
+            if menu.splashScreenPressed:
+                currentState = State.Menu
+            else:
+                menu.drawSplashScreen()
+
+        if currentState == State.Menu:
+            print("menu")
 
         pygame.display.flip()
 
