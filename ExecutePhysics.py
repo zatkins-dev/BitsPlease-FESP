@@ -79,7 +79,7 @@ def run():
             fire_ticks -= 1
             rocket.thrust(fireKey)
         if rotate:
-            rocket.rotate(rotKey)
+            rocket.turn_SAS(rotKey)
 
         print(space.gravity)
         updateGravity(space, rocket, earth)
