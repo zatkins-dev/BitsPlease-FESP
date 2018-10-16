@@ -15,7 +15,8 @@ def genOrbiter(b):
 def genTank(b):
     verts = [(4.2, 0), (-4.2, 0), (4.2, 46.9), (-4.2, 46.9)]
     density = 73.58
-    tank = Thruster(b, verts, (0, 1), 525500, radius=1)
+    tank = Thruster(b, verts, (0, 1), 100000, radius=1) 
+    #5255000
     tank.density = density
     tank.key = pg.K_f
     return tank
