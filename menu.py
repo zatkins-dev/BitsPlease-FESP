@@ -15,6 +15,8 @@ class menu(object):
         surface = pygame.display.get_surface()
         surfaceSize = surface.get_size()
         surfaceCenter = (surfaceSize[0] / 2, surfaceSize[1] / 2)
+        titleCenter = (surfaceSize[0] / 2, surfaceSize[1] / 2 - 20)
+        subtitleCenter = (surfaceSize[0] / 2, surfaceSize[1] / 2 + 20)
 
         #fill surface with black
         surface.fill((0,0,0))
@@ -24,8 +26,8 @@ class menu(object):
 
         #In the future, may want to draw an image onto the surface as a background
         #for now, just draw text
-        Graphics.drawText(surfaceCenter, "Flat Earth Space Program", 40, (255,255,255))
-        Graphics.drawText((surfaceCenter[0], surfaceCenter[1] + 50), "Click Anywhere to Continue", 20, (255,255,255))
+        Graphics.drawText(titleCenter, "Flat Earth Space Program", 40, (255,255,255))
+        Graphics.drawText(subtitleCenter, "Click Anywhere to Continue", 20, (255,255,255))
 
     @classmethod
     def drawMenu(cls):
