@@ -28,10 +28,24 @@ def updateGravity(space, rocket, object):
     space.gravity[0] = space.gravity[0]/rocket.mass
     space.gravity[1] = space.gravity[1]/rocket.mass
 
+
+def updateCamera(screen, game, center, space, draw_options):
+    x, y = screen.get_size()
+    c_x, c_y = pygame_util.to_pygame(center, game)
+    dest = max(c_x - x // 2, 0), max(c_y - y // 2, 0)
+    print((x, y), (c_x, c_y), dest)
+    screen.fill((0, 0, 0))
+    game.blit(screen, dest)
+    space.debug_draw(draw_options)
+    screen.blit(game, (0, 0), pg.Rect(dest[0], dest[1], x, y))
+
+
 def run():
     pg.init()
     screen = pg.display.set_mode((res_x, res_y), pg.RESIZABLE)
     clock = pg.time.Clock()
+
+    game = pg.Surface((10000, 10000))
 
     space = pm.Space()
     #earthBody = pm.Body(EARTH_MASS, EARTH_MOMENT, pm.Body.STATIC)
@@ -47,7 +61,7 @@ def run():
     rocket = tr.genRocket(space)
     x, y = math.floor(res_x/2), math.floor(GROUND_Y)
     rocket.position = x, y
-    draw_options = pygame_util.DrawOptions(screen)
+    draw_options = pygame_util.DrawOptions(game)
     space.gravity = 0, 0
     space.damping = 0.9
     fire_ticks = 480*50
@@ -81,11 +95,10 @@ def run():
         if rotate:
             rocket.turn_SAS(rotKey)
 
-        print(space.gravity)
+        print(rocket.position)
         updateGravity(space, rocket, earth)
         space.step(1/50.0)
-        screen.fill((0, 0, 0))
-        space.debug_draw(draw_options)
+        updateCamera(screen, game, rocket.position, space, draw_options)
         pg.display.flip()
         clock.tick(60)
 
