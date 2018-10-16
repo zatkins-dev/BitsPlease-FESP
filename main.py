@@ -28,7 +28,7 @@ def main():
                 menu.drawSplashScreen()
 
         if currentState == State.Menu:
-            print("menu")
+            menu.drawMenu()
 
         pygame.display.flip()
 
