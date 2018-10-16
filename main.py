@@ -24,11 +24,19 @@ def main():
         if currentState == State.Splash:
             if menu.splashScreenPressed:
                 currentState = State.Menu
+                menu.splashScreenPressed = False
             else:
                 menu.drawSplashScreen()
 
         if currentState == State.Menu:
-            menu.drawMenu()
+            if menu.quitPressed:
+                currentState = State.Exit
+                menu.quitPressed = False
+            elif menu.demoPressed:
+                currentState = State.Playing
+                menu.demoPressed = False
+            else:
+                menu.drawMenu()
 
         pygame.display.flip()
 
