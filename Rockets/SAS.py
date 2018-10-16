@@ -18,6 +18,9 @@ class SAS(Component):
         self.leftKey = None
         self.rightKey = None
 
+        #this number should probably be adjusted
+        self.fuel = 2000
+
     @property
     def SASpower(self):
         return self._SASpower

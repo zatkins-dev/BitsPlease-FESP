@@ -9,7 +9,7 @@ from Physics.Physics import Physics as phy
 
 res_x, res_y = 1000, 1000
 EARTH_MASS = 5.97*10**24
-EARTH_RADIUS = 6371000
+EARTH_RADIUS = 1000
 EARTH_MOMENT = pm.moment_for_circle(EARTH_MASS, 0, EARTH_RADIUS)
 GROUND_Y = res_y/20
 G = 6.67408*10**-11
@@ -24,9 +24,12 @@ def keyUp(e, key):
 
 
 def updateGravity(space, rocket, object):
-    space.gravity = phy.gravity(object, rocket)
-    space.gravity[0] = space.gravity[0]/rocket.mass
-    space.gravity[1] = space.gravity[1]/rocket.mass
+    if(rocket.position[1] == object.position[1]):
+        space.gravity = 0,0
+    else:
+        space.gravity = phy.gravity(object, rocket)
+        space.gravity[0] = space.gravity[0]/rocket.mass
+        space.gravity[1] = space.gravity[1]/rocket.mass
 
 
 def updateCamera(screen, game, center, space, draw_options):
@@ -49,25 +52,27 @@ def run():
 
     space = pm.Space()
     #earthBody = pm.Body(EARTH_MASS, EARTH_MOMENT, pm.Body.STATIC)
-    earth = pm.Circle(space.static_body,1000)
+    earth = pm.Circle(space.static_body,EARTH_RADIUS)
     #groundLine = pm.Segment(
     #    space.static_body, (0, GROUND_Y), (1000, GROUND_Y), 50
     #)
-    earth.mass = 10**12
+    earth.mass = 10**13
     space.add(earth)
     earth.position = 0, 0
+
     #groundLine.mass = EARTH_MASS
     #space.add(groundLine)
     rocket = tr.genRocket(space)
-    x, y = math.floor(res_x/2), math.floor(GROUND_Y)
+    x, y = EARTH_RADIUS*math.sin(math.pi/4), EARTH_RADIUS*math.sin(math.pi/4)
     rocket.position = x, y
     draw_options = pygame_util.DrawOptions(game)
     space.gravity = 0, 0
     space.damping = 0.9
+
     fire_ticks = 480*50
     fire = False
     rotate = False
-
+    print(rocket.position)
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT or keyDown(event, pg.K_ESCAPE):
