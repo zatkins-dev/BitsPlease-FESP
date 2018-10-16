@@ -6,9 +6,11 @@ class SAS(Component):
     def __init__(self, body, vertices, SASdirection, SASforce, transform=None, radius=0):
         self._SASdirection = 0
         self._SASforce = 0
+        self.leftKey = pg.K_a
+        self.rightKey = pg.K_d
     
     def SAS_turning(self):
-        return self._SASdirection * self._SASpower
+        return self._SASdirection * self._SASforce
 
     @property
     def SASdirection(self):
