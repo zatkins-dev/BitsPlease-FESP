@@ -5,6 +5,7 @@ from pymunk.vec2d import Vec2d
 import sys
 import Rockets.TestRocket as tr
 import math
+from Physics.Physics import Physics as phy
 
 res_x, res_y = 1000, 1000
 EARTH_MASS = 5.97*10**24
@@ -22,10 +23,10 @@ def keyUp(e, key):
     return e.type == pg.KEYUP and e.key == key
 
 
-def updateGravity(space, rocket, ground):
-    r_sqrd = rocket.position[1]**2
-    space.gravity = (0, -G*ground.mass*rocket.mass/r_sqrd)
-
+def updateGravity(space, rocket, object):
+    space.gravity = phy.gravity(object, rocket)
+    space.gravity[0] = space.gravity[0]/rocket.mass
+    space.gravity[1] = space.gravity[1]/rocket.mass
 
 def run():
     pg.init()
@@ -33,17 +34,21 @@ def run():
     clock = pg.time.Clock()
 
     space = pm.Space()
-    # earthBody = pm.Body(EARTH_MASS, EARTH_MOMENT, pm.Body.STATIC)
-    groundLine = pm.Segment(
-        space.static_body, (0, GROUND_Y), (1000, GROUND_Y), 50
-    )
-    groundLine.mass = EARTH_MASS
-    space.add(groundLine)
+    #earthBody = pm.Body(EARTH_MASS, EARTH_MOMENT, pm.Body.STATIC)
+    earth = pm.Circle(space.static_body,1000)
+    #groundLine = pm.Segment(
+    #    space.static_body, (0, GROUND_Y), (1000, GROUND_Y), 50
+    #)
+    earth.mass = 10**12
+    space.add(earth)
+    earth.position = 0, 0
+    #groundLine.mass = EARTH_MASS
+    #space.add(groundLine)
     rocket = tr.genRocket(space)
     x, y = math.floor(res_x/2), math.floor(GROUND_Y)
     rocket.position = x, y
     draw_options = pygame_util.DrawOptions(screen)
-    space.gravity = 0, -9.8
+    space.gravity = 0, 0
     space.damping = 0.9
     fire_ticks = 480*50
     fire = False
@@ -77,9 +82,9 @@ def run():
             rocket.rotate(rotKey)
 
         print(space.gravity)
-        # updateGravity(space, rocket, groundLine)
+        updateGravity(space, rocket, earth)
         space.step(1/50.0)
-        screen.fill((255, 255, 255))
+        screen.fill((0, 0, 0))
         space.debug_draw(draw_options)
         pg.display.flip()
         clock.tick(60)
