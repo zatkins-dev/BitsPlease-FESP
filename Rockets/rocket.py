@@ -17,7 +17,7 @@ class Rocket(Body):
         self.angular_velocity_limit = 400000
 
     def thrust(self, k):
-        for t in self.thrusters:
+        for t in self.components:
             if t.key is None:
                 continue
             if t.key == k:
