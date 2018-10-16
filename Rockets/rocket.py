@@ -1,8 +1,8 @@
 from pymunk import Body as Body
 import pygame as pg
 import pymunk as pm
-from component import Component
-from thruster import Thruster
+from Rockets.component import Component
+from Rockets.thruster import Thruster
 
 
 class Rocket(Body):

@@ -3,7 +3,7 @@ import pymunk as pm
 import pymunk.pygame_util as pygame_util
 from pymunk.vec2d import Vec2d
 import sys
-import TestRocket as tr
+import Rockets.TestRocket as tr
 import math
 
 res_x, res_y = 1000, 1000
@@ -64,7 +64,7 @@ def run():
 
             elif event.type == pg.KEYUP:
                 if event.key == pg.K_a or event.key == pg.K_d:
-                    rotate = False  
+                    rotate = False
                 elif event.key == pg.K_f:
                     fire = False
             elif event.type == pg.VIDEORESIZE:
