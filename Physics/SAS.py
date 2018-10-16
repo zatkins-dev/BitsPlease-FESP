@@ -8,6 +8,7 @@ class SAS(Component):
 
         #SASforce: 0 is continue going straight, + turns the rocket left, - turns the rocket right
         #the greater the force the more the rocket turns
+        #corresponds directly to angular velocity of the rocket
         self._SASforce = 0
 
         #SASpower: rate at which the rockets SASforce increments when given input from the user

@@ -1,14 +1,9 @@
 from pymunk import Body as Body
 import pygame as pg
 import pymunk as pm
-<<<<<<< HEAD:Rockets/rocket.py
 from Rockets.component import Component
 from Rockets.thruster import Thruster
-=======
-from component import Component
-from thruster import Thruster
-from SAS import SAS
->>>>>>> SAS-module:Physics/rocket.py
+from Rockets.SAS import SAS
 
 
 class Rocket(Body):
