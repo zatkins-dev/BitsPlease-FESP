@@ -26,7 +26,7 @@ def updateGravity(space, rocket, ground):
 
 def run():
     pg.init()
-    screen = pg.display.set_mode((res_x, res_y))
+    screen = pg.display.set_mode((res_x, res_y), pg.RESIZABLE)
     clock = pg.time.Clock()
 
     space = pm.Space()
@@ -63,7 +63,9 @@ def run():
                 if event.key == pg.K_a or event.key == pg.K_d :
                     rotate = False  
                 elif event.key == pg.K_f :
-                    fire = False          
+                    fire = False
+            elif event.type == pg.VIDEORESIZE:
+                screen = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
 
         if fire:
             fire_ticks -= 1
