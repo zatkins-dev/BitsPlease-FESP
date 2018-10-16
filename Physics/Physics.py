@@ -7,7 +7,7 @@ class Physics(object):
     @staticmethod
     #Calculates the force due to gravity between a body and a target
     #Assumes that the body and target have "mass" property and "position" tuple property
-    def gravity(body, target):
+    def gravity(shape, body, target):
         #First, find the distance between the body and the target
         #Then, Use that distance to calculate gravity
         dX = body.position[0] - target.position[0]
@@ -16,7 +16,7 @@ class Physics(object):
         rSquared = dX**2 + dY**2
 
         #Now, find force of gravity in the direction of R
-        forceMagnitude = Physics._GRAV_CONSTANT * body.mass * target.mass / rSquared
+        forceMagnitude = Physics._GRAV_CONSTANT * shape.mass * target.mass / rSquared
 
         #Find the angle between these two so that this can be translated back to Cartesian Coords
         angle = math.atan2(dY, dX)

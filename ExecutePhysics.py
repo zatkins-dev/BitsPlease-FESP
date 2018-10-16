@@ -23,13 +23,10 @@ def keyUp(e, key):
     return e.type == pg.KEYUP and e.key == key
 
 
-def updateGravity(space, rocket, object):
-    if(rocket.position[1] == object.position[1]):
-        space.gravity = 0,0
-    else:
-        space.gravity = phy.gravity(object, rocket)
-        space.gravity[0] = space.gravity[0]/rocket.mass
-        space.gravity[1] = space.gravity[1]/rocket.mass
+def updateGravity(space, rocket, objectShape, objectBody):
+    space.gravity = phy.gravity(objectShape, objectBody, rocket)
+    space.gravity[0] = space.gravity[0]/rocket.mass
+    space.gravity[1] = space.gravity[1]/rocket.mass
 
 
 def updateCamera(screen, game, center, space, draw_options):
@@ -52,13 +49,14 @@ def run():
 
     space = pm.Space()
 
-    earth = pm.Circle(space.static_body,EARTH_RADIUS)
-    earth.mass = 10**13
-    space.add(earth)
-    earth.position = 5000, 5000
+    earthBody = pm.Body(body_type=pm.Body.STATIC)
+    earthShape = pm.Circle(earthBody,EARTH_RADIUS)
+    earthShape.mass = 10**13
+    earthBody.position = 5000, 5000
+    space.add(earthBody, earthShape)
 
     rocket = tr.genRocket(space)
-    x, y = EARTH_RADIUS*math.sin(math.pi/4), EARTH_RADIUS*math.sin(math.pi/4)
+    x, y = earthBody.position[0] + EARTH_RADIUS*math.sin(math.pi/4), earthBody.position[1] + EARTH_RADIUS*math.sin(math.pi/4)
     rocket.position = x, y
     draw_options = pygame_util.DrawOptions(game)
     space.gravity = 0, 0
@@ -96,7 +94,7 @@ def run():
             rocket.turn_SAS(rotKey)
 
         print(rocket.position)
-        updateGravity(space, rocket, earth)
+        updateGravity(space, rocket, earthShape, earthBody)
         space.step(1/50.0)
         updateCamera(screen, game, rocket.position, space, draw_options)
         pg.display.flip()
