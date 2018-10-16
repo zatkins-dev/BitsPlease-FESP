@@ -65,15 +65,17 @@ class Graphics(object):
         ])
 
     @classmethod
-    def drawText(cls, position, content, size=20, color=(0,0,0), font='lucidaconsole', surface=pygame.display.get_surface()):
+    def drawText(cls, position, content, size=20, color=(0,0,0), font='lucidaconsole', surface=None):
+        if surface == None:
+            surface = pygame.display.get_surface()
         if(not pygame.font.get_init()):
             pygame.font.init()
 
-        textFont = font.SysFont('lucidaconsole', size)
+        textFont = pygame.font.SysFont('lucidaconsole', size)
         textSurface = textFont.render(str(content), True, color)
-        x, y = pygame.display.get_surface().get_size()
+        x, y = textSurface.get_size()
 
-        x = x - textSurface.get_width() / 2
-        y = y - textSurface.get_height() / 2
+        x = position[0] - x/2
+        y = position[1] - y/2
 
         surface.blit(textSurface, (x,y))
