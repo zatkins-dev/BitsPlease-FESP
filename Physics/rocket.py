@@ -17,19 +17,18 @@ class Rocket(Body):
         self.angular_velocity_limit = 400000
 
     def thrust(self, k):
-        for t in self.components:
+        for t in self.thrusters:
             if t.key is None:
                 continue
             if t.key == k:
                 self.apply_impulse_at_local_point(t.thrust(), (0, 0))
 
     def rotate(self, k):
-        if self.rotationLeftKey == k :
+        if self.rotationLeftKey == k:
             self.angular_velocity = self.angular_velocity + 0.05
-            
-        if self.rotationRightKey == k :
+
+        if self.rotationRightKey == k:
             self.angular_velocity = self.angular_velocity - 0.05
-            
 
     def addComponent(self, c):
         self.components.append(c)
