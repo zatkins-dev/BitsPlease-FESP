@@ -132,7 +132,7 @@ def run():
         updateGravity(space, rocket, celestialShapes, celestialBodies)
         space.step(1/50.0)
         updateCamera(screen, game, rocket.position, space, draw_options)
-        headsUp.updateHUD(rocket.position[0], rocket.position[1], math.sqrt(rocket.velocity[0]**2 + rocket.velocity[1]**2),math.atan2(rocket.velocity[1], rocket.velocity[0])*180/math.pi,math.sqrt(space.gravity[0]**2+space.gravity[1]**2),math.atan2(space.gravity[1], space.gravity[0])*180/math.pi)
+        headsUp.updateHUD(rocket.position[0], rocket.position[1], rocket.angle * 180/math.pi, math.sqrt(rocket.velocity[0]**2 + rocket.velocity[1]**2),math.atan2(rocket.velocity[1], rocket.velocity[0])*180/math.pi,math.sqrt(space.gravity[0]**2+space.gravity[1]**2),math.atan2(space.gravity[1], space.gravity[0])*180/math.pi, rocket.components)
         pg.display.flip()
         clock.tick(60)
 
