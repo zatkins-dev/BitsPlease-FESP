@@ -56,6 +56,13 @@ def run():
     earthBody.position = 5000, 5000
     space.add(earthBody, earthShape)
 
+
+    planetGageBody = pm.Body(body_type=pm.Body.STATIC)
+    planetGageShape = pm.Circle(planetGageBody, 200)
+    planetGageShape.mass = 10**13
+    planetGageBody.position = 1000, 1000
+    space.add(planetGageBody, planetGageShape)
+
     rocket = tr.genRocket(space)
     x, y = earthBody.position[0] + EARTH_RADIUS*math.sin(math.pi/4), earthBody.position[1] + EARTH_RADIUS*math.sin(math.pi/4)
     rocket.position = x, y
