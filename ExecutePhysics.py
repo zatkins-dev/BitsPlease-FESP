@@ -58,6 +58,7 @@ def run():
     fire_ticks = 480*50
     fire = False
     rotate = False
+    auto = False
     print(rocket.position)
     while True:
         for event in pg.event.get():
@@ -77,6 +78,9 @@ def run():
                     rotate = False
                 elif event.key == pg.K_f:
                     fire = False
+                elif event.key == pg.K_v:
+                    auto = not auto
+                    
             elif event.type == pg.VIDEORESIZE:
                 screen = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
 
@@ -84,7 +88,9 @@ def run():
             fire_ticks -= 1
             rocket.thrust(fireKey)
         if rotate:
-            rocket.turn_SAS(rotKey)
+            rocket.turn_SAS(rotKey, 1)
+        if auto:
+            rocket.auto_SAS(0)
 
         print(space.gravity)
         updateGravity(space, rocket, earth)
@@ -93,7 +99,7 @@ def run():
         space.debug_draw(draw_options)
         pg.display.flip()
         clock.tick(60)
-
+        
 
 if __name__ == "__main__":
     run()
