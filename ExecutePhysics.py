@@ -6,6 +6,7 @@ import sys
 import Rockets.TestRocket as tr
 import math
 from Physics.Physics import Physics as phy
+import Graphics.headsUpDisplay as hud
 
 res_x, res_y = 1000, 1000
 EARTH_MASS = 5.97*10**24
@@ -51,9 +52,10 @@ def run():
     game = pg.Surface((10000, 10000))
 
     space = pm.Space()
+    headsUp = hud.headsUpDisplay()
 
     #bodies exerting G force
-    
+
 
     earthBody = pm.Body(body_type=pm.Body.STATIC)
     earthShape = pm.Circle(earthBody,EARTH_RADIUS)
@@ -105,7 +107,7 @@ def run():
                 elif event.key == pg.K_v:
                     sas_angle = rocket.angle
                     auto = not auto
-                    
+
             elif event.type == pg.VIDEORESIZE:
                 screen = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
 
@@ -121,9 +123,10 @@ def run():
         updateGravity(space, rocket, celestialShapes, celestialBodies)
         space.step(1/50.0)
         updateCamera(screen, game, rocket.position, space, draw_options)
+        headsUp.updateHUD(rocket.position[0], rocket.position[1], math.sqrt(rocket.velocity[0]**2 + rocket.velocity[1]**2),math.atan2(rocket.velocity[1], rocket.velocity[0])*180/math.pi,math.sqrt(space.gravity[0]**2+space.gravity[1]**2),math.atan2(space.gravity[1], space.gravity[0])*180/math.pi)
         pg.display.flip()
         clock.tick(60)
-        
+
 
 if __name__ == "__main__":
     run()
