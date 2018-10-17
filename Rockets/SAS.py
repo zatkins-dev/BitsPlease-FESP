@@ -21,6 +21,9 @@ class SAS(Component):
         #this number should probably be adjusted
         self.fuel = 2000
 
+        
+
+
     @property
     def SASpower(self):
         return self._SASpower
@@ -29,6 +32,8 @@ class SAS(Component):
     def SASpower(self, newPower):
         self._SASpower = newPower
 
+
+    
 
     @property
     def SASangle(self):
