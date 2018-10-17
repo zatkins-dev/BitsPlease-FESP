@@ -1,6 +1,6 @@
 from pymunk.vec2d import Vec2d
 import pygame as pg
-from component import Component
+from Rockets.component import Component
 
 
 class Thruster(Component):
@@ -8,7 +8,7 @@ class Thruster(Component):
         Component.__init__(self, body, vertices, transform, radius)
         self._thrustVector = Vec2d(thrustVector)
         self._thrustForce = netThrust
-        
+
     def thrust(self):
         return self.thrustForce * self.thrustVector
 

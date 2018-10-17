@@ -3,12 +3,13 @@ import pymunk as pm
 import pymunk.pygame_util as pygame_util
 from pymunk.vec2d import Vec2d
 import sys
-import TestRocket as tr
+import Rockets.TestRocket as tr
 import math
+from Physics.Physics import Physics as phy
 
 res_x, res_y = 1000, 1000
 EARTH_MASS = 5.97*10**24
-EARTH_RADIUS = 6371000
+EARTH_RADIUS = 1000
 EARTH_MOMENT = pm.moment_for_circle(EARTH_MASS, 0, EARTH_RADIUS)
 GROUND_Y = res_y/20
 G = 6.67408*10**-11
@@ -22,9 +23,21 @@ def keyUp(e, key):
     return e.type == pg.KEYUP and e.key == key
 
 
-def updateGravity(space, rocket, ground):
-    r_sqrd = rocket.position[1]**2
-    space.gravity = (0, -G*ground.mass*rocket.mass/r_sqrd)
+def updateGravity(space, rocket, objectShape, objectBody):
+    space.gravity = phy.gravity(objectShape, objectBody, rocket)
+    space.gravity[0] = space.gravity[0]/rocket.mass
+    space.gravity[1] = space.gravity[1]/rocket.mass
+
+
+def updateCamera(screen, game, center, space, draw_options):
+    x, y = screen.get_size()
+    c_x, c_y = pygame_util.to_pygame(center, game)
+    dest = max(c_x - x // 2, 0), max(c_y - y // 2, 0)
+    print((x, y), (c_x, c_y), dest)
+    screen.fill((0, 0, 0))
+    game.blit(screen, dest)
+    space.debug_draw(draw_options)
+    screen.blit(game, (0, 0), pg.Rect(dest[0], dest[1], x, y))
 
 
 def run():
@@ -32,19 +45,23 @@ def run():
     screen = pg.display.set_mode((res_x, res_y), pg.RESIZABLE)
     clock = pg.time.Clock()
 
+    game = pg.Surface((10000, 10000))
+
     space = pm.Space()
-    # earthBody = pm.Body(EARTH_MASS, EARTH_MOMENT, pm.Body.STATIC)
-    groundLine = pm.Segment(
-        space.static_body, (0, GROUND_Y), (1000, GROUND_Y), 50
-    )
-    groundLine.mass = EARTH_MASS
-    space.add(groundLine)
+
+    earthBody = pm.Body(body_type=pm.Body.STATIC)
+    earthShape = pm.Circle(earthBody,EARTH_RADIUS)
+    earthShape.mass = 10**13
+    earthBody.position = 5000, 5000
+    space.add(earthBody, earthShape)
+
     rocket = tr.genRocket(space)
-    x, y = math.floor(res_x/2), math.floor(GROUND_Y)
+    x, y = earthBody.position[0] + EARTH_RADIUS*math.sin(math.pi/4), earthBody.position[1] + EARTH_RADIUS*math.sin(math.pi/4)
     rocket.position = x, y
-    draw_options = pygame_util.DrawOptions(screen)
-    space.gravity = 0, -9.8
+    draw_options = pygame_util.DrawOptions(game)
+    space.gravity = 0, 0
     space.damping = 0.9
+
     fire_ticks = 480*50
     fire = False
     rotate = False
@@ -64,7 +81,7 @@ def run():
 
             elif event.type == pg.KEYUP:
                 if event.key == pg.K_a or event.key == pg.K_d:
-                    rotate = False  
+                    rotate = False
                 elif event.key == pg.K_f:
                     fire = False
             elif event.type == pg.VIDEORESIZE:
@@ -74,13 +91,12 @@ def run():
             fire_ticks -= 1
             rocket.thrust(fireKey)
         if rotate:
-            rocket.rotate(rotKey)
+            rocket.turn_SAS(rotKey)
 
-        print(space.gravity)
-        # updateGravity(space, rocket, groundLine)
+        print(rocket.position)
+        updateGravity(space, rocket, earthShape, earthBody)
         space.step(1/50.0)
-        screen.fill((255, 255, 255))
-        space.debug_draw(draw_options)
+        updateCamera(screen, game, rocket.position, space, draw_options)
         pg.display.flip()
         clock.tick(60)
 
