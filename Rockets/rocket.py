@@ -23,7 +23,10 @@ class Rocket(Body):
             if t.key is None:
                 continue
             if t.key == k:
-                self.apply_impulse_at_local_point(t.thrust(), (0, 0))
+                if t.fuel > 0:
+                    self.apply_impulse_at_local_point(t.thrust(), (0, 0))
+                    t.fuel -= 1
+                
                 
 
     def turn_SAS(self, k, coeffPower):
@@ -40,6 +43,7 @@ class Rocket(Body):
                         self.angular_velocity -= m.SASpower * coeffPower
                         m.fuel -= 1 * coeffPower
                 else:
+                    #you silly goose 
                     print('SAS module is out of fuel')
     
     def auto_SAS(self, targetAngle):

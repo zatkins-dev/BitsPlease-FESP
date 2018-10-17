@@ -8,6 +8,7 @@ class Thruster(Component):
         Component.__init__(self, body, vertices, transform, radius)
         self._thrustVector = Vec2d(thrustVector)
         self._thrustForce = netThrust
+        self.fuel = 40000
 
     def thrust(self):
         return self.thrustForce * self.thrustVector

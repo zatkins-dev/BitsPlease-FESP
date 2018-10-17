@@ -22,8 +22,8 @@ def genTank(b):
     return tank
 
 def genSAS(b):
-    density = 30
-    verts = [(3,3), (-3, 3), (-3, 9), (3, 9)]
+    density = 100
+    verts = [(3,6), (-3, 6), (-3, 12), (3, 12)]
     sas = SAS(b, verts, 0, 0.05, 0, radius=1)
     sas.density = density
     sas.leftKey = pg.K_a
