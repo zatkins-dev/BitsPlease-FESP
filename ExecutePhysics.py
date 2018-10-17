@@ -23,8 +23,8 @@ def keyUp(e, key):
     return e.type == pg.KEYUP and e.key == key
 
 
-def updateGravity(space, rocket, objectShape, objectBody):
-    space.gravity = phy.gravity(objectShape, objectBody, rocket)
+def updateGravity(space, rocket, objectShapes, objectBodies):
+    space.gravity = phy.netGravity(objectBodies, objectShapes, rocket)
     space.gravity[0] = space.gravity[0]/rocket.mass
     space.gravity[1] = space.gravity[1]/rocket.mass
 
@@ -43,6 +43,8 @@ def updateCamera(screen, game, center, space, draw_options):
 def run():
     #pg.init()
     #screen = pg.display.set_mode((res_x, res_y), pg.RESIZABLE)
+    celestialBodies = []
+    celestialShapes = []
     screen = pg.display.get_surface()
     clock = pg.time.Clock()
 
@@ -50,18 +52,24 @@ def run():
 
     space = pm.Space()
 
+    #bodies exerting G force
+    
+
     earthBody = pm.Body(body_type=pm.Body.STATIC)
     earthShape = pm.Circle(earthBody,EARTH_RADIUS)
     earthShape.mass = 10**13
     earthBody.position = 5000, 5000
     space.add(earthBody, earthShape)
-
+    celestialBodies.append(earthBody)
+    celestialShapes.append(earthShape)
 
     planetGageBody = pm.Body(body_type=pm.Body.STATIC)
     planetGageShape = pm.Circle(planetGageBody, 200)
     planetGageShape.mass = 10**13
     planetGageBody.position = 1000, 1000
     space.add(planetGageBody, planetGageShape)
+    celestialBodies.append(planetGageBody)
+    celestialShapes.append(planetGageShape)
 
     rocket = tr.genRocket(space)
     x, y = earthBody.position[0] + EARTH_RADIUS*math.sin(math.pi/4), earthBody.position[1] + EARTH_RADIUS*math.sin(math.pi/4)
@@ -110,7 +118,7 @@ def run():
             rocket.auto_SAS(sas_angle)
 
         print(rocket.position)
-        updateGravity(space, rocket, earthShape, earthBody)
+        updateGravity(space, rocket, celestialShapes, celestialBodies)
         space.step(1/50.0)
         updateCamera(screen, game, rocket.position, space, draw_options)
         pg.display.flip()

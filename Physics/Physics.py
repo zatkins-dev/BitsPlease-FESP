@@ -29,9 +29,11 @@ class Physics(object):
     @staticmethod
     #Calculates the net force due to gravity on some target from a list of bodies
     #Assumes that the body and target have "mass" property and "position" tuple property
-    def netGravity(bodies, target):
+    def netGravity(bodies, shapes, target):
         fX, fY = 0, 0
-        for body in bodies:
-            fX, fY = Physics.gravity(body, target)
+        for body, shape in zip(bodies, shapes):
+            newVec = Physics.gravity(shape, body, target)
+            fX += newVec[0]
+            fY += newVec[1]
 
         return (fX, fY)
