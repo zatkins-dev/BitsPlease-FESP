@@ -41,8 +41,9 @@ def updateCamera(screen, game, center, space, draw_options):
 
 
 def run():
-    pg.init()
-    screen = pg.display.set_mode((res_x, res_y), pg.RESIZABLE)
+    #pg.init()
+    #screen = pg.display.set_mode((res_x, res_y), pg.RESIZABLE)
+    screen = pg.display.get_surface()
     clock = pg.time.Clock()
 
     game = pg.Surface((10000, 10000))

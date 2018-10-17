@@ -1,5 +1,5 @@
 import pygame
-from Graphics import Graphics
+from Graphics.Graphics import Graphics
 
 class menu(object):
 

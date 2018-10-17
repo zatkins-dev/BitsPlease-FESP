@@ -2,7 +2,8 @@ import pygame
 import pymunk
 import sys
 from enum import Enum
-from menu import menu
+from Graphics.menu import menu
+import ExecutePhysics
 
 def main():
     clock = pygame.time.Clock()
@@ -37,6 +38,9 @@ def main():
                 menu.demoPressed = False
             else:
                 menu.drawMenu()
+
+        if currentState == State.Playing:
+            ExecutePhysics.run()
 
         pygame.display.flip()
 
