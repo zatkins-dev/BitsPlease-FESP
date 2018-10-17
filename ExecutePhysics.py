@@ -71,6 +71,15 @@ def run():
     celestialBodies.append(planetGageBody)
     celestialShapes.append(planetGageShape)
 
+    planetThomasBody = pm.Body(body_type=pm.Body.STATIC)
+    planetThomasShape = pm.Circle(planetThomasBody, 200)
+    planetThomasShape.mass = 10**13
+    planetThomasBody.position = 1500, 1500
+    space.add(planetThomasBody, planetThomasShape)
+    celestialBodies.append(planetThomasBody)
+    celestialShapes.append(planetThomasShape)
+
+
     rocket = tr.genRocket(space)
     x, y = earthBody.position[0] + EARTH_RADIUS*math.sin(math.pi/4), earthBody.position[1] + EARTH_RADIUS*math.sin(math.pi/4)
     rocket.position = x, y
