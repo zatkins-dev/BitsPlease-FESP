@@ -67,6 +67,7 @@ def run():
     fire = False
     rotate = False
     auto = False
+    sas_angle = 0
     print(rocket.position)
     while True:
         for event in pg.event.get():
@@ -87,6 +88,7 @@ def run():
                 elif event.key == pg.K_f:
                     fire = False
                 elif event.key == pg.K_v:
+                    sas_angle = rocket.angle
                     auto = not auto
                     
             elif event.type == pg.VIDEORESIZE:
@@ -98,7 +100,7 @@ def run():
         if rotate:
             rocket.turn_SAS(rotKey, 1)
         if auto:
-            rocket.auto_SAS(0)
+            rocket.auto_SAS(sas_angle)
 
         print(rocket.position)
         updateGravity(space, rocket, earthShape, earthBody)
