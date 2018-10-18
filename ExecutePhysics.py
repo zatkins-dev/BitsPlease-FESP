@@ -60,21 +60,21 @@ def run():
     space = pm.Space()
     headsUp = hud.headsUpDisplay()
 
-    earth = cb.CelestialBody('earth', space, 10**13, 1000,  5000, 5000, 0.9, 0)
+    earth = cb.CelestialBody('earth', space, 10**13, 1000,  5000, 5000, 0.9, 0, pm.Body.STATIC)
     celestialBodies.append(earth.body)
     celestialShapes.append(earth.shape)
 
-    planetGage = cb.CelestialBody('planetGage', space, 10**13, 200, 1000, 1000, 0.9, 0)
+    planetGage = cb.CelestialBody('planetGage', space, 10**13, 200, 1000, 1000, 0.9, 0, pm.Body.STATIC)
     celestialBodies.append(planetGage.body)
     celestialShapes.append(planetGage.shape)
 
 
-    planetThomas = cb.CelestialBody('planetThomas', space, 10**13, 200, 1500, 1500, 0.9, 0)
+    planetThomas = cb.CelestialBody('planetThomas', space, 10**13, 200, 1500, 1500, 0.9, 0, pm.Body.STATIC)
     celestialBodies.append(planetThomas.body)
     celestialShapes.append(planetThomas.shape)
 
 
-    planetZach = cb.CelestialBody('planetGage', space, 10**13, 200, 2000, 1000, 0.9, 0)
+    planetZach = cb.CelestialBody('planetZach', space, 10**13, 200, 2000, 1000, 0.9, 0, pm.Body.STATIC)
     celestialBodies.append(planetZach.body)
     celestialShapes.append(planetZach.shape)
 
