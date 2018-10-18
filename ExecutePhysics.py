@@ -4,13 +4,14 @@ import pymunk.pygame_util as pygame_util
 from pymunk.vec2d import Vec2d
 import sys
 import Rockets.TestRocket as tr
+import Physics.CelestialBody as cb
 import math
 from Physics.Physics import Physics as phy
 
 res_x, res_y = 1000, 1000
-EARTH_MASS = 5.97*10**24
-EARTH_RADIUS = 1000
-EARTH_MOMENT = pm.moment_for_circle(EARTH_MASS, 0, EARTH_RADIUS)
+
+
+
 GROUND_Y = res_y/20
 G = 6.67408*10**-11
 
@@ -52,36 +53,26 @@ def run():
 
     space = pm.Space()
 
-    #bodies exerting G force
-    
+    earth = cb.CelestialBody('earth', space, 10**13, 1000,  5000, 5000, 0.9, 0)
+    celestialBodies.append(earth.body)
+    celestialShapes.append(earth.shape)
 
-    earthBody = pm.Body(body_type=pm.Body.STATIC)
-    earthShape = pm.Circle(earthBody,EARTH_RADIUS)
-    earthShape.mass = 10**13
-    earthBody.position = 5000, 5000
-    space.add(earthBody, earthShape)
-    celestialBodies.append(earthBody)
-    celestialShapes.append(earthShape)
+    planetGage = cb.CelestialBody('planetGage', space, 10**13, 200, 1000, 1000, 0.9, 0)
+    celestialBodies.append(planetGage.body)
+    celestialShapes.append(planetGage.shape)
 
-    planetGageBody = pm.Body(body_type=pm.Body.STATIC)
-    planetGageShape = pm.Circle(planetGageBody, 200)
-    planetGageShape.mass = 10**13
-    planetGageBody.position = 1000, 1000
-    space.add(planetGageBody, planetGageShape)
-    celestialBodies.append(planetGageBody)
-    celestialShapes.append(planetGageShape)
 
-    planetThomasBody = pm.Body(body_type=pm.Body.STATIC)
-    planetThomasShape = pm.Circle(planetThomasBody, 200)
-    planetThomasShape.mass = 10**13
-    planetThomasBody.position = 1500, 1500
-    space.add(planetThomasBody, planetThomasShape)
-    celestialBodies.append(planetThomasBody)
-    celestialShapes.append(planetThomasShape)
+    planetThomas = cb.CelestialBody('planetThomas', space, 10**13, 200, 1500, 1500, 0.9, 0)
+    celestialBodies.append(planetThomas.body)
+    celestialShapes.append(planetThomas.shape)
 
+
+    planetZach = cb.CelestialBody('planetGage', space, 10**13, 200, 2000, 1000, 0.9, 0)
+    celestialBodies.append(planetZach.body)
+    celestialShapes.append(planetZach.shape)
 
     rocket = tr.genRocket(space)
-    x, y = earthBody.position[0] + EARTH_RADIUS*math.sin(math.pi/4), earthBody.position[1] + EARTH_RADIUS*math.sin(math.pi/4)
+    x, y = earth.posx + earth.radius*math.sin(math.pi/4), earth.posy + earth.radius*math.sin(math.pi/4)
     rocket.position = x, y
     draw_options = pygame_util.DrawOptions(game)
     space.gravity = 0, 0
