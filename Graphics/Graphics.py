@@ -2,6 +2,16 @@ import pygame
 import random
 
 class Graphics(object):
+    """
+        Graphics is a utility class that is used to abstract drawing of different common items, like text and buttons
+
+        **Class Variables**:
+            *_buttonIsClicked*:     bool A state variable that stores whether a button is currently being pressed. This is used to prevent buttons' actions from executing on every single frame.
+            
+            *_isBackgroundDrawn*:   bool A state variable that stores whether or not the star background has been drawn before. This is used to initialize the backgroudn on the first call of drawStars()
+            
+            *_stars*:               tuple (int, int, (int, int, int)) A list of tuples that hold information about stars. The first number is the x position, and the second number is the y position. The final member is an rgb color tuple.
+    """
 
     _buttonIsClicked = False
     _isBackgroundDrawn = False
@@ -69,6 +79,28 @@ class Graphics(object):
 
     @classmethod
     def drawText(cls, position, content, textFont, color=(0,0,0), surface=None):
+        """
+        Utility function that draws a string to the screen
+
+        **Args**:
+                *position*: Tuple (int, int) The (x,y) pixel coordinate of the top-left corner of the text
+
+                *content*: str The string to be drawn
+
+                *textFont*: pygame.font The font to use to draw the text
+
+                *color*: Tuple (r,g,b) The rgb color values of the text to draw
+
+                *surface*: The surface to draw to. Defaults to pygame's base surface
+
+        **Preconditions**:
+                None.
+
+        **Postconditions**:
+                None.
+
+        **Returns**: None.
+        """
         if surface == None:
             surface = pygame.display.get_surface()
         if(not pygame.font.get_init()):
@@ -80,6 +112,28 @@ class Graphics(object):
         
     @classmethod
     def drawTextCenter(cls, position, content, textFont, color=(0,0,0), surface=None):
+        """
+        Utility function that draws a string to the screen
+
+        **Args**:
+                *position*: Tuple (int, int) The (x,y) pixel coordinate of the center of the text
+
+                *content*: str The string to be drawn
+
+                *textFont*: pygame.font The font to use to draw the text
+
+                *color*: Tuple (r,g,b) The rgb color values of the text to draw
+
+                *surface*: The surface to draw to. Defaults to pygame's base surface
+
+        **Preconditions**:
+                None.
+
+        **Postconditions**:
+                None.
+
+        **Returns**: None.
+        """
         if surface == None:
             surface = pygame.display.get_surface()
         if(not pygame.font.get_init()):
@@ -95,6 +149,22 @@ class Graphics(object):
 
     @classmethod
     def drawStars(cls, screen, pos):
+        """
+        Draws a randomly generated background of stars to the provided surface. Also creates a paralax effect for a moving target
+
+        **Args**
+            *screen*:   pygame.Surface The surface which the stars will be drawn to
+
+            *pos*:      tuple (int, int) The position of the focus of the camera, which will shift the position of the stars creating the paralax effect
+            
+        **Preconditions**:
+                None.
+
+        **Postconditions**:
+                None.
+
+        **Returns**: None.
+        """
         if(not cls._isBackgroundDrawn):
             for i in range(1000):
                 colorSelector = random.randrange(0, 5)
