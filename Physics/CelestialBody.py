@@ -3,7 +3,7 @@ import pygame as pg
 
 
 class CelestialBody():
-    def __init__(self, name_, space_, mass_, radius_, position_x, position_y, elasticity_, atmosphere_, bodytype):
+    def __init__(self, name_, space_, mass_, radius_, position_x, position_y, elasticity_, atmosphere_, bodytype_):
         self.mass = mass_
         self.name = name_
         self.radius = radius_
