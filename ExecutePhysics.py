@@ -48,6 +48,8 @@ def run():
     celestialShapes = []
     screen = pg.display.get_surface()
     clock = pg.time.Clock()
+    rocketVelocityDegrees = 0
+    rocketAccelerationDegrees = 0
 
     game = pg.Surface((10000, 10000))
 
@@ -132,7 +134,16 @@ def run():
         updateGravity(space, rocket, celestialShapes, celestialBodies)
         space.step(1/50.0)
         updateCamera(screen, game, rocket.position, space, draw_options)
-        headsUp.updateHUD(rocket.position[0], rocket.position[1], (rocket.angle * 180/math.pi + 90)%360, math.sqrt(rocket.velocity[0]**2 + rocket.velocity[1]**2),math.atan2(rocket.velocity[1], rocket.velocity[0])*180/math.pi,math.sqrt(space.gravity[0]**2+space.gravity[1]**2),math.atan2(space.gravity[1], space.gravity[0])*180/math.pi, rocket.components)
+
+        rocketVelocityDegrees = math.atan2(rocket.velocity[1], rocket.velocity[0])*180/math.pi
+        rocketAccelerationDegrees = math.atan2(space.gravity[1], space.gravity[0])*180/math.pi
+        if(rocketVelocityDegrees < 0):
+            rocketVelocityDegrees = rocketVelocityDegrees + 360
+        if(rocketAccelerationDegrees < 0):
+            rocketAccelerationDegrees = rocketAccelerationDegrees + 360
+        headsUp.updateHUD(rocket.position[0], rocket.position[1], (rocket.angle * 180/math.pi + 90)%360, math.sqrt(rocket.velocity[0]**2 + rocket.velocity[1]**2),rocketVelocityDegrees
+            ,math.sqrt(space.gravity[0]**2+space.gravity[1]**2),rocketAccelerationDegrees, rocket.components)
+            
         pg.display.flip()
         clock.tick(60)
 
