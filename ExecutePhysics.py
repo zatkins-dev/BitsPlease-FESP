@@ -6,6 +6,9 @@ import sys
 import Rockets.TestRocket as tr
 import math
 from Physics.Physics import Physics as phy
+import Graphics.headsUpDisplay as hud
+from Graphics.Graphics import Graphics as graph
+import random
 
 res_x, res_y = 1000, 1000
 EARTH_MASS = 5.97*10**24
@@ -35,6 +38,7 @@ def updateCamera(screen, game, center, space, draw_options):
     dest = max(c_x - x // 2, 0), max(c_y - y // 2, 0)
     print((x, y), (c_x, c_y), dest)
     screen.fill((0, 0, 0))
+    graph.drawStars(screen)
     game.blit(screen, dest)
     space.debug_draw(draw_options)
     screen.blit(game, (0, 0), pg.Rect(dest[0], dest[1], x, y))
@@ -47,13 +51,16 @@ def run():
     celestialShapes = []
     screen = pg.display.get_surface()
     clock = pg.time.Clock()
+    rocketVelocityDegrees = 0
+    rocketAccelerationDegrees = 0
 
     game = pg.Surface((10000, 10000))
 
     space = pm.Space()
+    headsUp = hud.headsUpDisplay()
 
     #bodies exerting G force
-    
+
 
     earthBody = pm.Body(body_type=pm.Body.STATIC)
     earthShape = pm.Circle(earthBody,EARTH_RADIUS)
@@ -71,6 +78,15 @@ def run():
     celestialBodies.append(planetGageBody)
     celestialShapes.append(planetGageShape)
 
+    planetThomasBody = pm.Body(body_type=pm.Body.STATIC)
+    planetThomasShape = pm.Circle(planetThomasBody, 200)
+    planetThomasShape.mass = 10**13
+    planetThomasBody.position = 1500, 1500
+    space.add(planetThomasBody, planetThomasShape)
+    celestialBodies.append(planetThomasBody)
+    celestialShapes.append(planetThomasShape)
+
+
     rocket = tr.genRocket(space)
     x, y = earthBody.position[0] + EARTH_RADIUS*math.sin(math.pi/4), earthBody.position[1] + EARTH_RADIUS*math.sin(math.pi/4)
     rocket.position = x, y
@@ -84,6 +100,7 @@ def run():
     auto = False
     sas_angle = 0
     print(rocket.position)
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT or keyDown(event, pg.K_ESCAPE):
@@ -105,7 +122,7 @@ def run():
                 elif event.key == pg.K_v:
                     sas_angle = rocket.angle
                     auto = not auto
-                    
+
             elif event.type == pg.VIDEORESIZE:
                 screen = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
 
@@ -121,9 +138,19 @@ def run():
         updateGravity(space, rocket, celestialShapes, celestialBodies)
         space.step(1/50.0)
         updateCamera(screen, game, rocket.position, space, draw_options)
+
+        rocketVelocityDegrees = math.atan2(rocket.velocity[1], rocket.velocity[0])*180/math.pi
+        rocketAccelerationDegrees = math.atan2(space.gravity[1], space.gravity[0])*180/math.pi
+        if(rocketVelocityDegrees < 0):
+            rocketVelocityDegrees = rocketVelocityDegrees + 360
+        if(rocketAccelerationDegrees < 0):
+            rocketAccelerationDegrees = rocketAccelerationDegrees + 360
+        headsUp.updateHUD(rocket.position[0], rocket.position[1], (rocket.angle * 180/math.pi + 90)%360, math.sqrt(rocket.velocity[0]**2 + rocket.velocity[1]**2),rocketVelocityDegrees
+            ,math.sqrt(space.gravity[0]**2+space.gravity[1]**2),rocketAccelerationDegrees, rocket.components)
+
         pg.display.flip()
         clock.tick(60)
-        
+
 
 if __name__ == "__main__":
     run()
