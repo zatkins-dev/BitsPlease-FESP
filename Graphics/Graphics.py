@@ -102,4 +102,14 @@ class Graphics(object):
                 cls._stars.append([x,y,colorStar])
             cls._isBackgroundDrawn = True
         for i in range(1000):
-            pygame.draw.circle(screen, cls._stars[i][2], (cls._stars[i][0], cls._stars[i][1]), random.randrange(0, 3))
+            temp = random.uniform(0, 1)
+            width = 0
+            if temp < .01:
+                width = 0
+            elif temp < .98:
+                width = 1
+            elif temp < .99:
+                width = 2
+            else:
+                width = 3
+            pygame.draw.circle(screen, cls._stars[i][2], (cls._stars[i][0], cls._stars[i][1]), width)
