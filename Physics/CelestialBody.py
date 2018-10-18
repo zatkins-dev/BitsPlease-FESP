@@ -12,7 +12,7 @@ class CelestialBody():
         self.elasticity = elasticity_
         self.atmosphere = atmosphere_
         self.bodytype = bodytype_
-        self.body = pm.Body(bodytype)
+        self.body = pm.Body(self.bodytype)
         self.shape = pm.Circle(self.body, self.radius)
         self.shape.mass = self.mass
         self.shape.elasticity = self.elasticity
