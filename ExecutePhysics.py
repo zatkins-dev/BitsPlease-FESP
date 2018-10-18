@@ -146,7 +146,7 @@ def run():
         if(rocketAccelerationDegrees < 0):
             rocketAccelerationDegrees = rocketAccelerationDegrees + 360
         headsUp.updateHUD(rocket.position[0], rocket.position[1], (rocket.angle * 180/math.pi + 90)%360, math.sqrt(rocket.velocity[0]**2 + rocket.velocity[1]**2),rocketVelocityDegrees
-            ,math.sqrt(space.gravity[0]**2+space.gravity[1]**2),rocketAccelerationDegrees, rocket.components)
+            ,math.sqrt(space.gravity[0]**2+space.gravity[1]**2),rocketAccelerationDegrees, rocket.components, clock.get_fps())
 
         pg.display.flip()
         clock.tick(60)

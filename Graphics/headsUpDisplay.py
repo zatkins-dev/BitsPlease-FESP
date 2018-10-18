@@ -24,7 +24,7 @@ class headsUpDisplay():
         #self._pgFont = pg.font.SysFont("Times New Roman", 18)
         #self._textSurface = None
 
-    def updateHUD(self, x, y, pDeg, vMag, vDeg, aMag, aDeg, components):
+    def updateHUD(self, x, y, pDeg, vMag, vDeg, aMag, aDeg, components, fps):
         self._xPosition = x
         self._yPosition = y
         self._positionDegree = pDeg
@@ -52,3 +52,5 @@ class headsUpDisplay():
         for sas in self.SASmodules:
             numSAS = numSAS + 1
             graph.drawText((282,130 + numThruster*20 + numSAS*20), "SAS Module " + str(numSAS) + " Fuel Remaining: " + str("{:10.0f}".format(sas.fuel)) + " Liters", 20, (255,0,0), "Futura")
+
+        graph.drawText((70,150 + numThruster * 20 + numSAS * 20), "FPS: " + "{:0.3f}".format(fps), 20, (255,0,0), "Futura")
