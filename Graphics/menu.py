@@ -15,8 +15,8 @@ class menu(object):
         surface = pygame.display.get_surface()
         surfaceSize = surface.get_size()
         surfaceCenter = (surfaceSize[0] / 2, surfaceSize[1] / 2)
-        titleCenter = (surfaceSize[0] / 2, surfaceSize[1] / 2 - 20)
-        subtitleCenter = (surfaceSize[0] / 2, surfaceSize[1] / 2 + 20)
+        titleCenter = (surfaceCenter[0], surfaceCenter[1] - 20)
+        subtitleCenter = (surfaceCenter[0], surfaceCenter[1] + 20)
 
         #fill surface with black
         surface.fill((0,0,0))
@@ -26,8 +26,11 @@ class menu(object):
 
         #In the future, may want to draw an image onto the surface as a background
         #for now, just draw text
-        Graphics.drawText(titleCenter, "Flat Earth Space Program", 40, (255,255,255))
-        Graphics.drawText(subtitleCenter, "Click Anywhere to Continue", 20, (255,255,255))
+        titleFont = pygame.font.SysFont("lucidaconsole", 40)
+        subtitleFont = pygame.font.SysFont("lucidaconsole", 20)
+
+        Graphics.drawText(titleCenter, "Flat Earth Space Program", titleFont, (255,255,255))
+        Graphics.drawText(subtitleCenter, "Click Anywhere to Continue", subtitleFont, (255,255,255))
 
     @classmethod
     def drawMenu(cls):
@@ -42,8 +45,9 @@ class menu(object):
 
         buttonSize = (400, 50)
         buttonPosition = lambda i:(surfaceCenter[0] - buttonSize[0] / 2, surfaceCenter[1] - buttonSize[1] / 2 + 65 * i)
-
-        Graphics.drawText(titleCenter, "Flat Earth Space Program", 40, (255,255,255))
+        titleFont = pygame.font.SysFont("lucidaconsole", 40)
+        
+        Graphics.drawText(titleCenter, "Flat Earth Space Program", titleFont, (255,255,255))
         Graphics.drawButton(surface, buttonPosition(0), buttonSize, cls._menuButtonColor, "Start Demo", 25,cls._demoCallback)
         Graphics.drawButton(surface, buttonPosition(1), buttonSize, cls._menuButtonColor, "Exit to Desktop", 25, cls._quitCallback)
 
