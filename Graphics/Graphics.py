@@ -84,7 +84,7 @@ class Graphics(object):
         surface.blit(textSurface, (x,y))
 
     @classmethod
-    def drawStars(cls, screen):
+    def drawStars(cls, screen, pos):
         if(not cls._isBackgroundDrawn):
             for i in range(1000):
                 colorSelector = random.randrange(0, 5)
@@ -102,6 +102,7 @@ class Graphics(object):
                 cls._stars.append([x,y,colorStar])
             cls._isBackgroundDrawn = True
         for i in range(1000):
+            #decide the new star size (twinkling)
             temp = random.uniform(0, 1)
             width = 0
             if temp < .01:
@@ -112,4 +113,7 @@ class Graphics(object):
                 width = 2
             else:
                 width = 3
-            pygame.draw.circle(screen, cls._stars[i][2], (cls._stars[i][0], cls._stars[i][1]), width)
+
+            starX = int(cls._stars[i][0] - .25 * pos[0]) % 3000
+            starY = int(cls._stars[i][1] + .25 * pos[1]) % 1080
+            pygame.draw.circle(screen, cls._stars[i][2], (starX, starY), width)

@@ -38,7 +38,7 @@ def updateCamera(screen, game, center, space, draw_options):
     dest = max(c_x - x // 2, 0), max(c_y - y // 2, 0)
     print((x, y), (c_x, c_y), dest)
     screen.fill((0, 0, 0))
-    graph.drawStars(screen)
+    graph.drawStars(screen, center)
     game.blit(screen, dest)
     space.debug_draw(draw_options)
     screen.blit(game, (0, 0), pg.Rect(dest[0], dest[1], x, y))
