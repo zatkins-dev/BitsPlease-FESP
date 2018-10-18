@@ -64,6 +64,10 @@ def run():
     celestialBodies.append(earth.body)
     celestialShapes.append(earth.shape)
 
+    earthMoon1 = cb.CelestialBody('earthMoon1', space, 10**11, 250, 6500, 5000, .9, 0, 1)
+    celestialBodies.append(earthMoon1.body)
+    celestialShapes.append(earthMoon1.shape)
+
     planetGage = cb.CelestialBody('planetGage', space, 10**13, 200, 1000, 1000, 0.9, 0, 0)
     celestialBodies.append(planetGage.body)
     celestialShapes.append(planetGage.shape)
