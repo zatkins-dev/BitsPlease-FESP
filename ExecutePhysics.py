@@ -7,6 +7,8 @@ import Rockets.TestRocket as tr
 import math
 from Physics.Physics import Physics as phy
 import Graphics.headsUpDisplay as hud
+from Graphics.Graphics import Graphics as graph
+import random
 
 res_x, res_y = 1000, 1000
 EARTH_MASS = 5.97*10**24
@@ -36,6 +38,7 @@ def updateCamera(screen, game, center, space, draw_options):
     dest = max(c_x - x // 2, 0), max(c_y - y // 2, 0)
     print((x, y), (c_x, c_y), dest)
     screen.fill((0, 0, 0))
+    graph.drawStars(screen)
     game.blit(screen, dest)
     space.debug_draw(draw_options)
     screen.blit(game, (0, 0), pg.Rect(dest[0], dest[1], x, y))
@@ -97,6 +100,7 @@ def run():
     auto = False
     sas_angle = 0
     print(rocket.position)
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT or keyDown(event, pg.K_ESCAPE):
@@ -143,7 +147,7 @@ def run():
             rocketAccelerationDegrees = rocketAccelerationDegrees + 360
         headsUp.updateHUD(rocket.position[0], rocket.position[1], (rocket.angle * 180/math.pi + 90)%360, math.sqrt(rocket.velocity[0]**2 + rocket.velocity[1]**2),rocketVelocityDegrees
             ,math.sqrt(space.gravity[0]**2+space.gravity[1]**2),rocketAccelerationDegrees, rocket.components)
-            
+
         pg.display.flip()
         clock.tick(60)
 

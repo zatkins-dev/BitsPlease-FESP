@@ -1,14 +1,17 @@
 import pygame
+import random
 
 class Graphics(object):
-    
+
     _buttonIsClicked = False
+    _isBackgroundDrawn = False
+    _stars = []
 
     @classmethod
     def drawButton(cls, destSurf, pos, size, colors, buttonText, buttonTextSize, buttonFunction=None):
         """
         Utility function that draws a button to the screen
-        
+
         **Args**:
                 *destSurf*: Surface The surface that the button will be drawn to
 
@@ -17,7 +20,7 @@ class Graphics(object):
                 *size*: Tuple (int, int) The (width, height) of the button to be drawn.
 
                 *colors*: Tuple (Color, Color) The first member of the tuple is the color of the button, and the second
-                    member is the color of the button while it is being hovered over. These colors can be given as 
+                    member is the color of the button while it is being hovered over. These colors can be given as
                     pygame colors, triples of RGB values, or 4-tuples of RGBA values if transparency is desired
 
                 *buttonText*: The text to be rendered at the center of the button
@@ -25,13 +28,13 @@ class Graphics(object):
                 *buttonTextSize*: The size of the text to be rendered
 
                 *buttonFunction*: A function to call while the button is pressed
-        
+
         **Preconditions**:
                 None.
-        
+
         **Postconditions**:
                 None.
-        
+
         **Returns**: None.
         """
         if(not pygame.font.get_init()):
@@ -79,3 +82,24 @@ class Graphics(object):
         y = position[1] - y/2
 
         surface.blit(textSurface, (x,y))
+
+    @classmethod
+    def drawStars(cls, screen):
+        if(not cls._isBackgroundDrawn):
+            for i in range(1000):
+                colorSelector = random.randrange(0, 5)
+                colorStar = (0,0,0)
+                if(colorSelector == 0 or colorSelector == 1):
+                    colorStar = (255, 255, 255)
+                elif(colorSelector == 2):
+                    colorStar = (255, 0, 0)
+                elif(colorSelector == 3):
+                    colorStar = (0, 0, 255)
+                elif(colorSelector == 4):
+                    colorStar = (255, 255, 0)
+                x = random.randrange(0, 3000)
+                y = random.randrange(0, 1080)
+                cls._stars.append([x,y,colorStar])
+            cls._isBackgroundDrawn = True
+        for i in range(1000):
+            pygame.draw.circle(screen, cls._stars[i][2], (cls._stars[i][0], cls._stars[i][1]), random.randrange(0, 3))
