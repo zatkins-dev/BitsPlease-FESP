@@ -4,6 +4,7 @@ import pymunk.pygame_util as pygame_util
 from pymunk.vec2d import Vec2d
 import sys
 import Rockets.TestRocket as tr
+import Physics.CelestialBody as cb
 import math
 from Physics.Physics import Physics as phy
 import Graphics.headsUpDisplay as hud
@@ -11,9 +12,9 @@ from Graphics.Graphics import Graphics as graph
 import random
 
 res_x, res_y = 1000, 1000
-EARTH_MASS = 5.97*10**24
-EARTH_RADIUS = 1000
-EARTH_MOMENT = pm.moment_for_circle(EARTH_MASS, 0, EARTH_RADIUS)
+
+
+
 GROUND_Y = res_y/20
 G = 6.67408*10**-11
 
@@ -38,7 +39,7 @@ def updateCamera(screen, game, center, space, draw_options):
     dest = max(c_x - x // 2, 0), max(c_y - y // 2, 0)
     print((x, y), (c_x, c_y), dest)
     screen.fill((0, 0, 0))
-    graph.drawStars(screen)
+    graph.drawStars(screen, center)
     game.blit(screen, dest)
     space.debug_draw(draw_options)
     screen.blit(game, (0, 0), pg.Rect(dest[0], dest[1], x, y))
@@ -59,36 +60,30 @@ def run():
     space = pm.Space()
     headsUp = hud.headsUpDisplay()
 
-    #bodies exerting G force
+    earth = cb.CelestialBody('earth', space, 10**13, 1000,  5000, 5000, 0.9, 0, 0)
+    celestialBodies.append(earth.body)
+    celestialShapes.append(earth.shape)
+
+    earthMoon1 = cb.CelestialBody('earthMoon1', space, 10**11, 250, 6500, 5000, .9, 0, 1)
+    celestialBodies.append(earthMoon1.body)
+    celestialShapes.append(earthMoon1.shape)
+
+    planetGage = cb.CelestialBody('planetGage', space, 10**13, 200, 1000, 1000, 0.9, 0, 0)
+    celestialBodies.append(planetGage.body)
+    celestialShapes.append(planetGage.shape)
 
 
-    earthBody = pm.Body(body_type=pm.Body.STATIC)
-    earthShape = pm.Circle(earthBody,EARTH_RADIUS)
-    earthShape.mass = 10**13
-    earthBody.position = 5000, 5000
-    space.add(earthBody, earthShape)
-    celestialBodies.append(earthBody)
-    celestialShapes.append(earthShape)
+    planetThomas = cb.CelestialBody('planetThomas', space, 10**13, 200, 1500, 1500, 0.9, 0, 0)
+    celestialBodies.append(planetThomas.body)
+    celestialShapes.append(planetThomas.shape)
 
-    planetGageBody = pm.Body(body_type=pm.Body.STATIC)
-    planetGageShape = pm.Circle(planetGageBody, 200)
-    planetGageShape.mass = 10**13
-    planetGageBody.position = 1000, 1000
-    space.add(planetGageBody, planetGageShape)
-    celestialBodies.append(planetGageBody)
-    celestialShapes.append(planetGageShape)
 
-    planetThomasBody = pm.Body(body_type=pm.Body.STATIC)
-    planetThomasShape = pm.Circle(planetThomasBody, 200)
-    planetThomasShape.mass = 10**13
-    planetThomasBody.position = 1500, 1500
-    space.add(planetThomasBody, planetThomasShape)
-    celestialBodies.append(planetThomasBody)
-    celestialShapes.append(planetThomasShape)
-
+    planetZach = cb.CelestialBody('planetZach', space, 10**13, 200, 2000, 1000, 0.9, 0, 0)
+    celestialBodies.append(planetZach.body)
+    celestialShapes.append(planetZach.shape)
 
     rocket = tr.genRocket(space)
-    x, y = earthBody.position[0] + EARTH_RADIUS*math.sin(math.pi/4), earthBody.position[1] + EARTH_RADIUS*math.sin(math.pi/4)
+    x, y = earth.posx + earth.radius*math.sin(math.pi/4), earth.posy + earth.radius*math.sin(math.pi/4)
     rocket.position = x, y
     draw_options = pygame_util.DrawOptions(game)
     space.gravity = 0, 0
@@ -146,7 +141,7 @@ def run():
         if(rocketAccelerationDegrees < 0):
             rocketAccelerationDegrees = rocketAccelerationDegrees + 360
         headsUp.updateHUD(rocket.position[0], rocket.position[1], (rocket.angle * 180/math.pi + 90)%360, math.sqrt(rocket.velocity[0]**2 + rocket.velocity[1]**2),rocketVelocityDegrees
-            ,math.sqrt(space.gravity[0]**2+space.gravity[1]**2),rocketAccelerationDegrees, rocket.components)
+            ,math.sqrt(space.gravity[0]**2+space.gravity[1]**2),rocketAccelerationDegrees, rocket.components, clock.get_fps())
 
         pg.display.flip()
         clock.tick(60)
