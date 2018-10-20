@@ -1,18 +1,32 @@
 from Rockets.component import Component
 
+
 class SAS(Component):
-    def __init__(self, body, vertices, SASforce, SASpower, angle, transform=None, radius=0):
+    """Short summary.
+
+    Args:
+        body (Body): Rocket body to attach to
+        vertices (List(Vec2d)): Vertices of Poly shape
+        SASpower (Float): rotation rate of the rocket from the SAS module
+        angle (Float): lock angle for the SAS
+        transform (Transform): Description of parameter `transform`.
+        radius (Float): Description of parameter `radius`.
+
+    Attributes:
+        _SASangle (Float): lock angle for the SAS
+        _SASpower (Float): rotation rate of the rocket from the SAS module
+        leftKey (Int): Description of parameter `leftKey`.
+        rightKey (Int): Description of parameter `rightKey`.
+        fuel (Int): Description of parameter `fuel`.
+
+    """
+
+    def __init__(self, body, vertices, SASpower, angle,
+                 transform=None, radius=0):
         Component.__init__(self, body, vertices, transform, radius)
         self._SASangle = 0
 
-        # SASforce: 0 is continue going straight, + turns the rocket left, --
-        #           turns the rocket right
-        # the greater the force the more the rocket turns
-        # corresponds directly to angular velocity of the rocket
-        self._SASforce = 0
-
-        # SASpower: rate at which the rockets SASforce increments when given
-        #           input from the user
+        # SASpower: rotation of the rocket from the SAS module
         self._SASpower = 0.05
 
         self.leftKey = None
@@ -36,12 +50,3 @@ class SAS(Component):
     @SASangle.setter
     def SASangle(self, newAngle):
         self._SASangle = newAngle
-
-    @property
-    def SASforce(self):
-        return self._SASforce
-
-    @SASforce.setter
-    def SASforce(self, newForce):
-        # give me all your SASs
-        self._SASforce = newForce

@@ -1,10 +1,10 @@
-#This file will manage the display of mission critical information
+# This file will manage the display of mission critical information
 
 import pygame as pg
 from Graphics.Graphics import Graphics as graph
 from Rockets.component import Component
 from Rockets.thruster import Thruster
-from Rockets.SAS import SAS
+from Rockets.sas import SAS
 import math
 
 class headsUpDisplay():

@@ -16,7 +16,7 @@ class Component(pm.Poly):
     """
 
     def __init__(self, body, vertices, transform=None, radius=0):
-        pm.Polt.__init__(body, vertices, transform, radius)
+        super().__init__(body, vertices, transform, radius)
         self._key = None
 
     @property

@@ -1,7 +1,7 @@
 from pymunk import Body as Body
 import pygame as pg
 from Rockets.thruster import Thruster
-from Rockets.SAS import SAS
+from Rockets.sas import SAS
 
 
 class Rocket(Body):
