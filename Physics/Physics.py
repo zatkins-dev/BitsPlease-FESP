@@ -2,11 +2,11 @@ import math
 
 class Physics(object):
     """
-        Physics is a utility class that is used to encapsulate different physics functions to be used in our simulation. Currently, it only handles finding the force due to gravity
+    Physics is a utility class that is used to encapsulate different physics functions to be used in our simulation. Currently, it only handles finding the force due to gravity
 
-        **Class Variables**:
-            *_GRAV_CONSTANT*:       float The gravitational constant, used in the law of universal gravitation.
-        """
+    **Class Variables**:
+        *_GRAV_CONSTANT*:       float The gravitational constant, used in the law of universal gravitation.
+    """
 
     _GRAV_CONSTANT = 6.67384*(10**-11)
 
