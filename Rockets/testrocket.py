@@ -6,7 +6,7 @@ from Rockets.rocket import Rocket
 
 
 def genOrbiter(b):
-    """Creates new component (orbiter).
+    """Generate new component (orbiter).
 
     Args:
         b (Body): Rocket body to attach to.
@@ -23,7 +23,7 @@ def genOrbiter(b):
 
 
 def genTank(b):
-    """Creates new thruster for rocket.
+    """Generate new thruster for rocket.
 
     Args:
         b (Body): Rocket body to attach to.
@@ -41,7 +41,7 @@ def genTank(b):
 
 
 def genSAS(b):
-    """Creates new SAS for prototype rocket.
+    """Generate new SAS for prototype rocket.
 
     Args:
         b (Body): Rocket body to attach to.
@@ -60,7 +60,7 @@ def genSAS(b):
 
 
 def genRocket(space):
-    """Creates prototype rocket with orbiter, thruster, and SAS.
+    """Generate prototype rocket with orbiter, thruster, and SAS.
 
     Args:
         space (Space): Space to hold generated rocket.
