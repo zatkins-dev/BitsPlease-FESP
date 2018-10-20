@@ -38,7 +38,6 @@ class HUD():
 
             **Returns**: A headsUpDisplay object.
         """
-        #pg.font.init()
         self._xPosition = 0
         self._yPosition = 0
         self._positionDegree = 0
