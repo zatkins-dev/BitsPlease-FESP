@@ -77,8 +77,8 @@ def run():
     celestialShapes.append(planetZach.shape)
 
     rocket = tr.genRocket(space)
-    x, y = (earth.posx + earth.radius*math.sin(math.pi/4),
-            earth.posy + earth.radius*math.sin(math.pi/4))
+    x, y = (earth.posx + earth.radius / math.sqrt(2),
+            earth.posy + earth.radius / math.sqrt(2))
     rocket.position = x, y
     draw_options = pygame_util.DrawOptions(game)
     space.gravity = 0, 0
