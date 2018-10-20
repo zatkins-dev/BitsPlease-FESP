@@ -57,7 +57,7 @@ def run():
     celestialShapes.append(earth.shape)
 
     earthMoon1 = cb.CelestialBody('earthMoon1', space,
-                                  10**11, 250, 6500, 5000, .9, 0, 1)
+                                  10**11, 250, 6500, 5000, 0.9, 0, 1)
     celestialBodies.append(earthMoon1.body)
     celestialShapes.append(earthMoon1.shape)
 
@@ -81,7 +81,6 @@ def run():
             earth.posy + earth.radius / math.sqrt(2))
     rocket.position = x, y
     draw_options = pygame_util.DrawOptions(game)
-    space.gravity = 0, 0
     space.damping = 0.9
 
     fire_ticks = 480*50
