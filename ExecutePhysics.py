@@ -1,20 +1,15 @@
 import pygame as pg
 import pymunk as pm
 import pymunk.pygame_util as pygame_util
-from pymunk.vec2d import Vec2d
 import sys
 import Rockets.testrocket as tr
 import Physics.CelestialBody as cb
 import math
 from Physics.Physics import Physics as phy
-import Graphics.headsUpDisplay as hud
+import Graphics.headsUpDisplay as HUD
 from Graphics.Graphics import Graphics as graph
-import random
 
 res_x, res_y = 1000, 1000
-
-
-
 GROUND_Y = res_y/20
 G = 6.67408*10**-11
 
@@ -46,44 +41,44 @@ def updateCamera(screen, game, center, space, draw_options):
 
 
 def run():
-    #pg.init()
-    #screen = pg.display.set_mode((res_x, res_y), pg.RESIZABLE)
     celestialBodies = []
     celestialShapes = []
     screen = pg.display.get_surface()
     clock = pg.time.Clock()
-    rocketVelocityDegrees = 0
-    rocketAccelerationDegrees = 0
 
     game = pg.Surface((10000, 10000))
 
     space = pm.Space()
-    headsUp = hud.headsUpDisplay()
+    hud = HUD.headsUpDisplay()
 
-    earth = cb.CelestialBody('earth', space, 10**13, 1000,  5000, 5000, 0.9, 0, 0)
+    earth = cb.CelestialBody('earth', space,
+                             10**13, 1000, 5000, 5000, 0.9, 0, 0)
     celestialBodies.append(earth.body)
     celestialShapes.append(earth.shape)
 
-    earthMoon1 = cb.CelestialBody('earthMoon1', space, 10**11, 250, 6500, 5000, .9, 0, 1)
+    earthMoon1 = cb.CelestialBody('earthMoon1', space,
+                                  10**11, 250, 6500, 5000, .9, 0, 1)
     celestialBodies.append(earthMoon1.body)
     celestialShapes.append(earthMoon1.shape)
 
-    planetGage = cb.CelestialBody('planetGage', space, 10**13, 200, 1000, 1000, 0.9, 0, 0)
+    planetGage = cb.CelestialBody('planetGage', space,
+                                  10**13, 200, 1000, 1000, 0.9, 0, 0)
     celestialBodies.append(planetGage.body)
     celestialShapes.append(planetGage.shape)
 
-
-    planetThomas = cb.CelestialBody('planetThomas', space, 10**13, 200, 1500, 1500, 0.9, 0, 0)
+    planetThomas = cb.CelestialBody('planetThomas', space,
+                                    10**13, 200, 1500, 1500, 0.9, 0, 0)
     celestialBodies.append(planetThomas.body)
     celestialShapes.append(planetThomas.shape)
 
-
-    planetZach = cb.CelestialBody('planetZach', space, 10**13, 200, 2000, 1000, 0.9, 0, 0)
+    planetZach = cb.CelestialBody('planetZach', space,
+                                  10**13, 200, 2000, 1000, 0.9, 0, 0)
     celestialBodies.append(planetZach.body)
     celestialShapes.append(planetZach.shape)
 
     rocket = tr.genRocket(space)
-    x, y = earth.posx + earth.radius*math.sin(math.pi/4), earth.posy + earth.radius*math.sin(math.pi/4)
+    x, y = (earth.posx + earth.radius*math.sin(math.pi/4),
+            earth.posy + earth.radius*math.sin(math.pi/4))
     rocket.position = x, y
     draw_options = pygame_util.DrawOptions(game)
     space.gravity = 0, 0
@@ -133,15 +128,13 @@ def run():
         updateGravity(space, rocket, celestialShapes, celestialBodies)
         space.step(1/50.0)
         updateCamera(screen, game, rocket.position, space, draw_options)
-
-        rocketVelocityDegrees = math.atan2(rocket.velocity[1], rocket.velocity[0])*180/math.pi
-        rocketAccelerationDegrees = math.atan2(space.gravity[1], space.gravity[0])*180/math.pi
-        if(rocketVelocityDegrees < 0):
-            rocketVelocityDegrees = rocketVelocityDegrees + 360
-        if(rocketAccelerationDegrees < 0):
-            rocketAccelerationDegrees = rocketAccelerationDegrees + 360
-        headsUp.updateHUD(rocket.position[0], rocket.position[1], (rocket.angle * 180/math.pi + 90)%360, math.sqrt(rocket.velocity[0]**2 + rocket.velocity[1]**2),rocketVelocityDegrees
-            ,math.sqrt(space.gravity[0]**2+space.gravity[1]**2),rocketAccelerationDegrees, rocket.components, clock.get_fps())
+        pos = rocket.position
+        vel = rocket.velocity
+        grav = space.gravity
+        hud.updateHUD(pos[0], pos[1], (math.degrees(rocket.angle)+90) % 360,
+                      vel.length, (vel.angle_degrees+360) % 360,
+                      grav.length, (grav.angle_degrees+360) % 360,
+                      rocket.components, clock.get_fps())
 
         pg.display.flip()
         clock.tick(60)
