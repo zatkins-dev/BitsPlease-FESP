@@ -2,22 +2,24 @@ from Rockets.component import Component
 
 
 class SAS(Component):
-    """Short summary.
+    """SAS component for rocket. Provides encapsulation for
+       SAS autonomous angle and magnitude of SAS force.
+       Must be attached to a body.
 
     Args:
         body (Body): Rocket body to attach to
         vertices (List(Vec2d)): Vertices of Poly shape
-        SASpower (Float): rotation rate of the rocket from the SAS module
-        angle (Float): lock angle for the SAS
-        transform (Transform): Description of parameter `transform`.
-        radius (Float): Description of parameter `radius`.
+        SASpower (Float): Rotation rate of the rocket from the SAS module
+        angle (Float): Lock angle for the SAS
+        transform (Transform): Transformation to apply to shape
+        radius (Float): Edge radius of shape for smoothing
 
     Attributes:
-        _SASangle (Float): lock angle for the SAS
-        _SASpower (Float): rotation rate of the rocket from the SAS module
-        leftKey (Int): Description of parameter `leftKey`.
-        rightKey (Int): Description of parameter `rightKey`.
-        fuel (Int): Description of parameter `fuel`.
+        _SASangle (Float): Lock angle for the SAS
+        _SASpower (Float): Rotation rate of the rocket from the SAS module
+        leftKey (Int): Key to activate left SAS.
+        rightKey (Int): Key to activate right SAS.
+        fuel (Int): Number game ticks of remaining fuel.
 
     """
 
@@ -37,16 +39,40 @@ class SAS(Component):
 
     @property
     def SASpower(self):
+        """Rotation rate of the rocket from the SAS module
+
+        Returns:
+            Float: Value of _SASpower
+
+        """
         return self._SASpower
 
     @SASpower.setter
     def SASpower(self, newPower):
+        """Setter for SASpower
+
+        Args:
+            newPower (Float): New value for _SASpower
+
+        """
         self._SASpower = newPower
 
     @property
     def SASangle(self):
+        """Lock angle in radians for the SAS
+
+        Returns:
+            Float: Value of _SASangle
+
+        """
         return self._SASangle
 
     @SASangle.setter
     def SASangle(self, newAngle):
+        """Setter for _SASangle
+
+        Args:
+            newAngle (Float): New value for _SASangle
+
+        """
         self._SASangle = newAngle
