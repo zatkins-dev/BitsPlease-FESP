@@ -1,5 +1,3 @@
-# This file will manage the display of mission critical information
-
 import pygame as pg
 from Graphics.graphics import Graphics as graph
 from Rockets.thruster import Thruster
