@@ -2,6 +2,16 @@ import pygame
 from Graphics.Graphics import Graphics
 
 class menu(object):
+    """
+    Menu is a class with methods that can draw different menu items or screens to the display.
+
+    **Class Variables**:
+        *splashScreenPressed*:  bool Becomes true when a the first screen (title screen) has been clicked on. A higher order class can watch this and proceed to the actual menu. 
+        
+        *demoPressed*:          bool Becomes true when a the "start demo" button has been pressed. A higher order class can watch this and take appropriate action on change
+        
+        *quitPressed*:          bool Becomes true when a the quit button has been pressed. A higher order class can watch this and take appropriate action on change
+    """
 
     splashScreenPressed = False
 
@@ -12,6 +22,18 @@ class menu(object):
 
     @classmethod
     def drawSplashScreen(cls):
+        """
+        Draws the title screen to pygame's current display surface.
+
+        **Preconditions**:
+                None.
+
+        **Postconditions**:
+                Pygame's display surface will have the title screen drawn to it.
+
+        **Returns**:
+                None.
+        """
         surface = pygame.display.get_surface()
         surfaceSize = surface.get_size()
         surfaceCenter = (surfaceSize[0] / 2, surfaceSize[1] / 2)
@@ -34,6 +56,18 @@ class menu(object):
 
     @classmethod
     def drawMenu(cls):
+        """
+        Draws the menu screen and buttons to pygame's current display surface.
+
+        **Preconditions**:
+                None.
+
+        **Postconditions**:
+                Pygame's display surface will have the menu drawn onto it
+
+        **Returns**:
+                None.
+        """
         surface = pygame.display.get_surface()
         surfaceSize = surface.get_size()
         surfaceCenter = (surfaceSize[0] / 2, surfaceSize[1] / 2)
@@ -53,12 +87,48 @@ class menu(object):
 
     @classmethod
     def _splashCallback(cls):
+        """
+        Callback function to be called when the title screen is clicked.
+
+        **Preconditions**:
+                None.
+
+        **Postconditions**:
+                splashScreenPressed class variable will be True.
+
+        **Returns**:
+                None.
+        """
         cls.splashScreenPressed = True
 
     @classmethod
     def _quitCallback(cls):
+        """
+        Callback function to be called when the quit button is clicked.
+
+        **Preconditions**:
+                None.
+
+        **Postconditions**:
+                quitPressed class variable will be True.
+
+        **Returns**:
+                None.
+        """
         cls.quitPressed = True
 
     @classmethod
     def _demoCallback(cls):
+        """
+        Callback function to be called when the "start demo" button is clicked.
+
+        **Preconditions**:
+                None.
+
+        **Postconditions**:
+                demoPressed class variable will be True.
+
+        **Returns**:
+                None.
+        """
         cls.demoPressed = True
