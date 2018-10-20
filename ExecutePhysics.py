@@ -132,8 +132,8 @@ def run():
         vel = rocket.velocity
         grav = space.gravity
         hud.updateHUD(pos[0], pos[1], (math.degrees(rocket.angle)+90) % 360,
-                      vel.length, (vel.angle_degrees+360) % 360,
-                      grav.length, (grav.angle_degrees+360) % 360,
+                      vel.length, vel.angle_degrees % 360,
+                      grav.length, grav.angle_degrees % 360,
                       rocket.components, clock.get_fps())
 
         pg.display.flip()
