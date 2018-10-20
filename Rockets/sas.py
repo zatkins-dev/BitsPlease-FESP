@@ -1,4 +1,3 @@
-import pygame as pg
 from Rockets.component import Component
 
 class SAS(Component):
@@ -6,23 +5,21 @@ class SAS(Component):
         Component.__init__(self, body, vertices, transform, radius)
         self._SASangle = 0
 
-        #SASforce: 0 is continue going straight, + turns the rocket left, - turns the rocket right
-        #the greater the force the more the rocket turns
-        #corresponds directly to angular velocity of the rocket
+        # SASforce: 0 is continue going straight, + turns the rocket left, --
+        #           turns the rocket right
+        # the greater the force the more the rocket turns
+        # corresponds directly to angular velocity of the rocket
         self._SASforce = 0
 
-        #SASpower: rate at which the rockets SASforce increments when given input from the user
+        # SASpower: rate at which the rockets SASforce increments when given
+        #           input from the user
         self._SASpower = 0.05
-
 
         self.leftKey = None
         self.rightKey = None
 
-        #this number should probably be adjusted
+        # this number should probably be adjusted
         self.fuel = 2000
-
-        
-
 
     @property
     def SASpower(self):
@@ -31,9 +28,6 @@ class SAS(Component):
     @SASpower.setter
     def SASpower(self, newPower):
         self._SASpower = newPower
-
-
-    
 
     @property
     def SASangle(self):
@@ -49,5 +43,5 @@ class SAS(Component):
 
     @SASforce.setter
     def SASforce(self, newForce):
-        #give me all your SASs
+        # give me all your SASs
         self._SASforce = newForce
