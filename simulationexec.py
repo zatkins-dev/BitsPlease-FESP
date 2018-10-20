@@ -49,7 +49,7 @@ def run():
     game = pg.Surface((10000, 10000))
 
     space = pm.Space()
-    hud = HUD.headsUpDisplay()
+    hud = HUD()
 
     earth = cb.CelestialBody('earth', space,
                              10**13, 1000, 5000, 5000, 0.9, 0, 0)

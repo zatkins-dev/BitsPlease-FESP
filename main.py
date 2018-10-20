@@ -40,7 +40,7 @@ def main():
                 menu.drawMenu()
 
         if currentState == State.Playing:
-            ExecutePhysics.run()
+            simulationexec.run()
 
         pygame.display.flip()
 
