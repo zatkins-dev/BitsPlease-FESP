@@ -1,15 +1,15 @@
 import pygame
-from Graphics.Graphics import Graphics
+from Graphics.graphics import Graphics
 
 class menu(object):
     """
     Menu is a class with methods that can draw different menu items or screens to the display.
 
     **Class Variables**:
-        *splashScreenPressed*:  bool Becomes true when a the first screen (title screen) has been clicked on. A higher order class can watch this and proceed to the actual menu. 
-        
+        *splashScreenPressed*:  bool Becomes true when a the first screen (title screen) has been clicked on. A higher order class can watch this and proceed to the actual menu.
+
         *demoPressed*:          bool Becomes true when a the "start demo" button has been pressed. A higher order class can watch this and take appropriate action on change
-        
+
         *quitPressed*:          bool Becomes true when a the quit button has been pressed. A higher order class can watch this and take appropriate action on change
     """
 
@@ -80,7 +80,7 @@ class menu(object):
         buttonSize = (400, 50)
         buttonPosition = lambda i:(surfaceCenter[0] - buttonSize[0] / 2, surfaceCenter[1] - buttonSize[1] / 2 + 65 * i)
         titleFont = pygame.font.SysFont("lucidaconsole", 40)
-        
+
         Graphics.drawTextCenter(titleCenter, "Flat Earth Space Program", titleFont, (255,255,255))
         Graphics.drawButton(surface, buttonPosition(0), buttonSize, cls._menuButtonColor, "Start Demo", 25,cls._demoCallback)
         Graphics.drawButton(surface, buttonPosition(1), buttonSize, cls._menuButtonColor, "Exit to Desktop", 25, cls._quitCallback)

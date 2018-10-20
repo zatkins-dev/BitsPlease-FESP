@@ -3,11 +3,11 @@ import pymunk as pm
 import pymunk.pygame_util as pygame_util
 import sys
 import Rockets.testrocket as tr
-import Physics.CelestialBody as cb
+import Physics.celestialbody as cb
 import math
-from Physics.Physics import Physics as phy
-import Graphics.headsUpDisplay as HUD
-from Graphics.Graphics import Graphics as graph
+from Physics.physics import Physics as phy
+from Graphics.hud import HUD
+from Graphics.graphics import Graphics as graph
 
 res_x, res_y = 1000, 1000
 GROUND_Y = res_y/20
