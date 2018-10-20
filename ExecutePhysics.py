@@ -3,7 +3,7 @@ import pymunk as pm
 import pymunk.pygame_util as pygame_util
 from pymunk.vec2d import Vec2d
 import sys
-import Rockets.TestRocket as tr
+import Rockets.testrocket as tr
 import Physics.CelestialBody as cb
 import math
 from Physics.Physics import Physics as phy
