@@ -6,8 +6,7 @@ from Rockets.sas import SAS
 
 class HUD():
     """
-        HeadsUpDisplay is a class that holds HUD information, values, and
-        positions, and can be passed updated values to push to the screen.
+        HUD holds diagnostic info and prints values to the screen.
 
         **Instance Variables**:
             *_xPosition*:       float Holds the x position of the rocket.
