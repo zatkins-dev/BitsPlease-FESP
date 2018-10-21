@@ -1,7 +1,7 @@
 import pygame
 import sys
 from enum import Enum
-from Graphics.menu import menu
+from Graphics.menu import Menu
 import simulationexec
 
 

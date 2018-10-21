@@ -1,16 +1,27 @@
 import pygame
 from Graphics.graphics import Graphics
 
-class menu(object):
+
+class Menu(object):
     """
-    Menu is a class with methods that can draw different menu items or screens to the display.
+    Menu is a class with methods that can draw different menu items or screens
+    to the display.
 
     **Class Variables**:
-        *splashScreenPressed*:  bool Becomes true when a the first screen (title screen) has been clicked on. A higher order class can watch this and proceed to the actual menu.
+        *splashScreenPressed*:  bool Becomes true when a the first screen
+                                     (title screen) has been clicked on.
+                                     A higher order class can watch this and
+                                     proceed to the actual menu.
 
-        *demoPressed*:          bool Becomes true when a the "start demo" button has been pressed. A higher order class can watch this and take appropriate action on change
+        *demoPressed*:          bool Becomes true when a the "start demo"
+                                     button has been pressed. A higher order
+                                     class can watch this and take appropriate
+                                     action on change
 
-        *quitPressed*:          bool Becomes true when a the quit button has been pressed. A higher order class can watch this and take appropriate action on change
+        *quitPressed*:          bool Becomes true when a the quit button has
+                                     been pressed. A higher order class can
+                                     watch this and take appropriate action
+                                     on change
     """
 
     splashScreenPressed = False
@@ -18,7 +29,7 @@ class menu(object):
     demoPressed = False
     quitPressed = False
 
-    _menuButtonColor = ((255,255,255,64), (255,255,255,128))
+    _menuButtonColor = ((255, 255, 255, 64), (255, 255, 255, 128))
 
     @classmethod
     def drawSplashScreen(cls):
@@ -29,7 +40,7 @@ class menu(object):
                 None.
 
         **Postconditions**:
-                Pygame's display surface will have the title screen drawn to it.
+                Title screen drawn to pygame display surface.
 
         **Returns**:
                 None.
@@ -40,19 +51,24 @@ class menu(object):
         titleCenter = (surfaceCenter[0], surfaceCenter[1] - 20)
         subtitleCenter = (surfaceCenter[0], surfaceCenter[1] + 20)
 
-        #fill surface with black
-        surface.fill((0,0,0))
+        # fill surface with black
+        surface.fill((0, 0, 0))
 
-        #draw a button
-        Graphics.drawButton(surface, (0,0), surfaceSize, ((0,0,0,0), (0,0,0,0)), 0, 0, cls._splashCallback)
+        # draw a button
+        Graphics.drawButton(surface, (0, 0), surfaceSize,
+                            ((0, 0, 0, 0), (0, 0, 0, 0)),
+                            0, 0, cls._splashCallback)
 
-        #In the future, may want to draw an image onto the surface as a background
-        #for now, just draw text
+        # In the future, may want to draw an image onto the surface
+        # as a background
+        # for now, just draw text
         titleFont = pygame.font.SysFont("lucidaconsole", 40)
         subtitleFont = pygame.font.SysFont("lucidaconsole", 20)
 
-        Graphics.drawTextCenter(titleCenter, "Flat Earth Space Program", titleFont, (255,255,255))
-        Graphics.drawTextCenter(subtitleCenter, "Click Anywhere to Continue", subtitleFont, (255,255,255))
+        Graphics.drawTextCenter(titleCenter, "Flat Earth Space Program",
+                                titleFont, (255, 255, 255))
+        Graphics.drawTextCenter(subtitleCenter, "Click Anywhere to Continue",
+                                subtitleFont, (255, 255, 255))
 
     @classmethod
     def drawMenu(cls):
@@ -74,16 +90,23 @@ class menu(object):
 
         titleCenter = (surfaceCenter[0], surfaceCenter[1] - 100)
 
-        #fill screen with black
-        surface.fill((0,0,0))
+        # fill screen with black
+        surface.fill((0, 0, 0))
 
         buttonSize = (400, 50)
-        buttonPosition = lambda i:(surfaceCenter[0] - buttonSize[0] / 2, surfaceCenter[1] - buttonSize[1] / 2 + 65 * i)
+        buttonPosition = lambda i:
+                        (surfaceCenter[0] - buttonSize[0] / 2,
+                        surfaceCenter[1] - buttonSize[1] / 2 + 65 * i)
         titleFont = pygame.font.SysFont("lucidaconsole", 40)
 
-        Graphics.drawTextCenter(titleCenter, "Flat Earth Space Program", titleFont, (255,255,255))
-        Graphics.drawButton(surface, buttonPosition(0), buttonSize, cls._menuButtonColor, "Start Demo", 25,cls._demoCallback)
-        Graphics.drawButton(surface, buttonPosition(1), buttonSize, cls._menuButtonColor, "Exit to Desktop", 25, cls._quitCallback)
+        Graphics.drawTextCenter(titleCenter, "Flat Earth Space Program",
+                                titleFont, (255,255,255))
+        Graphics.drawButton(surface, buttonPosition(0), buttonSize,
+                            cls._menuButtonColor, "Start Demo", 25,
+                            cls._demoCallback)
+        Graphics.drawButton(surface, buttonPosition(1), buttonSize,
+                            cls._menuButtonColor, "Exit to Desktop", 25,
+                            cls._quitCallback)
 
     @classmethod
     def _splashCallback(cls):
