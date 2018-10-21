@@ -5,8 +5,7 @@ from Rockets.sas import SAS
 
 
 class Rocket(Body):
-    """Rocket class extends pymunk.Body with helper functions for
-       thruster & steering functionality.
+    """Extends pymunk.Body with helper functions for thruster & steering.
 
     Args:
         components (List(Component)): List of Components to attach to rocket.
