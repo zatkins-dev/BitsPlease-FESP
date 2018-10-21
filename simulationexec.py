@@ -2,12 +2,12 @@ import pygame as pg
 import pymunk as pm
 import pymunk.pygame_util as pygame_util
 import sys
-import Rockets.testrocket as tr
-import Physics.celestialbody as cb
+import rockets.testrocket as tr
 import math
-from Physics.physics import Physics as phy
-from Graphics.hud import HUD
-from Graphics.graphics import Graphics as graph
+from physics import CelestialBody as cb
+from physics import Physics as phy
+from graphics import HUD
+from graphics import Graphics as graph
 
 res_x, res_y = 1000, 1000
 GROUND_Y = res_y/20
@@ -51,28 +51,23 @@ def run():
     space = pm.Space()
     hud = HUD()
 
-    earth = cb.CelestialBody('earth', space,
-                             10**13, 1000, 5000, 5000, 0.9, 0, 0)
+    earth = cb('earth', space, 10**13, 1000, 5000, 5000, 0.9, 0, 0)
     celestialBodies.append(earth.body)
     celestialShapes.append(earth.shape)
 
-    earthMoon1 = cb.CelestialBody('earthMoon1', space,
-                                  10**11, 250, 6500, 5000, 0.9, 0, 1)
+    earthMoon1 = cb('earthMoon1', space, 10**11, 250, 6500, 5000, 0.9, 0, 1)
     celestialBodies.append(earthMoon1.body)
     celestialShapes.append(earthMoon1.shape)
 
-    planetGage = cb.CelestialBody('planetGage', space,
-                                  10**13, 200, 1000, 1000, 0.9, 0, 0)
+    planetGage = cb('planetGage', space, 10**13, 200, 1000, 1000, 0.9, 0, 0)
     celestialBodies.append(planetGage.body)
     celestialShapes.append(planetGage.shape)
 
-    planetThomas = cb.CelestialBody('planetThomas', space,
-                                    10**13, 200, 1500, 1500, 0.9, 0, 0)
+    planetThomas = cb('planetThomas', space, 10**13, 200, 1500, 1500, .9, 0, 0)
     celestialBodies.append(planetThomas.body)
     celestialShapes.append(planetThomas.shape)
 
-    planetZach = cb.CelestialBody('planetZach', space,
-                                  10**13, 200, 2000, 1000, 0.9, 0, 0)
+    planetZach = cb('planetZach', space, 10**13, 200, 2000, 1000, 0.9, 0, 0)
     celestialBodies.append(planetZach.body)
     celestialShapes.append(planetZach.shape)
 

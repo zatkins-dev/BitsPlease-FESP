@@ -1,4 +1,4 @@
-from Rockets.component import Component
+from rockets import Component
 
 
 class SAS(Component):

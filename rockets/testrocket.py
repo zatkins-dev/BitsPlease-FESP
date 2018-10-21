@@ -1,8 +1,8 @@
 import pygame as pg
-from Rockets.component import Component
-from Rockets.thruster import Thruster
-from Rockets.sas import SAS
-from Rockets.rocket import Rocket
+from rockets import Component
+from rockets import Thruster
+from rockets import SAS
+from rockets import Rocket
 
 
 def genOrbiter(b):

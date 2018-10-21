@@ -1,7 +1,7 @@
 import pygame as pg
-from Graphics.graphics import Graphics as graph
-from Rockets.thruster import Thruster
-from Rockets.sas import SAS
+from graphics import Graphics as graph
+from rockets import Thruster
+from rockets import SAS
 
 
 class HUD():

@@ -1,5 +1,5 @@
 import pygame
-from Graphics.graphics import Graphics
+from graphics import Graphics
 
 
 class Menu(object):
@@ -94,9 +94,8 @@ class Menu(object):
         surface.fill((0, 0, 0))
 
         buttonSize = (400, 50)
-        buttonPosition = lambda i:
-                        (surfaceCenter[0] - buttonSize[0] / 2,
-                        surfaceCenter[1] - buttonSize[1] / 2 + 65 * i)
+        buttonPosition = lambda i: (surfaceCenter[0] - buttonSize[0]/2,
+                                    surfaceCenter[1] - buttonSize[1]/2 + 65*i)
         titleFont = pygame.font.SysFont("lucidaconsole", 40)
 
         Graphics.drawTextCenter(titleCenter, "Flat Earth Space Program",

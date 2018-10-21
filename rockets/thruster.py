@@ -1,5 +1,5 @@
 from pymunk.vec2d import Vec2d
-from Rockets.component import Component
+from rockets import Component
 
 
 class Thruster(Component):

@@ -1,11 +1,12 @@
 import pygame
 import sys
 from enum import Enum
-from Graphics.menu import Menu
+from graphics import Menu
 import simulationexec
 
 
 def main():
+    menu = Menu()
     clock = pygame.time.Clock()
     State = Enum('State', 'Splash Menu Playing Exit')
 
