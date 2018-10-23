@@ -32,7 +32,6 @@ def updateCamera(screen, game, center, space, draw_options):
     x, y = screen.get_size()
     c_x, c_y = pygame_util.to_pygame(center, game)
     dest = max(c_x - x // 2, 0), max(c_y - y // 2, 0)
-    print((x, y), (c_x, c_y), dest)
     screen.fill((0, 0, 0))
     graph.drawStars(screen, center)
     game.blit(screen, dest)
@@ -83,7 +82,6 @@ def run():
     rotate = False
     auto = False
     sas_angle = 0
-    print(rocket.position)
 
     while True:
         for event in pg.event.get():
@@ -118,7 +116,6 @@ def run():
         if auto:
             rocket.auto_SAS(sas_angle)
 
-        print(rocket.position)
         updateGravity(space, rocket, celestialShapes, celestialBodies)
         space.step(1/50.0)
         updateCamera(screen, game, rocket.position, space, draw_options)
