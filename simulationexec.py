@@ -41,6 +41,8 @@ def updateCamera(screen, game, center, space, draw_options):
 
 
 def run():
+    pg.mixer.init()
+    pg.mixer.music.load("sound/Sci-fiPulseLoop.wav")
     celestialBodies = []
     celestialShapes = []
     screen = pg.display.get_surface()
@@ -83,6 +85,7 @@ def run():
     rotate = False
     auto = False
     sas_angle = 0
+    pg.mixer.music.play(-1)
     print(rocket.position)
 
     while True:
