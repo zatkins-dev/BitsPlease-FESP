@@ -50,7 +50,7 @@ class Component(pm.Poly):
         """
         if self._sprite is None:
             return None
-        else
+        else:
             return self._sprite
 
     @sprite.setter
