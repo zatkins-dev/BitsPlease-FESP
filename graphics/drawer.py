@@ -2,12 +2,15 @@ import pygame as pg
 import pymunk as pm
 from pymunk.vec2d import Vec2d
 import functools
+import math
 
 
 class Drawer:
     @classmethod
     def draw(cls, screen, toDraw, offset):
-        if isinstance(toDraw, pm.Poly):
+        if hasattr(toDraw, 'sprite') and toDraw.sprite != None:
+            Drawer.drawSprite(screen, toDraw, offset)
+        elif isinstance(toDraw, pm.Poly):
             Drawer.drawPoly(screen, toDraw, offset)
         elif isinstance(toDraw, pm.Circle):
             Drawer.drawCircle(screen, toDraw, offset)
@@ -44,6 +47,19 @@ class Drawer:
         if isOnScreen:
             pos = cls.intVec2d(pos)
             pg.draw.circle(screen, pg.Color('blue'), [pos[0], max[1]-pos[1]], int(r))
+
+    @classmethod
+    def drawSprite(cls, screen, component, offset):
+        pos = cls.intVec2d(component.body.position + offset)
+        max = Vec2d(screen.get_size())
+
+        isOnScreen = functools.reduce(lambda x, y: x or Drawer.inRange(max, y),
+                                      [pos], False)
+
+        if isOnScreen:
+            newSprite = pg.transform.rotozoom(component.sprite, math.degrees(component.body.angle), 1)
+
+            screen.blit(newSprite, (pos[0] - newSprite.get_width()/2, max[1] - pos[1] - newSprite.get_height()/2))
 
     @classmethod
     def getOffset(cls, screen, rocket):

@@ -4,6 +4,9 @@ from rockets import Thruster
 from rockets import SAS
 from rockets import Rocket
 
+import os
+import sys
+
 
 def genOrbiter(b):
     """Generate new component (orbiter).
@@ -37,6 +40,7 @@ def genTank(b):
     tank = Thruster(b, verts, (0, 1), 100000, radius=1)
     tank.density = density
     tank.key = pg.K_f
+    tank.sprite = pg.image.load("test.png")
     return tank
 
 
