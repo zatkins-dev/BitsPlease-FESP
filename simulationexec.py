@@ -8,6 +8,7 @@ from physics import CelestialBody as cb
 from physics import Physics as phy
 from graphics import HUD
 from graphics import Graphics as graph
+from graphics import Drawer
 
 res_x, res_y = 1000, 1000
 GROUND_Y = res_y/20
@@ -28,15 +29,9 @@ def updateGravity(space, rocket, objectShapes, objectBodies):
     space.gravity[1] = space.gravity[1]/rocket.mass
 
 
-def updateCamera(screen, game, center, space, draw_options):
-    x, y = screen.get_size()
-    c_x, c_y = pygame_util.to_pygame(center, game)
-    dest = max(c_x - x // 2, 0), max(c_y - y // 2, 0)
+def updateCamera(screen, center):
     screen.fill((0, 0, 0))
     graph.drawStars(screen, center)
-    game.blit(screen, dest)
-    space.debug_draw(draw_options)
-    screen.blit(game, (0, 0), pg.Rect(dest[0], dest[1], x, y))
 
 
 def run():
@@ -74,7 +69,7 @@ def run():
     x, y = (earth.posx + earth.radius / math.sqrt(2),
             earth.posy + earth.radius / math.sqrt(2))
     rocket.position = x, y
-    draw_options = pygame_util.DrawOptions(game)
+    # draw_options = pygame_util.DrawOptions(game)
     space.damping = 0.9
 
     fire_ticks = 480*50
@@ -118,7 +113,12 @@ def run():
 
         updateGravity(space, rocket, celestialShapes, celestialBodies)
         space.step(1/50.0)
-        updateCamera(screen, game, rocket.position, space, draw_options)
+        updateCamera(screen, Drawer.getOffset(screen, rocket))
+        Drawer.drawMultiple(screen, celestialShapes,
+                            Drawer.getOffset(screen, rocket))
+        Drawer.drawMultiple(screen, rocket.components,
+                            Drawer.getOffset(screen, rocket))
+        print(Drawer.to_pygame(rocket.components[0], rocket.position, Drawer.getOffset(screen, rocket)))
         pos = rocket.position
         vel = rocket.velocity
         grav = space.gravity
@@ -128,7 +128,7 @@ def run():
                       rocket.components, clock.get_fps())
 
         pg.display.flip()
-        clock.tick(60)
+        clock.tick(30)
 
 
 if __name__ == "__main__":
