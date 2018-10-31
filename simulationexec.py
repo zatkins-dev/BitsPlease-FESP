@@ -112,7 +112,6 @@ def run():
                             Drawer.getOffset(screen, rocket))
         Drawer.drawMultiple(screen, rocket.components,
                             Drawer.getOffset(screen, rocket))
-        print(Drawer.to_pygame(rocket.components[0], rocket.position, Drawer.getOffset(screen, rocket)))
         pos = rocket.position
         vel = rocket.velocity
         grav = space.gravity
@@ -122,7 +121,7 @@ def run():
                       rocket.components, clock.get_fps())
 
         pg.display.flip()
-        clock.tick(30)
+        clock.tick(60)
 
 
 if __name__ == "__main__":
