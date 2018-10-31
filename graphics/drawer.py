@@ -51,15 +51,40 @@ class Drawer:
     @classmethod
     def drawSprite(cls, screen, component, offset):
         pos = cls.intVec2d(component.body.position + offset)
-        max = Vec2d(screen.get_size())
+        screenSize = Vec2d(screen.get_size())
 
-        isOnScreen = functools.reduce(lambda x, y: x or Drawer.inRange(max, y),
+        isOnScreen = functools.reduce(lambda x, y: x or Drawer.inRange(screenSize, y),
                                       [pos], False)
 
         if isOnScreen:
-            newSprite = pg.transform.rotozoom(component.sprite, math.degrees(component.body.angle), 1)
+            # translate the sprite to be the same size as the component...
+            verts = component.get_vertices()
+            Xs = list(map(lambda x: x[0], verts))
+            Ys = list(map(lambda y: y[1], verts))
+            minX = min(Xs)
+            maxX = max(Xs)
+            minY = min(Ys)
+            maxY = max(Ys)
+            
+            scaledSprite = pg.transform.scale(component.sprite, (int(maxX-minX), int(maxY-minY)))
 
-            screen.blit(newSprite, (pos[0] - newSprite.get_width()/2, max[1] - pos[1] - newSprite.get_height()/2))
+            # now rotate the sprite
+            rotSprite = pg.transform.rotozoom(scaledSprite, math.degrees(component.body.angle), 1)
+
+            # now find the correct top-left corner position for the sprite.
+
+            newVerts = []
+            for vert in verts:
+                newVerts.append(vert.rotated(component.body.angle))
+
+            center = sum(newVerts) / len(newVerts)
+            minX = min(map(lambda x: x[0], newVerts))
+            minY = min(map(lambda y: y[1], newVerts))
+
+            drawX = int(pos[0] + center[0] - rotSprite.get_width()/2)
+            drawY = int(pos[1] - center[1] - rotSprite.get_height()/2)
+
+            screen.blit(rotSprite, (drawX, drawY))
 
     @classmethod
     def getOffset(cls, screen, rocket):
