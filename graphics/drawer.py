@@ -41,26 +41,24 @@ class Drawer:
         max = Vec2d(screen.get_size())
 
         # find the center of the screen (1/2 screen diagonal)
-        centerOfScreen = cls.intVec2d(Vec2d(screen.get_size())/2)
-        # find the rocket position in pymunk space
-        rocketPos = -1 * (offset - centerOfScreen)
+        center = cls.intVec2d(Vec2d(screen.get_size())/2)
 
         # check for farthest possible distance where we could see the planet:
         #       1/2 screen diagonal + r = distance from circle
         # as long as the distance is less than this, we should draw the circle
-        isOnScreen = rocketPos.get_distance(shape.body.position) < r + centerOfScreen.get_length()
+        isOnScreen = pos.get_distance(center) <= (r + center.get_length())
 
         if isOnScreen:
             pos = cls.intVec2d(pos)
-            pg.draw.circle(screen, pg.Color('blue'), [pos[0], max[1]-pos[1]], int(r))
+            pg.draw.circle(screen, pg.Color('blue'), [pos[0],
+                           max[1]-pos[1]], int(r))
 
     @classmethod
     def drawSprite(cls, screen, component, offset):
         pos = cls.intVec2d(component.body.position + offset)
         screenSize = Vec2d(screen.get_size())
 
-        isOnScreen = functools.reduce(lambda x, y: x or Drawer.inRange(screenSize, y),
-                                      [pos], False)
+        isOnScreen = cls.inRange(screenSize, pos)
 
         if isOnScreen:
             # translate the sprite to be the same size as the component...
@@ -74,14 +72,17 @@ class Drawer:
 
             # find the center of the geometry, and rotate it
             center = Vec2d((maxX+minX)/2, (maxY+minY)/2).rotated(component.body.angle)
-            
-            # finds the bounding box for the geometry, and transforms the sprite to fit within the geometry
-            scaledSprite = pg.transform.scale(component.sprite, (int(maxX-minX), int(maxY-minY)))
+
+            # finds the bounding box for the geometry, and transforms the
+            # sprite to fit within the geometry
+            scaledSprite = pg.transform.scale(component.sprite,
+                                              (int(maxX-minX), int(maxY-minY)))
 
             # now rotate the sprite
             rotSprite = pg.transform.rotozoom(scaledSprite, math.degrees(component.body.angle), 1)
 
-            # the position we draw the sprite at will be the position of the rocket, 
+            # the position we draw the sprite at will be the
+            # position of the rocket,
             drawX = pos[0] + center[0] - rotSprite.get_width()/2
             drawY = pos[1] - center[1] - rotSprite.get_height()/2
 
