@@ -22,7 +22,7 @@ def genOrbiter(b):
     verts = [(12, 4), (-12, 4), (0, 42)]
     orbiter = Component(b, verts, radius=1)
     orbiter.density = density
-    orbiter.sprite = pg.image.load(os.path.join("assets", "sprites", "orbiter.png"))
+    orbiter.sprite = pg.image.load(os.path.join("assets", "sprites", "orbiter.png")).convert_alpha()
     return orbiter
 
 
@@ -41,7 +41,7 @@ def genTank(b):
     tank = Thruster(b, verts, (0, 1), 100000, radius=1)
     tank.density = density
     tank.key = pg.K_f
-    tank.sprite = pg.image.load(os.path.join("assets", "sprites", "tank.png"))
+    tank.sprite = pg.image.load(os.path.join("assets", "sprites", "tank.png")).convert_alpha()
     return tank
 
 
