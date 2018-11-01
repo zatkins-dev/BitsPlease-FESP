@@ -65,24 +65,19 @@ class Drawer:
             maxX = max(Xs)
             minY = min(Ys)
             maxY = max(Ys)
+
+            # find the center of the geometry, and rotate it
+            center = Vec2d((maxX+minX)/2, (maxY+minY)/2).rotated(component.body.angle)
             
+            # finds the bounding box for the geometry, and transforms the sprite to fit within the geometry
             scaledSprite = pg.transform.scale(component.sprite, (int(maxX-minX), int(maxY-minY)))
 
             # now rotate the sprite
             rotSprite = pg.transform.rotozoom(scaledSprite, math.degrees(component.body.angle), 1)
 
-            # now find the correct top-left corner position for the sprite.
-
-            newVerts = []
-            for vert in verts:
-                newVerts.append(vert.rotated(component.body.angle))
-
-            center = sum(newVerts) / len(newVerts)
-            minX = min(map(lambda x: x[0], newVerts))
-            minY = min(map(lambda y: y[1], newVerts))
-
-            drawX = int(pos[0] + center[0] - rotSprite.get_width()/2)
-            drawY = int(pos[1] - center[1] - rotSprite.get_height()/2)
+            # the position we draw the sprite at will be the position of the rocket, 
+            drawX = pos[0] + center[0] - rotSprite.get_width()/2
+            drawY = pos[1] - center[1] - rotSprite.get_height()/2
 
             screen.blit(rotSprite, (drawX, drawY))
 
