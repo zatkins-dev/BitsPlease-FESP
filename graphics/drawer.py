@@ -39,10 +39,16 @@ class Drawer:
         r = shape.radius
         pos = cls.intVec2d(shape.body.position + offset)
         max = Vec2d(screen.get_size())
-        # TODO: check this in a less naive way
-        verts = [pos + (r*a, r*b) for a in [-1, 0, 1] for b in [-1, 0, 1]]
-        isOnScreen = functools.reduce(lambda x, y: x or Drawer.inRange(max, y),
-                                      verts, False)
+
+        # find the center of the screen (1/2 screen diagonal)
+        centerOfScreen = cls.intVec2d(Vec2d(screen.get_size())/2)
+        # find the rocket position in pymunk space
+        rocketPos = -1 * (offset - centerOfScreen)
+
+        # check for farthest possible distance where we could see the planet:
+        #       1/2 screen diagonal + r = distance from circle
+        # as long as the distance is less than this, we should draw the circle
+        isOnScreen = rocketPos.get_distance(shape.body.position) < r + centerOfScreen.get_length()
 
         if isOnScreen:
             pos = cls.intVec2d(pos)
