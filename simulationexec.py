@@ -23,8 +23,8 @@ def keyUp(e, key):
     return e.type == pg.KEYUP and e.key == key
 
 
-def updateGravity(space, rocket, objectShapes, objectBodies):
-    space.gravity = phy.netGravity(objectBodies, objectShapes, rocket)
+def updateGravity(space, rocket, objects):
+    space.gravity = phy.netGravity(objects, rocket)
     space.gravity[0] = space.gravity[0]/rocket.mass
     space.gravity[1] = space.gravity[1]/rocket.mass
 
@@ -36,7 +36,6 @@ def updateCamera(screen, center):
 
 def run():
     celestialBodies = []
-    celestialShapes = []
     screen = pg.display.get_surface()
     clock = pg.time.Clock()
 
@@ -46,24 +45,19 @@ def run():
     hud = HUD()
 
     earth = cb('earth', space, 10**13, 1000, 5000, 5000, 0.9, 0, 0)
-    celestialBodies.append(earth.body)
-    celestialShapes.append(earth.shape)
+    celestialBodies.append(earth)
 
     earthMoon1 = cb('earthMoon1', space, 10**11, 250, 6500, 5000, 0.9, 0, 1)
-    celestialBodies.append(earthMoon1.body)
-    celestialShapes.append(earthMoon1.shape)
+    celestialBodies.append(earthMoon1)
 
     planetGage = cb('planetGage', space, 10**12, 200, 1000, 1000, 0.9, 0, 0)
-    celestialBodies.append(planetGage.body)
-    celestialShapes.append(planetGage.shape)
+    celestialBodies.append(planetGage)
 
     planetThomas = cb('planetThomas', space, 10**13, 200, 1500, 1500, .9, 0, 0)
-    celestialBodies.append(planetThomas.body)
-    celestialShapes.append(planetThomas.shape)
+    celestialBodies.append(planetThomas)
 
     planetZach = cb('planetZach', space, 10**13, 200, 2000, 1000, 0.9, 0, 0)
-    celestialBodies.append(planetZach.body)
-    celestialShapes.append(planetZach.shape)
+    celestialBodies.append(planetZach)
 
     rocket = tr.genRocket(space)
     x, y = (earth.posx + earth.radius / math.sqrt(2),
@@ -77,7 +71,6 @@ def run():
     rotate = False
     auto = False
     sas_angle = 0
-    # print(rocket.position)
 
     while True:
         for event in pg.event.get():
@@ -112,15 +105,13 @@ def run():
         if auto:
             rocket.auto_SAS(sas_angle)
 
-        print(rocket.position)
-        updateGravity(space, rocket, celestialShapes, celestialBodies)
+        updateGravity(space, rocket, celestialBodies)
         space.step(1/50.0)
         updateCamera(screen, Drawer.getOffset(screen, rocket))
-        Drawer.drawMultiple(screen, celestialShapes,
+        Drawer.drawMultiple(screen, list(map(lambda x: x.shape, celestialBodies)), 
                             Drawer.getOffset(screen, rocket))
         Drawer.drawMultiple(screen, rocket.components,
                             Drawer.getOffset(screen, rocket))
-        print(Drawer.to_pygame(rocket.components[0], rocket.position, Drawer.getOffset(screen, rocket)))
         pos = rocket.position
         vel = rocket.velocity
         grav = space.gravity
@@ -130,7 +121,7 @@ def run():
                       rocket.components, clock.get_fps())
 
         pg.display.flip()
-        clock.tick(30)
+        clock.tick(60)
 
 
 if __name__ == "__main__":

@@ -236,6 +236,6 @@ class Graphics(object):
             else:
                 width = 3
 
-            starX = int(cls._stars[i][0] - .25 * pos[0]) % 3000
-            starY = int(cls._stars[i][1] + .25 * pos[1]) % 1080
+            starX = int(cls._stars[i][0] + .25 * pos[0]) % 3000
+            starY = int(cls._stars[i][1] - .25 * pos[1]) % 1080
             pygame.draw.circle(screen, cls._stars[i][2], (starX, starY), width)

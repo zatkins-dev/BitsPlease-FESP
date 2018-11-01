@@ -40,3 +40,24 @@ class Component(pm.Poly):
 
         """
         self._key = k
+
+    @property
+    def sprite(self):
+        """Image Sprite for the component
+
+        Returns:
+            Surface: Component Sprite
+        """
+        if self._sprite is None:
+            return None
+        else:
+            return self._sprite
+
+    @sprite.setter
+    def sprite(self, sprite):
+        """Setter for {sprite} property
+
+        Args:
+            sprite (surface): New Surface to use as component sprite
+        """
+        self._sprite = sprite
