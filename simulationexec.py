@@ -1,6 +1,6 @@
 import pygame as pg
 import pymunk as pm
-import pymunk.pygame_util as pygame_util
+from pymunk.vec2d import Vec2d
 import sys
 import rockets.testrocket as tr
 import math
@@ -23,10 +23,11 @@ def keyUp(e, key):
     return e.type == pg.KEYUP and e.key == key
 
 
-def updateGravity(space, rocket, objects):
-    space.gravity = phy.netGravity(objects, rocket)
-    space.gravity[0] = space.gravity[0]/rocket.mass
-    space.gravity[1] = space.gravity[1]/rocket.mass
+def updateGravity(space, rocket, objects, ticksPerSec):
+    # space.gravity = phy.netGravity(objects, rocket)
+    deltaV = Vec2d(phy.netGravity(objects, rocket))
+    pm.Body.update_velocity(rocket, deltaV, 1, 1/ticksPerSec)
+    return deltaV
 
 
 def updateCamera(screen, center):
@@ -39,38 +40,40 @@ def run():
     screen = pg.display.get_surface()
     clock = pg.time.Clock()
 
-    game = pg.Surface((10000, 10000))
-
-    space = pm.Space()
+    space = pm.Space(threaded=True)
+    space.threads = 3
     hud = HUD()
 
-    earth = cb('earth', space, 10**13, 1000, 5000, 5000, 0.9, 0, 0)
+    earth = cb('earth', space, 9.331*10**22, 796375, 0, 0, 0.9, 0, 0)
     celestialBodies.append(earth)
 
-    earthMoon1 = cb('earthMoon1', space, 10**11, 250, 6500, 5000, 0.9, 0, 1)
+    earthMoon1 = cb('earthMoon1', space, 1.148*10**21, 217125, 796375 + 43500000, 796375, 0.9, 0, 1)
     celestialBodies.append(earthMoon1)
 
-    planetGage = cb('planetGage', space, 10**12, 200, 1000, 1000, 0.9, 0, 0)
-    celestialBodies.append(planetGage)
-
-    planetThomas = cb('planetThomas', space, 10**13, 200, 1500, 1500, .9, 0, 0)
-    celestialBodies.append(planetThomas)
-
-    planetZach = cb('planetZach', space, 10**13, 200, 2000, 1000, 0.9, 0, 0)
-    celestialBodies.append(planetZach)
+    # planetGage = cb('planetGage', space, 10**12, 200, 1000, 1000, 0.9, 0, 0)
+    # celestialBodies.append(planetGage)
+    #
+    # planetThomas = cb('planetThomas', space, 10**13, 200, 1500, 1500, .9, 0, 0)
+    # celestialBodies.append(planetThomas)
+    #
+    # planetZach = cb('planetZach', space, 10**13, 200, 2000, 1000, 0.9, 0, 0)
+    # celestialBodies.append(planetZach)
 
     rocket = tr.genRocket(space)
-    x, y = (earth.posx + earth.radius / math.sqrt(2),
-            earth.posy + earth.radius / math.sqrt(2))
-    rocket.position = x, y
+
     # draw_options = pygame_util.DrawOptions(game)
-    space.damping = 0.9
+    space.damping = 1
 
     fire_ticks = 480*50
     fire = False
     rotate = False
     auto = False
     sas_angle = 0
+
+    x, y = (0, earth.posx + earth.radius)
+    rocket.position = int(x), int(y)
+
+    ticksPerSec = 50.0
 
     while True:
         for event in pg.event.get():
@@ -97,24 +100,31 @@ def run():
             elif event.type == pg.VIDEORESIZE:
                 screen = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
 
+            elif event.type == pg.MOUSEBUTTONDOWN:
+                if event.button == 4:
+                    Drawer._zoom /= 2
+                elif event.button == 5:
+                    if Drawer._zoom <= Drawer._maxZoom:
+                        Drawer._zoom *= 2
+                print("Zoom: {0}\n".format(Drawer._zoom))
+
         if fire:
-            fire_ticks -= 1
             rocket.thrust(fireKey)
         if rotate:
             rocket.turn_SAS(rotKey, 1)
         if auto:
             rocket.auto_SAS(sas_angle)
 
-        updateGravity(space, rocket, celestialBodies)
-        space.step(1/50.0)
+        grav = updateGravity(space, rocket, celestialBodies, ticksPerSec)
+        space.step(1/ticksPerSec)
         updateCamera(screen, Drawer.getOffset(screen, rocket))
-        Drawer.drawMultiple(screen, list(map(lambda x: x.shape, celestialBodies)), 
+        Drawer.drawMultiple(screen,
+                            list(map(lambda x: x.shape, celestialBodies)),
                             Drawer.getOffset(screen, rocket))
         Drawer.drawMultiple(screen, rocket.components,
                             Drawer.getOffset(screen, rocket))
         pos = rocket.position
         vel = rocket.velocity
-        grav = space.gravity
         hud.updateHUD(pos[0], pos[1], (math.degrees(rocket.angle)+90) % 360,
                       vel.length, vel.angle_degrees % 360,
                       grav.length, grav.angle_degrees % 360,

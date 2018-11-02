@@ -37,16 +37,17 @@ class Physics(object):
         dX = celestialBody.body.position[0] - target.position[0]
         dY = celestialBody.body.position[1] - target.position[1]
 
-        rSquared = dX**2 + dY**2
-
+        rSquared = target.position.get_distance(celestialBody.body.position)**2
         #Now, find force of gravity in the direction of R
-        forceMagnitude = Physics._GRAV_CONSTANT * celestialBody.shape.mass * target.mass / rSquared
+        forceMagnitude = Physics._GRAV_CONSTANT * celestialBody.shape.mass / rSquared
 
         #Find the angle between these two so that this can be translated back to Cartesian Coords
         angle = math.atan2(dY, dX)
 
         fX = forceMagnitude * math.cos(angle)
         fY = forceMagnitude * math.sin(angle)
+        # if celestialBody.name == "earth":
+            # print("Mass of earth:\n\t {0}\n r^2:\n\t {1}\nNet Acceleration\n\t {2}\nAcceleration vector:\n\t {3}".format(celestialBody.shape.mass, rSquared, forceMagnitude, (fX,fY)))
 
         return (fX, fY)
 

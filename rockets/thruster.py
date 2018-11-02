@@ -35,6 +35,7 @@ class Thruster(Component):
             pymunk.Vec2d: Scaled thrust vector.
 
         """
+        self.fuel -= 1
         return self.thrustForce * self.thrustVector
 
     @property
