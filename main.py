@@ -3,12 +3,13 @@ import sys
 from enum import Enum
 from graphics import Menu
 import simulationexec
+from rocketbuilder import RocketBuilder
 
 
 def main():
     menu = Menu()
     clock = pygame.time.Clock()
-    State = Enum('State', 'Splash Menu Playing Exit')
+    State = Enum('State', 'Splash Menu Building Playing Exit')
 
     currentState = State.Splash
 
@@ -37,8 +38,14 @@ def main():
             elif menu.demoPressed:
                 currentState = State.Playing
                 menu.demoPressed = False
+            elif menu.builderPressed:
+                currentState = State.Building
+                menu.builderPressed = False
             else:
                 menu.drawMenu()
+
+        if currentState == State.Building:
+            RocketBuilder.run()
 
         if currentState == State.Playing:
             simulationexec.run()

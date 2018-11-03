@@ -27,6 +27,7 @@ class Menu(object):
     splashScreenPressed = False
 
     demoPressed = False
+    builderPressed = False
     quitPressed = False
 
     _menuButtonColor = ((255, 255, 255, 64), (255, 255, 255, 128))
@@ -104,6 +105,9 @@ class Menu(object):
                             cls._menuButtonColor, "Start Demo", 25,
                             cls._demoCallback)
         Graphics.drawButton(surface, buttonPosition(1), buttonSize,
+                            cls._menuButtonColor, "Rocket Builder", 25,
+                            cls._builderCallback)
+        Graphics.drawButton(surface, buttonPosition(2), buttonSize,
                             cls._menuButtonColor, "Exit to Desktop", 25,
                             cls._quitCallback)
 
@@ -122,6 +126,22 @@ class Menu(object):
                 None.
         """
         cls.splashScreenPressed = True
+
+    @classmethod
+    def _builderCallback(cls):
+        """
+        Callback function to be called when the Rocket Builder button is clicked.
+
+        **Preconditions**:
+                None.
+
+        **Postconditions**:
+                builderPressed class variable will be True.
+
+        **Returns**:
+                None.
+        """
+        cls.builderPressed = True
 
     @classmethod
     def _quitCallback(cls):
