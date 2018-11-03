@@ -1,6 +1,7 @@
+from pygame import image
 from pymunk.vec2d import Vec2d
 from rockets import Component
-
+import os
 
 class Thruster(Component):
     """Thruster component for rocket. Provides encapsulation for
@@ -68,3 +69,26 @@ class Thruster(Component):
     @thrustVector.setter
     def thrustVector(self, v):
         self._thrustVector = Vec2d(v).normalized()
+
+
+class UpGoer2000(Thruster):
+    vertices = [(4.2, 0), (-4.2, 0), (4.2, 46.9), (-4.2, 46.9)]
+    thrustVector = (0, 1)
+    netThrust = 2000
+    sprite = image.load(os.path.join("assets", "sprites", "UpGoer2000.png"))
+
+    def __init__(self, body, transform=None):
+        super().__init__(body, UpGoer2000.vertices, UpGoer2000.thrustVector,
+                 UpGoer2000.netThrust, transform)
+        self.sprite = UpGoer2000.sprite
+    
+    @classmethod
+    def getInfo(cls):
+        return {
+            "verticies": cls.vertices,
+            "thrustVector": cls.thrustVector,
+            "netThrust": cls.netThrust
+        }
+
+def Artemis():
+    pass
