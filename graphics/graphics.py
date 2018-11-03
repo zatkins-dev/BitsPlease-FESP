@@ -1,7 +1,6 @@
 import pygame
 import random
 
-
 class Graphics(object):
     """
         Graphics is a utility class that is used to abstract drawing of
@@ -33,8 +32,8 @@ class Graphics(object):
     _stars = []
 
     @classmethod
-    def drawButton(cls, destSurf, pos, size, colors, buttonText,
-                   buttonTextSize, buttonFunction=None):
+    def drawButton(cls, destSurf, pos, size, colors, buttonContent,
+                   buttonContentSize, buttonFunction=None):
         """
         Utility function that draws a button to the screen
 
@@ -58,10 +57,16 @@ class Graphics(object):
                                                4-tuples of RGBA values if
                                                transparency is desired
 
-                *buttonText*: The text to be rendered at the
+                *buttonContent*: Can be one of two types: a string or a surface
+                              If it is a string, it is the text to be rendered
+                              at the center of the button. If it is a surface,
+                              that surface will be scaled and rendered in the
                               center of the button
 
-                *buttonTextSize*: The size of the text to be rendered
+                *buttonContentSize*: The size of the text to be rendered, or the
+                              scale of the surface passed in relative to the button
+                              size (e.g. 1 would be covering the entire button,
+                              .5 would be half the button, etc.)
 
                 *buttonFunction*: A callback function on button-press
 
@@ -73,10 +78,26 @@ class Graphics(object):
 
         **Returns**: None.
         """
-        if(not pygame.font.get_init()):
-            pygame.font.init()
-        t_font = pygame.font.SysFont('lucidaconsole', buttonTextSize)
-        text = t_font.render(str(buttonText), True, (255, 255, 255))
+        if type(buttonContent) is pygame.Surface:
+            #find the size of the sprite within the button
+            newWidth = int(buttonContentSize * size[0])
+            newHeight = int(buttonContentSize * size[1])
+
+            #scale the sprite to fit within the button
+            if buttonContent.get_width() > buttonContent.get_height():
+                ratio = buttonContent.get_heigth() / buttonContent.get_width()
+                content = pygame.transform.smoothscale(buttonContent, (newWidth, newHeight * ratio))
+            elif buttonContent.get_width() < buttonContent.get_height():
+                ratio =  buttonContent.get_width() / buttonContent.get_heigth()
+                content = pygame.transform.smoothscale(buttonContent, (newWidth * ratio, newHeight))
+            else:
+                content = pygame.transform.smoothscale(buttonContent, (newWidth, newHeight))
+
+        else:
+            if(not pygame.font.get_init()):
+                pygame.font.init()
+            t_font = pygame.font.SysFont('lucidaconsole', buttonContentSize)
+            content = t_font.render(str(buttonContent), True, (255, 255, 255))
 
         button = pygame.surface.Surface(size, pygame.constants.SRCALPHA)
 
@@ -107,8 +128,8 @@ class Graphics(object):
         # then text onto the screen centered over the button
         destSurf.blits([
             (button, pos),
-            (text, (pos[0] + size[0] / 2 - text.get_width() / 2,
-                    pos[1] + size[1] / 2 - text.get_height() / 2))
+            (content, (pos[0] + size[0] / 2 - content.get_width() / 2,
+                    pos[1] + size[1] / 2 - content.get_height() / 2))
         ])
 
     @classmethod
