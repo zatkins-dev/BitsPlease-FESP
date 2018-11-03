@@ -31,6 +31,8 @@ class Graphics(object):
     _buttonIsClicked = False
     _isBackgroundDrawn = False
     _stars = []
+    _starsWidth = 0
+    _starsHeight = 0
 
     @classmethod
     def drawButton(cls, destSurf, pos, size, colors, buttonText,
@@ -207,6 +209,18 @@ class Graphics(object):
 
         **Returns**: None.
         """
+
+        w, h = screen.get_size()
+        if (cls._starsWidth != w):
+            cls._isBackgroundDrawn = False
+            cls._starsWidth = w
+            cls._stars.clear()
+        if (cls._starsHeight != h):
+            cls._isBackgroundDrawn = False
+            cls._starsHeight = h
+            cls._stars.clear()
+
+        print(cls._starsWidth, cls._starsHeight)
         if(not cls._isBackgroundDrawn):
             for i in range(1000):
                 colorSelector = random.randrange(0, 5)
@@ -219,8 +233,8 @@ class Graphics(object):
                     colorStar = (0, 0, 255)
                 elif(colorSelector == 4):
                     colorStar = (255, 255, 0)
-                x = random.randrange(0, 3000)
-                y = random.randrange(0, 1080)
+                x = random.randrange(0, cls._starsWidth)
+                y = random.randrange(0, cls._starsHeight)
                 cls._stars.append([x, y, colorStar])
             cls._isBackgroundDrawn = True
         for i in range(1000):
@@ -236,6 +250,6 @@ class Graphics(object):
             else:
                 width = 3
 
-            starX = int(cls._stars[i][0] + .25 * pos[0]) % 3000
-            starY = int(cls._stars[i][1] - .25 * pos[1]) % 1080
+            starX = int(cls._stars[i][0] + .25 * pos[0]) % cls._starsWidth
+            starY = int(cls._stars[i][1] - .25 * pos[1]) % cls._starsHeight
             pygame.draw.circle(screen, cls._stars[i][2], (starX, starY), width)
