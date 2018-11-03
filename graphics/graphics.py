@@ -220,7 +220,6 @@ class Graphics(object):
             cls._starsHeight = h
             cls._stars.clear()
 
-        print(cls._starsWidth, cls._starsHeight)
         if(not cls._isBackgroundDrawn):
             for i in range(1000):
                 colorSelector = random.randrange(0, 5)

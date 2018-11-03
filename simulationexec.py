@@ -2,6 +2,7 @@ import pygame as pg
 import pymunk as pm
 from pymunk.vec2d import Vec2d
 import sys
+import os
 import rockets.testrocket as tr
 import math
 from physics import CelestialBody as cb
@@ -13,7 +14,7 @@ from graphics import Drawer
 res_x, res_y = 1000, 1000
 GROUND_Y = res_y/20
 G = 6.67408*10**-11
-
+ASSETS_PATH = os.path.abspath("assets/")
 
 def keyDown(e, key):
     return e.type == pg.KEYDOWN and e.key == key
@@ -41,13 +42,16 @@ def run():
     clock = pg.time.Clock()
 
     space = pm.Space(threaded=True)
-    space.threads = 3
+    space.threads = 2
     hud = HUD()
 
-    earth = cb('earth', space, 9.331*10**22, 796375, 0, 0, 0.9, 0, 0)
+    earth = cb('earth', space, 9.331*10**22, 796375, 0, 0, 0.9, 0, 0,
+               os.path.join(ASSETS_PATH, "sprites/earth.png"), 2048)
     celestialBodies.append(earth)
 
-    earthMoon1 = cb('earthMoon1', space, 1.148*10**21, 217125, 796375 + 43500000, 796375, 0.9, 0, 1)
+    earthMoon1 = cb('earthMoon1', space, 1.148*10**21, 217125,
+                    796375 + 43500000, 796375, 0.9, 0, 1,
+                    os.path.join(ASSETS_PATH, "sprites/earth.png"), 2048)
     celestialBodies.append(earthMoon1)
 
     # planetGage = cb('planetGage', space, 10**12, 200, 1000, 1000, 0.9, 0, 0)
@@ -64,7 +68,6 @@ def run():
     # draw_options = pygame_util.DrawOptions(game)
     space.damping = 1
 
-    fire_ticks = 480*50
     fire = False
     rotate = False
     auto = False
@@ -118,8 +121,7 @@ def run():
         grav = updateGravity(space, rocket, celestialBodies, ticksPerSec)
         space.step(1/ticksPerSec)
         updateCamera(screen, Drawer.getOffset(screen, rocket))
-        Drawer.drawMultiple(screen,
-                            list(map(lambda x: x.shape, celestialBodies)),
+        Drawer.drawMultiple(screen, celestialBodies,
                             Drawer.getOffset(screen, rocket))
         Drawer.drawMultiple(screen, rocket.components,
                             Drawer.getOffset(screen, rocket))

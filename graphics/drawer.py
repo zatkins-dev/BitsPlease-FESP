@@ -1,6 +1,7 @@
 import pygame as pg
 import pymunk as pm
 from pymunk.vec2d import Vec2d
+from physics import CelestialBody
 import functools
 import math
 
@@ -21,7 +22,9 @@ class Drawer:
 
     @classmethod
     def draw(cls, screen, toDraw, offset):
-        if hasattr(toDraw, 'sprite') and toDraw.sprite is not None:
+        if isinstance(toDraw, CelestialBody):
+            Drawer.drawCelestialBody(screen, toDraw, offset)
+        elif hasattr(toDraw, 'sprite') and toDraw.sprite is not None:
             Drawer.drawSprite(screen, toDraw, offset)
         elif isinstance(toDraw, pm.Poly):
             Drawer.drawPoly(screen, toDraw, offset)
@@ -50,7 +53,7 @@ class Drawer:
     @classmethod
     def drawCircle(cls, screen, shape, offset):
         r = shape.radius*cls._zoom
-        pos = cls.to_pygame(shape, Vec2d(0,0), offset)
+        pos = cls.to_pygame(shape, Vec2d(0, 0), offset)
         max = Vec2d(screen.get_size())
 
         # find the center of the screen (1/2 screen diagonal)
@@ -66,6 +69,54 @@ class Drawer:
             pos = cls.intVec2d(pos)
             pg.draw.circle(screen, pg.Color('blue'),
                            [pos[0], max[1]-pos[1]], int(r))
+
+    @classmethod
+    def drawCelestialBody(cls, screen, cb, offset):
+        sprite_surf = cb.sprite.image
+        x, y = cls.intVec2d(sprite_surf.get_size())
+        scaleFactor = cb.radius/cb._sprite_radius
+        pm_position = cls.surface_to_pymunk(scaleFactor, sprite_surf,
+                                           (x/2, y/2), cb.body.position)
+        pos = cls._zoom*(cb.body.position + offset)
+        screenSize = Vec2d(screen.get_size())
+        screenCenter = cls.intVec2d(screenSize/(2*cls._zoom))
+        print((x, y), scaleFactor, cb.body.position, pos, screenCenter)
+        isOnScreen = pos.get_distance(screenCenter) \
+                     <= (cb.radius*cls._zoom + screenCenter.get_length())
+
+        if isOnScreen:
+            print("drawing circle")
+            # get relevant sprite area
+            topleft = cls.intVec2d(cls.pymunk_to_surface(scaleFactor,
+                                                         sprite_surf,
+                                                         -offset-screenCenter,
+                                                         cb.body.position))
+            topleft[0] = max([0, topleft[0]])
+            topleft[0] = min([topleft[0], x])
+
+            topleft[1] = max([0, topleft[1]])
+            topleft[1] = min([topleft[1], y])
+
+            size_s = cls.intVec2d(cls.pymunk_to_surface(scaleFactor,
+                                                        sprite_surf,
+                                                        -offset+screenCenter,
+                                                        cb.body.position))
+
+            size_s[0] = max([0, size_s[0]])
+            size_s[0] = min([size_s[0], x])
+
+            size_s[1] = max([0, size_s[1]])
+            size_s[1] = min([size_s[1], y])
+
+            viewRect = pg.Rect(tuple(topleft), tuple(size_s))
+            subsprite = sprite_surf.subsurface(sprite_surf.get_rect().clip(viewRect))
+
+            scaledSize = cls.intVec2d(scaleFactor*cls._zoom*size_s)
+            print ("sprite subsurface size: {0}\nscaled size: {1}".format(size_s, scaledSize))
+            # scale sprite image to be the right size
+            scaledSprite = pg.transform.smoothscale(subsprite, tuple(scaledSize))
+
+            screen.blit(scaledSprite, tuple(pos))
 
     @classmethod
     def drawSprite(cls, screen, component, offset):
@@ -119,6 +170,15 @@ class Drawer:
         return cls.intVec2d(cls._zoom*Vec2d(coords.rotated(shape.body.angle)
                                             + shape.body.position
                                             + offset))
+
+    @classmethod
+    def surface_to_pymunk(cls, scaleFactor, surface, coords, position_offset):
+        return scaleFactor*(Vec2d(coords) - Vec2d(surface.get_size()).rotated(math.pi)/2) + Vec2d(position_offset)
+
+    @classmethod
+    def pymunk_to_surface(cls, scaleFactor, surface, coords, position_offset):
+        return (Vec2d(coords) - Vec2d(position_offset))/scaleFactor \
+                + Vec2d(surface.get_size()).rotated(math.pi)/2
 
     @classmethod
     def intVec2d(cls, v):
