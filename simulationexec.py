@@ -9,6 +9,7 @@ from physics import Physics as phy
 from graphics import HUD
 from graphics import Graphics as graph
 from graphics import Drawer
+from graphics import TrajectoryCalc
 
 res_x, res_y = 1000, 1000
 GROUND_Y = res_y/20
@@ -43,6 +44,7 @@ def run():
     space = pm.Space(threaded=True)
     space.threads = 3
     hud = HUD()
+    traj = TrajectoryCalc()
 
     earth = cb('earth', space, 9.331*10**22, 796375, 0, 0, 0.9, 0, 0)
     celestialBodies.append(earth)
@@ -117,14 +119,19 @@ def run():
 
         grav = updateGravity(space, rocket, celestialBodies, ticksPerSec)
         space.step(1/ticksPerSec)
-        updateCamera(screen, Drawer.getOffset(screen, rocket))
-        Drawer.drawMultiple(screen,
-                            list(map(lambda x: x.shape, celestialBodies)),
-                            Drawer.getOffset(screen, rocket))
-        Drawer.drawMultiple(screen, rocket.components,
-                            Drawer.getOffset(screen, rocket))
         pos = rocket.position
         vel = rocket.velocity
+        offset = Drawer.getOffset(screen, rocket)
+
+        updateCamera(screen, Drawer.getOffset(screen, rocket))
+        traj.updateTrajectory(screen, pos[0], pos[1], vel[0], vel[1], vel.angle_degrees % 360,
+                              grav[0], grav[1], grav.angle_degrees % 360, 1, 1000, offset)
+        Drawer.drawMultiple(screen,
+                            list(map(lambda x: x.shape, celestialBodies)),
+                            offset)
+        Drawer.drawMultiple(screen, rocket.components,
+                            offset)
+
         hud.updateHUD(pos[0], pos[1], (math.degrees(rocket.angle)+90) % 360,
                       vel.length, vel.angle_degrees % 360,
                       grav.length, grav.angle_degrees % 360,
