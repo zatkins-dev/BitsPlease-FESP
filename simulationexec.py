@@ -26,7 +26,7 @@ def keyUp(e, key):
 
 def updateGravity(space, rocket, objects, ticksPerSec):
     # space.gravity = phy.netGravity(objects, rocket)
-    deltaV = Vec2d(phy.netGravity(objects, rocket))
+    deltaV = Vec2d(phy.netGravity(objects, rocket.position))
     pm.Body.update_velocity(rocket, deltaV, 1, 1/ticksPerSec)
     return deltaV
 
@@ -125,7 +125,7 @@ def run():
 
         updateCamera(screen, Drawer.getOffset(screen, rocket))
         traj.updateTrajectory(screen, pos[0], pos[1], vel[0], vel[1], vel.angle_degrees % 360,
-                              grav[0], grav[1], grav.angle_degrees % 360, 1, 1000, offset)
+                              grav[0], grav[1], grav.angle_degrees % 360, 10, celestialBodies, offset)
         Drawer.drawMultiple(screen,
                             list(map(lambda x: x.shape, celestialBodies)),
                             offset)

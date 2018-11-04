@@ -13,7 +13,7 @@ class Physics(object):
     _GRAV_CONSTANT = 6.67384*(10**-11)
 
     @staticmethod
-    def gravity(celestialBody, target):
+    def gravity(celestialBody, targetPosition):
         """
         Calculate gravitational force between a target and body/shape pair.
 
@@ -21,7 +21,7 @@ class Physics(object):
                 *body*:     pymunk.Body The planet to use as the
                                         gravitational source
 
-                *target*:   Rocket The object that gravity will be affecting
+                *targetPosition*: list[x,y] - The x, y position of the rocket
 
         **Preconditions**:
                 Shape and Target both contain a mass property, and Body and
@@ -34,10 +34,10 @@ class Physics(object):
         """
         #First, find the distance between the body and the target
         #Then, Use that distance to calculate gravity
-        dX = celestialBody.body.position[0] - target.position[0]
-        dY = celestialBody.body.position[1] - target.position[1]
+        dX = celestialBody.body.position[0] - targetPosition[0]
+        dY = celestialBody.body.position[1] - targetPosition[1]
 
-        rSquared = target.position.get_distance(celestialBody.body.position)**2
+        rSquared = (dX**2 + dY**2)#target.position.get_distance(celestialBody.body.position)**2
         #Now, find force of gravity in the direction of R
         forceMagnitude = Physics._GRAV_CONSTANT * celestialBody.shape.mass / rSquared
 
@@ -52,7 +52,7 @@ class Physics(object):
         return (fX, fY)
 
     @staticmethod
-    def netGravity(celestialBodies, target):
+    def netGravity(celestialBodies, targetPosition):
         """
         Calculate gravitational force between a target and some other bodies.
 
@@ -60,7 +60,7 @@ class Physics(object):
                 *celestialBodies*: list[celesitalbody] The planets to use
                                                        as the gravitational sources
 
-                *target*: Rocket The object that gravity will be affecting
+                *targetPosition*: list[x,y] - The x, y position of the rocket
 
         **Preconditions**:
                 Elements in Shapes and Target contain a mass property,
@@ -73,7 +73,7 @@ class Physics(object):
         """
         fX, fY = 0, 0
         for celestialBody in celestialBodies:
-            newVec = Physics.gravity(celestialBody, target)
+            newVec = Physics.gravity(celestialBody, targetPosition)
             fX += newVec[0]
             fY += newVec[1]
 
