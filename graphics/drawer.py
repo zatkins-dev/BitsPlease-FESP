@@ -4,6 +4,8 @@ from pymunk.vec2d import Vec2d
 from physics import CelestialBody
 import functools
 import math
+import numpy
+import pygame.surfarray
 
 
 class Drawer:
@@ -72,51 +74,92 @@ class Drawer:
 
     @classmethod
     def drawCelestialBody(cls, screen, cb, offset):
-        sprite_surf = cb.sprite.image
-        x, y = cls.intVec2d(sprite_surf.get_size())
-        scaleFactor = cb.radius/cb._sprite_radius
-        pm_position = cls.surface_to_pymunk(scaleFactor, sprite_surf,
-                                           (x/2, y/2), cb.body.position)
         pos = cls._zoom*(cb.body.position + offset)
         screenSize = Vec2d(screen.get_size())
         screenCenter = cls.intVec2d(screenSize/(2*cls._zoom))
-        print((x, y), scaleFactor, cb.body.position, pos, screenCenter)
         isOnScreen = pos.get_distance(screenCenter) \
-                     <= (cb.radius*cls._zoom + screenCenter.get_length())
-
+                     <= (cb.radius*cls._zoom + screenCenter.get_length())        
         if isOnScreen:
-            print("drawing circle")
-            # get relevant sprite area
-            topleft = cls.intVec2d(cls.pymunk_to_surface(scaleFactor,
-                                                         sprite_surf,
-                                                         -offset-screenCenter,
-                                                         cb.body.position))
-            topleft[0] = max([0, topleft[0]])
-            topleft[0] = min([topleft[0], x])
+            if cls._zoom < 2.0**-4:
+                cls.drawCircle(screen, cb.shape, offset)
+                return
 
-            topleft[1] = max([0, topleft[1]])
-            topleft[1] = min([topleft[1], y])
+            rocket_pos = screenCenter - offset
+            print(rocket_pos)
+            point_query = cb.shape.point_query(rocket_pos)
+            if point_query[0] < screenCenter.length:
+                # planet should appear
+                closestPoint = point_query[1].point
+                normal = point_query[1].gradient.rotated(math.pi)
+                tangent = normal.rotated(math.pi/2)
+                antitangent = normal.rotated(-math.pi/2)
+                points = [closestPoint - screenCenter.length*(tangent),
+                          closestPoint - screenCenter.length*(antitangent),
+                          closestPoint - screenCenter.length*(antitangent - normal),
+                          closestPoint - screenCenter.length*(tangent - normal)]
+                print("points", points)
+                print("gradient, tangent, antitangent", normal, tangent, antitangent)
+                flipY = lambda x, y_max: Vec2d(x[0],y_max-x[1])
+                polyPoints = list(map(lambda p: flipY(cls.to_pygame(None, p, offset), screenSize[1]), points))
+                print ("mapped points: ", polyPoints)
+                pg.draw.polygon(screen, pg.Color("blue"), polyPoints)
 
-            size_s = cls.intVec2d(cls.pymunk_to_surface(scaleFactor,
-                                                        sprite_surf,
-                                                        -offset+screenCenter,
-                                                        cb.body.position))
 
-            size_s[0] = max([0, size_s[0]])
-            size_s[0] = min([size_s[0], x])
+            # viewVerts = [Vec2d(x,y) + screenCenter - offset for x in [-screenCenter[0], screenCenter[0]] for y in [-screenCenter[1], screenCenter[1]]]
+            # segmentQueryInfos = []
+            # for i in [0,3]:
+            #     for j in [1,2]:
+            #         queryInfo = bb.intersects_segment(viewVerts[i], viewVerts[j])
+            #         if queryInfo.shape is not None:
+            #             segmentQueryInfos.append(queryInfo)
+            # print("gen'd verts", viewVerts)
+            # print("segmentQueries: ", segmentQueryInfos)
 
-            size_s[1] = max([0, size_s[1]])
-            size_s[1] = min([size_s[1], y])
+            # if segmentQueryInfos == []:
+            #     return
+            # print("segment queries non-empty")
+            # newPolyPoints = list(map(lambda p: cls.to_pygame(None, p.point, offset), segmentQueryInfos))
+            # print("mapped query points to pg: ", newPolyPoints)
+            # for vert in viewVerts:
+            #     if cb.shape.point_query(vert)[0] < 0:
+            #         newPolyPoints.append(cls.to_pygame(None, vert, offset))
+            #         print("added xtra point: ", cls.to_pygame(None, vert, offset))
+            # pg.draw.polygon(screen, pg.Color("blue"), newPolyPoints)
+            # print("drawing circle")
+            # # get relevant sprite area
+            # # topleft = -cls.intVec2d(cls.pymunk_to_surface(scaleFactor,
+            # #                                              sprite_surf,
+            # #                                              -offset-screenCenter,
+            # #                                              cb.body.position))
+            # flipY = lambda x, y_max: Vec2d(x[0],x[1]-y_max)
+            # zero_pm = cb.body.position - cb.radius*Vec2d(1,1)
+            # topleft_pm = -offset
+            # topleft = cls.intVec2d(flipY((topleft_pm - zero_pm) / scaleFactor, y), func=math.ceil)
+            # print ("zero_pm: {0}\ntopleft_pm: {1}".format(zero_pm, topleft_pm))
+            
+            # size_s = cls.intVec2d(screenSize / (cls._zoom * scaleFactor), func=math.ceil)
 
-            viewRect = pg.Rect(tuple(topleft), tuple(size_s))
-            subsprite = sprite_surf.subsurface(sprite_surf.get_rect().clip(viewRect))
+            # size_s[0] = max([0, size_s[0]])
+            # size_s[0] = min([size_s[0], x])
 
-            scaledSize = cls.intVec2d(scaleFactor*cls._zoom*size_s)
-            print ("sprite subsurface size: {0}\nscaled size: {1}".format(size_s, scaledSize))
-            # scale sprite image to be the right size
-            scaledSprite = pg.transform.smoothscale(subsprite, tuple(scaledSize))
+            # size_s[1] = max([0, size_s[1]])
+            # size_s[1] = min([size_s[1], y])
 
-            screen.blit(scaledSprite, tuple(pos))
+            # viewRect = pg.Rect(tuple(topleft),tuple(size_s))
+            # viewRect = image_rect.clip(viewRect)
+            # if viewRect == pg.Rect(0,0,0,0):
+            #     return
+            # print ("topleft_sp: {0}".format(topleft))
+            # print ("size_sp: {0}".format(size_s))
+            # print ("viewRect: {0}".format(viewRect))
+            # subsprite = image.subsurface(viewRect).copy()
+
+            # scaledSize = cls.intVec2d(scaleFactor*cls._zoom*size_s)
+            # print ("scaled size: {0}".format(scaledSize))
+            # # scale sprite image to be the right size
+            # scaledSprite = pg.transform.rotozoom(subsprite, 0, scaleFactor*cls._zoom)
+            # blit_pos_y = screenSize[1] - scaledSize[1]
+            # screen.blit(scaledSprite, (0, blit_pos_y))
 
     @classmethod
     def drawSprite(cls, screen, component, offset):
@@ -143,7 +186,7 @@ class Drawer:
             scaledSprite = pg.transform.scale(component.sprite,
                                               (int(maxX-minX), int(maxY-minY)))
 
-            # now rotate the sprite
+            # now rotate the sprited
             rotSprite = pg.transform.rotozoom(scaledSprite, math.degrees(component.body.angle), cls._zoom)
 
             # the position we draw the sprite at will be the
@@ -167,6 +210,8 @@ class Drawer:
 
     @classmethod
     def to_pygame(cls, shape, coords, offset):
+        if shape is None:
+            return cls.intVec2d(cls._zoom*Vec2d(coords + offset))
         return cls.intVec2d(cls._zoom*Vec2d(coords.rotated(shape.body.angle)
                                             + shape.body.position
                                             + offset))
@@ -181,8 +226,8 @@ class Drawer:
                 + Vec2d(surface.get_size()).rotated(math.pi)/2
 
     @classmethod
-    def intVec2d(cls, v):
-        return Vec2d(int(v[0]), int(v[1]))
+    def intVec2d(cls, v, func=int):
+        return Vec2d(func(v[0]), func(v[1]))
 
     @classmethod
     def inRange(cls, max, coords):
