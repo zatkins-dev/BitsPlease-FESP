@@ -30,7 +30,7 @@ class CelestialBody():
 
     """
     def __init__(self, name_, space_, mass_, radius_, position_x, position_y,
-                 elasticity_, atmosphere_, bodytype_, image_, sprite_radius_):
+                 elasticity_, atmosphere_, bodytype_):
         self.mass = mass_
         self.name = name_
         self.radius = radius_
@@ -48,9 +48,6 @@ class CelestialBody():
         self.shape.elasticity = self.elasticity
         self.body.position = self.posx, self.posy
         space_.add(self.body, self.shape)
-        self._sprite = pg.sprite.Sprite()
-        self._sprite.image = pg.image.load(image_).convert_alpha()
-        self._sprite_radius = sprite_radius_
 
     @property
     def sprite(self):

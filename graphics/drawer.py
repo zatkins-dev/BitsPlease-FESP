@@ -85,7 +85,6 @@ class Drawer:
                 return
 
             rocket_pos = screenCenter - offset
-            print(rocket_pos)
             point_query = cb.shape.point_query(rocket_pos)
             if point_query[0] < screenCenter.length:
                 # planet should appear
