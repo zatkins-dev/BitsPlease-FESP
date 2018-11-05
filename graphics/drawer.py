@@ -97,69 +97,9 @@ class Drawer:
                           closestPoint - screenCenter.length*(antitangent),
                           closestPoint - screenCenter.length*(antitangent - normal),
                           closestPoint - screenCenter.length*(tangent - normal)]
-                print("points", points)
-                print("gradient, tangent, antitangent", normal, tangent, antitangent)
                 flipY = lambda x, y_max: Vec2d(x[0],y_max-x[1])
                 polyPoints = list(map(lambda p: flipY(cls.to_pygame(None, p, offset), screenSize[1]), points))
-                print ("mapped points: ", polyPoints)
                 pg.draw.polygon(screen, pg.Color("blue"), polyPoints)
-
-
-            # viewVerts = [Vec2d(x,y) + screenCenter - offset for x in [-screenCenter[0], screenCenter[0]] for y in [-screenCenter[1], screenCenter[1]]]
-            # segmentQueryInfos = []
-            # for i in [0,3]:
-            #     for j in [1,2]:
-            #         queryInfo = bb.intersects_segment(viewVerts[i], viewVerts[j])
-            #         if queryInfo.shape is not None:
-            #             segmentQueryInfos.append(queryInfo)
-            # print("gen'd verts", viewVerts)
-            # print("segmentQueries: ", segmentQueryInfos)
-
-            # if segmentQueryInfos == []:
-            #     return
-            # print("segment queries non-empty")
-            # newPolyPoints = list(map(lambda p: cls.to_pygame(None, p.point, offset), segmentQueryInfos))
-            # print("mapped query points to pg: ", newPolyPoints)
-            # for vert in viewVerts:
-            #     if cb.shape.point_query(vert)[0] < 0:
-            #         newPolyPoints.append(cls.to_pygame(None, vert, offset))
-            #         print("added xtra point: ", cls.to_pygame(None, vert, offset))
-            # pg.draw.polygon(screen, pg.Color("blue"), newPolyPoints)
-            # print("drawing circle")
-            # # get relevant sprite area
-            # # topleft = -cls.intVec2d(cls.pymunk_to_surface(scaleFactor,
-            # #                                              sprite_surf,
-            # #                                              -offset-screenCenter,
-            # #                                              cb.body.position))
-            # flipY = lambda x, y_max: Vec2d(x[0],x[1]-y_max)
-            # zero_pm = cb.body.position - cb.radius*Vec2d(1,1)
-            # topleft_pm = -offset
-            # topleft = cls.intVec2d(flipY((topleft_pm - zero_pm) / scaleFactor, y), func=math.ceil)
-            # print ("zero_pm: {0}\ntopleft_pm: {1}".format(zero_pm, topleft_pm))
-            
-            # size_s = cls.intVec2d(screenSize / (cls._zoom * scaleFactor), func=math.ceil)
-
-            # size_s[0] = max([0, size_s[0]])
-            # size_s[0] = min([size_s[0], x])
-
-            # size_s[1] = max([0, size_s[1]])
-            # size_s[1] = min([size_s[1], y])
-
-            # viewRect = pg.Rect(tuple(topleft),tuple(size_s))
-            # viewRect = image_rect.clip(viewRect)
-            # if viewRect == pg.Rect(0,0,0,0):
-            #     return
-            # print ("topleft_sp: {0}".format(topleft))
-            # print ("size_sp: {0}".format(size_s))
-            # print ("viewRect: {0}".format(viewRect))
-            # subsprite = image.subsurface(viewRect).copy()
-
-            # scaledSize = cls.intVec2d(scaleFactor*cls._zoom*size_s)
-            # print ("scaled size: {0}".format(scaledSize))
-            # # scale sprite image to be the right size
-            # scaledSprite = pg.transform.rotozoom(subsprite, 0, scaleFactor*cls._zoom)
-            # blit_pos_y = screenSize[1] - scaledSize[1]
-            # screen.blit(scaledSprite, (0, blit_pos_y))
 
     @classmethod
     def drawSprite(cls, screen, component, offset):
@@ -215,15 +155,6 @@ class Drawer:
         return cls.intVec2d(cls._zoom*Vec2d(coords.rotated(shape.body.angle)
                                             + shape.body.position
                                             + offset))
-
-    @classmethod
-    def surface_to_pymunk(cls, scaleFactor, surface, coords, position_offset):
-        return scaleFactor*(Vec2d(coords) - Vec2d(surface.get_size()).rotated(math.pi)/2) + Vec2d(position_offset)
-
-    @classmethod
-    def pymunk_to_surface(cls, scaleFactor, surface, coords, position_offset):
-        return (Vec2d(coords) - Vec2d(position_offset))/scaleFactor \
-                + Vec2d(surface.get_size()).rotated(math.pi)/2
 
     @classmethod
     def intVec2d(cls, v, func=int):
