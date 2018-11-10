@@ -4,8 +4,6 @@ from pymunk.vec2d import Vec2d
 from physics import CelestialBody
 import functools
 import math
-import numpy
-import pygame.surfarray
 
 
 class Drawer:
@@ -78,7 +76,7 @@ class Drawer:
         screenSize = Vec2d(screen.get_size())
         screenCenter = cls.intVec2d(screenSize/(2*cls._zoom))
         isOnScreen = pos.get_distance(screenCenter) \
-                     <= (cb.radius*cls._zoom + screenCenter.get_length())        
+                     <= (cb.radius*cls._zoom + screenCenter.get_length())
         if isOnScreen:
             if cls._zoom < 2.0**-4:
                 cls.drawCircle(screen, cb.shape, offset)
