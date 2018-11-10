@@ -2,6 +2,7 @@ import pygame as pg
 import pymunk as pm
 import pymunk.pygame_util as pygame_util
 import sys
+import os
 import math
 from rockets import Component
 from rockets import Thruster
@@ -47,6 +48,8 @@ class RocketBuilder:
     def drawComponentMenu(cls):
         # as a quick test, fill with white
         cls.componentSurface.fill(cls._menuPaneColor)
+        testImage = pg.image.load(os.path.join("assets", "sprites", "orbiter.png")).convert_alpha()
+        Graphics.drawButton(cls.componentSurface, (10,10), (100,100), ((64,64,64), (32,32,32)), testImage, .9)
 
     @classmethod
     def drawComponentInfo(cls):
