@@ -29,6 +29,7 @@ class CelestialBody():
         shape (Shape): Shape object of planet
 
     """
+    CT_CELESTIAL_BODY = 4
     def __init__(self, name_, space_, mass_, radius_, position_x, position_y,
                  elasticity_, atmosphere_, bodytype_):
         self.mass = mass_
@@ -39,13 +40,16 @@ class CelestialBody():
         self.elasticity = elasticity_
         self.atmosphere = atmosphere_
         self.bodytype = bodytype_
-        if self.bodytype == 0:
-            self.body = pm.Body(body_type=pm.Body.STATIC)
-        else:
-            self.body = pm.Body(body_type=pm.Body.KINEMATIC)
+        # if self.bodytype == 0:
+        #     self.body = pm.Body(body_type=pm.Body.STATIC)
+        # else:
+        #     self.body = pm.Body(body_type=pm.Body.KINEMATIC)
+        self.body = pm.Body(body_type=bodytype_)
         self.shape = pm.Circle(self.body, self.radius)
+        self.shape.friction = 0.35
         self.shape.mass = self.mass
         self.shape.elasticity = self.elasticity
+        self.shape.collision_type = self.CT_CELESTIAL_BODY
         self.body.position = self.posx, self.posy
         space_.add(self.body, self.shape)
 

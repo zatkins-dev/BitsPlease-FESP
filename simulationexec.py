@@ -5,8 +5,8 @@ import sys
 import os
 import rockets.testrocket as tr
 import math
-from physics import CelestialBody as cb
-from physics import Physics as phy
+from physics import * 
+
 from graphics import HUD
 from graphics import Graphics as graph
 from graphics import Drawer
@@ -25,8 +25,8 @@ def keyUp(e, key):
 
 
 def updateGravity(space, rocket, objects, ticksPerSec):
-    # space.gravity = phy.netGravity(objects, rocket)
-    deltaV = Vec2d(phy.netGravity(objects, rocket))
+    # space.gravity = Physics.netGravity(objects, rocket)
+    deltaV = Vec2d(Physics.netGravity(objects, rocket))
     pm.Body.update_velocity(rocket, deltaV, 1, 1/ticksPerSec)
     return deltaV
 
@@ -47,20 +47,20 @@ def run():
     space.threads = 2
     hud = HUD()
 
-    earth = cb('earth', space, 9.331*10**22, 796375, 0, 0, 0.9, 0, 0)
+    earth = CelestialBody('earth', space, 9.331*10**22, 796375, 0, 0, 0.9, 0, pm.Body.DYNAMIC)
     celestialBodies.append(earth)
 
-    earthMoon1 = cb('earthMoon1', space, 1.148*10**21, 217125,
-                    796375 + 43500000, 796375, 0.9, 0, 1)
+    earthMoon1 = CelestialBody('earthMoon1', space, 1.148*10**21, 217125,
+                    796375 + 43500000, 796375, 0.9, 0, pm.Body.DYNAMIC)
     celestialBodies.append(earthMoon1)
 
-    # planetGage = cb('planetGage', space, 10**12, 200, 1000, 1000, 0.9, 0, 0)
+    # planetGage = CelestialBody('planetGage', space, 10**12, 200, 1000, 1000, 0.9, 0, 0)
     # celestialBodies.append(planetGage)
     #
-    # planetThomas = cb('planetThomas', space, 10**13, 200, 1500, 1500, .9, 0, 0)
+    # planetThomas = CelestialBody('planetThomas', space, 10**13, 200, 1500, 1500, .9, 0, 0)
     # celestialBodies.append(planetThomas)
     #
-    # planetZach = cb('planetZach', space, 10**13, 200, 2000, 1000, 0.9, 0, 0)
+    # planetZach = CelestialBody('planetZach', space, 10**13, 200, 2000, 1000, 0.9, 0, 0)
     # celestialBodies.append(planetZach)
 
     rocket = tr.genRocket(space)
@@ -80,6 +80,10 @@ def run():
     pg.mixer.music.play(-1)
     print(rocket.position)
 
+    # Add collision handler
+    collisions_component_celestialbody = space.add_collision_handler(CT_COMPONENT, CT_CELESTIAL_BODY)
+    collisions_component_celestialbody.pre_solve = pre_solve_component_celestialbody
+    collisions_component_celestialbody.post_solve = post_solve_component_celestialbody
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT or keyDown(event, pg.K_ESCAPE):
