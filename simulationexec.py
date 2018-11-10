@@ -37,6 +37,8 @@ def updateCamera(screen, center):
 
 
 def run():
+    pg.mixer.init()
+    pg.mixer.music.load("sound/Sci-fiPulseLoop.wav")
     celestialBodies = []
     screen = pg.display.get_surface()
     clock = pg.time.Clock()
@@ -75,6 +77,8 @@ def run():
     rocket.position = int(x), int(y)
 
     ticksPerSec = 50.0
+    pg.mixer.music.play(-1)
+    print(rocket.position)
 
     while True:
         for event in pg.event.get():
