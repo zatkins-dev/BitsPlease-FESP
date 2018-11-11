@@ -1,5 +1,6 @@
 from pymunk.vec2d import Vec2d
 from rockets import Component
+from pymunk import Body as Body
 
 
 class Thruster(Component):
@@ -68,3 +69,26 @@ class Thruster(Component):
     @thrustVector.setter
     def thrustVector(self, v):
         self._thrustVector = Vec2d(v).normalized()
+
+
+    def applyThrust(self):
+        if self.fuel > 0:
+            self.body.apply_impulse_at_local_point(self.thrust(), (0, 0))
+            self.fuel = self.fuel -1
+
+
+"""class RCS(Thruster):
+        def __init__(self, body, vertices, netThrust, transform, radius, fuel):
+            Thruster.__init__(self, body, vertices, (1,0), newThrust, None, 0)
+        #tell the thrust vector to go horiz
+        def applyThrust(self, direction):
+            #TODO: make thrust able to go both directions(left/right)
+            if body.SASfuel > 0:
+                self.body.apply_impulse_at_local_pont(Thruster.thrust(), (0,0))"""
+                
+
+#class SolidThruster(Thruster):
+
+
+#class LiquidThruster(Thruster):
+
