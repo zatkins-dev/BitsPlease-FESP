@@ -4,6 +4,7 @@ import pymunk.pygame_util as pygame_util
 import sys
 import os
 import math
+from enum import Enum
 from rockets import Component
 from rockets import Thruster
 from rockets import SAS
@@ -17,8 +18,12 @@ class RocketBuilder:
     componentSurface = None
     componentInfoSurface = None
 
+    componentTabs = Enum("State", "Thruster Control Potato Famine")
+    selectedTab = componentTabs.Thruster
+
     _bgColor = (0,0,0)
-    _menuPaneColor = (128,128,128)    
+    _menuPaneColor = (128,128,128)
+    _menuButtonColor = ((100,100,100),(64,64,64))  
 
     @classmethod
     def run(cls):
@@ -46,10 +51,45 @@ class RocketBuilder:
 
     @classmethod
     def drawComponentMenu(cls):
-        # as a quick test, fill with white
+        # as a quick test, fill with color
         cls.componentSurface.fill(cls._menuPaneColor)
-        testImage = pg.image.load(os.path.join("assets", "sprites", "orbiter.png")).convert_alpha()
-        Graphics.drawButton(cls.componentSurface, (10,10), (100,100), ((64,64,64), (32,32,32)), testImage, .9)
+
+        font = pg.font.SysFont('Consolas', 16)
+
+        # find the size of the text of each menu tab
+        tabTexts = [str(component)[6:len(str(component))] for component in cls.componentTabs]
+        buttonSizes = [font.size(text) for text in tabTexts]
+        buttonLines = [[]]
+
+        buttonHeight = 40
+
+        # work out which string goes on which line
+        currLine = 0
+        for i in range(len(buttonSizes)):
+            # find the width of this string
+            width = buttonSizes[i][0]
+            
+            # find the width of the rest of this line
+            lineWidth = 0
+            for text in buttonLines[currLine]:
+                lineWidth += text[0]
+
+            if width + lineWidth < cls.componentSurface.get_width():
+                buttonLines[currLine].append((buttonSizes[i][0], tabTexts[i]))
+            else:
+                currLine += 1
+                buttonLines.append([(buttonSizes[i][0], tabTexts[i])])
+
+        for row in range(len(buttonLines)):
+            width = int(cls.componentSurface.get_width() / len(buttonLines[row]))
+            for col in range(len(buttonLines[row])):
+                pos = (col * width, row * buttonHeight)
+                size = (width, buttonHeight)
+                Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, buttonLines[row][col][1], 16)
+
+        
+        # testImage = pg.image.load(os.path.join("assets", "sprites", "orbiter.png")).convert_alpha()
+        # Graphics.drawButton(cls.componentSurface, (10,10), (100,100), ((64,64,64), (32,32,32)), testImage, .9)
 
     @classmethod
     def drawComponentInfo(cls):
