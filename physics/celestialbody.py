@@ -29,7 +29,7 @@ class CelestialBody():
         shape (Shape): Shape object of planet
 
     """
-    CT_CELESTIAL_BODY = 4
+    CT_CELESTIAL_BODY = 1
     def __init__(self, name_, space_, mass_, radius_, position_x, position_y,
                  elasticity_, atmosphere_, bodytype_):
         self.mass = mass_

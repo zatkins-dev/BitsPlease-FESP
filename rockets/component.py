@@ -14,7 +14,7 @@ class Component(pm.Poly):
         _key (Int): Activation key for component (default: None)
 
     """
-    CT_COMPONENT = 1
+    CT_COMPONENT = 2
     def __init__(self, body, vertices, transform=None, radius=0):
         super().__init__(body, vertices, transform, radius)
         self.collision_type = self.CT_COMPONENT

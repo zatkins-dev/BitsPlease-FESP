@@ -49,11 +49,8 @@ _failed_components = []
 
 
 # Collision Types
-CT_COMPONENT = 1
-CT_THRUSTER = 2
-CT_CONSTRAINT = 3
-CT_CELESTIAL_BODY = 4
-CT_STRUCTURE = 5
+CT_COMPONENT = 2
+CT_CELESTIAL_BODY = 1
 
 
 # Collision Pre-Solver: Component, Celestial Body
@@ -81,15 +78,6 @@ def pre_solve_component_celestialbody(arbiter, space, _):
 
 
 def post_solve_component_celestialbody(arbiter, space, _):
-    # component = None
-    # planet = None
-    # for shape in arbiter.shapes:
-    #     if isinstance(shape, Component):
-    #         component = shape
-    #     else:
-    #         planet = shape
-    # print(arbiter.shapes)
-    # component.body.apply_force_at_local_point(10*component.body.mass*planet.friction*9.8 * component.body.velocity.normalized(), component.body.center_of_gravity)
     for component in _failed_components:
         space.remove(component)
         component.body.components.remove(component)
