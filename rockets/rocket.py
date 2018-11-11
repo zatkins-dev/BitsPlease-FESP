@@ -26,6 +26,7 @@ class Rocket(Body):
         self.thrusters = filter(lambda c: type(c) == Thruster, self.components)
         self.SASmodules = filter(lambda c: type(c) == SAS, self.components)
         self.angular_velocity_limit = 400000
+        self.destroyed=False
 
     def thrust(self, k):
         """Engage the thrusters

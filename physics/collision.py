@@ -2,6 +2,7 @@ import pymunk
 from rockets import Component
 from physics import Physics
 from pymunk.vec2d import Vec2d
+from graphics.explosion import Explosion
 
 
 # Exports
@@ -61,10 +62,8 @@ def post_solve_component_celestialbody(arbiter, space, _):
         if isinstance(shape, Component):
             component = shape
     if component is not None and arbiter.total_impulse.length/50 > _threshold_for_failure:
-        space.remove(component)
-        component.body.components.remove(component)
-        component.body.apply_impulse_at_local_point(arbiter.total_impulse, component.body.center_of_gravity)
-        print ("Removed failed component: ", component)
+        component.body.velocity = 0,0
+        component.body.destroyed = True
     return True
 
 

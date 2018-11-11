@@ -2,6 +2,7 @@ import pygame as pg
 import pymunk as pm
 from pymunk.vec2d import Vec2d
 from physics import CelestialBody
+from graphics.explosion import Explosion
 import functools
 import math
 
@@ -97,6 +98,14 @@ class Drawer:
                 flipY = lambda x, y_max: Vec2d(x[0],y_max-x[1])
                 polyPoints = list(map(lambda p: flipY(cls.to_pygame(None, p, offset), screenSize[1]), points))
                 pg.draw.polygon(screen, pg.Color("blue"), polyPoints)
+    explode = None
+    @classmethod
+    def drawExplosion(cls, screen):
+        if cls.explode is None:
+            cls.explode = Explosion()
+        screen.blit(pg.transform.scale2x(cls.explode.image), tuple(cls.intVec2d(Vec2d(screen.get_size())/2)))
+        cls.explode.update_frame()
+
 
     @classmethod
     def drawSprite(cls, screen, component, offset):

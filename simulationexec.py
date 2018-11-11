@@ -125,6 +125,7 @@ def run():
 
         grav = updateGravity(space, rocket, celestialBodies, ticksPerSec)
         space.step(1/ticksPerSec)
+        
         updateCamera(screen, Drawer.getOffset(screen, rocket))
         Drawer.drawMultiple(screen, space.shapes,
                             Drawer.getOffset(screen, rocket))
@@ -136,6 +137,7 @@ def run():
                       vel.length, vel.angle_degrees % 360,
                       grav.length, grav.angle_degrees % 360,
                       rocket.components, clock.get_fps())
+        Drawer.drawExplosion(screen)
 
         pg.display.flip()
         clock.tick(60)
