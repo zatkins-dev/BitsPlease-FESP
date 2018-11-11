@@ -1,8 +1,5 @@
 import pygame as pg
-from rockets import Component
-from rockets import Thruster
-from rockets import SAS
-from rockets import Rocket
+from rockets import *
 
 import os
 import sys
@@ -38,10 +35,11 @@ def genTank(b):
     """
     verts = [(4.2, 0), (-4.2, 0), (4.2, 46.9), (-4.2, 46.9)]
     density = 73.58
-    tank = Thruster(b, verts, (0, 1), 100000, radius=1)
+    # tank = Thruster(b, verts, (0, 1), 100000, radius=1)
+    tank = DeltaVee(b, radius=1)
     tank.density = density
     tank.key = pg.K_f
-    tank.sprite = pg.image.load(os.path.join("assets", "sprites", "tank.png")).convert_alpha()
+    # tank.sprite = pg.image.load(os.path.join("assets", "sprites", "tank.png")).convert_alpha()
     return tank
 
 
