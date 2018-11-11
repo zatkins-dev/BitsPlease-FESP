@@ -1,5 +1,5 @@
 import pymunk
-from rockets import Component, Thruster, Rocket
+from rockets import Component
 from physics import Physics
 from pymunk.vec2d import Vec2d
 
@@ -32,7 +32,6 @@ from pymunk.vec2d import Vec2d
 #       func(arbiter, space, data)
 
 
-
 collision_debug_mode = False
 
 
@@ -53,37 +52,19 @@ CT_COMPONENT = 2
 CT_CELESTIAL_BODY = 1
 
 
-# Collision Pre-Solver: Component, Celestial Body
-def pre_solve_component_celestialbody(arbiter, space, _):
+# Collision Post-Solver: Component, Celestial Body
+def post_solve_component_celestialbody(arbiter, space, _):
     component = None
     if arbiter.total_impulse.length/50 > _threshold_for_detach:
         print(arbiter.total_impulse.length/50, arbiter.shapes)
     for shape in arbiter.shapes:
         if isinstance(shape, Component):
             component = shape
-    # if component is not None and arbiter.total_impulse.length/50 > _threshold_for_detach:
-    #     detached_body = pymunk.Body()
-    #     old_body = component.body
-    #     detached_body.position = old_body.position
-    #     space.remove(component)
-    #     component.body = detached_body
-    #     space.reindex_shapes_for_body(old_body)
-    #     space.add(detached_body, component)
-    #     detached_body.apply_impulse_at_local_point(arbiter.impulse)
-    #     print ("Detached component: ", component)
     if component is not None and arbiter.total_impulse.length/50 > _threshold_for_failure:
-        _failed_components.append(component)
-        print ("Marked failed component for removal: ", component)
-    return True
-
-
-def post_solve_component_celestialbody(arbiter, space, _):
-    for component in _failed_components:
         space.remove(component)
         component.body.components.remove(component)
-        component.body.apply_impulse_at_local_point(arbiter.total_impulse)
+        component.body.apply_impulse_at_local_point(arbiter.total_impulse, component.body.center_of_gravity)
         print ("Removed failed component: ", component)
-        _failed_components.remove(component)
     return True
 
 

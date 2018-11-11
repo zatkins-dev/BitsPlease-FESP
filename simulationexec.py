@@ -82,7 +82,6 @@ def run():
 
     # Add collision handler
     collisions_component_celestialbody = space.add_collision_handler(CT_COMPONENT, CT_CELESTIAL_BODY)
-    collisions_component_celestialbody.pre_solve = pre_solve_component_celestialbody
     collisions_component_celestialbody.post_solve = post_solve_component_celestialbody
     while True:
         for event in pg.event.get():
@@ -127,9 +126,9 @@ def run():
         grav = updateGravity(space, rocket, celestialBodies, ticksPerSec)
         space.step(1/ticksPerSec)
         updateCamera(screen, Drawer.getOffset(screen, rocket))
-        Drawer.drawMultiple(screen, celestialBodies,
+        Drawer.drawMultiple(screen, space.shapes,
                             Drawer.getOffset(screen, rocket))
-        Drawer.drawMultiple(screen, rocket.components,
+        Drawer.drawMultiple(screen, celestialBodies,
                             Drawer.getOffset(screen, rocket))
         pos = rocket.position
         vel = rocket.velocity

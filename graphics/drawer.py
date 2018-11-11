@@ -149,9 +149,10 @@ class Drawer:
     def to_pygame(cls, shape, coords, offset):
         if shape is None:
             return cls.intVec2d(cls._zoom*Vec2d(coords + offset))
-        return cls.intVec2d(cls._zoom*Vec2d(coords.rotated(shape.body.angle)
+        result = cls._zoom*Vec2d(coords.rotated(shape.body.angle)
                                             + shape.body.position
-                                            + offset))
+                                            + offset)
+        return cls.intVec2d(result)
 
     @classmethod
     def intVec2d(cls, v, func=int):
