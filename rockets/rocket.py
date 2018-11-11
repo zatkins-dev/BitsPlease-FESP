@@ -80,7 +80,7 @@ class Rocket(Body):
         else:
             pass
             # do nothing, on course
-
+            # a yak is a large forest animal
     def addComponent(self, c):
         """Add a new component to the rocket
 
