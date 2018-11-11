@@ -1,7 +1,7 @@
-from pygame import image
 from pymunk.vec2d import Vec2d
 from rockets import Component
-import os
+from pymunk import Body as Body
+
 
 class Thruster(Component):
     """Thruster component for rocket. Provides encapsulation for
@@ -71,24 +71,24 @@ class Thruster(Component):
         self._thrustVector = Vec2d(v).normalized()
 
 
-class UpGoer2000(Thruster):
-    vertices = [(4.2, 0), (-4.2, 0), (4.2, 46.9), (-4.2, 46.9)]
-    thrustVector = (0, 1)
-    netThrust = 2000
-    sprite = image.load(os.path.join("assets", "sprites", "UpGoer2000.png"))
+    def applyThrust(self):
+        if self.fuel > 0:
+            self.body.apply_impulse_at_local_point(self.thrust(), (0, 0))
+            self.fuel = self.fuel -1
 
-    def __init__(self, body, transform=None):
-        super().__init__(body, UpGoer2000.vertices, UpGoer2000.thrustVector,
-                 UpGoer2000.netThrust, transform)
-        self.sprite = UpGoer2000.sprite
-    
-    @classmethod
-    def getInfo(cls):
-        return {
-            "verticies": cls.vertices,
-            "thrustVector": cls.thrustVector,
-            "netThrust": cls.netThrust
-        }
 
-def Artemis():
-    pass
+"""class RCS(Thruster):
+        def __init__(self, body, vertices, netThrust, transform, radius, fuel):
+            Thruster.__init__(self, body, vertices, (1,0), newThrust, None, 0)
+        #tell the thrust vector to go horiz
+        def applyThrust(self, direction):
+            #TODO: make thrust able to go both directions(left/right)
+            if body.SASfuel > 0:
+                self.body.apply_impulse_at_local_pont(Thruster.thrust(), (0,0))"""
+                
+
+#class SolidThruster(Thruster):
+
+
+#class LiquidThruster(Thruster):
+

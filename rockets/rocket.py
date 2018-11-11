@@ -23,33 +23,18 @@ class Rocket(Body):
         for c in components:
             c.body = self
         self.components = components
-        self.thrusters = filter(lambda c: type(c) == Thruster, self.components)
-        self.SASmodules = filter(lambda c: type(c) == SAS, self.components)
+        self.thrusters = list(filter(lambda c: type(c) == Thruster, self.components))
+        self.SASmodules = list(filter(lambda c: type(c) == SAS, self.components))
         self.angular_velocity_limit = 400000
 
-    def thrust(self, k):
-        """Engage the thrusters
+    """def turn_SAS(self, k, coeffPower):
+        #Turn SAS in direction determined by key k with power coeffPower.
 
-        Args:
-            k (Int): key of thruster to engage.
+        #Args:
+         #   k (Int): Directional key in which to engage SAS.
+          #  coeffPower (Float): Power of SAS to engage.
 
-        """
-        for t in self.components:
-            if t.key is None:
-                continue
-            if t.key == k:
-                if t.fuel > 0:
-                    self.apply_impulse_at_local_point(t.thrust(), (0, 0))
-                    t.fuel -= 1
-
-    def turn_SAS(self, k, coeffPower):
-        """Turn SAS in direction determined by key k with power coeffPower.
-
-        Args:
-            k (Int): Directional key in which to engage SAS.
-            coeffPower (Float): Power of SAS to engage.
-
-        """
+        
         for m in self.components:
             if not isinstance(m, SAS):
                 continue
@@ -67,12 +52,12 @@ class Rocket(Body):
                     print('SAS module is out of fuel')
 
     def auto_SAS(self, targetAngle):
-        """Engage SAS to sustain target angle
+        #Engage SAS to sustain target angle
 
-        Args:
-            targetAngle (Float): Angle in radians to lock with SAS.
+        #Args:
+            #targetAngle (Float): Angle in radians to lock with SAS.
 
-        """
+        
         if targetAngle > self.angle:
             self.turn_SAS(pg.K_a, 0.25)
         elif targetAngle < self.angle:
@@ -80,7 +65,22 @@ class Rocket(Body):
         else:
             pass
             # do nothing, on course
-            # a yak is a large forest animal
+    """
+
+    #hi
+    def handleEvent(self, eventKey):
+        if eventKey == pg.K_f :
+            print('thrusting')
+            for ts in self.thrusters:
+                ts.applyThrust()
+        elif eventKey == pg.K_a :
+            pass
+        elif eventKey == pg.K_d :
+            pass
+        elif eventKey == pg.K_v :
+            pass
+        
+
     def addComponent(self, c):
         """Add a new component to the rocket
 
@@ -89,3 +89,13 @@ class Rocket(Body):
 
         """
         self.components.append(c)
+        if isinstance(c, Thruster):
+            self.thrusters.append(c)
+
+    #def getFuel():
+        #adds all fuel stored in each fuel tank
+
+    #def _decreaseFuel():
+
+        #decreases fuel from first found fuel tank that contains fuel
+    
