@@ -25,10 +25,7 @@ class Component(pm.Poly):
         Returns:
             Surface: Component Sprite
         """
-        if self._sprite is None:
-            return None
-        else:
-            return self._sprite
+        return self._sprite
 
     @sprite.setter
     def sprite(self, sprite):
