@@ -2,7 +2,7 @@ import pymunk as pm
 
 
 class Component(pm.Poly):
-    """Extention of pymunk Poly class with properties for activation keys.
+    """Extention of pymunk Poly class with properties for sprites/textures.
 
     Args:
         body (Body): Body to attach component to
@@ -11,7 +11,7 @@ class Component(pm.Poly):
         radius (Float): Edge radius of shape for smoothing
 
     Attributes:
-        _key (Int): Activation key for component (default: None)
+        _sprite (Surface): pygame Surface holding image of component
 
     """
 
