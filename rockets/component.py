@@ -17,29 +17,6 @@ class Component(pm.Poly):
 
     def __init__(self, body, vertices, transform=None, radius=0):
         super().__init__(body, vertices, transform, radius)
-        self._key = None
-
-    @property
-    def key(self):
-        """Activation key for component
-
-        Returns:
-            Int: Key value
-
-        """
-        if self._key is None:
-            return None
-        return self._key
-
-    @key.setter
-    def key(self, k):
-        """Setter for {key} property
-
-        Args:
-            k (Int): New key value.
-
-        """
-        self._key = k
 
     @property
     def sprite(self):
