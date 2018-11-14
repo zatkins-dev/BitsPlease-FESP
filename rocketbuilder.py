@@ -122,11 +122,12 @@ class RocketBuilder:
     @classmethod
     def placeComponenet(cls, transform, component):
         #if it's intersecting/directly adjacent to another component on the rocket
-        if intersectsWithRocket(component)
-        return True
-        #if it's not return false, but thats a #TODO for later
-        cls.theRocket.addComponent(component) #add the component to the rocket
-        #TODO provide offset to add component at, will just add at the specified offset native to vertices for now
+        if cls.intersectsWithRocket(component) :
+            cls.theRocket.addComponent(component)
+            return True
+        else:
+            return False
+        
 
     @classmethod
     def removeComponent(cls, component):
@@ -138,7 +139,7 @@ class RocketBuilder:
         verts = component.get_vertices()
         totalverts = len(verts)
         intersects = False
-        for x in range(totalverts)
+        for x in range(totalverts):
             if x == 0:
                 verts1 = verts[0]
                 verts2 = verts[totalverts -1]
