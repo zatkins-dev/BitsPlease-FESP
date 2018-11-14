@@ -34,22 +34,16 @@ class TrajectoryCalc():
         _,y = surface.get_size()
         self._points = []
         self._points.append(position)
-        if Drawer._zoom == 1:
-            self._time = timesteps
-        elif Drawer._zoom > 1:
-            self._time = math.ceil(timesteps/math.log2(Drawer._zoom))
-        else:
-            self._time = 2*math.ceil(timesteps*-math.log2(Drawer._zoom))
         v_prev = velocity
         pos_prev = position
-        for i in range(self._time):
+        for _ in range(timesteps):
             v_prev = self.velocity(v_prev,dt,rocket.mass,thrust,phy.netGravity(planetBodies, position), 0.001)
             pos_prev = self.position(pos_prev, dt, v_prev)
             print(v_prev, pos_prev)
             self._points.append(pos_prev)
         
-        self._points = list(map(lambda x: Vec2d(x+offset)*Drawer._zoom, self._points))
-        self._points = list(map(lambda x: Vec2d(x[0],y-x[1]), self._points))
+        self._points = list(map(lambda x: (x+offset)*Drawer._zoom, self._points))
+        self._points = list(map(lambda x: (x[0],y-x[1]), self._points))
 
         pg.draw.aalines(surface, (255,255,255), False, self._points)
         pg.draw.lines(surface, (255,255,255), False, list(map(Drawer.intVec2d, self._points)), 2)
