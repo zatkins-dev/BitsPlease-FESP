@@ -25,9 +25,12 @@ class RocketBuilder:
     componentInfoSurface = None
 
     componentTabs = Enum("State", "Thruster Control Potato Famine")
+    componentList = []
     selectedTab = componentTabs.Thruster
     
     theRocket = Rocket([])
+    activeComponent = None
+    activeSprite = None
     _bgColor = (0,0,0)
     _menuPaneColor = (128,128,128)
     _menuButtonColor = ((100,100,100),(64,64,64))  
@@ -41,6 +44,10 @@ class RocketBuilder:
         cls.updateSubSurfaces()
         while True:                 # drawn menu infinitely
             cls.drawMenu()
+            pos = pg.mouse.get_pos()
+            if cls.activeSprite != None :
+                cls.activeSprite.set_rect(pos)
+             
             for event in pg.event.get():
                 if event.type == pg.VIDEORESIZE:
                     cls.surface = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
@@ -49,6 +56,24 @@ class RocketBuilder:
                     pg.display.quit()
                     pg.quit()
                     sys.exit()
+                if event.type == pg.MOUSEBUTTONUP :
+                    
+                    if cls.activeComponent == None : #not "holding" anything
+                        sprite_list = []
+                        for s in cls.componentList :
+                            sprite_list.append(s._sprite)
+                        clicked_sprites = [s for s in sprite_list if s.get_rect().collidepoint(pos)]
+                        
+                        for s in clicked_sprites :
+                            print("activated")
+                            target_index = clicked_sprites.index(s)
+                            cls.activeComponent = cls.componentList[target_index]
+                            cls.activeSprite = s
+                    else:
+                        cls.placeComponenet(pm.Transform(tx=0, ty=0), cls.activeComponent)
+                        cls.activeComponent = None
+                        cls.activeSprite = None
+                
             clock.tick(60)
             
     @classmethod
@@ -70,25 +95,25 @@ class RocketBuilder:
         buttonMargin = 10
         buttonSize = 100
 
-        componentList = None
+        cls.componentList = None
 
         if selectedTab == cls.componentTabs.Thruster:
-            componentList = Thruster.__subclasses__()
+            cls.componentList = Thruster.__subclasses__()
         elif selectedTab == cls.componentTabs.Control:
-            componentList = SAS.__subclasses__()              
+            cls.componentList = SAS.__subclasses__()              
 
         # find the number columns that can fit in the surface
         numCols = int((cls.componentSurface.get_width() + buttonMargin) / (buttonSize + buttonMargin))
-        numRows = int(len(componentList) / numCols)
-        if len(componentList) % numCols != 0:
+        numRows = int(len(cls.componentList) / numCols)
+        if len(cls.componentList) % numCols != 0:
             numRows += 1
         
         i = 0
-        for component in componentList:
+        for component in cls.componentList:
             pos = ((i % numCols) * buttonSize + buttonMargin, int(i / numCols) * buttonSize + cls._bottomOfTabs + buttonMargin)
             size = (buttonSize - buttonMargin, buttonSize - buttonMargin)
 
-            Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, component._sprite, .95)
+            Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, component._sprite, .95, cls.componentButtonClicked(component))
 
             i += 1
 
@@ -152,7 +177,7 @@ class RocketBuilder:
             pg.Rect(
                 (0,0),   # top-left corner of screen
                 (cls.surface.get_size()[0]/4, cls.surface.get_size()[1]) # left 1/4 of screen
-            ))
+             ))
 
         cls.componentInfoSurface = cls.surface.subsurface(
             pg.Rect(
@@ -195,3 +220,7 @@ class RocketBuilder:
             if intersects == True:
                     break
         return intersects
+
+    @classmethod
+    def componentButtonClicked(cls, component) :
+        activeComponent = component
