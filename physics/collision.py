@@ -40,7 +40,7 @@ collision_debug_mode = False
 # Maximum post-collision force a component can withstand without breaking off rocket
 _threshold_for_detach = 10000 # kg*m/s^2
 # Maximum post-collision force a component can withstand without being destroyed
-_threshold_for_failure = 300000 # kg*m/s^2
+_threshold_for_failure = 10000 # kg*m/s^2
 
 
 # Components that have broken from a collision
@@ -63,7 +63,7 @@ def post_solve_component_celestialbody(arbiter, space, _):
             component = shape
     if component is not None and arbiter.total_impulse.length/50 > _threshold_for_failure:
         component.body.velocity = 0,0
-        component.body.destroyed = True
+        component.destroyed = True
     return True
 
 

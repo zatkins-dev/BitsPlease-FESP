@@ -19,6 +19,7 @@ class Component(pm.Poly):
         super().__init__(body, vertices, transform, radius)
         self.collision_type = self.CT_COMPONENT
         self._key = None
+        self.destroyed = False
 
     @property
     def key(self):

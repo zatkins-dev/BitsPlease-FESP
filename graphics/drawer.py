@@ -100,12 +100,16 @@ class Drawer:
                 pg.draw.polygon(screen, pg.Color("blue"), polyPoints)
     explode = None
     @classmethod
-    def drawExplosion(cls, screen):
+    def drawExplosion(cls, screen, position, size, offset):
         if cls.explode is None:
             cls.explode = Explosion()
-        screen.blit(pg.transform.scale2x(cls.explode.image), tuple(cls.intVec2d(Vec2d(screen.get_size())/2)))
-        cls.explode.update_frame()
 
+        position = cls._zoom*(offset + position - cls.intVec2d((size[0]/2, size[1])))
+        size = cls.intVec2d(Vec2d(size)*cls._zoom)
+        scaledSprite = pg.transform.smoothscale(cls.explode.image, size)
+
+        screen.blit(scaledSprite, tuple(position))
+        cls.explode.update_frame()
 
     @classmethod
     def drawSprite(cls, screen, component, offset):
@@ -131,7 +135,16 @@ class Drawer:
             # sprite to fit within the geometry
             scaledSprite = pg.transform.scale(component.sprite,
                                               (int(maxX-minX), int(maxY-minY)))
-
+            if component.destroyed:
+                if cls.explode is None:
+                    cls.explode = Explosion()
+                scaledSprite = pg.transform.smoothscale(cls.explode.image, (int(maxX-minX), int(maxY-minY)))
+                rotSprite = pg.transform.rotozoom(scaledSprite, math.degrees(component.body.angle), cls._zoom)
+                drawX = int(pos[0] + center[0] - rotSprite.get_width()/2)
+                drawY = int(pos[1] - center[1] - rotSprite.get_height()/2)
+                screen.blit(rotSprite, (drawX,drawY))
+                cls.explode.update_frame()
+                return
             # now rotate the sprited
             rotSprite = pg.transform.rotozoom(scaledSprite, math.degrees(component.body.angle), cls._zoom)
 

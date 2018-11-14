@@ -36,6 +36,7 @@ class SAS(Component):
 
         # this number should probably be adjusted
         self.fuel = 2000
+        self._sprite = None
 
     @property
     def SASpower(self):

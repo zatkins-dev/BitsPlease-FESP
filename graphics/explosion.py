@@ -5,8 +5,8 @@ import pygame
 class Explosion(Sprite):
     def __init__(self, *group):
         super(Explosion, self).__init__(*group)
-        size = 10,10
-        self.rect = pygame.Rect((0,0),size)
+        self.size = 48,48
+        self.rect = pygame.Rect((0,0),self.size)
         self.images = []
         for i in range(5):
             self.images.append(pygame.image.load("/Users/Zach/Repos/BitsPlease-FESP/assets/sprites/explosion"+str(i+1)+".png").convert_alpha())
