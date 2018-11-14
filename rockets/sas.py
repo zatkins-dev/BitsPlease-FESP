@@ -37,7 +37,6 @@ class SAS(Component):
         # this number should probably be adjusted
         self.fuel = 2000
 
-        self.transform = transform
     @property
     def SASpower(self):
         """Rotation rate of the rocket from the SAS module
