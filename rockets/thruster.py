@@ -111,10 +111,11 @@ class DeltaVee(Thruster):
     _thrustVector = Vec2d((0,1))
     _sprite = pg.image.load(os.path.join("assets", "sprites", "UpGoer2000.png"))
     _maxFuel = 40000
+    transform = None
     
     def __init__(self, body, transform=None, radius=0):
-        Thruster.__init__(self, body, self.vertices, transform=transform, radius=radius)
-        
+       Thruster.__init__(self, body, self.vertices, transform=transform, radius=radius)
+       transform = transform    
 
 
 

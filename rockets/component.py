@@ -17,6 +17,8 @@ class Component(pm.Poly):
 
     def __init__(self, body, vertices, transform=None, radius=0):
         super().__init__(body, vertices, transform, radius)
+        
+    
 
     @property
     def sprite(self):

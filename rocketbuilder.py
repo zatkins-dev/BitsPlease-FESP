@@ -122,5 +122,8 @@ class RocketBuilder:
         cls.theRocket.addComponent(component) #add the component to the rocket
         #TODO provide offset to add component at, will just add at the specified offset native to vertices for now
 
+    @classmethod
+    def removeComponent(cls, component):
+        cls.theRocket.removeComponent(component)
    
     
