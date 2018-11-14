@@ -5,6 +5,10 @@ import sys
 import os
 import math
 from pymunk import Poly as Poly
+from pymunk import Body as Body
+from pymunk import Shape as Shape
+
+
 from enum import Enum
 from rockets import Component
 from rockets import Thruster
@@ -118,7 +122,7 @@ class RocketBuilder:
     @classmethod
     def placeComponenet(cls, transform, component):
         #if it's intersecting/directly adjacent to another component on the rocket
-        
+        if intersectsWithRocket(component)
         return True
         #if it's not return false, but thats a #TODO for later
         cls.theRocket.addComponent(component) #add the component to the rocket
@@ -132,14 +136,19 @@ class RocketBuilder:
     @classmethod
     def intersectsWithRocket(cls, component):
         verts = component.get_vertices()
-        totalverts = verts.len()
+        totalverts = len(verts)
         intersects = False
         for x in range(totalverts)
             if x == 0:
                 verts1 = verts[0]
-                verts2 = verts[totalverts]
+                verts2 = verts[totalverts -1]
             else:
                 verts1 = verts[x]
                 verts2 = verts[x-1]
-            intersects = Poly.segment_query(verts1, verts2, component)
+            for i in Rocket.shapes:
+                if i.segment_query(verts1, verts2, 1).shape != None :
+                    intersects = True
+                    break
+            if intersects == True:
+                    break
         return intersects
