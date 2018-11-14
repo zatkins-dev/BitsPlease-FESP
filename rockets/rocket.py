@@ -67,17 +67,20 @@ class Rocket(Body):
             # do nothing, on course
     """
 
-    #hi
     def handleEvent(self, eventKey):
-        if eventKey == pg.K_f :
+        if eventKey == pg.K_f : # Apply main thrust
             print('thrusting')
             for ts in self.thrusters:
                 ts.applyThrust()
-        elif eventKey == pg.K_a :
-            pass
-        elif eventKey == pg.K_d :
-            pass
-        elif eventKey == pg.K_v :
+        elif eventKey == pg.K_a : # Counter-Clockwise Rotation
+            print('Counter-Clockise Rotate')
+            for sas in self.SASmodules:
+                sas.rotateCounterClockwise()
+        elif eventKey == pg.K_d : # Clockwise Rotation
+            print('Clockise Rotate')
+            for sas in self.SASmodules:
+                sas.rotateClockwise()
+        elif eventKey == pg.K_v : # Toggle Rotation Lock
             pass
         
 
@@ -92,6 +95,8 @@ class Rocket(Body):
         self.components.append(c)
         if isinstance(c, Thruster):
             self.thrusters.append(c)
+        elif isinstance(c, SAS):
+            self.SASmodules.append(c)
 
     def removeComponent(self, c):
         for x in self.components:
