@@ -1,4 +1,5 @@
 import pygame as pg
+import pymunk as pm
 from rockets import *
 
 import os
@@ -55,10 +56,11 @@ def genSAS(b):
     """
     density = 100
     verts = [(3, 6), (-3, 6), (-3, 12), (3, 12)]
-    sas = SAS(b, verts, 0.05, 0, radius=1)
+    sas = SAS(b, verts, 0.05, 0, transform=pm.Transform(tx=0, ty=0), radius=1)
     sas.density = density
     sas.leftKey = pg.K_a
     sas.rightKey = pg.K_d
+    
     return sas
 
 

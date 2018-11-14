@@ -93,6 +93,16 @@ class Rocket(Body):
         if isinstance(c, Thruster):
             self.thrusters.append(c)
 
+    def removeComponent(self, c):
+        for x in self.components:
+            if x.get_vertices() == c.get_vertices() :
+                self.components.remove(x)
+
+
+    def debugComponentPrint(self):
+        for x in self.components :
+            print(x.get_vertices())
+    
     #def getFuel():
         #adds all fuel stored in each fuel tank
 

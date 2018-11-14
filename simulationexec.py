@@ -60,6 +60,7 @@ def run():
     celestialBodies.append(planetZach)
 
     rocket = tr.genRocket(space)
+    rocket.debugComponentPrint()
     x, y = (earth.posx + earth.radius / math.sqrt(2),
             earth.posy + earth.radius / math.sqrt(2))
     rocket.position = x, y
