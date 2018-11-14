@@ -10,6 +10,7 @@ from physics import *
 from graphics import HUD
 from graphics import Graphics as graph
 from graphics import Drawer
+from graphics import TrajectoryCalc
 
 res_x, res_y = 1000, 1000
 GROUND_Y = res_y/20
@@ -46,6 +47,7 @@ def run():
     space = pm.Space(threaded=True)
     space.threads = 2
     hud = HUD()
+    traj = TrajectoryCalc()
 
     earth = CelestialBody('earth', space, 9.331*10**22, 796375, 0, 0, 0.9, 0, pm.Body.DYNAMIC)
     celestialBodies.append(earth)
@@ -114,18 +116,22 @@ def run():
 
         grav = updateGravity(space, rocket, celestialBodies, ticksPerSec)
         space.step(1/ticksPerSec)
+        pos = rocket.position
+        vel = rocket.velocity
+        offset = Drawer.getOffset(screen, rocket)
+
         updateCamera(screen, Drawer.getOffset(screen, rocket))
         # activeComponents = list(filter(lambda c: not c.destroyed, rocket.components))
         # destroyedComponents = list(filter(lambda c: c.destroyed, rocket.components))
         # for c in destroyedComponents:
         #     if c.sprite is not None:
         #         Drawer.drawExplosion(screen, c.cache_bb().center(), c.sprite.get_size(), Drawer.getOffset(screen, rocket))
+        traj.updateTrajectory(screen, pos[0], pos[1], vel[0], vel[1], vel.angle_degrees % 360,
+                              grav[0], grav[1], grav.angle_degrees % 360, 10, celestialBodies, offset)
         Drawer.drawMultiple(screen, space.shapes,
                             Drawer.getOffset(screen, rocket))
         Drawer.drawMultiple(screen, celestialBodies,
                             Drawer.getOffset(screen, rocket))
-        pos = rocket.position
-        vel = rocket.velocity
         hud.updateHUD(pos[0], pos[1], (math.degrees(rocket.angle)+90) % 360,
                       vel.length, vel.angle_degrees % 360,
                       grav.length, grav.angle_degrees % 360,
