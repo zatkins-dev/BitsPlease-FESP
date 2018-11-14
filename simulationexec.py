@@ -64,7 +64,7 @@ def run():
     # celestialBodies.append(planetZach)
 
     rocket = tr.genRocket(space)
-
+    rocket.debugComponentPrint()
     # draw_options = pygame_util.DrawOptions(game)
     space.damping = 1
 
@@ -83,27 +83,19 @@ def run():
     # Add collision handler
     collisions_component_celestialbody = space.add_collision_handler(CT_COMPONENT, CT_CELESTIAL_BODY)
     collisions_component_celestialbody.post_solve = post_solve_component_celestialbody
+    keyInputs = []
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT or keyDown(event, pg.K_ESCAPE):
                 pg.quit()
                 sys.exit(0)
             elif event.type == pg.KEYDOWN:
-                if event.key == pg.K_a or event.key == pg.K_d:
-                    rotKey = event.key
-                    rotate = True
-                elif event.key == pg.K_f:
-                    fireKey = event.key
-                    fire = True
+                if not (event.key in keyInputs):
+                    keyInputs.append(event.key)
 
             elif event.type == pg.KEYUP:
-                if event.key == pg.K_a or event.key == pg.K_d:
-                    rotate = False
-                elif event.key == pg.K_f:
-                    fire = False
-                elif event.key == pg.K_v:
-                    sas_angle = rocket.angle
-                    auto = not auto
+                keyInputs.remove(event.key)
+
 
             elif event.type == pg.VIDEORESIZE:
                 screen = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
@@ -115,13 +107,10 @@ def run():
                     if Drawer._zoom <= Drawer._maxZoom:
                         Drawer._zoom *= 2
                 print("Zoom: {0}\n".format(Drawer._zoom))
-
-        if fire:
-            rocket.thrust(fireKey)
-        if rotate:
-            rocket.turn_SAS(rotKey, 1)
-        if auto:
-            rocket.auto_SAS(sas_angle)
+                
+        if keyInputs != [] :
+            for i in keyInputs:
+                rocket.handleEvent(i)
 
         grav = updateGravity(space, rocket, celestialBodies, ticksPerSec)
         space.step(1/ticksPerSec)

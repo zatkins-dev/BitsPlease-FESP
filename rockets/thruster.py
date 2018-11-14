@@ -1,5 +1,8 @@
 from pymunk.vec2d import Vec2d
 from rockets import Component
+from pymunk import Body as Body
+import pygame as pg
+import os
 
 
 class Thruster(Component):
@@ -17,26 +20,33 @@ class Thruster(Component):
     Attributes:
         _thrustVector (pymunk.Vec2d): direction of thrust (relative to Rocket).
         _thrustForce (float): magnitude of thrust.
-        fuel (int): current thruster fuel.
+        _fuel (int): current thruster fuel.
 
     """
 
-    def __init__(self, body, vertices, thrustVector,
-                 netThrust, transform=None, radius=0):
+    _vertices = None
+    _thrustForce = None
+    _thrustVector = None
+    _sprite = None
+    _maxFuel = None
+
+    def __init__(self, body, vertices=None, thrustForce=None, thrustVector=None, maxFuel=None, transform=None, radius=0):
+        if vertices is not None:
+            self._vertices = vertices
+        if thrustForce is not None:
+            self._thrustForce = thrustForce
+        if thrustVector is not None:
+            self._thrustVector = thrustVector
+        if maxFuel is not None:
+            self._maxFuel = maxFuel
+
         Component.__init__(self, body, vertices, transform, radius)
-        self._thrustVector = Vec2d(thrustVector)
-        self._thrustForce = netThrust
-        self.fuel = 40000
 
-    def thrust(self):
-        """Gets the scaled thrust vector for application of forces
+        self.fuel = self.maxFuel
 
-        Returns:
-            pymunk.Vec2d: Scaled thrust vector.
-
-        """
-        self.fuel -= 1
-        return self.thrustForce * self.thrustVector
+    @property
+    def vertices(self):
+        return self._vertices
 
     @property
     def thrustForce(self):
@@ -48,10 +58,6 @@ class Thruster(Component):
         """
         return self._thrustForce
 
-    @thrustForce.setter
-    def thrustForce(self, netForce):
-        self._thrustForce = netForce
-
     @property
     def thrustVector(self):
         """Direction of thrust
@@ -60,12 +66,62 @@ class Thruster(Component):
             pymunk.Vec2d: direction of thrust adjusted for rocket rotation.
 
         """
-        if self._thrustVector is None:
-            self._thrustVector = Vec2d(0, 1)
-        tVect = Vec2d(self._thrustVector)
-        tVect.cpvrotate(self.body.rotation_vector)
-        return tVect
+        return self._thrustVector
 
-    @thrustVector.setter
-    def thrustVector(self, v):
-        self._thrustVector = Vec2d(v).normalized()
+    @property
+    def maxFuel(self):
+        return self._maxFuel
+
+    @property
+    def fuel(self):
+        return self._fuel
+
+    @fuel.setter
+    def fuel(self, newFuel):
+        if newFuel >= 0:
+            self._fuel = newFuel
+
+    def thrust(self):
+        """Gets the scaled thrust vector for application of forces
+
+        Returns:
+            pymunk.Vec2d: Scaled thrust vector.
+
+        """
+        return self.thrustForce * self.thrustVector
+
+    def applyThrust(self):
+        if self.fuel > 0:
+            self.body.apply_impulse_at_local_point(self.thrust(), (0, 0))
+            self.fuel = self.fuel -1
+
+
+"""class RCS(Thruster):
+        def __init__(self, body, vertices, netThrust, transform, radius, _fuel):
+            Thruster.__init__(self, body, vertices, (1,0), newThrust, None, 0)
+        #tell the thrust vector to go horiz
+        def applyThrust(self, direction):
+            #TODO: make thrust able to go both directions(left/right)
+            if body.SASfuel > 0:
+                self.body.apply_impulse_at_local_pont(Thruster.thrust(), (0,0))"""
+                
+class DeltaVee(Thruster):
+    _vertices = [(4.2, 0), (-4.2, 0), (4.2, 46.9), (-4.2, 46.9)]
+    _thrustForce = 50000
+    _thrustVector = Vec2d((0,1))
+    _sprite = pg.image.load(os.path.join("assets", "sprites", "UpGoer2000.png"))
+    _maxFuel = 40000
+   
+    
+    def __init__(self, body, transform=None, radius=0):
+       Thruster.__init__(self, body, self.vertices, transform=transform, radius=radius)
+   
+
+
+
+
+#class SolidThruster(Thruster):
+
+
+#class LiquidThruster(Thruster):
+
