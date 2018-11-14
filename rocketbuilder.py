@@ -32,6 +32,8 @@ class RocketBuilder:
     _menuPaneColor = (128,128,128)
     _menuButtonColor = ((100,100,100),(64,64,64))  
 
+    _bottomOfTabs = 0
+
     @classmethod
     def run(cls):
         # while loop to draw infinitely for testing purposes
@@ -58,17 +60,52 @@ class RocketBuilder:
 
     @classmethod
     def drawComponentMenu(cls):
-        # as a quick test, fill with color
+        # fill with color
         cls.componentSurface.fill(cls._menuPaneColor)
+        cls.drawComponentTabs()
+        cls.drawComponentList(cls.selectedTab)
 
+    @classmethod
+    def drawComponentList(cls, selectedTab):
+        buttonMargin = 10
+        buttonSize = 100
+
+        componentList = None
+
+        if selectedTab == cls.componentTabs.Thruster:
+            componentList = Thruster.__subclasses__()
+        elif selectedTab == cls.componentTabs.Control:
+            componentList = SAS.__subclasses__()              
+
+        # find the number columns that can fit in the surface
+        numCols = int((cls.componentSurface.get_width() + buttonMargin) / (buttonSize + buttonMargin))
+        numRows = int(len(componentList) / numCols)
+        if len(componentList) % numCols != 0:
+            numRows += 1
+        
+        i = 0
+        for component in componentList:
+            pos = ((i % numCols) * buttonSize + buttonMargin, int(i / numCols) * buttonSize + cls._bottomOfTabs + buttonMargin)
+            size = (buttonSize - buttonMargin, buttonSize - buttonMargin)
+
+            Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, component._sprite, .95)
+
+            i += 1
+
+        
+
+    @classmethod
+    def drawComponentTabs(cls):
         font = pg.font.SysFont('Consolas', 16)
+        buttonHeight = 40
+        buttonTextMargin = 15
 
         # find the size of the text of each menu tab
         tabTexts = [str(component)[6:len(str(component))] for component in cls.componentTabs]
         buttonSizes = [font.size(text) for text in tabTexts]
+        buttonSizes = [(x + 2*buttonTextMargin, y) for (x,y) in buttonSizes]
         buttonLines = [[]]
 
-        buttonHeight = 40
 
         # work out which string goes on which line
         currLine = 0
@@ -87,16 +124,21 @@ class RocketBuilder:
                 currLine += 1
                 buttonLines.append([(buttonSizes[i][0], tabTexts[i])])
 
+        cls._bottomOfTabs = len(buttonLines) * buttonHeight
+
         for row in range(len(buttonLines)):
             width = int(cls.componentSurface.get_width() / len(buttonLines[row]))
             for col in range(len(buttonLines[row])):
                 pos = (col * width, row * buttonHeight)
-                size = (width, buttonHeight)
+                size = None
+                # now check if this is the rightmost button in a row
+                # if so, need to extend it to dodge the integer division required earlier
+                # from leaving a gap
+                if col == len(buttonLines[row]) - 1:
+                    size = (cls.componentSurface.get_width() - pos[0], buttonHeight)
+                else:
+                    size = (width, buttonHeight)
                 Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, buttonLines[row][col][1], 16)
-
-        
-        # testImage = pg.image.load(os.path.join("assets", "sprites", "orbiter.png")).convert_alpha()
-        # Graphics.drawButton(cls.componentSurface, (10,10), (100,100), ((64,64,64), (32,32,32)), testImage, .9)
 
     @classmethod
     def drawComponentInfo(cls):

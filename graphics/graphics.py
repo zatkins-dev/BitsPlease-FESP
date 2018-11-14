@@ -86,12 +86,12 @@ class Graphics(object):
             #scale the sprite to fit within the button
             if buttonContent.get_width() > buttonContent.get_height():
                 ratio = buttonContent.get_height() / buttonContent.get_width()
-                content = pygame.transform.smoothscale(buttonContent, (newWidth, int(newHeight * ratio)))
+                content = pygame.transform.scale(buttonContent, (newWidth, int(newHeight * ratio)))
             elif buttonContent.get_width() < buttonContent.get_height():
                 ratio =  buttonContent.get_width() / buttonContent.get_height()
-                content = pygame.transform.smoothscale(buttonContent, (int(newWidth * ratio), newHeight))
+                content = pygame.transform.scale(buttonContent, (int(newWidth * ratio), newHeight))
             else:
-                content = pygame.transform.smoothscale(buttonContent, (newWidth, newHeight))
+                content = pygame.transform.scale(buttonContent, (newWidth, newHeight))
 
         else:
             if(not pygame.font.get_init()):
