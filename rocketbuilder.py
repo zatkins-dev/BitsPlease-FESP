@@ -20,7 +20,8 @@ class RocketBuilder:
 
     componentTabs = Enum("State", "Thruster Control Potato Famine")
     selectedTab = componentTabs.Thruster
-
+    commandModule = commandModule()
+    theRocket = Rocket(self, commandModule)
     _bgColor = (0,0,0)
     _menuPaneColor = (128,128,128)
     _menuButtonColor = ((100,100,100),(64,64,64))  
@@ -110,3 +111,15 @@ class RocketBuilder:
                 (3*cls.surface.get_size()[0]/4, 0),  # origin of right 1/4 of screen
                 (cls.surface.get_size()[0]/4, cls.surface.get_size()[1]) # right 1/4 of screen
             ))
+    
+
+    @classmethod
+    def placeComponenet(cls, transform, component):
+        #if it's intersecting/directly adjacent to another component on the rocket
+        return True
+        #if it's not return false, but thats a #TODO for later
+        theRocket.addComponent(component) #add the component to the rocket
+        #TODO provide offset to add component at, will just add at the specified offset native to vertices for now
+
+   
+    
