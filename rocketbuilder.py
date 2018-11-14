@@ -113,7 +113,7 @@ class RocketBuilder:
             pos = ((i % numCols) * buttonSize + buttonMargin, int(i / numCols) * buttonSize + cls._bottomOfTabs + buttonMargin)
             size = (buttonSize - buttonMargin, buttonSize - buttonMargin)
 
-            Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, component._sprite, .95, cls.componentButtonClicked(component))
+            Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, component._sprite, .95, lambda: cls.componentButtonClicked(component))
 
             i += 1
 
