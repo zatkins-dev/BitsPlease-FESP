@@ -1,4 +1,3 @@
-from abc import ABC, abstractmethod
 from pymunk.vec2d import Vec2d
 from rockets import Component
 from pymunk import Body as Body
@@ -6,7 +5,7 @@ import pygame as pg
 import os
 
 
-class Thruster(ABC, Component):
+class Thruster(Component):
     """Thruster component for rocket. Provides encapsulation for
        thrust direction and magnitude. Must be attached to a body.
 
@@ -25,17 +24,31 @@ class Thruster(ABC, Component):
 
     """
 
-    @abstractmethod
-    def __init__(self, body, transform=None, radius=0):
-        pass
+    _vertices = None
+    _thrustForce = None
+    _thrustVector = None
+    _sprite = None
+    _maxFuel = None
+
+    def __init__(self, body, vertices=None, thrustForce=None, thrustVector=None, maxFuel=None, transform=None, radius=0):
+        if vertices is not None:
+            self._vertices = vertices
+        if thrustForce is not None:
+            self._thrustForce = thrustForce
+        if thrustVector is not None:
+            self._thrustVector = thrustVector
+        if maxFuel is not None:
+            self._maxFuel = maxFuel
+
+        Component.__init__(self, body, vertices, transform, radius)
+
+        self.fuel = self.maxFuel
 
     @property
-    @abstractmethod
     def vertices(self):
-        pass
+        return self._vertices
 
     @property
-    @abstractmethod
     def thrustForce(self):
         """Magnitude of thrust
 
@@ -43,10 +56,9 @@ class Thruster(ABC, Component):
             float: thrust magnitude.
 
         """
-        pass
+        return self._thrustForce
 
     @property
-    @abstractmethod
     def thrustVector(self):
         """Direction of thrust
 
@@ -54,17 +66,11 @@ class Thruster(ABC, Component):
             pymunk.Vec2d: direction of thrust adjusted for rocket rotation.
 
         """
-        pass
+        return self._thrustVector
 
     @property
-    @abstractmethod
-    def sprite(self):
-        pass
-
-    @property
-    @abstractmethod
     def maxFuel(self):
-        pass
+        return self._maxFuel
 
     @property
     def fuel(self):
@@ -100,7 +106,6 @@ class Thruster(ABC, Component):
                 self.body.apply_impulse_at_local_pont(Thruster.thrust(), (0,0))"""
                 
 class DeltaVee(Thruster):
-
     _vertices = [(4.2, 0), (-4.2, 0), (4.2, 46.9), (-4.2, 46.9)]
     _thrustForce = 50000
     _thrustVector = Vec2d((0,1))
@@ -108,28 +113,8 @@ class DeltaVee(Thruster):
     _maxFuel = 40000
     
     def __init__(self, body, transform=None, radius=0):
-        Component.__init__(self, body, self.vertices, transform, radius)
-        self._fuel = self.maxFuel
-
-    @property
-    def vertices(self):
-        return self._vertices
-
-    @property
-    def thrustForce(self):
-        return self._thrustForce
-
-    @property
-    def thrustVector(self):
-        return self._thrustVector
-
-    @property
-    def sprite(self):
-        return self._sprite
-
-    @property
-    def maxFuel(self):
-        return self._maxFuel
+        Thruster.__init__(self, body, self.vertices, transform=transform, radius=radius)
+        
 
 
 
