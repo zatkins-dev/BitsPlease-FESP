@@ -223,4 +223,4 @@ class RocketBuilder:
 
     @classmethod
     def componentButtonClicked(cls, component) :
-        activeComponent = component
+        cls.activeComponent = component
