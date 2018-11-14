@@ -6,6 +6,8 @@ import os
 import rockets.testrocket as tr
 import math
 from physics import * 
+from rockets import Thruster
+from functools import reduce
 
 from graphics import HUD
 from graphics import Graphics as graph
@@ -27,7 +29,7 @@ def keyUp(e, key):
 
 def updateGravity(space, rocket, objects, ticksPerSec):
     # space.gravity = Physics.netGravity(objects, rocket)
-    deltaV = Vec2d(Physics.netGravity(objects, rocket))
+    deltaV = Vec2d(Physics.netGravity(objects, rocket.position))
     pm.Body.update_velocity(rocket, deltaV, 1, 1/ticksPerSec)
     return deltaV
 
@@ -70,11 +72,6 @@ def run():
     # draw_options = pygame_util.DrawOptions(game)
     space.damping = 1
 
-    fire = False
-    rotate = False
-    auto = False
-    sas_angle = 0
-
     x, y = (0, earth.posx + earth.radius)
     rocket.position = int(x), int(y)
 
@@ -104,9 +101,10 @@ def run():
 
             elif event.type == pg.MOUSEBUTTONDOWN:
                 if event.button == 4:
-                    Drawer._zoom /= 2
+                    if Drawer._zoom > Drawer._minZoom:
+                        Drawer._zoom /= 2
                 elif event.button == 5:
-                    if Drawer._zoom <= Drawer._maxZoom:
+                    if Drawer._zoom < Drawer._maxZoom:
                         Drawer._zoom *= 2
                 print("Zoom: {0}\n".format(Drawer._zoom))
                 
@@ -126,8 +124,11 @@ def run():
         # for c in destroyedComponents:
         #     if c.sprite is not None:
         #         Drawer.drawExplosion(screen, c.cache_bb().center(), c.sprite.get_size(), Drawer.getOffset(screen, rocket))
-        traj.updateTrajectory(screen, pos[0], pos[1], vel[0], vel[1], vel.angle_degrees % 360,
-                              grav[0], grav[1], grav.angle_degrees % 360, 10, celestialBodies, offset)
+        # updateTrajectory2(self, surface, position, velocity, timesteps, dt, planetBodies, rocket, offset)
+        thrusters = filter(lambda c: isinstance(c, Thruster), rocket.components)
+        totalThrust = sum(map(lambda t: t._thrustForce*t._thrustVector, thrusters))
+        print("Thrust", totalThrust)
+        traj.updateTrajectory2(screen, pos, vel, 10, 0.5, totalThrust, celestialBodies, rocket, offset)
         Drawer.drawMultiple(screen, space.shapes,
                             Drawer.getOffset(screen, rocket))
         Drawer.drawMultiple(screen, celestialBodies,

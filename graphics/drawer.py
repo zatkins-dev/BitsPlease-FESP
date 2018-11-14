@@ -9,15 +9,17 @@ import math
 
 class Drawer:
     _maxZoom = 8
+    _minZoom = 2**-16
+
     _zoom = float(1)
 
     @classmethod
     def get_zoom(cls):
-        return Drawer._zoom
+        return cls._zoom
 
     @classmethod
     def set_zoom(cls, zoom):
-        Drawer._zoom = zoom
+        cls._zoom = zoom
 
     zoom = property(get_zoom, set_zoom)
 
