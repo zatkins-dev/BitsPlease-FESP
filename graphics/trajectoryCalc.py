@@ -4,8 +4,7 @@ from physics import Physics as phy
 import math
 from graphics import Drawer
 from pymunk.vec2d import Vec2d
-import numpy as np
-from scipy.integrate import odeint
+
 
 class TrajectoryCalc():
     def __init__(self):
