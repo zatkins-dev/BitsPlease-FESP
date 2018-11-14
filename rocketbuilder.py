@@ -9,6 +9,7 @@ from rockets import Component
 from rockets import Thruster
 from rockets import SAS
 from rockets import Rocket
+from rockets import commandmodule
 
 from graphics import Graphics
 
@@ -20,8 +21,8 @@ class RocketBuilder:
 
     componentTabs = Enum("State", "Thruster Control Potato Famine")
     selectedTab = componentTabs.Thruster
-    commandModule = commandModule()
-    theRocket = Rocket(self, commandModule)
+    
+    theRocket = Rocket([])
     _bgColor = (0,0,0)
     _menuPaneColor = (128,128,128)
     _menuButtonColor = ((100,100,100),(64,64,64))  
