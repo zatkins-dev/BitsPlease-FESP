@@ -88,6 +88,7 @@ class Rocket(Body):
             c (Component): Component to attach to rocket
 
         """
+        c.body = self
         self.components.append(c)
         if isinstance(c, Thruster):
             self.thrusters.append(c)
