@@ -25,6 +25,8 @@ class RocketBuilder:
     _menuPaneColor = (128,128,128)
     _menuButtonColor = ((100,100,100),(64,64,64))  
 
+    _bottomOfTabs = 0
+
     @classmethod
     def run(cls):
         # while loop to draw infinitely for testing purposes
@@ -54,6 +56,36 @@ class RocketBuilder:
         # fill with color
         cls.componentSurface.fill(cls._menuPaneColor)
         cls.drawComponentTabs()
+        cls.drawComponentList(cls.selectedTab)
+
+    @classmethod
+    def drawComponentList(cls, selectedTab):
+        buttonMargin = 10
+        buttonSize = 100
+
+        componentList = None
+
+        if selectedTab == cls.componentTabs.Thruster:
+            componentList = Thruster.__subclasses__()
+        elif selectedTab == cls.componentTabs.Control:
+            componentList = SAS.__subclasses__()              
+
+        # find the number columns that can fit in the surface
+        numCols = int((cls.componentSurface.get_width() + buttonMargin) / (buttonSize + buttonMargin))
+        numRows = int(len(componentList) / numCols)
+        if len(componentList) % numCols != 0:
+            numRows += 1
+        
+        i = 0
+        for component in componentList:
+            pos = ((i % numCols) * buttonSize + buttonMargin, int(i / numCols) * buttonSize + cls._bottomOfTabs + buttonMargin)
+            size = (buttonSize - buttonMargin, buttonSize - buttonMargin)
+
+            Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, component._sprite, .95)
+
+            i += 1
+
+        
 
     @classmethod
     def drawComponentTabs(cls):
@@ -85,6 +117,8 @@ class RocketBuilder:
                 currLine += 1
                 buttonLines.append([(buttonSizes[i][0], tabTexts[i])])
 
+        cls._bottomOfTabs = len(buttonLines) * buttonHeight
+
         for row in range(len(buttonLines)):
             width = int(cls.componentSurface.get_width() / len(buttonLines[row]))
             for col in range(len(buttonLines[row])):
@@ -97,7 +131,6 @@ class RocketBuilder:
                     size = (cls.componentSurface.get_width() - pos[0], buttonHeight)
                 else:
                     size = (width, buttonHeight)
-                print(size)
                 Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, buttonLines[row][col][1], 16)
 
     @classmethod
