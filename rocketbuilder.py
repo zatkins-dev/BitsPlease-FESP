@@ -118,7 +118,7 @@ class RocketBuilder:
         #if it's intersecting/directly adjacent to another component on the rocket
         return True
         #if it's not return false, but thats a #TODO for later
-        theRocket.addComponent(component) #add the component to the rocket
+        cls.theRocket.addComponent(component) #add the component to the rocket
         #TODO provide offset to add component at, will just add at the specified offset native to vertices for now
 
    
