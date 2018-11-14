@@ -93,6 +93,8 @@ class Rocket(Body):
         if isinstance(c, Thruster):
             self.thrusters.append(c)
 
+    def removeComponent(self, c):
+        pass
     #def getFuel():
         #adds all fuel stored in each fuel tank
 
