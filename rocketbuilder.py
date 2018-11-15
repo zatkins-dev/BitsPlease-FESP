@@ -81,6 +81,7 @@ class RocketBuilder:
         cls.surface.fill(cls._bgColor)
         cls.drawComponentMenu()
         cls.drawComponentInfo()
+        cls.drawHeldSprite()
         pg.display.flip()
 
     @classmethod
@@ -169,6 +170,13 @@ class RocketBuilder:
     def drawComponentInfo(cls):
         # as a quick test, fill with white
         cls.componentInfoSurface.fill(cls._menuPaneColor)
+
+    @classmethod
+    def drawHeldSprite(cls):
+        if cls.activeComponent is not None:
+            mouse_x, mouse_y = pg.mouse.get_pos()
+            pos = (mouse_x - cls.activeComponent._sprite.get_width()/2, mouse_y - cls.activeComponent._sprite.get_height()/2)
+            cls.surface.blit(cls.activeComponent._sprite, pos)
 
     @classmethod
     def updateSubSurfaces(cls):
