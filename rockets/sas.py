@@ -30,7 +30,7 @@ class SAS(Component):
                  transform=None, radius=0):
         Component.__init__(self, body, vertices, transform, radius)
         self._SASangle = 0
-        self.fuel = 0
+        self.fuel = 20000
 
     def rotateCounterClockwise(self):
         for ts in self.body.thrusters:
