@@ -203,7 +203,7 @@ class RocketBuilder:
     
     @classmethod
     def intersectsWithRocket(cls, component):
-        verts = component.get_vertices()
+        verts = component._vertices
         totalverts = len(verts)
         intersects = False
         for x in range(totalverts):
@@ -213,7 +213,7 @@ class RocketBuilder:
             else:
                 verts1 = verts[x]
                 verts2 = verts[x-1]
-            for i in Rocket.shapes:
+            for i in cls.theRocket.components:
                 if i.segment_query(verts1, verts2, 1).shape != None :
                     intersects = True
                     break
