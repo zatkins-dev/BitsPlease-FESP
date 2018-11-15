@@ -1,6 +1,6 @@
 from pymunk import Body as Body
 import pygame as pg
-from rockets import Thruster
+from rockets import Thruster, RCSThruster
 from rockets import SAS
 
 
@@ -71,7 +71,8 @@ class Rocket(Body):
         if eventKey == pg.K_f : # Apply main thrust
             print('thrusting')
             for ts in self.thrusters:
-                ts.applyThrust()
+                if not isinstance(ts, RCSThruster):
+                    ts.applyThrust()
         elif eventKey == pg.K_a : # Counter-Clockwise Rotation
             print('Counter-Clockise Rotate')
             for sas in self.SASmodules:
