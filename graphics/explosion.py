@@ -3,13 +3,12 @@ import pygame
 
 
 class Explosion(Sprite):
-    def __init__(self, *group):
-        super(Explosion, self).__init__(*group)
+    def __init__(self, duration, images, *group):
+        Sprite.__init__(self,*group)
+        self.duration = duration
         self.size = 48,48
         self.rect = pygame.Rect((0,0),self.size)
-        self.images = []
-        for i in range(5):
-            self.images.append(pygame.image.load("/Users/Zach/Repos/BitsPlease-FESP/assets/sprites/explosion"+str(i+1)+".png").convert_alpha())
+        self.images = images
         self.current_frame = 0
         self.image = self.images[self.current_frame]
 
@@ -18,4 +17,12 @@ class Explosion(Sprite):
         if self.current_frame >= len(self.images):
             self.current_frame = 0
         self.image = self.images[self.current_frame]
+
+    def get_draw(self):
+        if self.duration == 0:
+            return None
+        self.update_frame()
+        self.duration -= 1
+        return self.image
+
         

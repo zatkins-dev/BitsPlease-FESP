@@ -1,5 +1,6 @@
 import pymunk as pm
 import pygame as pg
+from physics.collision import CT_CELESTIAL_BODY
 
 
 class CelestialBody():
@@ -29,7 +30,6 @@ class CelestialBody():
         shape (Shape): Shape object of planet
 
     """
-    CT_CELESTIAL_BODY = 1
     def __init__(self, name_, space_, mass_, radius_, position_x, position_y,
                  elasticity_, atmosphere_, bodytype_):
         self.mass = mass_
@@ -46,10 +46,10 @@ class CelestialBody():
         #     self.body = pm.Body(body_type=pm.Body.KINEMATIC)
         self.body = pm.Body(body_type=bodytype_)
         self.shape = pm.Circle(self.body, self.radius)
-        self.shape.friction = 0.35
+        self.shape.friction = 0.80
         self.shape.mass = self.mass
         self.shape.elasticity = self.elasticity
-        self.shape.collision_type = self.CT_CELESTIAL_BODY
+        self.shape.collision_type = CT_CELESTIAL_BODY
         self.body.position = self.posx, self.posy
         space_.add(self.body, self.shape)
 

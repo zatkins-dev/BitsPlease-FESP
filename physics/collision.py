@@ -1,8 +1,5 @@
 import pymunk
-from rockets import Component
-from physics import Physics
 from pymunk.vec2d import Vec2d
-from graphics.explosion import Explosion
 
 
 # Exports
@@ -54,16 +51,15 @@ CT_CELESTIAL_BODY = 1
 
 
 # Collision Post-Solver: Component, Celestial Body
-def post_solve_component_celestialbody(arbiter, space, _):
+def post_solve_component_celestialbody(arbiter, space, data):
     component = None
     if arbiter.total_impulse.length/50 > _threshold_for_detach:
         print(arbiter.total_impulse.length/50, arbiter.shapes)
     for shape in arbiter.shapes:
-        if isinstance(shape, Component):
+        if shape.collision_type == CT_COMPONENT:
             component = shape
     if component is not None and arbiter.total_impulse.length/50 > _threshold_for_failure:
-        component.body.velocity = 0,0
-        component.destroyed = True
+        component.body.destroyed = True
     return True
 
 

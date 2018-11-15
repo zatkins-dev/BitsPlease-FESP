@@ -72,14 +72,16 @@ class Rocket(Body):
         if eventKey == pg.K_f : # Apply main thrust
             for ts in self.thrusters:
                 # check to make sure this isn't an RCS thruster
-                if not isinstance(ts, RCSThruster):
+                if not isinstance(ts, RCSThruster) and not ts.destroyed:
                     ts.applyThrust()
         elif eventKey == pg.K_a : # Counter-Clockwise Rotation
             for sas in self.SASmodules:
-                sas.rotateCounterClockwise()
+                if not sas.destroyed:
+                    sas.rotateCounterClockwise()
         elif eventKey == pg.K_d : # Clockwise Rotation
             for sas in self.SASmodules:
-                sas.rotateClockwise()
+                if not sas.destroyed:
+                    sas.rotateClockwise()
         elif eventKey == pg.K_v : # Toggle Rotation Lock
             pass
         

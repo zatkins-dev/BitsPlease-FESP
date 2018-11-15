@@ -1,5 +1,5 @@
 import pymunk as pm
-
+from physics.collision import CT_COMPONENT
 
 class Component(pm.Poly):
     """Extention of pymunk Poly class with properties for sprites/textures.
@@ -14,10 +14,9 @@ class Component(pm.Poly):
         _sprite (Surface): pygame Surface holding image of component
 
     """
-    CT_COMPONENT = 2
     def __init__(self, body, vertices, transform=None, radius=0):
         super().__init__(body, vertices, transform, radius)
-        self.collision_type = self.CT_COMPONENT
+        self.collision_type = CT_COMPONENT
         self._key = None
         self.destroyed = False
 

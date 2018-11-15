@@ -25,7 +25,6 @@ class TrajectoryCalc():
         self._dt = 0.5
         # self._pixelArr = pg.PixelArray(pg.Surface(pg.display.get_surface().get_size()))
     def velocity(self,v_prev,dt,mass,thrust,grav,k):
-        print(grav)
         dvdt = thrust/mass + grav - k/mass * Vec2d(v_prev[0]**2, v_prev[1]**2)
         return Vec2d(v_prev + dt*dvdt)
     def position(self,pos_prev,dt,velocity):
@@ -39,7 +38,6 @@ class TrajectoryCalc():
         for _ in range(timesteps):
             v_prev = self.velocity(v_prev,dt,rocket.mass,thrust,phy.netGravity(planetBodies, position), 0.001)
             pos_prev = self.position(pos_prev, dt, v_prev)
-            print(v_prev, pos_prev)
             self._points.append(pos_prev)
         
         self._points = list(map(lambda x: (x+offset)*Drawer._zoom, self._points))
@@ -80,8 +78,6 @@ class TrajectoryCalc():
             self._time = math.ceil(time/math.log2(Drawer._zoom))
         else:
             self._time = 2*math.ceil(time*-math.log2(Drawer._zoom))
-        if self._dt != testdt:
-            print(self._dt)
 
         for i in range(self._time):
             if(i == 0):
@@ -99,6 +95,5 @@ class TrajectoryCalc():
             self._yPosition.append(self._yPosition[i-1] - self._yVelocity[i-1] * self._dt - .5 * self._yAccel[i-1] * self._dt**2)
             self._points.append(Vec2d(self._xPosition[i] + offset[0], self._yPosition[i] + offset[1])*Drawer._zoom)
             
-        print (self._points)
         pg.draw.aalines(surface, (255,255,255), False, self._points)
         pg.draw.lines(surface, (255,255,255), False, list(map(Drawer.intVec2d, self._points)), 2)
