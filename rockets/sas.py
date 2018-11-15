@@ -23,40 +23,53 @@ class SAS(Component):
 
     """
 
+    _vertices = None
+    _sprite = None
+
     def __init__(self, body, vertices, SASpower, angle,
                  transform=None, radius=0):
         Component.__init__(self, body, vertices, transform, radius)
         self._SASangle = 0
+        self.fuel = 20000
 
-        # SASpower: rotation of the rocket from the SAS module
-        self._SASpower = 0.05
+    def rotateCounterClockwise(self):
+        for ts in self.body.thrusters:
+            # check the direction of each thruster, and apply if it will rotate counter clockwise
+            if ts.thrustVector.x < 0 and ts.center_of_gravity.y > self.body.center_of_gravity.y:
+                # left-directed vector and on the top half of the rocket
+                ts.applyThrust()
+            elif ts.thrustVector.x > 0 and ts.center_of_gravity.y < self.body.center_of_gravity.y:
+                # right-directed vector and on the bottom half of the rocket
+                ts.applyThrust()
 
-        self.leftKey = None
-        self.rightKey = None
-
-        # this number should probably be adjusted
-        self.fuel = 2000
-        self._sprite = None
+    def rotateClockwise(self):
+        for ts in self.body.thrusters:
+            # check the direction of each thruster, and apply if it will rotate clockwise
+            if ts.thrustVector.x > 0 and ts.center_of_gravity.y > self.body.center_of_gravity.y:
+                # right-directed vector and on the top half of the rocket
+                ts.applyThrust()
+            elif ts.thrustVector.x < 0 and ts.center_of_gravity.y < self.body.center_of_gravity.y:
+                # left-directed vector and on the bottom half of the rocket
+                ts.applyThrust()
 
     @property
-    def SASpower(self):
-        """Rotation rate of the rocket from the SAS module
+    def isAngleLocked(self):
+        """Whether or not the SAS module is holding an angle
 
         Returns:
-            Float: Value of _SASpower
-
+            Boolean: Value of _isLocked
         """
-        return self._SASpower
+        return self._isLocked
 
-    @SASpower.setter
-    def SASpower(self, newPower):
-        """Setter for SASpower
+    @property
+    def toggleAngleLock(self):
+        """Toggles the SAS angle locking, and returns the current value
 
-        Args:
-            newPower (Float): New value for _SASpower
-
+        Returns:
+            Boolean: Value of _isLocked
         """
-        self._SASpower = newPower
+        self._isLocked = not self._isLocked
+        return self._isLocked
 
     @property
     def SASangle(self):

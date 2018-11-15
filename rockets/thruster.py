@@ -29,8 +29,9 @@ class Thruster(Component):
     _thrustVector = None
     _sprite = None
     _maxFuel = None
+    _density = None
 
-    def __init__(self, body, vertices=None, thrustForce=None, thrustVector=None, maxFuel=None, transform=None, radius=0):
+    def __init__(self, body, vertices=None, thrustForce=None, thrustVector=None, maxFuel=None, density=None, transform=None, radius=0):
         if vertices is not None:
             self._vertices = vertices
         if thrustForce is not None:
@@ -39,9 +40,12 @@ class Thruster(Component):
             self._thrustVector = thrustVector
         if maxFuel is not None:
             self._maxFuel = maxFuel
+        if density is not None:
+            self._density = density
 
-        Component.__init__(self, body, vertices, transform, radius)
+        Component.__init__(self, body, self.vertices, transform, radius)
 
+        self.density = self._density
         self.fuel = self.maxFuel
 
     @property
@@ -92,18 +96,53 @@ class Thruster(Component):
 
     def applyThrust(self):
         if self.fuel > 0:
-            self.body.apply_impulse_at_local_point(self.thrust(), (0, 0))
+            self.body.apply_impulse_at_local_point(self.thrust(), (self.center_of_gravity.x, self.center_of_gravity.y))
             self.fuel = self.fuel -1
 
 
-"""class RCS(Thruster):
-        def __init__(self, body, vertices, netThrust, transform, radius, _fuel):
-            Thruster.__init__(self, body, vertices, (1,0), newThrust, None, 0)
-        #tell the thrust vector to go horiz
-        def applyThrust(self, direction):
-            #TODO: make thrust able to go both directions(left/right)
-            if body.SASfuel > 0:
-                self.body.apply_impulse_at_local_pont(Thruster.thrust(), (0,0))"""
+class RCSThruster(Thruster):
+    """An RCS Thruster is intended to be a smaller thruster, that pulls
+       fuel from the rocket's SAS fuel instead of its own supply.
+
+    """
+
+    _maxFuel = 0
+
+    def __init__(self, body, vertices=None, thrustForce=None, thrustVector=None, density=None, transform=None, radius=0):
+        Thruster.__init__(self, body, vertices, thrustForce, thrustVector, None, density, transform, radius)
+    
+    def applyThrust(self):
+        sasModule = None
+        for module in self.body.SASmodules:
+            if module.fuel > 0:
+                sasModule = module
+                break
+        if sasModule is not None:
+            self.body.apply_impulse_at_local_point(self.thrust(), (self.center_of_gravity.x, self.center_of_gravity.y))
+            sasModule.fuel -= 1
+
+class LeftRCS(RCSThruster):
+    _vertices = [(1.2, 37), (4.2, 37), (4.2, 42), (1.2, 42)]
+    _thrustForce = 5000
+    _thrustVector = Vec2d((-1, 0))
+    _sprite = pg.image.load(os.path.join("assets", "sprites", "RCSLeft.png"))
+    _density = 45
+
+    def __init(self, body, transform=None, radius=0):
+        print(self._vertices)
+        Thruster.__init__(self, body, transform=transform, radius=radius)
+
+class RightRCS(RCSThruster):
+    _vertices = [(-1.2, 37), (-4.2, 37), (-4.2, 42), (-1.2, 42)]
+    _thrustForce = 5000
+    _thrustVector = Vec2d((1, 0))
+    _sprite = pg.image.load(os.path.join("assets", "sprites", "RCSRight.png"))
+    _density = 45
+
+    def __init(self, body, transform=None, radius=0):
+        print(self._vertices)
+        Thruster.__init__(self, body, transform=transform, radius=radius)
+
                 
 class DeltaVee(Thruster):
     _vertices = [(4.2, 0), (-4.2, 0), (4.2, 46.9), (-4.2, 46.9)]
@@ -111,12 +150,11 @@ class DeltaVee(Thruster):
     _thrustVector = Vec2d((0,1))
     _sprite = pg.image.load(os.path.join("assets", "sprites", "UpGoer2000.png"))
     _maxFuel = 40000
+    _density = 73.8
    
     
     def __init__(self, body, transform=None, radius=0):
        Thruster.__init__(self, body, self.vertices, transform=transform, radius=radius)
-   
-
 
 
 

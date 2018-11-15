@@ -63,7 +63,6 @@ def genSAS(b):
     
     return sas
 
-
 def genRocket(space):
     """Generate prototype rocket with orbiter, thruster, and SAS.
 
@@ -75,7 +74,7 @@ def genRocket(space):
 
     """
     rocket = Rocket()
-    components = [genTank(rocket), genSAS(rocket), genOrbiter(rocket)]
+    components = [genTank(rocket), genSAS(rocket), genOrbiter(rocket), LeftRCS(rocket), RightRCS(rocket)]
     for c in components:
         rocket.addComponent(c)
     space.add(rocket)

@@ -1,6 +1,6 @@
 from pymunk import Body as Body
 import pygame as pg
-from rockets import Thruster
+from rockets import Thruster, RCSThruster
 from rockets import SAS
 
 
@@ -68,17 +68,19 @@ class Rocket(Body):
             # do nothing, on course
     """
 
-    #hi
     def handleEvent(self, eventKey):
-        if eventKey == pg.K_f :
-            print('thrusting')
+        if eventKey == pg.K_f : # Apply main thrust
             for ts in self.thrusters:
-                ts.applyThrust()
-        elif eventKey == pg.K_a :
-            pass
-        elif eventKey == pg.K_d :
-            pass
-        elif eventKey == pg.K_v :
+                # check to make sure this isn't an RCS thruster
+                if not isinstance(ts, RCSThruster):
+                    ts.applyThrust()
+        elif eventKey == pg.K_a : # Counter-Clockwise Rotation
+            for sas in self.SASmodules:
+                sas.rotateCounterClockwise()
+        elif eventKey == pg.K_d : # Clockwise Rotation
+            for sas in self.SASmodules:
+                sas.rotateClockwise()
+        elif eventKey == pg.K_v : # Toggle Rotation Lock
             pass
         
 
@@ -93,6 +95,8 @@ class Rocket(Body):
         self.components.append(c)
         if isinstance(c, Thruster):
             self.thrusters.append(c)
+        elif isinstance(c, SAS):
+            self.SASmodules.append(c)
 
     def removeComponent(self, c):
         for x in self.components:
