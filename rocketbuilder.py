@@ -248,28 +248,26 @@ class RocketBuilder:
     
     @classmethod
     def intersectsWithRocket(cls, component):
+        # create a list of updated vertices, accounting for current mouse position
         vertices = []
         transform = cls.mousePosToPymunkTransform(pg.mouse.get_pos(), component)
         for vertex in component._vertices:
             vertices.append(pm.Vec2d(vertex) + (transform.tx, transform.ty))
 
         totalverts = len(vertices)
-        intersects = False
+
         for x in range(totalverts):
             if x == 0:
                 verts1 = vertices[0]
-                verts2 = vertices[totalverts -1]
+                verts2 = vertices[totalverts - 1]
             else:
                 verts1 = vertices[x]
                 verts2 = vertices[x-1]
-            for i in cls.theRocket.components:
-                if i.segment_query(verts1, verts2, 1).shape != None :
+            for comp in cls.theRocket.components:
+                if comp.segment_query(verts1, verts2, 1).shape != None :
+                    return True
 
-                    intersects = True
-                    break
-            if intersects == True:
-                    break
-        return intersects
+        return False
 
     @classmethod
     def componentButtonClicked(cls, component) :
