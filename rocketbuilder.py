@@ -61,21 +61,28 @@ class RocketBuilder:
                     pg.display.quit()
                     pg.quit()
                     sys.exit()
+                if event.type is pg.MOUSEBUTTONDOWN:
+                    if cls.activeComponent is None:
+                        # no component in hand, so try to pick one up if possible
+
+                        # find the position of the mouse in our space
+                        screenCenter = pm.Vec2d(cls.surface.get_size())/2
+                        mousePos = pm.pygame_util.get_mouse_pos(cls.surface) - screenCenter
+
+                        # check every component in the list from back-to-front
+                        # the last items in the component list will render on top,
+                        # so this feels more natural to pick up
+                        for component in reversed(cls.theRocket.components):
+                            component.cache_bb()
+                            # check if the mosue is within the component geometry
+                            if component.point_query(mousePos)[0] <= 0:
+                                # if so, set this as the shape and remove it
+                                cls.activeComponent = type(component)
+                                cls.theRocket.removeComponent(component)
+                                break
                 if event.type == pg.MOUSEBUTTONUP :
-                    
-                    if cls.activeComponent == None : #not "holding" anything
-                        sprite_list = []
-                        for s in cls.componentList :
-                            sprite_list.append(s._sprite)
-                        clicked_sprites = [s for s in sprite_list if s.get_rect().collidepoint(pos)]
-                        
-                        for s in clicked_sprites :
-                            print("activated")
-                            target_index = clicked_sprites.index(s)
-                            cls.activeComponent = cls.componentList[target_index]
-                            cls.activeSprite = s
-                    else:
-                        cls.placeComponenet(pm.Transform(tx=0, ty=0), cls.activeComponent)
+                    if cls.activeComponent is not None:
+                        cls.placeComponenet(cls.activeComponent)
                         cls.activeComponent = None
                         cls.activeSprite = None
                 
@@ -206,17 +213,17 @@ class RocketBuilder:
     
 
     @classmethod
-    def placeComponenet(cls, transform, component):
+    def placeComponenet(cls, component):
         #if it's intersecting/directly adjacent to another component on the rocket
         if cls.intersectsWithRocket(component) :
-            transform = cls.mousePosToPymunkTransform(pg.mouse.get_pos(), component)
+            transform = cls.mousePosToPymunkTransform(component)
             cls.theRocket.addComponent(component(body=None, transform=transform))
             return True
         else:
             return False
         
     @classmethod
-    def mousePosToPymunkTransform(cls, mousePos, component):
+    def mousePosToPymunkTransform(cls, component):
         """Takes in a component class or instance, and the mouse position. Assuming
            that the component is being held by mouse in its center, this finds the
            transform needed to translate between the component's inherent verteces
@@ -230,18 +237,19 @@ class RocketBuilder:
         # pull in component boundaries
         minX, maxX, minY, maxY = Component.getXYBoundingBox(component._vertices)
 
-        # find the geometric center of the component, which is flipped in the y
-        # direction because of pygame's different y axis
-        componentCenter = pm.Vec2d((minX + maxX) / 2, (minY + maxY) / -2)
+        # find the geometric center of the component
+        componentCenter = pm.Vec2d((minX + maxX) / 2, (minY + maxY) / 2)
 
         # finding center of the screen
         screenCenter = pm.Vec2d(cls.surface.get_size())/2
+
+        # finding the mouse position, in pymunk space
+        mousePos = pm.pygame_util.get_mouse_pos(cls.surface)
 
         # vector to the center of the screen in pygame pixels
         dx, dy = (mousePos - screenCenter) - componentCenter
 
         # flip dy between pymunk coordinates and pymunk screen-space coordinates
-        dy *= -1
 
         return pm.Transform(tx=dx, ty=dy)
 
@@ -253,7 +261,7 @@ class RocketBuilder:
     @classmethod
     def intersectsWithRocket(cls, component):
         # make an instance of the component to test with, at the mouse position     
-        transform = cls.mousePosToPymunkTransform(pg.mouse.get_pos(), component)
+        transform = cls.mousePosToPymunkTransform(component)
         theComponent = component(None, transform=transform)
         cls.theRocket.addComponent(theComponent)
 
