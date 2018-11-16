@@ -45,6 +45,7 @@ class RocketBuilder:
     def run(cls):
         # while loop to draw infinitely for testing purposes
         clock = pg.time.Clock()     # create clock to manage game time
+        cls.space.add(cls.theRocket)
         cls.updateSubSurfaces()
         while True:                 # drawn menu infinitely
             cls.drawMenu()
@@ -251,26 +252,28 @@ class RocketBuilder:
     
     @classmethod
     def intersectsWithRocket(cls, component):
-        # create a list of updated vertices, accounting for current mouse position
-        vertices = []
-        
+        # make an instance of the component to test with, at the mouse position     
         transform = cls.mousePosToPymunkTransform(pg.mouse.get_pos(), component)
-        for vertex in component._vertices:
-            vertices.append(pm.Vec2d(vertex) + (transform.tx, transform.ty))
+        theComponent = component(None, transform=transform)
+        cls.theRocket.addComponent(theComponent)
 
-        totalverts = len(vertices)
+        # update the bounding box for the component
+        theComponent.cache_bb()
 
-        for x in range(totalverts):
-            if x == 0:
-                verts1 = vertices[0]
-                verts2 = vertices[totalverts - 1]
-            else:
-                verts1 = vertices[x]
-                verts2 = vertices[x-1]
-            for comp in cls.theRocket.components:
-                if comp.segment_query(verts1, verts2, 1).shape != None :
+        # compare on every single component in the rocket
+        for rocketComponent in cls.theRocket.components:
+            # except for the one we just made...
+            if rocketComponent is not theComponent:
+                # update the rocket component's bounding box...
+                rocketComponent.cache_bb()
+                # ...and see if it collides with our shape
+                if theComponent.shapes_collide(rocketComponent).points:
+                    #if it does, remove the component and return True!
+                    cls.theRocket.removeComponent(theComponent)
                     return True
 
+        # if it doesn't for any of the rocket components, remove it and return False
+        cls.theRocket.removeComponent(theComponent)
         return False
 
     @classmethod
