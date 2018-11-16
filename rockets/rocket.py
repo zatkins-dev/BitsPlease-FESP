@@ -27,11 +27,11 @@ class Rocket(Body):
 
     @property
     def thrusters(self):
-        return list(filter(lambda c: type(c) == Thruster, self.components))
+        return list(filter(lambda c: isinstance(c, Thruster), self.components))
 
     @property
     def SASmodules(self):
-        return list(filter(lambda c: type(c) == SAS, self.components))
+        return list(filter(lambda c: isinstance(c, SAS), self.components))
 
     """def turn_SAS(self, k, coeffPower):
         #Turn SAS in direction determined by key k with power coeffPower.
