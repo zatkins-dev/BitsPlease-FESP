@@ -47,11 +47,17 @@ class Component(pm.Poly):
 
     @classmethod
     def scaleSpriteToVerts(cls, sprite, vertices):
-        minX = min(list(map(lambda x: x[0], vertices)))
-        maxX = max(list(map(lambda x: x[0], vertices)))
-        minY = min(list(map(lambda y: y[1], vertices)))
-        maxY = max(list(map(lambda y: y[1], vertices)))
+        minX, maxX, minY, maxY = cls.getXYBoundingBox(vertices)
         
         vertRange = (int(maxX - minX), int(maxY - minY))
 
         return pg.transform.scale(sprite, vertRange)
+
+    @classmethod
+    def getXYBoundingBox(cls, vertices):
+        minX = min(list(map(lambda x: x[0], vertices)))
+        maxX = max(list(map(lambda x: x[0], vertices)))
+        minY = min(list(map(lambda y: y[1], vertices)))
+        maxY = max(list(map(lambda y: y[1], vertices)))
+
+        return(minX, maxX, minY, maxY)
