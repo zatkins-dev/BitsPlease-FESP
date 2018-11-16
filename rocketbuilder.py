@@ -24,6 +24,9 @@ class RocketBuilder:
     componentSurface = None
     componentInfoSurface = None
 
+    space = pm.Space(threaded=True)
+    space.threads = 2
+
     componentTabs = Enum("State", "Thruster Control Potato Famine")
     componentList = []
     selectedTab = componentTabs.Thruster
@@ -250,6 +253,7 @@ class RocketBuilder:
     def intersectsWithRocket(cls, component):
         # create a list of updated vertices, accounting for current mouse position
         vertices = []
+        
         transform = cls.mousePosToPymunkTransform(pg.mouse.get_pos(), component)
         for vertex in component._vertices:
             vertices.append(pm.Vec2d(vertex) + (transform.tx, transform.ty))
