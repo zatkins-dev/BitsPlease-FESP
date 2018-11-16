@@ -8,14 +8,14 @@ from pymunk import Poly as Poly
 from pymunk import Body as Body
 from pymunk import Shape as Shape
 
-
 from enum import Enum
 from rockets import Component
 from rockets import Thruster
 from rockets import SAS
 from rockets import Rocket
-from rockets import commandmodule
+from rockets import CommandModule
 
+from graphics import Drawer
 from graphics import Graphics
 
 class RocketBuilder:
@@ -28,7 +28,8 @@ class RocketBuilder:
     componentList = []
     selectedTab = componentTabs.Thruster
     
-    theRocket = Rocket([])
+    theRocket = Rocket([CommandModule(None)])
+
     activeComponent = None
     activeSprite = None
     _bgColor = (0,0,0)
@@ -81,6 +82,7 @@ class RocketBuilder:
         cls.surface.fill(cls._bgColor)
         cls.drawComponentMenu()
         cls.drawComponentInfo()
+        cls.drawRocket()
         cls.drawHeldSprite()
         pg.display.flip()
 
@@ -172,6 +174,11 @@ class RocketBuilder:
         cls.componentInfoSurface.fill(cls._menuPaneColor)
 
     @classmethod
+    def drawRocket(cls):
+        Drawer.drawMultiple(cls.surface, cls.theRocket.components,
+                            Drawer.getOffset(cls.surface, cls.theRocket))
+
+    @classmethod
     def drawHeldSprite(cls):
         if cls.activeComponent is not None:
             mouse_x, mouse_y = pg.mouse.get_pos()
@@ -198,7 +205,7 @@ class RocketBuilder:
     def placeComponenet(cls, transform, component):
         #if it's intersecting/directly adjacent to another component on the rocket
         if cls.intersectsWithRocket(component) :
-            cls.theRocket.addComponent(component)
+            cls.theRocket.addComponent(component(body=None))
             return True
         else:
             return False
