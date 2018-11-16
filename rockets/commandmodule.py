@@ -6,7 +6,7 @@ import os
 class CommandModule(Component):
     _vertices = [(12, 4), (-12, 4), (0, 42)]
     _density = 34
-    _sprite = pg.image.load(os.path.join("assets", "sprites", "orbiter.png"))
+    _sprite = Component.scaleSpriteToVerts(pg.image.load(os.path.join("assets", "sprites", "orbiter.png")), _vertices)
 
     # Should we choose to make different types of command modules, we will
     # abstract this. For now, we'll just have one
