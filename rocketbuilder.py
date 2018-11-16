@@ -205,7 +205,30 @@ class RocketBuilder:
     def placeComponenet(cls, transform, component):
         #if it's intersecting/directly adjacent to another component on the rocket
         if cls.intersectsWithRocket(component) :
-            cls.theRocket.addComponent(component(body=None))
+            # need to instantiate a component at the mouse position
+            # find the center of the geometry, then the vector from 
+            # the center to the mouse pos. This is the transform.
+
+            # pull in component boundaries
+            minX, maxX, minY, maxY = Component.getXYBoundingBox(component._vertices)
+
+            # find the geometric center of the component, which is flipped in the y
+            # direction because of pygame's different y axis
+            componentCenter = pm.Vec2d((minX + maxX) / 2, (minY + maxY) / -2)
+
+            # finding center of the screen and the mouse position
+            screenCenter = pm.Vec2d(cls.surface.get_size())/2
+            mousePos = pm.Vec2d(pg.mouse.get_pos())
+
+            # vector to the center of the screen in pygame pixels
+            dx, dy = (mousePos - screenCenter) - componentCenter
+
+            # flip dy between pymunk coordinates and pymunk screen-space coordinates
+            dy *= -1
+
+            transform = pm.Transform(tx=dx, ty=dy)
+
+            cls.theRocket.addComponent(component(body=None, transform=transform))
             return True
         else:
             return False
