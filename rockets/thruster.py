@@ -45,10 +45,6 @@ class Thruster(Component):
         self.fuel = self.maxFuel
 
     @property
-    def vertices(self):
-        return self._vertices
-
-    @property
     def thrustForce(self):
         """Magnitude of thrust
 
@@ -109,7 +105,7 @@ class DeltaVee(Thruster):
     _vertices = [(4.2, 0), (-4.2, 0), (4.2, 46.9), (-4.2, 46.9)]
     _thrustForce = 50000
     _thrustVector = Vec2d((0,1))
-    _sprite = pg.image.load(os.path.join("assets", "sprites", "UpGoer2000.png"))
+    _sprite = Component.scaleSpriteToVerts(pg.image.load(os.path.join("assets", "sprites", "UpGoer2000.png")), _vertices)
     _maxFuel = 40000
    
     
