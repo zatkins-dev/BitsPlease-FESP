@@ -10,7 +10,7 @@ from pymunk import Shape as Shape
 
 from enum import Enum
 from rockets import Component
-from rockets import Thruster
+from rockets import Thruster, RCSThruster
 from rockets import SAS
 from rockets import Rocket
 from rockets import CommandModule
@@ -114,7 +114,9 @@ class RocketBuilder:
         cls.componentList = None
 
         if selectedTab == cls.componentTabs.Thruster:
-            cls.componentList = Thruster.__subclasses__()
+            thrusterList = [thruster for thruster in Thruster.__subclasses__() if thruster is not RCSThruster]
+            RCSList = RCSThruster.__subclasses__()
+            cls.componentList = thrusterList + RCSList
         elif selectedTab == cls.componentTabs.Control:
             cls.componentList = SAS.__subclasses__()              
 
@@ -129,7 +131,7 @@ class RocketBuilder:
             pos = ((i % numCols) * buttonSize + buttonMargin, int(i / numCols) * buttonSize + cls._bottomOfTabs + buttonMargin)
             size = (buttonSize - buttonMargin, buttonSize - buttonMargin)
 
-            Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, component._sprite, .95, lambda: cls.componentButtonClicked(component))
+            Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, component._sprite, .8, lambda: cls.componentButtonClicked(component))
 
             i += 1
 
