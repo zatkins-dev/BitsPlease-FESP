@@ -34,7 +34,7 @@ def updateCamera(screen, center):
     graph.drawStars(screen, center)
 
 
-def run():
+def run(rocket=None):
     celestialBodies = []
     screen = pg.display.get_surface()
     clock = pg.time.Clock()
@@ -59,7 +59,12 @@ def run():
     planetZach = cb('planetZach', space, 10**13, 200, 2000, 1000, 0.9, 0, 0)
     celestialBodies.append(planetZach)
 
-    rocket = tr.genRocket(space)
+    if rocket is None:
+        rocket = tr.genRocket(space)
+    else:
+        space.add(rocket)
+        for component in rocket.components:
+            space.add(component)
     rocket.debugComponentPrint()
     x, y = (earth.posx + earth.radius / math.sqrt(2),
             earth.posy + earth.radius / math.sqrt(2))
