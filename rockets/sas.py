@@ -1,4 +1,5 @@
 from rockets import Component
+import math
 
 
 class SAS(Component):
@@ -26,10 +27,10 @@ class SAS(Component):
     _vertices = None
     _sprite = None
 
-    def __init__(self, body, vertices, SASpower, angle,
-                 transform=None, radius=0):
+    def __init__(self, body, vertices, SASpower, angle, transform=None, radius=0):
         Component.__init__(self, body, vertices, transform, radius)
         self._SASangle = 0
+        self._isLocked = False
         self.fuel = 20000
 
     def rotateCounterClockwise(self):
@@ -52,6 +53,24 @@ class SAS(Component):
                 # left-directed vector and on the bottom half of the rocket
                 ts.applyThrust()
 
+    def holdAngle(self):
+        if self.isAngleLocked:
+            # move to desired angle
+            # find the difference between the current angle and the desired angle
+            deltaAngle = self.SASangle - self.body.angle
+            if deltaAngle > math.pi:
+                deltaAngle = self.SASangle - self.body.angle - 2 * math.pi
+
+            # now we know how far off we are from the desired angle
+            # translate that into a desired angular velocity
+            targetAngVel = .5 * math.atan(deltaAngle)
+
+            if targetAngVel > self.body.angular_velocity:
+                self.rotateCounterClockwise()
+            elif targetAngVel < self.body.angular_velocity:
+                self.rotateClockwise()
+
+
     @property
     def isAngleLocked(self):
         """Whether or not the SAS module is holding an angle
@@ -61,7 +80,11 @@ class SAS(Component):
         """
         return self._isLocked
 
-    @property
+    @isAngleLocked.setter
+    def isAngleLocked(self, newVal):
+        if isinstance(newVal, bool):
+            self._isLocked = newVal
+
     def toggleAngleLock(self):
         """Toggles the SAS angle locking, and returns the current value
 
