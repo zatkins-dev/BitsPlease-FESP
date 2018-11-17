@@ -86,7 +86,10 @@ class Rocket(Body):
             for sas in self.SASmodules:
                 sas.rotateClockwise()
         elif eventKey == pg.K_v : # Toggle Rotation Lock
-            pass
+            for sas in self.SASmodules:
+                if not sas.isAngleLocked:
+                    sas.SASangle = self.angle
+                sas.toggleAngleLock()
         
 
     def addComponent(self, c):
