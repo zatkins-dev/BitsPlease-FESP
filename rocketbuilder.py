@@ -31,7 +31,9 @@ class RocketBuilder:
     componentList = []
     selectedTab = componentTabs.Thruster
     
-    theRocket = Rocket([CommandModule(None)])
+    # this component will be the base... and shouldn't be removed from the rocket
+    _baseComponent = CommandModule(None)
+    theRocket = Rocket([_baseComponent])
 
     activeComponent = None
     activeSprite = None
@@ -75,7 +77,7 @@ class RocketBuilder:
                         for component in reversed(cls.theRocket.components):
                             component.cache_bb()
                             # check if the mosue is within the component geometry
-                            if component.point_query(mousePos)[0] <= 0:
+                            if component is not cls._baseComponent and component.point_query(mousePos)[0] <= 0:
                                 # if so, set this as the shape and remove it
                                 cls.activeComponent = type(component)
                                 cls.theRocket.removeComponent(component)
