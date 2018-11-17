@@ -29,7 +29,7 @@ class RocketBuilder:
     space = pm.Space(threaded=True)
     space.threads = 2
 
-    componentTabs = Enum("State", "Thruster Control Potato Famine")
+    componentTabs = Enum("State", "Thruster Control")
     componentList = []
     selectedTab = componentTabs.Thruster
     
@@ -168,6 +168,7 @@ class RocketBuilder:
 
             if width + lineWidth < cls.componentSurface.get_width():
                 buttonLines[currLine].append((buttonSizes[i][0], tabTexts[i]))
+                
             else:
                 currLine += 1
                 buttonLines.append([(buttonSizes[i][0], tabTexts[i])])
@@ -186,7 +187,7 @@ class RocketBuilder:
                     size = (cls.componentSurface.get_width() - pos[0], buttonHeight)
                 else:
                     size = (width, buttonHeight)
-                Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, buttonLines[row][col][1], 16)
+                Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, buttonLines[row][col][1], 16, lambda: cls.setCurrentTab(cls.componentTabs[buttonLines[row][col][1]]))
 
     @classmethod
     def drawComponentInfo(cls):
@@ -303,3 +304,7 @@ class RocketBuilder:
     @classmethod
     def componentButtonClicked(cls, component) :
         cls.activeComponent = component
+
+    @classmethod
+    def setCurrentTab(cls, state):
+        cls.selectedTab = state
