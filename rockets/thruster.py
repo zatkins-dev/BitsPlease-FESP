@@ -118,7 +118,7 @@ class RCSThruster(Thruster):
             sasModule.fuel -= 1
 
 class LeftRCS(RCSThruster):
-    _vertices = [(1.2, 37), (4.2, 37), (4.2, 42), (1.2, 42)]
+    _vertices = [(0, 37), (5, 37), (5, 42), (0, 42)]
     _thrustForce = 5000
     _thrustVector = Vec2d((-1, 0))
     _sprite = pg.image.load(os.path.join("assets", "sprites", "RCSLeft.png"))
@@ -129,7 +129,7 @@ class LeftRCS(RCSThruster):
         Thruster.__init__(self, body, transform=transform, radius=radius)
 
 class RightRCS(RCSThruster):
-    _vertices = [(-1.2, 37), (-4.2, 37), (-4.2, 42), (-1.2, 42)]
+    _vertices = [(0, 37), (-5, 37), (-5, 42), (0, 42)]
     _thrustForce = 5000
     _thrustVector = Vec2d((1, 0))
     _sprite = pg.image.load(os.path.join("assets", "sprites", "RCSRight.png"))
