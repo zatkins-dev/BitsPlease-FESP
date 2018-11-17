@@ -24,6 +24,8 @@ def main():
             if event.type == pygame.VIDEORESIZE:
                 pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
 
+        rocket = None
+
         if currentState == State.Splash:
             if menu.splashScreenPressed:
                 currentState = State.Menu
@@ -45,10 +47,14 @@ def main():
                 menu.drawMenu()
 
         if currentState == State.Building:
-            RocketBuilder.run()
+            newRocket = RocketBuilder.run()
+            if newRocket is not None:
+                currentState = State.Playing
+                rocket = newRocket
+
 
         if currentState == State.Playing:
-            simulationexec.run()
+            simulationexec.run(rocket)
 
         pygame.display.flip()
 
