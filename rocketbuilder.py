@@ -24,6 +24,8 @@ class RocketBuilder:
     componentSurface = None
     componentInfoSurface = None
 
+    start_event = pg.USEREVENT + 1
+
     space = pm.Space(threaded=True)
     space.threads = 2
 
@@ -87,6 +89,9 @@ class RocketBuilder:
                         cls.placeComponenet(cls.activeComponent)
                         cls.activeComponent = None
                         cls.activeSprite = None
+                if event.type == cls.start_event:
+                    cls.space.remove(cls.theRocket)
+                    return cls.theRocket
                 
             clock.tick(60)
             
@@ -187,6 +192,13 @@ class RocketBuilder:
     def drawComponentInfo(cls):
         # as a quick test, fill with white
         cls.componentInfoSurface.fill(cls._menuPaneColor)
+
+        # draw a start button in the corner
+        buttonMargin = cls.componentInfoSurface.get_width() * .05
+        startButtonSize = (cls.componentInfoSurface.get_width() - 2 * buttonMargin, 80)
+        startButtonPos = (buttonMargin, cls.componentInfoSurface.get_height() - 80 - buttonMargin)
+        startButtonColor = ((0,200,0),(0,100,0))
+        Graphics.drawButton(cls.componentInfoSurface, startButtonPos, startButtonSize, startButtonColor, "Start", 16, lambda: pg.event.post(pg.event.Event(cls.start_event)))
 
     @classmethod
     def drawRocket(cls):
