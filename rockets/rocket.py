@@ -23,9 +23,15 @@ class Rocket(Body):
         for c in components:
             c.body = self
         self.components = components
-        self.thrusters = list(filter(lambda c: type(c) == Thruster, self.components))
-        self.SASmodules = list(filter(lambda c: type(c) == SAS, self.components))
         self.angular_velocity_limit = 400000
+
+    @property
+    def thrusters(self):
+        return list(filter(lambda c: isinstance(c, Thruster), self.components))
+
+    @property
+    def SASmodules(self):
+        return list(filter(lambda c: isinstance(c, SAS), self.components))
 
     """def turn_SAS(self, k, coeffPower):
         #Turn SAS in direction determined by key k with power coeffPower.
@@ -92,10 +98,6 @@ class Rocket(Body):
         """
         c.body = self
         self.components.append(c)
-        if isinstance(c, Thruster):
-            self.thrusters.append(c)
-        elif isinstance(c, SAS):
-            self.SASmodules.append(c)
 
     def removeComponent(self, c):
         for x in self.components:
