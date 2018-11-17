@@ -97,6 +97,9 @@ def run(rocket=None):
             for i in keyInputs:
                 rocket.handleEvent(i)
 
+        for module in rocket.SASmodules:
+            module.holdAngle()
+
         updateGravity(space, rocket, celestialBodies)
         space.step(1/50.0)
         updateCamera(screen, Drawer.getOffset(screen, rocket))
