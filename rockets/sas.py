@@ -26,6 +26,7 @@ class SAS(Component):
 
     _vertices = None
     _sprite = None
+    _SASPower = None
 
     def __init__(self, body, vertices, SASpower, angle, transform=None, radius=0):
         Component.__init__(self, body, vertices, transform, radius)
@@ -63,7 +64,7 @@ class SAS(Component):
 
             # now we know how far off we are from the desired angle
             # translate that into a desired angular velocity
-            targetAngVel = .5 * math.atan(deltaAngle)
+            targetAngVel = .5 * math.atan(self.SASPower * deltaAngle)
 
             if targetAngVel > self.body.angular_velocity:
                 self.rotateCounterClockwise()
@@ -113,3 +114,7 @@ class SAS(Component):
 
         """
         self._SASangle = newAngle
+
+    @property
+    def SASPower(self):
+        return self._SASPower
