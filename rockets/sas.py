@@ -1,5 +1,7 @@
+import pygame as pg
 from rockets import Component
 import math
+import os
 
 
 class SAS(Component):
@@ -28,8 +30,8 @@ class SAS(Component):
     _sprite = None
     _SASPower = None
 
-    def __init__(self, body, vertices, SASpower, angle, transform=None, radius=0):
-        Component.__init__(self, body, vertices, transform, radius)
+    def __init__(self, body, transform=None, radius=0):
+        Component.__init__(self, body, self.vertices, transform, radius)
         self._SASangle = 0
         self._isLocked = False
         self.fuel = 20000
@@ -118,3 +120,12 @@ class SAS(Component):
     @property
     def SASPower(self):
         return self._SASPower
+
+
+class AdvancedSAS(SAS):
+    _vertices = [(-12,4), (-12,-6), (12,-6), (12,4)]
+    _SASPower = 2
+    _sprite = pg.image.load(os.path.join("assets", "sprites", "AdvancedSAS.png"))
+
+    def __init__(self, body, transform=None, radius=0):
+        SAS.__init__(self, body, transform, radius)
