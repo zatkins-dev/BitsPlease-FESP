@@ -18,6 +18,9 @@ class CommandModule(Component):
         Component.__init__(self, body, self._vertices, transform, radius)
         self.density = self._density
         
-        
-    #this should control the rocket
+    @classmethod
+    def getDisplayInfo(cls):
+        return {
+            "Rocket's Base": "The Heart of the Rocket"
+        }
 
