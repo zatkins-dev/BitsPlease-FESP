@@ -52,6 +52,10 @@ class Thruster(Component):
         self.fuel = self.getInfo()["maxFuel"]
 
     @property
+    def vertices(self):
+        return self.getInfo()["vertices"]
+
+    @property
     def thrustForce(self):
         """Magnitude of thrust
 
