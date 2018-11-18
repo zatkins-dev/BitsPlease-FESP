@@ -191,8 +191,54 @@ class RocketBuilder:
 
     @classmethod
     def drawComponentInfo(cls):
-        # as a quick test, fill with white
+        # fill with background color
         cls.componentInfoSurface.fill(cls._menuPaneColor)
+
+        if cls.activeComponent is not None:
+            # find the size & mass of the component
+            globalAttributes = ["Width: ", "Height: ", "Mass: "]
+            
+            testComponent = cls.activeComponent(cls.theRocket)
+            cls.space.add(testComponent)
+            bb = testComponent.cache_bb()
+
+            # find the geometric center of the component
+            globalAttributes[0] += str(bb.right - bb.left) + "m"
+            globalAttributes[1] += str(bb.top - bb.bottom) + "m"
+            globalAttributes[2] += str(round(testComponent.mass, 1)) + "kg"
+
+            cls.space.remove(testComponent)
+
+            # print the values to the side
+
+            nameFont = pg.font.SysFont("lucidaconsole", 24, True)
+            attributeFont = pg.font.SysFont("lucidaconsole", 14)
+            rowHeight = 24
+            margin = 10
+
+            textPos = lambda rowNum: (margin, rowHeight * rowNum + margin)
+
+            Graphics.drawText(textPos(0), cls.activeComponent.__name__, nameFont, surface=cls.componentInfoSurface)
+
+            currRow = 1
+
+            for attribute in globalAttributes:
+                Graphics.drawText(textPos(currRow), attribute, attributeFont, surface=cls.componentInfoSurface)
+                currRow += 1
+            
+            dispInfo = cls.activeComponent.getDisplayInfo()
+            for key in dispInfo:
+                Graphics.drawText(textPos(currRow), key + ": " + str(dispInfo[key]), attributeFont, surface=cls.componentInfoSurface)
+                currRow += 1
+                
+
+            # find strings specific to this kind of component
+            for key in dispInfo:
+                print(key, dispInfo[key])
+
+            
+
+                
 
         # draw a start button in the corner
         buttonMargin = cls.componentInfoSurface.get_width() * .05
