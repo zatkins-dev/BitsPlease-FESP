@@ -1,6 +1,6 @@
 import pygame
 from graphics import Graphics
-
+from enum import Enum
 
 class Menu(object):
     """
@@ -23,6 +23,7 @@ class Menu(object):
                                      watch this and take appropriate action
                                      on change
     """
+    State = Enum('State', 'Splash Menu Building Playing Exit')
 
     splashScreenPressed = False
 
@@ -33,7 +34,16 @@ class Menu(object):
     _menuButtonColor = ((255, 255, 255, 64), (255, 255, 255, 128))
 
     @classmethod
-    def drawSplashScreen(cls):
+    def drawBackground(cls, color_rgb, opacity):
+        dispSurface = pygame.display.get_surface()
+        surfaceSize = dispSurface.get_size()
+        background = pygame.surface.Surface(surfaceSize)
+        background.fill(color_rgb)
+        background.set_alpha(opacity)
+        dispSurface.blit(background, (0,0))
+
+    @classmethod
+    def drawSplashScreen(cls, opacity):
         """
         Draws the title screen to pygame's current display surface.
 
@@ -53,7 +63,7 @@ class Menu(object):
         subtitleCenter = (surfaceCenter[0], surfaceCenter[1] + 20)
 
         # fill surface with black
-        surface.fill((0, 0, 0))
+        cls.drawBackground((0, 0, 0), opacity)
 
         # draw a button
         Graphics.drawButton(surface, (0, 0), surfaceSize,
@@ -72,7 +82,7 @@ class Menu(object):
                                 subtitleFont, (255, 255, 255))
 
     @classmethod
-    def drawMenu(cls):
+    def drawMenu(cls, opacity):
         """
         Draws the menu screen and buttons to pygame's current display surface.
 
@@ -92,7 +102,9 @@ class Menu(object):
         titleCenter = (surfaceCenter[0], surfaceCenter[1] - 100)
 
         # fill screen with black
-        surface.fill((0, 0, 0))
+        print("pre-background")
+        cls.drawBackground((0, 0, 0), opacity)
+        print("post-background")
 
         buttonSize = (400, 50)
         buttonPosition = lambda i: (surfaceCenter[0] - buttonSize[0]/2,
