@@ -30,7 +30,7 @@ def genTank(b):
         Thruster: Thruster for prototype rocket.
 
     """
-    tank = DeltaVee(b, radius=1)
+    tank = UpGoer2000(b, radius=1)
     return tank
 
 

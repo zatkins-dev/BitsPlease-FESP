@@ -125,7 +125,6 @@ class LeftRCS(RCSThruster):
     _density = 45
 
     def __init(self, body, transform=None, radius=0):
-        print(self._vertices)
         Thruster.__init__(self, body, transform=transform, radius=radius)
 
 class RightRCS(RCSThruster):
@@ -136,13 +135,23 @@ class RightRCS(RCSThruster):
     _density = 45
 
     def __init(self, body, transform=None, radius=0):
-        print(self._vertices)
         Thruster.__init__(self, body, transform=transform, radius=radius)
 
-                
-class DeltaVee(Thruster):
+class UpGoer2000(Thruster):
     _vertices = [(4.2, 0), (-4.2, 0), (4.2, 46.9), (-4.2, 46.9)]
     _thrustForce = 50000
+    _thrustVector = Vec2d((0,1))
+    _sprite = Component.scaleSpriteToVerts(pg.image.load(os.path.join("assets", "sprites", "UpGoer2000.png")), _vertices)
+    _maxFuel = 10000
+    _density = 73.8
+   
+    
+    def __init__(self, body, transform=None, radius=0):
+       Thruster.__init__(self, body, self.vertices, transform=transform, radius=radius)
+                
+class DeltaVee(Thruster):
+    _vertices = [(12, 0), (-12, 0), (12, 70), (-12, 70)]
+    _thrustForce = 500000
     _thrustVector = Vec2d((0,1))
     _sprite = Component.scaleSpriteToVerts(pg.image.load(os.path.join("assets", "sprites", "UpGoer2000.png")), _vertices)
     _maxFuel = 40000
