@@ -252,10 +252,15 @@ class RocketBuilder:
 
         """
         # pull in component boundaries
-        minX, maxX, minY, maxY = Component.getXYBoundingBox(component._vertices)
+        #minX, maxX, minY, maxY = Component.getXYBoundingBox(component._vertices)
+        testComponent = component(cls.theRocket)
+        cls.space.add(testComponent)
+        bb = testComponent.cache_bb()
 
         # find the geometric center of the component
-        componentCenter = pm.Vec2d((minX + maxX) / 2, (minY + maxY) / 2)
+        componentCenter = bb.center()
+
+        cls.space.remove(testComponent)
 
         # finding center of the screen
         screenCenter = pm.Vec2d(cls.surface.get_size())/2
