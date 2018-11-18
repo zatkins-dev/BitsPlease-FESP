@@ -34,7 +34,6 @@ class SAS(Component):
         Component.__init__(self, body, self.vertices, transform, radius)
         self._SASangle = 0
         self._isLocked = False
-        self.fuel = 20000
 
     def rotateCounterClockwise(self):
         for ts in self.body.thrusters:
@@ -126,6 +125,15 @@ class AdvancedSAS(SAS):
     _vertices = [(-12,4), (-12,-6), (12,-6), (12,4)]
     _SASPower = 2
     _sprite = pg.image.load(os.path.join("assets", "sprites", "AdvancedSAS.png"))
+    _maxFuel = 20000
 
     def __init__(self, body, transform=None, radius=0):
         SAS.__init__(self, body, transform, radius)
+        self.fuel = self._maxFuel
+
+    @classmethod
+    def getDisplayInfo(cls):
+        return {
+            "SAS Power": str(cls._SASPower),
+            "RCS Fuel" : str(cls._maxFuel)
+        }
