@@ -118,6 +118,14 @@ class Thruster(Component):
         """
         pass
 
+    @classmethod
+    def getDisplayInfo(cls):
+        inf = cls.getInfo()
+        return {
+            "Thrust": str(inf["thrustForce"]) + "N",
+            "Thrust Vector": str(tuple(inf["thrustVector"])),
+        }
+
 
 class RCSThruster(Thruster):
     """An RCS Thruster is intended to be a smaller thruster, that pulls
