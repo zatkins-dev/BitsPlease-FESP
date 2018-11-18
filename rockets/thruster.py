@@ -3,6 +3,7 @@ from rockets import Component
 from pymunk import Body as Body
 import pygame as pg
 import os
+from abc import ABC, abstractmethod
 
 
 class Thruster(Component):
@@ -13,7 +14,7 @@ class Thruster(Component):
         body (pymunk.Body): body thruster is attached to.
         vertices (list(pymunk.Vec2d)): vertices of polygon shape.
         thrustVector (pymunk.Vec2d): direction of thrust (relative to Rocket).
-        netThrust (float): magnitude of thrust.
+        thrustForce (float): magnitude of thrust.
         transform (float): transformation to be applied to shape.
         radius (float): edge radius of shape (smoothing).
 
@@ -24,29 +25,31 @@ class Thruster(Component):
 
     """
 
-    _vertices = None
-    _thrustForce = None
-    _thrustVector = None
-    _sprite = None
-    _maxFuel = None
-    _density = None
+    _infoDict = {
+        "vertices": None,
+        "thrustForce": None,
+        "thrustVector": None,
+        "sprite": None,
+        "maxFuel": None,
+        "density": None
+    }
 
     def __init__(self, body, vertices=None, thrustForce=None, thrustVector=None, maxFuel=None, density=None, transform=None, radius=0):
         if vertices is not None:
-            self._vertices = vertices
+            self.getInfo()["vertices"] = vertices
         if thrustForce is not None:
-            self._thrustForce = thrustForce
+            self.getInfo()["thrustForce"] = thrustForce
         if thrustVector is not None:
-            self._thrustVector = thrustVector
+            self.getInfo()["thrustVector"] = thrustVector
         if maxFuel is not None:
-            self._maxFuel = maxFuel
+            self.getInfo()["maxFuel"] = maxFuel
         if density is not None:
-            self._density = density
+            self.getInfo()["density"] = density
 
-        Component.__init__(self, body, self.vertices, transform, radius)
+        Component.__init__(self, body, self.getInfo()["vertices"], transform, radius)
 
-        self.density = self._density
-        self.fuel = self.maxFuel
+        self.density = self.getInfo()["density"]
+        self.fuel = self.getInfo()["maxFuel"]
 
     @property
     def thrustForce(self):
@@ -56,7 +59,7 @@ class Thruster(Component):
             float: thrust magnitude.
 
         """
-        return self._thrustForce
+        return self.getInfo()["thrustForce"]
 
     @property
     def thrustVector(self):
@@ -66,11 +69,11 @@ class Thruster(Component):
             pymunk.Vec2d: direction of thrust adjusted for rocket rotation.
 
         """
-        return self._thrustVector
+        return self.getInfo()["thrustVector"]
 
     @property
     def maxFuel(self):
-        return self._maxFuel
+        return self.getInfo()["maxFuel"]
 
     @property
     def fuel(self):
@@ -95,6 +98,22 @@ class Thruster(Component):
             self.body.apply_impulse_at_local_point(self.thrust(), (self.center_of_gravity.x, self.center_of_gravity.y))
             self.fuel = self.fuel -1
 
+    @classmethod
+    @abstractmethod
+    def getInfo(cls):
+        """This method is what will define the properties of a specific Thruster subclass.
+           It should return a dictionary with the following values: {
+                    vertices       : (list of tuples)
+                    thrustForce    : (float)
+                    thrustVector   : (tuple or pymunk.Vec2d)
+                    sprite         : (pygame.Surface, advised to store this as a class variable
+                                      and return it via this dictionary for performance)
+                    maxFuel        : (float)
+                    density        : (float)
+                }
+        """
+        pass
+
 
 class RCSThruster(Thruster):
     """An RCS Thruster is intended to be a smaller thruster, that pulls
@@ -102,10 +121,11 @@ class RCSThruster(Thruster):
 
     """
 
-    _maxFuel = 0
-
     def __init__(self, body, vertices=None, thrustForce=None, thrustVector=None, density=None, transform=None, radius=0):
-        Thruster.__init__(self, body, vertices, thrustForce, thrustVector, None, density, transform, radius)
+        Component.__init__(self, body, self.getInfo()["vertices"], transform, radius)
+
+        self.density = self.getInfo()["density"]
+        self.fuel = 0
     
     def applyThrust(self):
         sasModule = None
@@ -117,49 +137,90 @@ class RCSThruster(Thruster):
             self.body.apply_impulse_at_local_point(self.thrust(), (self.center_of_gravity.x, self.center_of_gravity.y))
             sasModule.fuel -= 1
 
+    @classmethod
+    @abstractmethod
+    def getInfo(cls):
+        """This method is what will define the properties of a specific RCSThruster subclass.
+           It is identical to the Thruster getInfo, but does not need a "maxFuel" member.
+           It should return a dictionary with the following values:
+                vertices       : (list of tuples)
+                thrustForce    : (float)
+                thrustVector   : (tuple or pymunk.Vec2d)
+                sprite         : (pygame.Surface, advised to store this as a class variable
+                                   and return it via this dictionary for performance)
+                density        : (float)
+        """
+        pass
+
 class LeftRCS(RCSThruster):
-    _vertices = [(0, 37), (5, 37), (5, 42), (0, 42)]
-    _thrustForce = 5000
-    _thrustVector = Vec2d((-1, 0))
+
     _sprite = pg.image.load(os.path.join("assets", "sprites", "RCSLeft.png"))
-    _density = 45
 
     def __init(self, body, transform=None, radius=0):
         Thruster.__init__(self, body, transform=transform, radius=radius)
+
+    @classmethod
+    def getInfo(cls):
+        return {
+            "vertices":     [(0, 37), (5, 37), (5, 42), (0, 42)],
+            "thrustForce":  5000,
+            "thrustVector": Vec2d((-1, 0)),
+            "sprite":       cls._sprite,
+            "density":      45
+        }
 
 class RightRCS(RCSThruster):
-    _vertices = [(0, 37), (-5, 37), (-5, 42), (0, 42)]
-    _thrustForce = 5000
-    _thrustVector = Vec2d((1, 0))
+
     _sprite = pg.image.load(os.path.join("assets", "sprites", "RCSRight.png"))
-    _density = 45
 
     def __init(self, body, transform=None, radius=0):
         Thruster.__init__(self, body, transform=transform, radius=radius)
 
+    @classmethod
+    def getInfo(cls):
+        return {
+            "vertices":     [(0, 37), (-5, 37), (-5, 42), (0, 42)],
+            "thrustForce":  5000,
+            "thrustVector": Vec2d((1, 0)),
+            "sprite":       cls._sprite,
+            "density":      45
+        }
+
 class UpGoer2000(Thruster):
-    _vertices = [(4.2, 0), (-4.2, 0), (4.2, 46.9), (-4.2, 46.9)]
-    _thrustForce = 50000
-    _thrustVector = Vec2d((0,1))
-    _sprite = Component.scaleSpriteToVerts(pg.image.load(os.path.join("assets", "sprites", "UpGoer2000.png")), _vertices)
-    _maxFuel = 10000
-    _density = 73.8
-   
     
+    _sprite = pg.image.load(os.path.join("assets", "sprites", "UpGoer2000.png"))
+   
     def __init__(self, body, transform=None, radius=0):
        Thruster.__init__(self, body, self.vertices, transform=transform, radius=radius)
+
+    @classmethod
+    def getInfo(cls):
+        return {
+            "vertices":     [(4.2, 0), (-4.2, 0), (4.2, 46.9), (-4.2, 46.9)],
+            "thrustForce":  50000,
+            "thrustVector": Vec2d((0,1)),
+            "sprite":       cls._sprite,
+            "maxFuel":      10000,
+            "density":      73.8
+        }
                 
 class DeltaVee(Thruster):
-    _vertices = [(12, 0), (-12, 0), (12, 70), (-12, 70)]
-    _thrustForce = 500000
-    _thrustVector = Vec2d((0,1))
-    _sprite = Component.scaleSpriteToVerts(pg.image.load(os.path.join("assets", "sprites", "UpGoer2000.png")), _vertices)
-    _maxFuel = 40000
-    _density = 73.8
-   
+    
+    _sprite = pg.image.load(os.path.join("assets", "sprites", "UpGoer2000.png"))
     
     def __init__(self, body, transform=None, radius=0):
        Thruster.__init__(self, body, self.vertices, transform=transform, radius=radius)
+
+    @classmethod
+    def getInfo(cls):
+        return {
+            "vertices":     [(12, 0), (-12, 0), (12, 70), (-12, 70)],
+            "thrustForce":  500000,
+            "thrustVector": Vec2d((0,1)),
+            "sprite":       cls._sprite,
+            "maxFuel":      40000,
+            "density":      73.8
+        }
 
 
 
