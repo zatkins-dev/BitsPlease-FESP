@@ -1,8 +1,8 @@
 import pygame as pg
 import pymunk as pm
+from abc import ABC, abstractmethod
 
-
-class Component(pm.Poly):
+class Component(ABC, pm.Poly):
     """Extention of pymunk Poly class with properties for sprites/textures.
 
     Args:
@@ -44,3 +44,11 @@ class Component(pm.Poly):
             sprite (surface): New Surface to use as component sprite
         """
         self._sprite = sprite
+
+    @classmethod
+    @abstractmethod
+    def getDisplayInfo(cls):
+        """This will should return a dictionary that contains relevant
+           Information to display in the rocket builder
+        """
+        pass
