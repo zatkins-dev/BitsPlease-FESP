@@ -14,6 +14,7 @@ from graphics import Graphics as graph
 from graphics import Drawer
 from graphics import TrajectoryCalc
 from graphics import Explosion
+from graphics import Menu
 
 import pymunkoptions
 pymunkoptions.options["debug"] = False
@@ -42,6 +43,27 @@ def updateCamera(screen, center):
     screen.fill((0, 0, 0))
     graph.drawStars(screen, center)
 
+def clear(space):
+    for s in space.shapes:
+        space.remove(s)
+    for b in space.bodies:
+        space.remove(b)
+    space.step(1/50)
+
+def displayMenu(space):
+    Menu.drawMenu(100)
+    if Menu.quitPressed:
+        Menu.quitPressed = False
+        clear(space)
+        return Menu.State.Exit
+    elif Menu.demoPressed:
+        Menu.demoPressed = False
+        clear(space)
+        return Menu.State.Playing
+    elif Menu.builderPressed:
+        Menu.builderPressed = False
+        clear(space)
+        return Menu.State.Building
 
 def run():
     pg.mixer.init()
@@ -89,12 +111,17 @@ def run():
     collisions_component_celestialbody.post_solve = post_solve_component_celestialbody
     keyInputs = []
     rocket_explosion = None
-
-    while True:
+    crashed = False
+    menu_enabled = False
+    while not crashed:
         for event in pg.event.get():
-            if event.type == pg.QUIT or keyDown(event, pg.K_ESCAPE):
-                pg.quit()
-                sys.exit(0)
+            if event.type == pg.QUIT:
+                return Menu.State.Exit
+            elif keyDown(event, pg.K_ESCAPE):
+                menu_enabled = True
+                Menu.demoPressed = False
+            elif keyUp(event, pg.K_ESCAPE):
+                menu_enabled = False
             elif event.type == pg.KEYDOWN:
                 if not (event.key in keyInputs):
                     keyInputs.append(event.key)
@@ -147,11 +174,35 @@ def run():
                 c.destroyed = True
             remaining_fuel = sum(map(lambda c: c.fuel if isinstance(c, Thruster) else 0, rocket.components))
             rocket_explosion = Explosion(remaining_fuel//10, explosion_images)
-        if rocket_explosion is not None:
             rocket.velocity = grav
-            Drawer.drawExplosion(screen, rocket_explosion, rocket.position + 20*Vec2d(0,1).rotated(rocket.angle), (150,150), Drawer.getOffset(screen, rocket))
+            crashed = True
+            # while rocket_explosion.duration>0:
+            #     print(rocket_explosion.duration)
+            #     Drawer.drawExplosion(screen, rocket_explosion, rocket.position + 20*Vec2d(0,1).rotated(rocket.angle), (150,150), Drawer.getOffset(screen, rocket))
+            #     pg.display.flip()
+            #     clock.tick(60)
+        if menu_enabled:
+            displayMenu(space)
         pg.display.flip()
         clock.tick(60)
+    
+    Menu.demoPressed = False
+    displayMenu(space)
+    while True:
+        for event in pg.event.get():
+            if event.type == pg.QUIT or keyDown(event, pg.K_ESCAPE):
+                return Menu.State.Exit
+        space.step(1/ticksPerSec)
+        print("stepped")
+        offset = Drawer.getOffset(screen, rocket)
+        updateCamera(screen, offset)
+        Drawer.drawMultiple(screen, space.shapes, offset)
+        Drawer.drawMultiple(screen, celestialBodies, offset)
+        Drawer.drawExplosion(screen, rocket_explosion, rocket.position + 20*Vec2d(0,1).rotated(rocket.angle), (150,150), Drawer.getOffset(screen, rocket))
+        displayMenu(space)
+        pg.display.flip()
+        clock.tick(60)
+
 
 
 if __name__ == "__main__":

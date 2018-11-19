@@ -9,11 +9,10 @@ from rocketbuilder import RocketBuilder
 def main():
     menu = Menu()
     clock = pygame.time.Clock()
-    State = Enum('State', 'Splash Menu Building Playing Exit')
+    State = menu.State
 
     currentState = State.Splash
-
-    pygame.display.set_mode((854, 480), pygame.RESIZABLE)
+    disp = pygame.display.set_mode((854, 480), pygame.RESIZABLE and pygame.SRCALPHA )
 
     while currentState != State.Exit:
         clock.tick(60)
@@ -22,14 +21,14 @@ def main():
             if event.type == pygame.QUIT:
                 currentState = State.Exit
             if event.type == pygame.VIDEORESIZE:
-                pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+                pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE and pygame.SRCALPHA)
 
         if currentState == State.Splash:
             if menu.splashScreenPressed:
                 currentState = State.Menu
                 menu.splashScreenPressed = False
             else:
-                menu.drawSplashScreen()
+                menu.drawSplashScreen(100)
 
         if currentState == State.Menu:
             if menu.quitPressed:
@@ -42,13 +41,13 @@ def main():
                 currentState = State.Building
                 menu.builderPressed = False
             else:
-                menu.drawMenu()
+                menu.drawMenu(100)
 
         if currentState == State.Building:
             RocketBuilder.run()
 
         if currentState == State.Playing:
-            simulationexec.run()
+            currentState = simulationexec.run()
 
         pygame.display.flip()
 
