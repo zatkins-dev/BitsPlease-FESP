@@ -102,9 +102,7 @@ class Menu(object):
         titleCenter = (surfaceCenter[0], surfaceCenter[1] - 100)
 
         # fill screen with black
-        print("pre-background")
         cls.drawBackground((0, 0, 0), opacity)
-        print("post-background")
 
         buttonSize = (400, 50)
         buttonPosition = lambda i: (surfaceCenter[0] - buttonSize[0]/2,
