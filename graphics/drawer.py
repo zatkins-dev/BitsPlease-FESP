@@ -130,8 +130,10 @@ class Drawer:
             maxY = max(Ys)
 
             # find the center of the geometry, and rotate it
-            center = cls._zoom*Vec2d((maxX+minX)/2, (maxY+minY)/2).rotated(component.body.angle)
-
+            if component.body is not None:
+                center = cls._zoom*Vec2d((maxX+minX)/2, (maxY+minY)/2).rotated(component.body.angle)
+            else:
+                center = cls._zoom*Vec2d((maxX+minX)/2, (maxY+minY)/2)
             # finds the bounding box for the geometry, and transforms the
             # sprite to fit within the geometry
             scaledSprite = pg.transform.scale(component.sprite,
@@ -148,7 +150,10 @@ class Drawer:
             #     cls.explode.update_frame()
             #     return
             # now rotate the sprited
-            rotSprite = pg.transform.rotozoom(scaledSprite, math.degrees(component.body.angle), cls._zoom)
+            if component.body is not None:
+                rotSprite = pg.transform.rotozoom(scaledSprite, math.degrees(component.body.angle), cls._zoom)
+            else:
+                rotSprite = pg.transform.rotozoom(scaledSprite, 0, cls._zoom)
 
             # the position we draw the sprite at will be the
             # position of the rocket,
