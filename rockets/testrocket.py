@@ -71,10 +71,8 @@ def genRocket(space):
 
     """
     rocket = Rocket()
-    components = [genTank(rocket), genSAS(rocket), genOrbiter(rocket), LeftRCS(rocket), RightRCS(rocket)]
-    for c in components:
-        rocket.addComponent(c)
+    rocket.components = [genTank(rocket), genSAS(rocket), genOrbiter(rocket), LeftRCS(rocket), RightRCS(rocket)]
     space.add(rocket)
-    for c in components:
+    for c in rocket.components:
         space.add(c)
     return rocket

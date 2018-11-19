@@ -70,7 +70,7 @@ class HUD():
         self._velocityDegree = vDeg
         self._accelerationMag = aMag
         self._accelerationDegree = aDeg
-        self.thrusters = filter(lambda c: isinstance(c, Thruster), components)
+        self.thrusters = filter(lambda c: isinstance(c, Thruster) and c.fuel != 0, components)
         self.SASmodules = filter(lambda c: isinstance(c, SAS), components)
 
         graph.drawText((10, 10), "X Position: "

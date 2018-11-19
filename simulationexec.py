@@ -19,9 +19,6 @@ from graphics import Menu
 import pymunkoptions
 pymunkoptions.options["debug"] = False
 
-res_x, res_y = 1000, 1000
-GROUND_Y = res_y/20
-G = 6.67408*10**-11
 ASSETS_PATH = os.path.abspath("assets/")
 
 def keyDown(e, key):
@@ -198,7 +195,7 @@ def run():
             if event.type == pg.QUIT or keyDown(event, pg.K_ESCAPE):
                 return Menu.State.Exit
         space.step(1/ticksPerSec)
-        print("stepped")
+        rocket.velocity = (0,0)
         offset = Drawer.getOffset(screen, rocket)
         updateCamera(screen, offset)
         Drawer.drawMultiple(screen, space.shapes, offset)
