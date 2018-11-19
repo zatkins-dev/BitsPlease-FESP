@@ -24,21 +24,32 @@ class TrajectoryCalc():
         self._time = 0
         self._dt = 0.5
         # self._pixelArr = pg.PixelArray(pg.Surface(pg.display.get_surface().get_size()))
-    def velocity(self,v_prev,dt,mass,thrust,grav,k):
-        dvdt = thrust/mass + grav - k/mass * Vec2d(v_prev[0]**2, v_prev[1]**2)
+    def velocity(self,v_prev,dt,mass,grav,k):
+        dvdt = grav - k/mass * Vec2d(v_prev[0]**2, v_prev[1]**2)
         return Vec2d(v_prev + dt*dvdt)
     def position(self,pos_prev,dt,velocity):
         return Vec2d(pos_prev + dt*velocity)
-    def updateTrajectory2(self, surface, position, velocity, timesteps, dt, thrust, planetBodies, rocket, offset):
-        _,y = surface.get_size()
+    def updateTrajectory2(self, surface, position, velocity, timesteps, dt, planetBodies, rocket, offset):
+        x,y = surface.get_size()
         self._points = []
         self._points.append(position)
+        dt = math.log(velocity.length+1.01)
+        if Drawer._zoom < 1:
+            dt = min(dt*-math.log2(Drawer._zoom), 10)
+        elif Drawer._zoom > 1:
+            dt = max(dt/math.log2(Drawer._zoom), 0.01)
+        if dt == 0:
+            return
         v_prev = velocity
         pos_prev = position
-        for _ in range(timesteps):
-            v_prev = self.velocity(v_prev,dt,rocket.mass,thrust,phy.netGravity(planetBodies, position), 0.001)
+        curr_step = 0
+        while Drawer.inRange((x,y), Drawer._zoom*(pos_prev+offset)) and curr_step < timesteps:
+            if len(self._points)>40 and (pos_prev-self._points[0]).length < 1000:
+                break
+            v_prev = self.velocity(v_prev,dt,rocket.mass,phy.netGravity(planetBodies, pos_prev), 0)
             pos_prev = self.position(pos_prev, dt, v_prev)
             self._points.append(pos_prev)
+            curr_step += 1
         
         self._points = list(map(lambda x: (x+offset)*Drawer._zoom, self._points))
         self._points = list(map(lambda x: (x[0],y-x[1]), self._points))

@@ -169,9 +169,7 @@ def run(rocket=None):
         #     if c.sprite is not None:
         #         Drawer.drawExplosion(screen, c.cache_bb().center(), c.sprite.get_size(), Drawer.getOffset(screen, rocket))
         # updateTrajectory2(self, surface, position, velocity, timesteps, dt, planetBodies, rocket, offset)
-        thrusters = filter(lambda c: isinstance(c, Thruster), rocket.components)
-        totalThrust = sum(map(lambda t: t.thrustForce*t.thrustVector, thrusters))
-        traj.updateTrajectory2(screen, pos, vel, 10, 0.5, totalThrust, celestialBodies, rocket, offset)
+        traj.updateTrajectory2(screen, pos, vel, 1000, 1, celestialBodies, rocket, offset)
         Drawer.drawMultiple(screen, space.shapes, offset)
         Drawer.drawMultiple(screen, celestialBodies, offset)
         hud.updateHUD(pos[0], pos[1], (math.degrees(rocket.angle)+90) % 360,
