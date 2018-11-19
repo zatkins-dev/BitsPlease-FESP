@@ -43,6 +43,27 @@ def updateCamera(screen, center):
     screen.fill((0, 0, 0))
     graph.drawStars(screen, center)
 
+def clear(space):
+    for s in space.shapes:
+        space.remove(s)
+    for b in space.bodies:
+        space.remove(b)
+    space.step(1/50)
+
+def displayMenu(space):
+    Menu.drawMenu(100)
+    if Menu.quitPressed:
+        Menu.quitPressed = False
+        clear(space)
+        return Menu.State.Exit
+    elif Menu.demoPressed:
+        Menu.demoPressed = False
+        clear(space)
+        return Menu.State.Playing
+    elif Menu.builderPressed:
+        Menu.builderPressed = False
+        clear(space)
+        return Menu.State.Building
 
 def run():
     pg.mixer.init()
@@ -91,10 +112,16 @@ def run():
     keyInputs = []
     rocket_explosion = None
     crashed = False
+    menu_enabled = False
     while not crashed:
         for event in pg.event.get():
-            if event.type == pg.QUIT or keyDown(event, pg.K_ESCAPE):
+            if event.type == pg.QUIT:
                 return Menu.State.Exit
+            elif keyDown(event, pg.K_ESCAPE):
+                menu_enabled = True
+                Menu.demoPressed = False
+            elif keyUp(event, pg.K_ESCAPE):
+                menu_enabled = False
             elif event.type == pg.KEYDOWN:
                 if not (event.key in keyInputs):
                     keyInputs.append(event.key)
@@ -154,38 +181,28 @@ def run():
             #     Drawer.drawExplosion(screen, rocket_explosion, rocket.position + 20*Vec2d(0,1).rotated(rocket.angle), (150,150), Drawer.getOffset(screen, rocket))
             #     pg.display.flip()
             #     clock.tick(60)
+        if menu_enabled:
+            displayMenu(space)
         pg.display.flip()
         clock.tick(60)
     
     Menu.demoPressed = False
-    Menu.drawMenu(150)
+    displayMenu(space)
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT or keyDown(event, pg.K_ESCAPE):
                 return Menu.State.Exit
-        # space.step(1/ticksPerSec)
-        # print("stepped")
-        # offset = Drawer.getOffset(screen, rocket)
-        # updateCamera(screen, offset)
-        # Drawer.drawMultiple(screen, space.shapes, offset)
-        # Drawer.drawMultiple(screen, celestialBodies, offset)
-        # Drawer.drawExplosion(screen, rocket_explosion, rocket.position + 20*Vec2d(0,1).rotated(rocket.angle), (150,150), Drawer.getOffset(screen, rocket))
+        space.step(1/ticksPerSec)
+        print("stepped")
+        offset = Drawer.getOffset(screen, rocket)
+        updateCamera(screen, offset)
+        Drawer.drawMultiple(screen, space.shapes, offset)
+        Drawer.drawMultiple(screen, celestialBodies, offset)
+        Drawer.drawExplosion(screen, rocket_explosion, rocket.position + 20*Vec2d(0,1).rotated(rocket.angle), (150,150), Drawer.getOffset(screen, rocket))
+        displayMenu(space)
         pg.display.flip()
         clock.tick(60)
-        if Menu.quitPressed:
-            Menu.quitPressed = False
-            return Menu.State.Exit
-        elif Menu.demoPressed:
-            Menu.demoPressed = False
-            return Menu.State.Playing
-        elif Menu.builderPressed:
-            Menu.builderPressed = False
-            return Menu.State.Building
-        else:
-            Menu.drawMenu(150)
-            print ("drew menu")
 
-        
 
 
 if __name__ == "__main__":
