@@ -8,14 +8,14 @@ from pymunk import Poly as Poly
 from pymunk import Body as Body
 from pymunk import Shape as Shape
 
-
 from enum import Enum
 from rockets import Component
 from rockets import Thruster
 from rockets import SAS
 from rockets import Rocket
-from rockets import commandmodule
+from rockets import CommandModule
 
+from graphics import Drawer
 from graphics import Graphics
 
 class RocketBuilder:
@@ -24,10 +24,17 @@ class RocketBuilder:
     componentSurface = None
     componentInfoSurface = None
 
+    space = pm.Space(threaded=True)
+    space.threads = 2
+
     componentTabs = Enum("State", "Thruster Control Potato Famine")
+    componentList = []
     selectedTab = componentTabs.Thruster
     
-    theRocket = Rocket([])
+    theRocket = Rocket([CommandModule(None)])
+
+    activeComponent = None
+    activeSprite = None
     _bgColor = (0,0,0)
     _menuPaneColor = (128,128,128)
     _menuButtonColor = ((100,100,100),(64,64,64))  
@@ -38,9 +45,14 @@ class RocketBuilder:
     def run(cls):
         # while loop to draw infinitely for testing purposes
         clock = pg.time.Clock()     # create clock to manage game time
+        cls.space.add(cls.theRocket)
         cls.updateSubSurfaces()
         while True:                 # drawn menu infinitely
             cls.drawMenu()
+            pos = pg.mouse.get_pos()
+            if cls.activeSprite != None :
+                cls.activeSprite.set_rect(pos)
+             
             for event in pg.event.get():
                 if event.type == pg.VIDEORESIZE:
                     cls.surface = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
@@ -49,6 +61,31 @@ class RocketBuilder:
                     pg.display.quit()
                     pg.quit()
                     sys.exit()
+                if event.type is pg.MOUSEBUTTONDOWN:
+                    if cls.activeComponent is None:
+                        # no component in hand, so try to pick one up if possible
+
+                        # find the position of the mouse in our space
+                        screenCenter = pm.Vec2d(cls.surface.get_size())/2
+                        mousePos = pm.pygame_util.get_mouse_pos(cls.surface) - screenCenter
+
+                        # check every component in the list from back-to-front
+                        # the last items in the component list will render on top,
+                        # so this feels more natural to pick up
+                        for component in reversed(cls.theRocket.components):
+                            component.cache_bb()
+                            # check if the mosue is within the component geometry
+                            if component.point_query(mousePos)[0] <= 0:
+                                # if so, set this as the shape and remove it
+                                cls.activeComponent = type(component)
+                                cls.theRocket.removeComponent(component)
+                                break
+                if event.type == pg.MOUSEBUTTONUP :
+                    if cls.activeComponent is not None:
+                        cls.placeComponenet(cls.activeComponent)
+                        cls.activeComponent = None
+                        cls.activeSprite = None
+                
             clock.tick(60)
             
     @classmethod
@@ -56,6 +93,8 @@ class RocketBuilder:
         cls.surface.fill(cls._bgColor)
         cls.drawComponentMenu()
         cls.drawComponentInfo()
+        cls.drawRocket()
+        cls.drawHeldSprite()
         pg.display.flip()
 
     @classmethod
@@ -70,25 +109,25 @@ class RocketBuilder:
         buttonMargin = 10
         buttonSize = 100
 
-        componentList = None
+        cls.componentList = None
 
         if selectedTab == cls.componentTabs.Thruster:
-            componentList = Thruster.__subclasses__()
+            cls.componentList = Thruster.__subclasses__()
         elif selectedTab == cls.componentTabs.Control:
-            componentList = SAS.__subclasses__()              
+            cls.componentList = SAS.__subclasses__()              
 
         # find the number columns that can fit in the surface
         numCols = int((cls.componentSurface.get_width() + buttonMargin) / (buttonSize + buttonMargin))
-        numRows = int(len(componentList) / numCols)
-        if len(componentList) % numCols != 0:
+        numRows = int(len(cls.componentList) / numCols)
+        if len(cls.componentList) % numCols != 0:
             numRows += 1
         
         i = 0
-        for component in componentList:
+        for component in cls.componentList:
             pos = ((i % numCols) * buttonSize + buttonMargin, int(i / numCols) * buttonSize + cls._bottomOfTabs + buttonMargin)
             size = (buttonSize - buttonMargin, buttonSize - buttonMargin)
 
-            Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, component._sprite, .95)
+            Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, component._sprite, .95, lambda: cls.componentButtonClicked(component))
 
             i += 1
 
@@ -146,13 +185,25 @@ class RocketBuilder:
         cls.componentInfoSurface.fill(cls._menuPaneColor)
 
     @classmethod
+    def drawRocket(cls):
+        Drawer.drawMultiple(cls.surface, cls.theRocket.components,
+                            Drawer.getOffset(cls.surface, cls.theRocket))
+
+    @classmethod
+    def drawHeldSprite(cls):
+        if cls.activeComponent is not None:
+            mouse_x, mouse_y = pg.mouse.get_pos()
+            pos = (mouse_x - cls.activeComponent._sprite.get_width()/2, mouse_y - cls.activeComponent._sprite.get_height()/2)
+            cls.surface.blit(cls.activeComponent._sprite, pos)
+
+    @classmethod
     def updateSubSurfaces(cls):
         cls.surface = pg.display.get_surface()
         cls.componentSurface = cls.surface.subsurface(
             pg.Rect(
                 (0,0),   # top-left corner of screen
                 (cls.surface.get_size()[0]/4, cls.surface.get_size()[1]) # left 1/4 of screen
-            ))
+             ))
 
         cls.componentInfoSurface = cls.surface.subsurface(
             pg.Rect(
@@ -162,14 +213,45 @@ class RocketBuilder:
     
 
     @classmethod
-    def placeComponenet(cls, transform, component):
+    def placeComponenet(cls, component):
         #if it's intersecting/directly adjacent to another component on the rocket
         if cls.intersectsWithRocket(component) :
-            cls.theRocket.addComponent(component)
+            transform = cls.mousePosToPymunkTransform(component)
+            cls.theRocket.addComponent(component(body=None, transform=transform))
             return True
         else:
             return False
         
+    @classmethod
+    def mousePosToPymunkTransform(cls, component):
+        """Takes in a component class or instance, and the mouse position. Assuming
+           that the component is being held by mouse in its center, this finds the
+           transform needed to translate between the component's inherent verteces
+           and the mouse's current position in pymunk space.
+
+            Args:
+                mousePos (int, int): mouse's position to translate
+                component (component): the component who's verticies to translate
+
+        """
+        # pull in component boundaries
+        minX, maxX, minY, maxY = Component.getXYBoundingBox(component._vertices)
+
+        # find the geometric center of the component
+        componentCenter = pm.Vec2d((minX + maxX) / 2, (minY + maxY) / 2)
+
+        # finding center of the screen
+        screenCenter = pm.Vec2d(cls.surface.get_size())/2
+
+        # finding the mouse position, in pymunk space
+        mousePos = pm.pygame_util.get_mouse_pos(cls.surface)
+
+        # vector to the center of the screen in pygame pixels
+        dx, dy = (mousePos - screenCenter) - componentCenter
+
+        # flip dy between pymunk coordinates and pymunk screen-space coordinates
+
+        return pm.Transform(tx=dx, ty=dy)
 
     @classmethod
     def removeComponent(cls, component):
@@ -178,20 +260,30 @@ class RocketBuilder:
     
     @classmethod
     def intersectsWithRocket(cls, component):
-        verts = component.get_vertices()
-        totalverts = len(verts)
-        intersects = False
-        for x in range(totalverts):
-            if x == 0:
-                verts1 = verts[0]
-                verts2 = verts[totalverts -1]
-            else:
-                verts1 = verts[x]
-                verts2 = verts[x-1]
-            for i in Rocket.shapes:
-                if i.segment_query(verts1, verts2, 1).shape != None :
-                    intersects = True
-                    break
-            if intersects == True:
-                    break
-        return intersects
+        # make an instance of the component to test with, at the mouse position     
+        transform = cls.mousePosToPymunkTransform(component)
+        theComponent = component(None, transform=transform)
+        cls.theRocket.addComponent(theComponent)
+
+        # update the bounding box for the component
+        theComponent.cache_bb()
+
+        # compare on every single component in the rocket
+        for rocketComponent in cls.theRocket.components:
+            # except for the one we just made...
+            if rocketComponent is not theComponent:
+                # update the rocket component's bounding box...
+                rocketComponent.cache_bb()
+                # ...and see if it collides with our shape
+                if theComponent.shapes_collide(rocketComponent).points:
+                    #if it does, remove the component and return True!
+                    cls.theRocket.removeComponent(theComponent)
+                    return True
+
+        # if it doesn't for any of the rocket components, remove it and return False
+        cls.theRocket.removeComponent(theComponent)
+        return False
+
+    @classmethod
+    def componentButtonClicked(cls, component) :
+        cls.activeComponent = component

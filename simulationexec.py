@@ -52,6 +52,7 @@ def clear(space):
 
 def displayMenu(space):
     Menu.drawMenu(100)
+    pg.display.flip()
     if Menu.quitPressed:
         Menu.quitPressed = False
         clear(space)
@@ -64,6 +65,8 @@ def displayMenu(space):
         Menu.builderPressed = False
         clear(space)
         return Menu.State.Building
+    else:
+        return None
 
 def run():
     pg.mixer.init()
@@ -182,7 +185,9 @@ def run():
             #     pg.display.flip()
             #     clock.tick(60)
         if menu_enabled:
-            displayMenu(space)
+            returnCode = displayMenu(space)
+            if returnCode is not None:
+                return returnCode
         pg.display.flip()
         clock.tick(60)
     
@@ -199,7 +204,9 @@ def run():
         Drawer.drawMultiple(screen, space.shapes, offset)
         Drawer.drawMultiple(screen, celestialBodies, offset)
         Drawer.drawExplosion(screen, rocket_explosion, rocket.position + 20*Vec2d(0,1).rotated(rocket.angle), (150,150), Drawer.getOffset(screen, rocket))
-        displayMenu(space)
+        returnCode = displayMenu(space)
+        if returnCode is not None:
+            return returnCode
         pg.display.flip()
         clock.tick(60)
 

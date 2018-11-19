@@ -16,11 +16,8 @@ def genOrbiter(b):
         Component: Orbiter component for prototype rocket.
 
     """
-    density = 34
-    verts = [(12, 4), (-12, 4), (0, 42)]
-    orbiter = Component(b, verts, radius=1)
-    orbiter.density = density
-    orbiter.sprite = pg.image.load(os.path.join("assets", "sprites", "orbiter.png")).convert_alpha()
+    
+    orbiter = CommandModule(b, radius=1)
     return orbiter
 
 
