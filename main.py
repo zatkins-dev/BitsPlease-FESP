@@ -12,7 +12,7 @@ def main():
     State = menu.State
 
     currentState = State.Splash
-    disp = pygame.display.set_mode((854, 480), pygame.RESIZABLE and pygame.SRCALPHA )
+    disp = pygame.display.set_mode((854, 480), pygame.RESIZABLE)
 
     while currentState != State.Exit:
         clock.tick(60)
@@ -21,7 +21,7 @@ def main():
             if event.type == pygame.QUIT:
                 currentState = State.Exit
             if event.type == pygame.VIDEORESIZE:
-                pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE and pygame.SRCALPHA)
+                pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
 
         if currentState == State.Splash:
             if menu.splashScreenPressed:
