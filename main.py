@@ -54,6 +54,7 @@ def main():
 
         if currentState == State.Playing:
             currentState = simulationexec.run(rocket)
+            rocket =None
 
         pygame.display.flip()
 

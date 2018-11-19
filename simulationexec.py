@@ -65,6 +65,7 @@ def displayMenu(space):
     else:
         return None
 
+
 def run(rocket=None):
     pg.mixer.init()
     pg.mixer.music.load("sound/Sci-fiPulseLoop.wav")
@@ -118,6 +119,8 @@ def run(rocket=None):
     rocket_explosion = None
     crashed = False
     menu_enabled = False
+    Menu.demoPressed = False
+    Menu.builderPressed = False
     while not crashed:
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -192,6 +195,7 @@ def run(rocket=None):
             returnCode = displayMenu(space)
             if returnCode is not None:
                 del rocket
+                del space
                 return returnCode
         pg.display.flip()
         clock.tick(60)
@@ -212,6 +216,7 @@ def run(rocket=None):
         returnCode = displayMenu(space)
         if returnCode is not None:
             del rocket
+            del space
             return returnCode
         pg.display.flip()
         clock.tick(60)
