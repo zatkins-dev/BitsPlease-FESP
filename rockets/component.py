@@ -1,8 +1,9 @@
 import pygame as pg
 import pymunk as pm
 from physics.collision import CT_COMPONENT
+from abc import ABC, abstractmethod
 
-class Component(pm.Poly):
+class Component(ABC, pm.Poly):
     """Extention of pymunk Poly class with properties for sprites/textures.
 
     Args:
@@ -45,21 +46,12 @@ class Component(pm.Poly):
         Args:
             sprite (surface): New Surface to use as component sprite
         """
-        self._sprite = self.scaleSpriteToVerts(sprite, self.vertices)
+        self._sprite = sprite
 
     @classmethod
-    def scaleSpriteToVerts(cls, sprite, vertices):
-        minX, maxX, minY, maxY = cls.getXYBoundingBox(vertices)
-        
-        vertRange = (int(maxX - minX), int(maxY - minY))
-
-        return pg.transform.scale(sprite, vertRange)
-
-    @classmethod
-    def getXYBoundingBox(cls, vertices):
-        minX = min(list(map(lambda x: x[0], vertices)))
-        maxX = max(list(map(lambda x: x[0], vertices)))
-        minY = min(list(map(lambda y: y[1], vertices)))
-        maxY = max(list(map(lambda y: y[1], vertices)))
-
-        return(minX, maxX, minY, maxY)
+    @abstractmethod
+    def getDisplayInfo(cls):
+        """This will should return a dictionary that contains relevant
+           Information to display in the rocket builder
+        """
+        pass

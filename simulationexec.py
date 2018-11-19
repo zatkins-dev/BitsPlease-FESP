@@ -65,7 +65,7 @@ def displayMenu(space):
     else:
         return None
 
-def run():
+def run(rocket=None):
     pg.mixer.init()
     pg.mixer.music.load("sound/Sci-fiPulseLoop.wav")
     celestialBodies = []
@@ -95,7 +95,12 @@ def run():
     # planetZach = CelestialBody('planetZach', space, 10**13, 200, 2000, 1000, 0.9, 0, 0)
     # celestialBodies.append(planetZach)
 
-    rocket = tr.genRocket(space)
+    if rocket is None:
+        rocket = tr.genRocket(space)
+    else:
+        space.add(rocket)
+        for component in rocket.components:
+            space.add(component)
     rocket.debugComponentPrint()
     # draw_options = pygame_util.DrawOptions(game)
     space.damping = 1
@@ -148,6 +153,8 @@ def run():
 
         grav = updateGravity(space, rocket, celestialBodies, ticksPerSec)
         space.step(1/ticksPerSec)
+        for module in rocket.SASmodules:
+            module.holdAngle()
         pos = rocket.position
         vel = rocket.velocity
         offset = Drawer.getOffset(screen, rocket)
@@ -160,7 +167,7 @@ def run():
         #         Drawer.drawExplosion(screen, c.cache_bb().center(), c.sprite.get_size(), Drawer.getOffset(screen, rocket))
         # updateTrajectory2(self, surface, position, velocity, timesteps, dt, planetBodies, rocket, offset)
         thrusters = filter(lambda c: isinstance(c, Thruster), rocket.components)
-        totalThrust = sum(map(lambda t: t._thrustForce*t._thrustVector, thrusters))
+        totalThrust = sum(map(lambda t: t.thrustForce*t.thrustVector, thrusters))
         traj.updateTrajectory2(screen, pos, vel, 10, 0.5, totalThrust, celestialBodies, rocket, offset)
         Drawer.drawMultiple(screen, space.shapes, offset)
         Drawer.drawMultiple(screen, celestialBodies, offset)
@@ -184,6 +191,7 @@ def run():
         if menu_enabled:
             returnCode = displayMenu(space)
             if returnCode is not None:
+                del rocket
                 return returnCode
         pg.display.flip()
         clock.tick(60)
@@ -203,6 +211,7 @@ def run():
         Drawer.drawExplosion(screen, rocket_explosion, rocket.position + 20*Vec2d(0,1).rotated(rocket.angle), (150,150), Drawer.getOffset(screen, rocket))
         returnCode = displayMenu(space)
         if returnCode is not None:
+            del rocket
             return returnCode
         pg.display.flip()
         clock.tick(60)

@@ -10,7 +10,7 @@ from pymunk import Shape as Shape
 
 from enum import Enum
 from rockets import Component
-from rockets import Thruster
+from rockets import Thruster, RCSThruster
 from rockets import SAS
 from rockets import Rocket
 from rockets import CommandModule
@@ -24,14 +24,18 @@ class RocketBuilder:
     componentSurface = None
     componentInfoSurface = None
 
+    start_event = pg.USEREVENT + 1
+
     space = pm.Space(threaded=True)
     space.threads = 2
 
-    componentTabs = Enum("State", "Thruster Control Potato Famine")
+    componentTabs = Enum("State", "Thruster Control")
     componentList = []
     selectedTab = componentTabs.Thruster
     
-    theRocket = Rocket([CommandModule(None)])
+    # this component will be the base... and shouldn't be removed from the rocket
+    _baseComponent = CommandModule(None)
+    theRocket = Rocket([_baseComponent])
 
     activeComponent = None
     activeSprite = None
@@ -75,7 +79,7 @@ class RocketBuilder:
                         for component in reversed(cls.theRocket.components):
                             component.cache_bb()
                             # check if the mosue is within the component geometry
-                            if component.point_query(mousePos)[0] <= 0:
+                            if component is not cls._baseComponent and component.point_query(mousePos)[0] <= 0:
                                 # if so, set this as the shape and remove it
                                 cls.activeComponent = type(component)
                                 cls.theRocket.removeComponent(component)
@@ -85,6 +89,9 @@ class RocketBuilder:
                         cls.placeComponenet(cls.activeComponent)
                         cls.activeComponent = None
                         cls.activeSprite = None
+                if event.type == cls.start_event:
+                    cls.space.remove(cls.theRocket)
+                    return cls.theRocket
                 
             clock.tick(60)
             
@@ -112,7 +119,9 @@ class RocketBuilder:
         cls.componentList = None
 
         if selectedTab == cls.componentTabs.Thruster:
-            cls.componentList = Thruster.__subclasses__()
+            thrusterList = [thruster for thruster in Thruster.__subclasses__() if thruster is not RCSThruster]
+            RCSList = RCSThruster.__subclasses__()
+            cls.componentList = thrusterList + RCSList
         elif selectedTab == cls.componentTabs.Control:
             cls.componentList = SAS.__subclasses__()              
 
@@ -127,7 +136,7 @@ class RocketBuilder:
             pos = ((i % numCols) * buttonSize + buttonMargin, int(i / numCols) * buttonSize + cls._bottomOfTabs + buttonMargin)
             size = (buttonSize - buttonMargin, buttonSize - buttonMargin)
 
-            Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, component._sprite, .95, lambda: cls.componentButtonClicked(component))
+            Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, component._sprite, .8, lambda: cls.componentButtonClicked(component))
 
             i += 1
 
@@ -159,6 +168,7 @@ class RocketBuilder:
 
             if width + lineWidth < cls.componentSurface.get_width():
                 buttonLines[currLine].append((buttonSizes[i][0], tabTexts[i]))
+                
             else:
                 currLine += 1
                 buttonLines.append([(buttonSizes[i][0], tabTexts[i])])
@@ -177,12 +187,65 @@ class RocketBuilder:
                     size = (cls.componentSurface.get_width() - pos[0], buttonHeight)
                 else:
                     size = (width, buttonHeight)
-                Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, buttonLines[row][col][1], 16)
+                Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, buttonLines[row][col][1], 16, lambda: cls.setCurrentTab(cls.componentTabs[buttonLines[row][col][1]]))
 
     @classmethod
     def drawComponentInfo(cls):
-        # as a quick test, fill with white
+        # fill with background color
         cls.componentInfoSurface.fill(cls._menuPaneColor)
+
+        if cls.activeComponent is not None:
+            # find the size & mass of the component
+            globalAttributes = ["Width: ", "Height: ", "Mass: "]
+            
+            testComponent = cls.activeComponent(cls.theRocket)
+            cls.space.add(testComponent)
+            bb = testComponent.cache_bb()
+
+            # find the geometric center of the component
+            globalAttributes[0] += str(bb.right - bb.left) + "m"
+            globalAttributes[1] += str(bb.top - bb.bottom) + "m"
+            globalAttributes[2] += str(round(testComponent.mass, 1)) + "kg"
+
+            cls.space.remove(testComponent)
+
+            # print the values to the side
+
+            nameFont = pg.font.SysFont("lucidaconsole", 24, True)
+            attributeFont = pg.font.SysFont("lucidaconsole", 14)
+            rowHeight = 24
+            margin = 10
+
+            textPos = lambda rowNum: (margin, rowHeight * rowNum + margin)
+
+            Graphics.drawText(textPos(0), cls.activeComponent.__name__, nameFont, surface=cls.componentInfoSurface)
+
+            currRow = 1
+
+            for attribute in globalAttributes:
+                Graphics.drawText(textPos(currRow), attribute, attributeFont, surface=cls.componentInfoSurface)
+                currRow += 1
+            
+            dispInfo = cls.activeComponent.getDisplayInfo()
+            for key in dispInfo:
+                Graphics.drawText(textPos(currRow), key + ": " + str(dispInfo[key]), attributeFont, surface=cls.componentInfoSurface)
+                currRow += 1
+                
+
+            # find strings specific to this kind of component
+            for key in dispInfo:
+                print(key, dispInfo[key])
+
+            
+
+                
+
+        # draw a start button in the corner
+        buttonMargin = cls.componentInfoSurface.get_width() * .05
+        startButtonSize = (cls.componentInfoSurface.get_width() - 2 * buttonMargin, 80)
+        startButtonPos = (buttonMargin, cls.componentInfoSurface.get_height() - 80 - buttonMargin)
+        startButtonColor = ((0,200,0),(0,100,0))
+        Graphics.drawButton(cls.componentInfoSurface, startButtonPos, startButtonSize, startButtonColor, "Start", 16, lambda: pg.event.post(pg.event.Event(cls.start_event)))
 
     @classmethod
     def drawRocket(cls):
@@ -235,10 +298,15 @@ class RocketBuilder:
 
         """
         # pull in component boundaries
-        minX, maxX, minY, maxY = Component.getXYBoundingBox(component._vertices)
+        #minX, maxX, minY, maxY = Component.getXYBoundingBox(component._vertices)
+        testComponent = component(cls.theRocket)
+        cls.space.add(testComponent)
+        bb = testComponent.cache_bb()
 
         # find the geometric center of the component
-        componentCenter = pm.Vec2d((minX + maxX) / 2, (minY + maxY) / 2)
+        componentCenter = bb.center()
+
+        cls.space.remove(testComponent)
 
         # finding center of the screen
         screenCenter = pm.Vec2d(cls.surface.get_size())/2
@@ -287,3 +355,7 @@ class RocketBuilder:
     @classmethod
     def componentButtonClicked(cls, component) :
         cls.activeComponent = component
+
+    @classmethod
+    def setCurrentTab(cls, state):
+        cls.selectedTab = state

@@ -6,7 +6,7 @@ import os
 class CommandModule(Component):
     _vertices = [(12, 4), (-12, 4), (0, 42)]
     _density = 34
-    _sprite = Component.scaleSpriteToVerts(pg.image.load(os.path.join("assets", "sprites", "orbiter.png")), _vertices)
+    _sprite = pg.image.load(os.path.join("assets", "sprites", "orbiter.png"))
 
     # Should we choose to make different types of command modules, we will
     # abstract this. For now, we'll just have one
@@ -18,6 +18,9 @@ class CommandModule(Component):
         Component.__init__(self, body, self._vertices, transform, radius)
         self.density = self._density
         
-        
-    #this should control the rocket
+    @classmethod
+    def getDisplayInfo(cls):
+        return {
+            "Rocket's Base": "The Heart of the Rocket"
+        }
 

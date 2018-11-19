@@ -16,7 +16,6 @@ def genOrbiter(b):
         Component: Orbiter component for prototype rocket.
 
     """
-    
     orbiter = CommandModule(b, radius=1)
     return orbiter
 
@@ -31,13 +30,7 @@ def genTank(b):
         Thruster: Thruster for prototype rocket.
 
     """
-    verts = [(4.2, 0), (-4.2, 0), (4.2, 46.9), (-4.2, 46.9)]
-    density = 73.58
-    # tank = Thruster(b, verts, (0, 1), 100000, radius=1)
-    tank = DeltaVee(b, radius=1)
-    tank.density = density
-    tank.key = pg.K_f
-    # tank.sprite = pg.image.load(os.path.join("assets", "sprites", "tank.png")).convert_alpha()
+    tank = UpGoer2000(b, radius=1)
     return tank
 
 
@@ -51,13 +44,7 @@ def genSAS(b):
         SAS: SAS for prototype rocket.
 
     """
-    density = 100
-    verts = [(3, 6), (-3, 6), (-3, 12), (3, 12)]
-    sas = SAS(b, verts, 0.05, 0, transform=pm.Transform(tx=0, ty=0), radius=1)
-    sas.density = density
-    sas.leftKey = pg.K_a
-    sas.rightKey = pg.K_d
-    
+    sas = AdvancedSAS(b)
     return sas
 
 def genRocket(space):

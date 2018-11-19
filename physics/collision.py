@@ -37,7 +37,7 @@ collision_debug_mode = False
 # Maximum post-collision force a component can withstand without breaking off rocket
 _threshold_for_detach = 10000 # kg*m/s^2
 # Maximum post-collision force a component can withstand without being destroyed
-_threshold_for_failure = 10000 # kg*m/s^2
+_threshold_for_failure = 100000 # kg*m/s^2
 
 
 # Components that have broken from a collision

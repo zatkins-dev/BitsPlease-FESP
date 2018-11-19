@@ -1,4 +1,7 @@
+import pygame as pg
 from rockets import Component
+import math
+import os
 
 
 class SAS(Component):
@@ -25,12 +28,12 @@ class SAS(Component):
 
     _vertices = None
     _sprite = None
+    _SASPower = None
 
-    def __init__(self, body, vertices, SASpower, angle,
-                 transform=None, radius=0):
-        Component.__init__(self, body, vertices, transform, radius)
+    def __init__(self, body, transform=None, radius=0):
+        Component.__init__(self, body, self.vertices, transform, radius)
         self._SASangle = 0
-        self.fuel = 20000
+        self._isLocked = False
 
     def rotateCounterClockwise(self):
         for ts in self.body.thrusters:
@@ -52,6 +55,24 @@ class SAS(Component):
                 # left-directed vector and on the bottom half of the rocket
                 ts.applyThrust()
 
+    def holdAngle(self):
+        if self.isAngleLocked:
+            # move to desired angle
+            # find the difference between the current angle and the desired angle
+            deltaAngle = self.SASangle - self.body.angle
+            if deltaAngle > math.pi:
+                deltaAngle = self.SASangle - self.body.angle - 2 * math.pi
+
+            # now we know how far off we are from the desired angle
+            # translate that into a desired angular velocity
+            targetAngVel = .5 * math.atan(self.SASPower * deltaAngle)
+
+            if targetAngVel > self.body.angular_velocity:
+                self.rotateCounterClockwise()
+            elif targetAngVel < self.body.angular_velocity:
+                self.rotateClockwise()
+
+
     @property
     def isAngleLocked(self):
         """Whether or not the SAS module is holding an angle
@@ -61,7 +82,11 @@ class SAS(Component):
         """
         return self._isLocked
 
-    @property
+    @isAngleLocked.setter
+    def isAngleLocked(self, newVal):
+        if isinstance(newVal, bool):
+            self._isLocked = newVal
+
     def toggleAngleLock(self):
         """Toggles the SAS angle locking, and returns the current value
 
@@ -90,3 +115,25 @@ class SAS(Component):
 
         """
         self._SASangle = newAngle
+
+    @property
+    def SASPower(self):
+        return self._SASPower
+
+
+class AdvancedSAS(SAS):
+    _vertices = [(-12,4), (-12,-6), (12,-6), (12,4)]
+    _SASPower = 2
+    _sprite = pg.image.load(os.path.join("assets", "sprites", "AdvancedSAS.png"))
+    _maxFuel = 20000
+
+    def __init__(self, body, transform=None, radius=0):
+        SAS.__init__(self, body, transform, radius)
+        self.fuel = self._maxFuel
+
+    @classmethod
+    def getDisplayInfo(cls):
+        return {
+            "SAS Power": str(cls._SASPower),
+            "RCS Fuel" : str(cls._maxFuel)
+        }
