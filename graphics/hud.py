@@ -1,7 +1,9 @@
 import pygame as pg
+import math
 from graphics import Graphics as graph
 from rockets import Thruster
 from rockets import SAS
+from graphics.drawer import Drawer
 
 
 class HUD():
@@ -50,7 +52,7 @@ class HUD():
         else:
             self._font = font
 
-    def updateHUD(self, x, y, pDeg, vMag, vDeg, aMag, aDeg, components, fps):
+    def updateHUD(self, rocket, aMag, aDeg, fps):
         """
             Update the values that are displayed on the screen,
             then draw the text to the screen
@@ -63,15 +65,15 @@ class HUD():
 
             **Returns**: None.
         """
-        self._xPosition = x
-        self._yPosition = y
-        self._positionDegree = pDeg
-        self._velocityMag = vMag
-        self._velocityDegree = vDeg
+        self._xPosition = rocket.position[0]
+        self._yPosition = rocket.position[1]
+        self._positionDegree = (math.degrees(rocket.angle)+90) % 360
+        self._velocityMag = rocket.velocity.length
+        self._velocityDegree = rocket.velocity.angle_degrees % 360
         self._accelerationMag = aMag
         self._accelerationDegree = aDeg
-        self.thrusters = filter(lambda c: isinstance(c, Thruster) and c.fuel != 0, components)
-        self.SASmodules = filter(lambda c: isinstance(c, SAS), components)
+        self.thrusters = rocket.thrusters
+        self.SASmodules = rocket.SASmodules
 
         graph.drawText((10, 10), "X Position: "
                        + str("{:10.4f}".format(self._xPosition))
