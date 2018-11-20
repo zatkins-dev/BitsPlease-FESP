@@ -56,23 +56,29 @@ class HUD():
         # draw a circle - the navball
         pg.draw.circle(self._navBall, (75,75,75,255), (self._navBallRadius,self._navBallRadius), self._navBallRadius)
         # draw some compass markings on the navball
-        # TODO : move this to be an actual function
-        drawCompassLine = lambda ang, size: pg.draw.line(self._navBall, (255,255,255), (self._navBallRadius*math.cos(ang)+self._navBallRadius, self._navBallRadius*math.sin(ang)+self._navBallRadius), (self._navBallSubRadius*math.cos(ang)+self._navBallRadius, self._navBallSubRadius*math.sin(ang)+self._navBallRadius), size)
-        
-        drawCompassLine(0, 5)
-        drawCompassLine(math.pi/2, 5)
-        drawCompassLine(math.pi/4, 3)
-        drawCompassLine(3*math.pi/4, 3)
-        drawCompassLine(math.pi, 3)
-        drawCompassLine(5*math.pi/4, 3)
-        drawCompassLine(3*math.pi/2, 3)
-        drawCompassLine(7*math.pi/4, 3)
-        drawCompassLine(2*math.pi, 3)
+        self.drawCompassLine(self._navBall, 0, 5)
+        self.drawCompassLine(self._navBall, math.pi/2, 5)
+        self.drawCompassLine(self._navBall, math.pi/4, 3)
+        self.drawCompassLine(self._navBall, 3*math.pi/4, 3)
+        self.drawCompassLine(self._navBall, math.pi, 3)
+        self.drawCompassLine(self._navBall, 5*math.pi/4, 3)
+        self.drawCompassLine(self._navBall, 3*math.pi/2, 3)
+        self.drawCompassLine(self._navBall, 7*math.pi/4, 3)
+        self.drawCompassLine(self._navBall, 2*math.pi, 3)
 
         if font is None:
             self._font = pg.font.SysFont("Futura", 20)
         else:
             self._font = font
+
+    def drawCompassLine(self, surface, angle, size, innerRadius=None, outerRadius=None, color=(255,255,255,255)):
+        if innerRadius is None or outerRadius is None:
+            innerRadius = self._navBallSubRadius
+            outerRadius = self._navBallRadius
+        pg.draw.line(self._navBall, color, 
+            (outerRadius*math.cos(angle)+outerRadius, outerRadius*math.sin(angle)+outerRadius),
+            (innerRadius*math.cos(angle)+outerRadius, innerRadius*math.sin(angle)+outerRadius), size)
+        
 
     def _updateNavBall(self, rocket):
         # make a copy of the original navBall to return
@@ -99,7 +105,6 @@ class HUD():
             for y in range(subNavBall.get_height()):
                 if mask.get_at((x,y)) is 0:
                     subNavBall.set_at((x,y), (0,0,0,0))
-
         
         newNavBall.blit(subNavBall, (0,0))
 
