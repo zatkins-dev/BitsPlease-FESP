@@ -57,6 +57,8 @@ class Rocket(Body):
     @isAngleLocked.setter
     def isAngleLocked(self, newAngleLocked):
         self._isAngleLocked = newAngleLocked
+        for sas in self.SASmodules:
+            sas.SASangle = self.angle
 
     @property
     def RCSThrusters(self):
