@@ -71,11 +71,11 @@ class HUD():
         else:
             self._font = font
 
-    def drawCompassLine(self, surface, angle, size, innerRadius=None, outerRadius=None, color=(255,255,255,255)):
+    def drawCompassLine(self, surface, angle, size, color=(255,255,255,255), innerRadius=None, outerRadius=None):
         if innerRadius is None or outerRadius is None:
             innerRadius = self._navBallSubRadius
             outerRadius = self._navBallRadius
-        pg.draw.line(self._navBall, color, 
+        pg.draw.line(surface, color, 
             (outerRadius*math.cos(angle)+outerRadius, outerRadius*math.sin(angle)+outerRadius),
             (innerRadius*math.cos(angle)+outerRadius, innerRadius*math.sin(angle)+outerRadius), size)
         
@@ -105,7 +105,7 @@ class HUD():
             for y in range(subNavBall.get_height()):
                 if mask.get_at((x,y)) is 0:
                     subNavBall.set_at((x,y), (0,0,0,0))
-        
+
         newNavBall.blit(subNavBall, (0,0))
 
         return newNavBall
