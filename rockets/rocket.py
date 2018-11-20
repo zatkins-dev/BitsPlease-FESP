@@ -26,6 +26,7 @@ class Rocket(Body):
         self.angular_velocity_limit = 400000
         self.destroyed=False
         self.throttle = 0
+        self.isAngleLocked = 0
 
     @property
     def throttle(self):
@@ -50,6 +51,14 @@ class Rocket(Body):
         return list(filter(lambda c: isinstance(c, SAS), self.components))
 
     @property
+    def isAngleLocked(self):
+        return self._isAngleLocked
+
+    @isAngleLocked.setter
+    def isAngleLocked(self, newAngleLocked):
+        self._isAngleLocked = newAngleLocked
+
+    @property
     def RCSThrusters(self):
         return list(filter(lambda c: isinstance(c, RCSThruster), self.components))
 
@@ -69,10 +78,11 @@ class Rocket(Body):
 
         # let SAS modules fire rcs thrusters if needed,
         # checking from input from users if not holding
-        for module in self.SASmodules:
-            if module.isAngleLocked:
+        if self.isAngleLocked:
+            for module in self.SASmodules:
                 module.holdAngle()
-            else:
+        else:
+            for module in self.SASmodules:
                 if currentKeys[pg.K_a]:
                     module.rotateCounterClockwise()
                 if currentKeys[pg.K_d]:
@@ -92,10 +102,7 @@ class Rocket(Body):
             # commands in here, i.e. things that only run once
             # per key press
             if event.key is pg.K_v:  # Toggle SAS Lock
-                for sas in self.SASmodules:
-                    if not sas.isAngleLocked:
-                        sas.SASangle = self.angle
-                    sas.toggleAngleLock()
+                self.isAngleLocked = not self.isAngleLocked
         
 
     def addComponent(self, c):
