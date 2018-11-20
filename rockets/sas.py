@@ -57,48 +57,23 @@ class SAS(Component):
                 ts.applyThrust()
 
     def holdAngle(self):
-        if self.isAngleLocked:
-            # move to desired angle
-            # find the difference between the current angle and the desired angle
-            deltaAngle = self.SASangle - self.body.angle
-            if deltaAngle > math.pi:
-                deltaAngle = self.SASangle - self.body.angle - 2 * math.pi
+        # move to desired angle
+        # find the difference between the current angle and the desired angle
+        deltaAngle = self.SASangle - self.body.angle
+        if deltaAngle > math.pi:
+            deltaAngle = self.SASangle - self.body.angle - 2 * math.pi
 
-            # now we know how far off we are from the desired angle
-            # we can check if we're outside the tolerances to move
-            if deltaAngle < -1 * self.tolerance or deltaAngle > self.tolerance:
-                # we're outside the expected tolerance, so we need to
-                # translate the angle into a desired angular velocity
-                targetAngVel = .5 * math.atan(self.SASPower * deltaAngle)
+        # now we know how far off we are from the desired angle
+        # we can check if we're outside the tolerances to move
+        if deltaAngle < -1 * self.tolerance or deltaAngle > self.tolerance:
+            # we're outside the expected tolerance, so we need to
+            # translate the angle into a desired angular velocity
+            targetAngVel = .5 * math.atan(self.SASPower * deltaAngle)
 
-                if targetAngVel > self.body.angular_velocity:
-                    self.rotateCounterClockwise()
-                elif targetAngVel < self.body.angular_velocity:
-                    self.rotateClockwise()
-
-
-    @property
-    def isAngleLocked(self):
-        """Whether or not the SAS module is holding an angle
-
-        Returns:
-            Boolean: Value of _isLocked
-        """
-        return self._isLocked
-
-    @isAngleLocked.setter
-    def isAngleLocked(self, newVal):
-        if isinstance(newVal, bool):
-            self._isLocked = newVal
-
-    def toggleAngleLock(self):
-        """Toggles the SAS angle locking, and returns the current value
-
-        Returns:
-            Boolean: Value of _isLocked
-        """
-        self._isLocked = not self._isLocked
-        return self._isLocked
+            if targetAngVel > self.body.angular_velocity:
+                self.rotateCounterClockwise()
+            elif targetAngVel < self.body.angular_velocity:
+                self.rotateClockwise()
 
     @property
     def SASangle(self):
@@ -132,7 +107,7 @@ class SAS(Component):
 class AdvancedSAS(SAS):
     _vertices = [(-12,4), (-12,-6), (12,-6), (12,4)]
     _SASPower = 2
-    _tolerance = .05
+    _tolerance = .01
     _sprite = pg.image.load(os.path.join("assets", "sprites", "AdvancedSAS.png"))
     _maxFuel = 20000
 
