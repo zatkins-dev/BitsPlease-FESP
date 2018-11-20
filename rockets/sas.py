@@ -29,6 +29,7 @@ class SAS(Component):
     _vertices = None
     _sprite = None
     _SASPower = None
+    _tolerance = None
 
     def __init__(self, body, transform=None, radius=0):
         Component.__init__(self, body, self.vertices, transform, radius)
@@ -64,13 +65,16 @@ class SAS(Component):
                 deltaAngle = self.SASangle - self.body.angle - 2 * math.pi
 
             # now we know how far off we are from the desired angle
-            # translate that into a desired angular velocity
-            targetAngVel = .5 * math.atan(self.SASPower * deltaAngle)
+            # we can check if we're outside the tolerances to move
+            if deltaAngle < -1 * self.tolerance or deltaAngle > self.tolerance:
+                # we're outside the expected tolerance, so we need to
+                # translate the angle into a desired angular velocity
+                targetAngVel = .5 * math.atan(self.SASPower * deltaAngle)
 
-            if targetAngVel > self.body.angular_velocity:
-                self.rotateCounterClockwise()
-            elif targetAngVel < self.body.angular_velocity:
-                self.rotateClockwise()
+                if targetAngVel > self.body.angular_velocity:
+                    self.rotateCounterClockwise()
+                elif targetAngVel < self.body.angular_velocity:
+                    self.rotateClockwise()
 
 
     @property
@@ -120,10 +124,15 @@ class SAS(Component):
     def SASPower(self):
         return self._SASPower
 
+    @property
+    def tolerance(self):
+        return self._tolerance
+
 
 class AdvancedSAS(SAS):
     _vertices = [(-12,4), (-12,-6), (12,-6), (12,4)]
     _SASPower = 2
+    _tolerance = .05
     _sprite = pg.image.load(os.path.join("assets", "sprites", "AdvancedSAS.png"))
     _maxFuel = 20000
 
@@ -135,5 +144,6 @@ class AdvancedSAS(SAS):
     def getDisplayInfo(cls):
         return {
             "SAS Power": str(cls._SASPower),
-            "RCS Fuel" : str(cls._maxFuel)
+            "Tolerance": str(round(math.degrees(cls._tolerance), 2)) + "°",
+            "RCS Fuel" : str(cls._maxFuel) + "L"
         }
