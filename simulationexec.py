@@ -115,7 +115,7 @@ def run(rocket=None):
     # Add collision handler
     collisions_component_celestialbody = space.add_collision_handler(CT_COMPONENT, CT_CELESTIAL_BODY)
     collisions_component_celestialbody.post_solve = post_solve_component_celestialbody
-    keyInputs = []
+    
     rocket_explosion = None
     crashed = False
     menu_enabled = False
@@ -131,13 +131,8 @@ def run(rocket=None):
             elif keyUp(event, pg.K_ESCAPE):
                 menu_enabled = False
             elif event.type == pg.KEYDOWN:
-                if not (event.key in keyInputs):
-                    keyInputs.append(event.key)
-
-            elif event.type == pg.KEYUP:
-                keyInputs.remove(event.key)
-
-
+                rocket.handleEvent(event)
+            
             elif event.type == pg.VIDEORESIZE:
                 screen = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
 
@@ -149,15 +144,10 @@ def run(rocket=None):
                     if Drawer._zoom < Drawer._maxZoom:
                         Drawer._zoom *= 2
                 print("Zoom: {0}\n".format(Drawer._zoom))
-                
-        if keyInputs != [] :
-            for i in keyInputs:
-                rocket.handleEvent(i)
 
+        rocket.tick()
         grav = updateGravity(space, rocket, celestialBodies, ticksPerSec)
         space.step(1/ticksPerSec)
-        for module in rocket.SASmodules:
-            module.holdAngle()
         pos = rocket.position
         vel = rocket.velocity
         offset = Drawer.getOffset(screen, rocket)
