@@ -47,10 +47,63 @@ class HUD():
         self._thrusters = None
         self._SASmodules = None
 
+        # define a surface to hold a navball
+        self._navBallRadius = 75
+        self._navBallSubRadius = 65
+        self._navBall = pg.Surface((2*self._navBallRadius, 2*self._navBallRadius), pg.SRCALPHA)
+        self._navBall.fill((0,0,0,0))
+
+        # draw a circle - the navball
+        pg.draw.circle(self._navBall, (75,75,75,255), (self._navBallRadius,self._navBallRadius), self._navBallRadius)
+        # draw some compass markings on the navball
+        # TODO : move this to be an actual function
+        drawCompassLine = lambda ang, size: pg.draw.line(self._navBall, (255,255,255), (self._navBallRadius*math.cos(ang)+self._navBallRadius, self._navBallRadius*math.sin(ang)+self._navBallRadius), (self._navBallSubRadius*math.cos(ang)+self._navBallRadius, self._navBallSubRadius*math.sin(ang)+self._navBallRadius), size)
+        
+        drawCompassLine(0, 5)
+        drawCompassLine(math.pi/2, 5)
+        drawCompassLine(math.pi/4, 3)
+        drawCompassLine(3*math.pi/4, 3)
+        drawCompassLine(math.pi, 3)
+        drawCompassLine(5*math.pi/4, 3)
+        drawCompassLine(3*math.pi/2, 3)
+        drawCompassLine(7*math.pi/4, 3)
+        drawCompassLine(2*math.pi, 3)
+
         if font is None:
             self._font = pg.font.SysFont("Futura", 20)
         else:
             self._font = font
+
+    def _updateNavBall(self, rocket):
+        # make a copy of the original navBall to return
+        newNavBall = self._navBall.copy()
+        # make a new surface to blit into the navball copy
+        subNavBall = pg.Surface((2*self._navBallRadius, 2*self._navBallRadius), pg.SRCALPHA)
+        
+        # the new surface will contain a darker inner circle for the navball
+        # this circle will contain a viewport for the rocket
+        pg.draw.circle(subNavBall, (30,30,30,255), (self._navBallRadius, self._navBallRadius), self._navBallSubRadius)
+        # create a mask, so we can sort out which parts are transparent when we blit the rocket
+        mask = pg.mask.from_surface(subNavBall)
+
+        # draw the rocket onto the new subNavball
+        # set the zoom level to 1, and then restore afterwards
+        preZoom = Drawer._zoom
+        Drawer._zoom = 1
+        Drawer.drawMultiple(subNavBall, rocket.components, Drawer.getOffset(subNavBall, rocket))
+        Drawer._zoom = preZoom
+
+        # for any place where the mask showed a transparency, we should set to be transparent again
+        # this gives the look of a circular viewport
+        for x in range(subNavBall.get_width()):
+            for y in range(subNavBall.get_height()):
+                if mask.get_at((x,y)) is 0:
+                    subNavBall.set_at((x,y), (0,0,0,0))
+
+        
+        newNavBall.blit(subNavBall, (0,0))
+
+        return newNavBall
 
     def updateHUD(self, rocket, aMag, aDeg, fps):
         """
@@ -116,3 +169,6 @@ class HUD():
         graph.drawText((10, 150 + numThruster*20 + numSAS*20),
                        "FPS: "
                        + "{:0.3f}".format(fps), self._font, (255, 0, 0))
+
+
+        pg.display.get_surface().blit(self._updateNavBall(rocket), (int(pg.display.get_surface().get_width()/2 - self._navBallRadius), int(pg.display.get_surface().get_height()-2*self._navBallRadius)))
