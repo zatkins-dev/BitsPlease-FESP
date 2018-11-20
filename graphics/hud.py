@@ -1,4 +1,5 @@
 import pygame as pg
+import pymunk as pm
 import math
 from graphics import Graphics as graph
 from rockets import Thruster
@@ -76,8 +77,8 @@ class HUD():
             innerRadius = self._navBallSubRadius
             outerRadius = self._navBallRadius
         pg.draw.line(surface, color, 
-            (outerRadius*math.cos(angle)+outerRadius, outerRadius*math.sin(angle)+outerRadius),
-            (innerRadius*math.cos(angle)+outerRadius, innerRadius*math.sin(angle)+outerRadius), size)
+            (outerRadius*math.cos(angle)+outerRadius, -1*outerRadius*math.sin(angle)+outerRadius),
+            (innerRadius*math.cos(angle)+outerRadius, -1*innerRadius*math.sin(angle)+outerRadius), size)
         
 
     def _updateNavBall(self, rocket):
@@ -106,6 +107,10 @@ class HUD():
                 if mask.get_at((x,y)) is 0:
                     subNavBall.set_at((x,y), (0,0,0,0))
 
+        
+        self.drawCompassLine(newNavBall, rocket.angle + math.pi/2, 5, (0,0,255))
+        self.drawCompassLine(newNavBall, rocket.velocity.angle, 5, (0,255,0))
+        
         newNavBall.blit(subNavBall, (0,0))
 
         return newNavBall
