@@ -36,6 +36,10 @@ class Rocket(Body):
         # never leave the 0 or 1 range
         if 0 <= newThrottle <= 1:
             self._throttle = newThrottle
+        elif newThrottle > 1:
+            self._throttle = 1
+        elif newThrottle < 0:
+            self._throttle = 0
 
     @property
     def thrusters(self):
