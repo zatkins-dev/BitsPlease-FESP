@@ -36,7 +36,7 @@ class SAS(Component):
         self._isLocked = False
 
     def rotateCounterClockwise(self):
-        for ts in self.body.thrusters:
+        for ts in self.body.RCSThrusters:
             # check the direction of each thruster, and apply if it will rotate counter clockwise
             if ts.thrustVector.x < 0 and ts.center_of_gravity.y > self.body.center_of_gravity.y:
                 # left-directed vector and on the top half of the rocket
@@ -46,7 +46,7 @@ class SAS(Component):
                 ts.applyThrust()
 
     def rotateClockwise(self):
-        for ts in self.body.thrusters:
+        for ts in self.body.RCSThrusters:
             # check the direction of each thruster, and apply if it will rotate clockwise
             if ts.thrustVector.x > 0 and ts.center_of_gravity.y > self.body.center_of_gravity.y:
                 # right-directed vector and on the top half of the rocket
