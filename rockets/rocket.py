@@ -33,16 +33,21 @@ class Rocket(Body):
 
     @throttle.setter
     def throttle(self, newThrottle):
+        # never leave the 0 or 1 range
         if 0 <= newThrottle <= 1:
             self._throttle = newThrottle
 
     @property
     def thrusters(self):
-        return list(filter(lambda c: isinstance(c, Thruster), self.components))
+        return list(filter(lambda c: isinstance(c, Thruster) and not isinstance(c, RCSThruster), self.components))
 
     @property
     def SASmodules(self):
         return list(filter(lambda c: isinstance(c, SAS), self.components))
+
+    @property
+    def RCSThrusters(self):
+        return list(filter(lambda c: isinstance(c, RCSThruster), self.components))
 
     def tick(self):
         # let SAS modules fire rcs thrusters if needed
@@ -50,9 +55,10 @@ class Rocket(Body):
             module.holdAngle()
 
         # apply all of the thrusters, with the current throttle
-        for thruster in self.thrusters:
-            if not isinstance(thruster, RCSThruster) and not thruster.destroyed:
-                thruster.applyThrust(self.throttle)
+        if self.throttle is not 0:
+            for thruster in self.thrusters:
+                if not thruster.destroyed:
+                    thruster.applyThrust(self.throttle)
 
         
 
