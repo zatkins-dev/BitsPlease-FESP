@@ -54,9 +54,29 @@ class Rocket(Body):
         return list(filter(lambda c: isinstance(c, RCSThruster), self.components))
 
     def tick(self):
-        # let SAS modules fire rcs thrusters if needed
+        # grab the keyboard state
+        currentKeys = pg.key.get_pressed()
+
+        # Check for throttle commands from user
+        if currentKeys[pg.K_LSHIFT]:    # increase throttle
+            self.throttle += .01
+        if currentKeys[pg.K_LCTRL]:     # decrease throttle
+            self.throttle -= .01
+        if currentKeys[pg.K_z]:         # full throttle
+            self.throttle = 1
+        if currentKeys[pg.K_x]:         # cut throttle
+            self.throttle = 0
+
+        # let SAS modules fire rcs thrusters if needed,
+        # checking from input from users if not holding
         for module in self.SASmodules:
-            module.holdAngle()
+            if module.isAngleLocked:
+                module.holdAngle()
+            else:
+                if currentKeys[pg.K_a]:
+                    module.rotateCounterClockwise()
+                if currentKeys[pg.K_d]:
+                    module.rotateClockwise()
 
         # apply all of the thrusters, with the current throttle
         if self.throttle is not 0:
@@ -66,25 +86,16 @@ class Rocket(Body):
 
         
 
-    def handleEvent(self, eventKey):
-        if eventKey == pg.K_f : # Apply main thrust
-            for ts in self.thrusters:
-                # check to make sure this isn't an RCS thruster
-                if not isinstance(ts, RCSThruster) and not ts.destroyed:
-                    ts.applyThrust(1)
-        elif eventKey == pg.K_a : # Counter-Clockwise Rotation
-            for sas in self.SASmodules:
-                if not sas.destroyed:
-                    sas.rotateCounterClockwise()
-        elif eventKey == pg.K_d : # Clockwise Rotation
-            for sas in self.SASmodules:
-                if not sas.destroyed:
-                    sas.rotateClockwise()
-        elif eventKey == pg.K_v : # Toggle Rotation Lock
-            for sas in self.SASmodules:
-                if not sas.isAngleLocked:
-                    sas.SASangle = self.angle
-                sas.toggleAngleLock()
+    def handleEvent(self, event):
+        if event.type is pg.KEYDOWN:
+            # new key has been pressed, place edge sensitive
+            # commands in here, i.e. things that only run once
+            # per key press
+            if event.key is pg.K_v:  # Toggle SAS Lock
+                for sas in self.SASmodules:
+                    if not sas.isAngleLocked:
+                        sas.SASangle = self.angle
+                    sas.toggleAngleLock()
         
 
     def addComponent(self, c):
