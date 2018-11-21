@@ -57,22 +57,22 @@ class HUD():
         # draw a circle - the navball
         pg.draw.circle(self._navBall, (75,75,75,255), (self._navBallRadius,self._navBallRadius), self._navBallRadius)
         # draw some compass markings on the navball
-        self.drawCompassLine(self._navBall, 0, 5)
-        self.drawCompassLine(self._navBall, math.pi/2, 5)
-        self.drawCompassLine(self._navBall, math.pi/4, 3)
-        self.drawCompassLine(self._navBall, 3*math.pi/4, 3)
-        self.drawCompassLine(self._navBall, math.pi, 3)
-        self.drawCompassLine(self._navBall, 5*math.pi/4, 3)
-        self.drawCompassLine(self._navBall, 3*math.pi/2, 3)
-        self.drawCompassLine(self._navBall, 7*math.pi/4, 3)
-        self.drawCompassLine(self._navBall, 2*math.pi, 3)
+        self._drawCompassLine(self._navBall, 0, 5)
+        self._drawCompassLine(self._navBall, math.pi/2, 5)
+        self._drawCompassLine(self._navBall, math.pi/4, 3)
+        self._drawCompassLine(self._navBall, 3*math.pi/4, 3)
+        self._drawCompassLine(self._navBall, math.pi, 3)
+        self._drawCompassLine(self._navBall, 5*math.pi/4, 3)
+        self._drawCompassLine(self._navBall, 3*math.pi/2, 3)
+        self._drawCompassLine(self._navBall, 7*math.pi/4, 3)
+        self._drawCompassLine(self._navBall, 2*math.pi, 3)
 
         if font is None:
             self._font = pg.font.SysFont("Futura", 20)
         else:
             self._font = font
 
-    def drawCompassLine(self, surface, angle, size, color=(255,255,255,255), innerRadius=None, outerRadius=None):
+    def _drawCompassLine(self, surface, angle, size, color=(255,255,255,255), innerRadius=None, outerRadius=None):
         if innerRadius is None or outerRadius is None:
             innerRadius = self._navBallSubRadius
             outerRadius = self._navBallRadius
@@ -108,12 +108,27 @@ class HUD():
                     subNavBall.set_at((x,y), (0,0,0,0))
 
         
-        self.drawCompassLine(newNavBall, rocket.angle + math.pi/2, 5, (0,0,255))
-        self.drawCompassLine(newNavBall, rocket.velocity.angle, 5, (0,255,0))
-        
+        self._drawCompassLine(newNavBall, rocket.angle + math.pi/2, 5, (0,0,255))
+        self._drawCompassLine(newNavBall, rocket.velocity.angle, 5, (0,255,0))
+
         newNavBall.blit(subNavBall, (0,0))
 
         return newNavBall
+
+    def _updateThrottle(self, rocket):
+        gaugeSize = (30, 2*self._navBallRadius)
+        gaugeBorder= 5
+
+        gauge = pg.Surface(gaugeSize)
+        gauge.fill((50,50,50))
+        gauge.fill((75,75,75), ((gaugeBorder,gaugeBorder),(gaugeSize[0]-2*gaugeBorder, gaugeSize[1]-2*gaugeBorder)))
+
+        drawMark = lambda y, size: pg.draw.line(gauge, (255,255,255), (gaugeBorder, y*(gaugeSize[1]-2*gaugeBorder)+gaugeBorder), (gaugeSize[0]-gaugeBorder, y*(gaugeSize[1]-2*gaugeBorder)+gaugeBorder), size)
+
+        for i in range(1,8):
+            drawMark(i/8, 2)
+
+        return gauge
 
     def updateHUD(self, rocket, aMag, aDeg, fps):
         """
@@ -180,5 +195,9 @@ class HUD():
                        "FPS: "
                        + "{:0.3f}".format(fps), self._font, (255, 0, 0))
 
+        
+        navBallPos = (int(pg.display.get_surface().get_width()/2 - self._navBallRadius), int(pg.display.get_surface().get_height()-2*self._navBallRadius))
+        pg.display.get_surface().blit(self._updateNavBall(rocket), navBallPos)
+        pg.display.get_surface().blit(self._updateThrottle(rocket), (0,0))
 
-        pg.display.get_surface().blit(self._updateNavBall(rocket), (int(pg.display.get_surface().get_width()/2 - self._navBallRadius), int(pg.display.get_surface().get_height()-2*self._navBallRadius)))
+        
