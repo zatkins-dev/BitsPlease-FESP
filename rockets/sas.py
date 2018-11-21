@@ -30,11 +30,27 @@ class SAS(Component):
     _sprite = None
     _SASPower = None
     _tolerance = None
+    _maxFuel = None
 
     def __init__(self, body, transform=None, radius=0):
         Component.__init__(self, body, self.vertices, transform, radius)
         self._SASangle = 0
         self._isLocked = False
+
+    @property
+    def fuel(self):
+        return self._fuel
+
+    @fuel.setter
+    def fuel(self, newFuel):
+        if newFuel > 0:
+            self._fuel = newFuel
+        else:
+            self._fuel = 0
+
+    @property
+    def maxFuel(self):
+        return self._maxFuel
 
     def rotateCounterClockwise(self):
         for ts in self.body.RCSThrusters:
@@ -113,7 +129,7 @@ class AdvancedSAS(SAS):
 
     def __init__(self, body, transform=None, radius=0):
         SAS.__init__(self, body, transform, radius)
-        self.fuel = self._maxFuel
+        self._fuel = self._maxFuel
 
     @classmethod
     def getDisplayInfo(cls):
