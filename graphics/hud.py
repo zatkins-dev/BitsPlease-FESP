@@ -143,9 +143,11 @@ class HUD():
         return gauge
 
     def _updateVelocity(self, rocket):
-        velSurf = pg.Surface((220, 40))
+        velSurfSize = (215,40)
+        velSurfBorder = 5
+        velSurf = pg.Surface(velSurfSize)
         velSurf.fill(self._hudBackgroundColor)
-        velSurf.fill(self._hudForegroundColor, (5,5,210,30))
+        velSurf.fill(self._hudForegroundColor, (velSurfBorder,velSurfBorder,velSurfSize[0]-velSurfBorder,velSurfSize[1]-2*velSurfBorder))
 
         velString = "Velocity: "
 
