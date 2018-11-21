@@ -206,6 +206,43 @@ class HUD():
 
         return gauge
 
+    def _updateThrusterFuel(self, rocket):
+        thrusters = rocket.thrusters
+        thrusters.sort(key=lambda x: x.maxFuel)
+
+        gaugeSize = (2*self._navBallRadius, 25)
+        gaugeBorder= 5
+
+        overallSize = (gaugeSize[0], gaugeSize[1] * len(thrusters) + gaugeBorder)
+
+        gauge = pg.Surface(overallSize)
+        gauge.fill((50,50,50))
+
+        i = 0
+
+        for thruster in thrusters:
+            innerPos = (gaugeBorder, i * gaugeSize[1] + gaugeBorder)
+            gauge.fill((75,75,75), (
+                innerPos, 
+                (gaugeSize[0] - 2*gaugeBorder, gaugeSize[1] - gaugeBorder)
+            ))
+
+            fuelLeft = thruster.fuel / thruster.maxFuel
+
+            gauge.fill((0,255,0), (
+                innerPos,
+                (fuelLeft * (gaugeSize[0] - 2*gaugeBorder), gaugeSize[1] - gaugeBorder)
+            ))
+
+            textPos = (innerPos[0] + (gaugeSize[0] - 2*gaugeBorder)/2, innerPos[1] + (gaugeSize[1] - gaugeBorder)/2)
+
+            graph.drawTextCenter(textPos, type(thruster).__name__, self._font, (255,255,255), gauge)
+
+            i += 1
+
+        return gauge
+
+
     def updateHUD(self, rocket, aMag, aDeg, fps):
         """
             Update the values that are displayed on the screen,
@@ -287,4 +324,6 @@ class HUD():
         sasFuelPos = (navBallPos[0] + 2*self._navBallRadius, navBallPos[1])
         pg.display.get_surface().blit(sasFuel, sasFuelPos)
 
-
+        thrusterFuel = self._updateThrusterFuel(rocket)
+        thrusterFuelPos = (pg.display.get_surface().get_width() - thrusterFuel.get_width(), pg.display.get_surface().get_height() - thrusterFuel.get_height())
+        pg.display.get_surface().blit(thrusterFuel, thrusterFuelPos)
