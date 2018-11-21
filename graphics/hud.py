@@ -60,15 +60,14 @@ class HUD():
         # draw a circle - the navball
         pg.draw.circle(navBall, (75,75,75,255), (self._navBallRadius,self._navBallRadius), self._navBallRadius)
         # draw some compass markings on the navball
-        self._drawCompassLine(navBall, 0, 5)
-        self._drawCompassLine(navBall, math.pi/2, 5)
-        self._drawCompassLine(navBall, math.pi/4, 3)
-        self._drawCompassLine(navBall, 3*math.pi/4, 3)
-        self._drawCompassLine(navBall, math.pi, 3)
-        self._drawCompassLine(navBall, 5*math.pi/4, 3)
-        self._drawCompassLine(navBall, 3*math.pi/2, 3)
-        self._drawCompassLine(navBall, 7*math.pi/4, 3)
-        self._drawCompassLine(navBall, 2*math.pi, 3)
+        
+        for i in range(12):
+            # normal markings will have size 3
+            size = 3
+            if i%3 is 0:
+                # markings on the poles (i=0,3,6,9) will have size 5
+                size = 5
+            self._drawCompassLine(navBall, i * math.pi / 6, size)
 
         # make a new surface to blit into the navball
         subNavBall = pg.Surface((2*self._navBallRadius, 2*self._navBallRadius), pg.SRCALPHA)
