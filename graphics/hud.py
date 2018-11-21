@@ -190,9 +190,12 @@ class HUD():
             maxFuel += module.maxFuel
             curFuel += module.fuel
         
-        fuelLeft = curFuel / maxFuel
+        # ratio of fuel left
+        fuelLeft = 0
+        if maxFuel is not 0:
+            fuelLeft = curFuel / maxFuel
 
-        gauge.fill((0,255,0), (
+        gauge.fill((0,255,0), ( # fill a rect that is equal to the proportion of the gauge the fuel will fill
             (gaugeBorder, gaugeBorder + (gaugeSize[1] - 2 * gaugeBorder) * (1 - fuelLeft)),
             (gaugeSize[0] - 2 * gaugeBorder, (gaugeSize[1] - 2 * gaugeBorder) * fuelLeft)
         ))
@@ -202,7 +205,6 @@ class HUD():
         gauge.blit(text, ((gaugeSize[0]/2)-(text.get_width()/2), (gaugeSize[1]/2)-(text.get_height()/2)))
 
         return gauge
-
 
     def updateHUD(self, rocket, aMag, aDeg, fps):
         """
@@ -285,4 +287,4 @@ class HUD():
         sasFuelPos = (navBallPos[0] + 2*self._navBallRadius, navBallPos[1])
         pg.display.get_surface().blit(sasFuel, sasFuelPos)
 
-        
+
