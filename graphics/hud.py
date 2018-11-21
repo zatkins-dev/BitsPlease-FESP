@@ -12,18 +12,11 @@ class HUD():
         HUD holds diagnostic info and prints values to the screen.
 
         **Instance Variables**:
-            *_xPosition*:       float Holds the x position of the rocket.
-                                      This value is printed to the screen.
-            *_yPosition*:       float Holds the y position of the rocket.
-                                      This value is printed to the screen.
-            *_positionDegree*:  float The direction of the nose of the rocket.
-            *_velocityMag*:     float The velocity magnitude of the rocket.
-            *_velocityDegree*:  float The direction of rocket velocity
-            *_accelerationMag*: float The magnitude of gravity on the rocket.
-            *_accelerationDegree*: float The direction gravity on the rocket.
-            *_thrusters*:       list[Thruster] The thrusters of the rocket
-            *_SASmodules*:      list[SAS] The SAS modules of the rocket.
             *_font*:            The font used to draw text to the screen
+            *_navBallRadius*:   The radius in pixels of the Hud's navball
+            *_navBallSubRadius*:The radius in pixels of the small viewport
+                                within the navball
+
     """
 
     def __init__(self, font=None):
@@ -38,34 +31,10 @@ class HUD():
 
             **Returns**: A headsUpDisplay object.
         """
-        self._xPosition = 0
-        self._yPosition = 0
-        self._positionDegree = 0
-        self._velocityMag = 0
-        self._velocityDegree = 0
-        self._accelerationMag = 0
-        self._accelerationDegree = 0
-        self._thrusters = None
-        self._SASmodules = None
 
         # define a surface to hold a navball
         self._navBallRadius = 75
         self._navBallSubRadius = 65
-        self._navBall = pg.Surface((2*self._navBallRadius, 2*self._navBallRadius), pg.SRCALPHA)
-        self._navBall.fill((0,0,0,0))
-
-        # draw a circle - the navball
-        pg.draw.circle(self._navBall, (75,75,75,255), (self._navBallRadius,self._navBallRadius), self._navBallRadius)
-        # draw some compass markings on the navball
-        self._drawCompassLine(self._navBall, 0, 5)
-        self._drawCompassLine(self._navBall, math.pi/2, 5)
-        self._drawCompassLine(self._navBall, math.pi/4, 3)
-        self._drawCompassLine(self._navBall, 3*math.pi/4, 3)
-        self._drawCompassLine(self._navBall, math.pi, 3)
-        self._drawCompassLine(self._navBall, 5*math.pi/4, 3)
-        self._drawCompassLine(self._navBall, 3*math.pi/2, 3)
-        self._drawCompassLine(self._navBall, 7*math.pi/4, 3)
-        self._drawCompassLine(self._navBall, 2*math.pi, 3)
 
         if font is None:
             self._font = pg.font.SysFont("LucidaConsole", 12)
@@ -84,9 +53,24 @@ class HUD():
         
 
     def _updateNavBall(self, rocket):
-        # make a copy of the original navBall to return
-        newNavBall = self._navBall.copy()
-        # make a new surface to blit into the navball copy
+        # create a navball
+        navBall = pg.Surface((2*self._navBallRadius, 2*self._navBallRadius), pg.SRCALPHA)
+        navBall.fill((0,0,0,0))
+
+        # draw a circle - the navball
+        pg.draw.circle(navBall, (75,75,75,255), (self._navBallRadius,self._navBallRadius), self._navBallRadius)
+        # draw some compass markings on the navball
+        self._drawCompassLine(navBall, 0, 5)
+        self._drawCompassLine(navBall, math.pi/2, 5)
+        self._drawCompassLine(navBall, math.pi/4, 3)
+        self._drawCompassLine(navBall, 3*math.pi/4, 3)
+        self._drawCompassLine(navBall, math.pi, 3)
+        self._drawCompassLine(navBall, 5*math.pi/4, 3)
+        self._drawCompassLine(navBall, 3*math.pi/2, 3)
+        self._drawCompassLine(navBall, 7*math.pi/4, 3)
+        self._drawCompassLine(navBall, 2*math.pi, 3)
+
+        # make a new surface to blit into the navball
         subNavBall = pg.Surface((2*self._navBallRadius, 2*self._navBallRadius), pg.SRCALPHA)
         
         # the new surface will contain a darker inner circle for the navball
@@ -110,13 +94,13 @@ class HUD():
                     subNavBall.set_at((x,y), (0,0,0,0))
 
         
-        self._drawCompassLine(newNavBall, rocket.angle + math.pi/2, 5, (0,0,255))   # direction
-        self._drawCompassLine(newNavBall, rocket.velocity.angle, 5, (0,255,0))      # velocity
-        self._drawCompassLine(newNavBall, rocket.velocity.angle + math.pi, 5, (255,0,0))      # anti-velocity
+        self._drawCompassLine(navBall, rocket.angle + math.pi/2, 5, (0,0,255))   # direction
+        self._drawCompassLine(navBall, rocket.velocity.angle, 5, (0,255,0))      # velocity
+        self._drawCompassLine(navBall, rocket.velocity.angle + math.pi, 5, (255,0,0))      # anti-velocity
 
-        newNavBall.blit(subNavBall, (0,0))
+        navBall.blit(subNavBall, (0,0))
 
-        return newNavBall
+        return navBall
 
     def _updateThrottle(self, rocket):
         # define some properties of the gauge
@@ -243,7 +227,7 @@ class HUD():
         return gauge
 
 
-    def updateHUD(self, rocket, aMag, aDeg, fps):
+    def updateHUD(self, rocket):
         """
             Update the values that are displayed on the screen,
             then draw the text to the screen
@@ -256,58 +240,6 @@ class HUD():
 
             **Returns**: None.
         """
-        self._xPosition = rocket.position[0]
-        self._yPosition = rocket.position[1]
-        self._positionDegree = (math.degrees(rocket.angle)+90) % 360
-        self._velocityMag = rocket.velocity.length
-        self._velocityDegree = rocket.velocity.angle_degrees % 360
-        self._accelerationMag = aMag
-        self._accelerationDegree = aDeg
-        self.thrusters = rocket.thrusters
-        self.SASmodules = rocket.SASmodules
-
-        graph.drawText((10, 10), "X Position: "
-                       + str("{:10.4f}".format(self._xPosition))
-                       + " m", self._font, (255, 0, 0))
-        graph.drawText((10, 30), "Y Position: "
-                       + str("{:10.4f}".format(self._yPosition))
-                       + " m", self._font, (255, 0, 0))
-        graph.drawText((10, 50), "Nose Degree: "
-                       + str("{:10.4f}".format(self._positionDegree))
-                       + " degrees", self._font, (255, 0, 0))
-        graph.drawText((10, 70), "Velocity Magnitude: "
-                       + str("{:10.4f}".format(self._velocityMag))
-                       + " m/s", self._font, (255, 0, 0))
-        graph.drawText((10, 90), "Velocity Degree: "
-                       + str("{:10.4f}".format(self._velocityDegree))
-                       + " degrees", self._font, (255, 0, 0))
-        graph.drawText((10, 110), "Acceleration Magnitude: "
-                       + str("{:10.4f}".format(self._accelerationMag))
-                       + " m/s^2", self._font, (255, 0, 0))
-        graph.drawText((10, 130), "Acceleration Degree: "
-                       + str("{:10.4f}".format(self._accelerationDegree))
-                       + " degrees", self._font, (255, 0, 0))
-
-        numThruster = 0
-        for thruster in self.thrusters:
-            numThruster = numThruster + 1
-            graph.drawText((10, 130 + numThruster*20), "Thruster Module "
-                           + str(numThruster) + " Fuel Remaining: "
-                           + str("{:10.0f}".format(thruster.fuel))
-                           + " Liters", self._font, (255, 0, 0))
-
-        numSAS = 0
-        for sas in self.SASmodules:
-            numSAS = numSAS + 1
-            graph.drawText((10, 130 + numThruster*20 + numSAS*20),
-                           "SAS Module " + str(numSAS) + " Fuel Remaining: "
-                           + str("{:10.0f}".format(sas.fuel))
-                           + " Liters", self._font, (255, 0, 0))
-
-        graph.drawText((10, 150 + numThruster*20 + numSAS*20),
-                       "FPS: "
-                       + "{:0.3f}".format(fps), self._font, (255, 0, 0))
-
         
         navBallPos = (int(pg.display.get_surface().get_width()/2 - self._navBallRadius), int(pg.display.get_surface().get_height()-2*self._navBallRadius))
         pg.display.get_surface().blit(self._updateNavBall(rocket), navBallPos)
