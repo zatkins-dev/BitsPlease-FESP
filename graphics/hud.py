@@ -213,6 +213,9 @@ class HUD():
         
         navBallPos = (int(pg.display.get_surface().get_width()/2 - self._navBallRadius), int(pg.display.get_surface().get_height()-2*self._navBallRadius))
         pg.display.get_surface().blit(self._updateNavBall(rocket), navBallPos)
-        pg.display.get_surface().blit(self._updateThrottle(rocket), (0,0))
+
+        throttleGauge = self._updateThrottle(rocket)
+        throttlePos = (navBallPos[0] - throttleGauge.get_width(), navBallPos[1])
+        pg.display.get_surface().blit(self._updateThrottle(rocket), throttlePos)
 
         
