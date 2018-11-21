@@ -116,17 +116,32 @@ class HUD():
         return newNavBall
 
     def _updateThrottle(self, rocket):
+        # define some properties of the gauge
         gaugeSize = (30, 2*self._navBallRadius)
         gaugeBorder= 5
 
+        # create the gauge, fill it, and draw a border
         gauge = pg.Surface(gaugeSize)
         gauge.fill((50,50,50))
         gauge.fill((75,75,75), ((gaugeBorder,gaugeBorder),(gaugeSize[0]-2*gaugeBorder, gaugeSize[1]-2*gaugeBorder)))
 
-        drawMark = lambda y, size: pg.draw.line(gauge, (255,255,255), (gaugeBorder, y*(gaugeSize[1]-2*gaugeBorder)+gaugeBorder), (gaugeSize[0]-gaugeBorder, y*(gaugeSize[1]-2*gaugeBorder)+gaugeBorder), size)
+        # a small helper function to draw tick marks on the inside of the gauge
+        def drawMark(y, width, size, color=(255,255,255)):
+            pg.draw.line(gauge, color, 
+                (gaugeBorder, y*(gaugeSize[1]-2*gaugeBorder)+gaugeBorder),
+                (width*(gaugeSize[0]-2*gaugeBorder)+gaugeBorder, y*(gaugeSize[1]-2*gaugeBorder)+gaugeBorder), size)
 
+        # draw tick marks at ever eighth
         for i in range(1,8):
-            drawMark(i/8, 2)
+            width = .25
+            size = 1
+            if i % 2 is 0:
+                width = .75
+                size = 3
+            drawMark(i/8, width, size)
+
+        # draw one yellow mark to represent the current velocity
+        drawMark(1 - rocket.throttle, 1, 3, (255,255,0))
 
         return gauge
 
