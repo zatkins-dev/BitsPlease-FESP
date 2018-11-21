@@ -68,7 +68,7 @@ class HUD():
         self._drawCompassLine(self._navBall, 2*math.pi, 3)
 
         if font is None:
-            self._font = pg.font.SysFont("Futura", 20)
+            self._font = pg.font.SysFont("LucidaConsole", 12)
         else:
             self._font = font
 
@@ -136,9 +136,13 @@ class HUD():
             width = .25
             size = 1
             if i % 2 is 0:
-                width = .75
+                width = .5
                 size = 3
             drawMark(i/8, width, size)
+
+        text = self._font.render("Throttle", True, (255,255,255))
+        text = pg.transform.rotate(text, 90)
+        gauge.blit(text, ((gaugeSize[0]/2)-(text.get_width()/8), (gaugeSize[1]/2)-(text.get_height()/2)))
 
         # draw one yellow mark to represent the current velocity
         drawMark(1 - rocket.throttle, 1, 3, (255,255,0))
