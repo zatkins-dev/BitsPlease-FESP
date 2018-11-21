@@ -36,6 +36,11 @@ class HUD():
         self._navBallRadius = 75
         self._navBallSubRadius = 65
 
+        self._hudForegroundColor = (75,75,75)
+        self._hudBackgroundColor = (50,50,50)
+
+        self._fontColor = (255,255,255)
+
         if font is None:
             self._font = pg.font.SysFont("LucidaConsole", 12)
             self._bigFont = pg.font.SysFont("LucidaConsole", 16)
@@ -58,7 +63,7 @@ class HUD():
         navBall.fill((0,0,0,0))
 
         # draw a circle - the navball
-        pg.draw.circle(navBall, (75,75,75,255), (self._navBallRadius,self._navBallRadius), self._navBallRadius)
+        pg.draw.circle(navBall, self._hudForegroundColor, (self._navBallRadius,self._navBallRadius), self._navBallRadius)
         # draw some compass markings on the navball
         
         for i in range(12):
@@ -108,8 +113,8 @@ class HUD():
 
         # create the gauge, fill it, and draw a border
         gauge = pg.Surface(gaugeSize)
-        gauge.fill((50,50,50))
-        gauge.fill((75,75,75), ((gaugeBorder,gaugeBorder),(gaugeSize[0]-2*gaugeBorder, gaugeSize[1]-2*gaugeBorder)))
+        gauge.fill(self._hudBackgroundColor)
+        gauge.fill(self._hudForegroundColor, ((gaugeBorder,gaugeBorder),(gaugeSize[0]-2*gaugeBorder, gaugeSize[1]-2*gaugeBorder)))
 
         # a small helper function to draw tick marks on the inside of the gauge
         def drawMark(y, width, size, color=(255,255,255)):
@@ -126,7 +131,7 @@ class HUD():
                 size = 3
             drawMark(i/8, width, size)
 
-        text = self._font.render("Throttle", True, (255,255,255))
+        text = self._font.render("Throttle", True, self._fontColor)
         text = pg.transform.rotate(text, 90)
         gauge.blit(text, ((gaugeSize[0]/2)-(text.get_width()/8), (gaugeSize[1]/2)-(text.get_height()/2)))
 
@@ -137,8 +142,8 @@ class HUD():
 
     def _updateVelocity(self, rocket):
         velSurf = pg.Surface((220, 40))
-        velSurf.fill((50,50,50))
-        velSurf.fill((75,75,75), (5,5,210,30))
+        velSurf.fill(self._hudBackgroundColor)
+        velSurf.fill(self._hudForegroundColor, (5,5,210,30))
 
         velString = "Velocity: "
 
@@ -163,8 +168,8 @@ class HUD():
 
         # create the gauge, fill it, and draw a border
         gauge = pg.Surface(gaugeSize)
-        gauge.fill((50,50,50))
-        gauge.fill((75,75,75), ((gaugeBorder,gaugeBorder),(gaugeSize[0]-2*gaugeBorder, gaugeSize[1]-2*gaugeBorder)))
+        gauge.fill(self._hudBackgroundColor)
+        gauge.fill(self._hudForegroundColor, ((gaugeBorder,gaugeBorder),(gaugeSize[0]-2*gaugeBorder, gaugeSize[1]-2*gaugeBorder)))
 
         # find the maximum SAS fuel, and the current fuel
         maxFuel = 0
@@ -183,7 +188,7 @@ class HUD():
             (gaugeSize[0] - 2 * gaugeBorder, (gaugeSize[1] - 2 * gaugeBorder) * fuelLeft)
         ))
 
-        text = self._font.render("SAS Fuel", True, (255,255,255))
+        text = self._font.render("SAS Fuel", True, self._fontColor)
         text = pg.transform.rotate(text, 90)
         gauge.blit(text, ((gaugeSize[0]/2)-(text.get_width()/2), (gaugeSize[1]/2)-(text.get_height()/2)))
 
@@ -199,13 +204,13 @@ class HUD():
         overallSize = (gaugeSize[0], gaugeSize[1] * len(thrusters) + gaugeBorder)
 
         gauge = pg.Surface(overallSize)
-        gauge.fill((50,50,50))
+        gauge.fill(self._hudBackgroundColor)
 
         i = 0
 
         for thruster in thrusters:
             innerPos = (gaugeBorder, i * gaugeSize[1] + gaugeBorder)
-            gauge.fill((75,75,75), (
+            gauge.fill(self._hudForegroundColor, (
                 innerPos, 
                 (gaugeSize[0] - 2*gaugeBorder, gaugeSize[1] - gaugeBorder)
             ))
@@ -219,7 +224,7 @@ class HUD():
 
             textPos = (innerPos[0] + (gaugeSize[0] - 2*gaugeBorder)/2, innerPos[1] + (gaugeSize[1] - gaugeBorder)/2)
 
-            graph.drawTextCenter(textPos, type(thruster).__name__, self._font, (255,255,255), gauge)
+            graph.drawTextCenter(textPos, type(thruster).__name__, self._font, self._fontColor, gauge)
 
             i += 1
 
@@ -230,7 +235,7 @@ class HUD():
         indicatorBorder = 5
         indicator = pg.Surface(indicatorSize)
 
-        indicator.fill((50,50,50))
+        indicator.fill(self._hudBackgroundColor)
 
         # find the correct interior color: red if off, green if on
         color = (255,0,0)
@@ -240,7 +245,7 @@ class HUD():
         # fill the interior
         indicator.fill(color, ((0, indicatorBorder), (indicatorSize[0] - 1 * indicatorBorder, indicatorSize[1] - 2 * indicatorBorder)))
 
-        graph.drawTextCenter(((indicatorSize[0]-indicatorBorder)/2, indicatorSize[1]/2), "SAS", self._font, (255,255,255), indicator)
+        graph.drawTextCenter(((indicatorSize[0]-indicatorBorder)/2, indicatorSize[1]/2), "SAS", self._font, self._fontColor, indicator)
 
         return indicator
             
