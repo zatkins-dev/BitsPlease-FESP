@@ -162,7 +162,7 @@ def run(rocket=None):
         traj.updateTrajectory2(screen, pos, vel, 1000, 1, celestialBodies, rocket, offset)
         Drawer.drawMultiple(screen, space.shapes, offset)
         Drawer.drawMultiple(screen, celestialBodies, offset)
-        hud.updateHUD(rocket, grav.length, grav.angle_degrees % 360, clock.get_fps())
+        hud.updateHUD(rocket)
         # Did the rocket blow up?
         if rocket.destroyed and rocket_explosion is None:
             for c in rocket.components:
