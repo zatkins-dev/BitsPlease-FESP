@@ -173,6 +173,37 @@ class HUD():
 
         return velSurf
 
+    def _updateSASFuel(self, rocket):
+        # define some properties of the gauge
+        gaugeSize = (30, 2*self._navBallRadius)
+        gaugeBorder= 5
+
+        # create the gauge, fill it, and draw a border
+        gauge = pg.Surface(gaugeSize)
+        gauge.fill((50,50,50))
+        gauge.fill((75,75,75), ((gaugeBorder,gaugeBorder),(gaugeSize[0]-2*gaugeBorder, gaugeSize[1]-2*gaugeBorder)))
+
+        # find the maximum SAS fuel, and the current fuel
+        maxFuel = 0
+        curFuel = 0
+        for module in rocket.SASmodules:
+            maxFuel += module.maxFuel
+            curFuel += module.fuel
+        
+        fuelLeft = curFuel / maxFuel
+
+        gauge.fill((0,255,0), (
+            (gaugeBorder, gaugeBorder + (gaugeSize[1] - 2 * gaugeBorder) * (1 - fuelLeft)),
+            (gaugeSize[0] - 2 * gaugeBorder, (gaugeSize[1] - 2 * gaugeBorder) * fuelLeft)
+        ))
+
+        text = self._font.render("SAS Fuel", True, (255,255,255))
+        text = pg.transform.rotate(text, 90)
+        gauge.blit(text, ((gaugeSize[0]/2)-(text.get_width()/2), (gaugeSize[1]/2)-(text.get_height()/2)))
+
+        return gauge
+
+
     def updateHUD(self, rocket, aMag, aDeg, fps):
         """
             Update the values that are displayed on the screen,
@@ -249,5 +280,9 @@ class HUD():
         velocity = self._updateVelocity(rocket)
         velocityPos = (throttlePos[0]-velocity.get_width(), pg.display.get_surface().get_height()-velocity.get_height())
         pg.display.get_surface().blit(self._updateVelocity(rocket), velocityPos)
+
+        sasFuel = self._updateSASFuel(rocket)
+        sasFuelPos = (navBallPos[0] + 2*self._navBallRadius, navBallPos[1])
+        pg.display.get_surface().blit(sasFuel, sasFuelPos)
 
         
