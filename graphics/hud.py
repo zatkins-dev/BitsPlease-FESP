@@ -69,8 +69,10 @@ class HUD():
 
         if font is None:
             self._font = pg.font.SysFont("LucidaConsole", 12)
+            self._bigFont = pg.font.SysFont("LucidaConsole", 16)
         else:
             self._font = font
+            self._bigFont = font
 
     def _drawCompassLine(self, surface, angle, size, color=(255,255,255,255), innerRadius=None, outerRadius=None):
         if innerRadius is None or outerRadius is None:
@@ -108,8 +110,9 @@ class HUD():
                     subNavBall.set_at((x,y), (0,0,0,0))
 
         
-        self._drawCompassLine(newNavBall, rocket.angle + math.pi/2, 5, (0,0,255))
-        self._drawCompassLine(newNavBall, rocket.velocity.angle, 5, (0,255,0))
+        self._drawCompassLine(newNavBall, rocket.angle + math.pi/2, 5, (0,0,255))   # direction
+        self._drawCompassLine(newNavBall, rocket.velocity.angle, 5, (0,255,0))      # velocity
+        self._drawCompassLine(newNavBall, rocket.velocity.angle + math.pi, 5, (255,0,0))      # anti-velocity
 
         newNavBall.blit(subNavBall, (0,0))
 
@@ -148,6 +151,27 @@ class HUD():
         drawMark(1 - rocket.throttle, 1, 3, (255,255,0))
 
         return gauge
+
+    def _updateVelocity(self, rocket):
+        velSurf = pg.Surface((220, 40))
+        velSurf.fill((50,50,50))
+        velSurf.fill((75,75,75), (5,5,210,30))
+
+        velString = "Velocity: "
+
+
+        velNumber = rocket.velocity.length
+
+        # find the number of spaces we need to pad the string with
+        velString += " " * min(4, int(5-math.log10(velNumber)))
+        velString += str(round(velNumber, 1))
+        velString += "m/s"
+
+        textSize = self._bigFont.size(velString)
+        velTextPosition = ((velSurf.get_height()-textSize[1])/2 + textSize[0]/2, velSurf.get_height()/2)
+        graph.drawTextCenter(velTextPosition, velString, self._bigFont, (255, 255, 255), velSurf)
+
+        return velSurf
 
     def updateHUD(self, rocket, aMag, aDeg, fps):
         """
@@ -221,5 +245,9 @@ class HUD():
         throttleGauge = self._updateThrottle(rocket)
         throttlePos = (navBallPos[0] - throttleGauge.get_width(), navBallPos[1])
         pg.display.get_surface().blit(self._updateThrottle(rocket), throttlePos)
+
+        velocity = self._updateVelocity(rocket)
+        velocityPos = (throttlePos[0]-velocity.get_width(), pg.display.get_surface().get_height()-velocity.get_height())
+        pg.display.get_surface().blit(self._updateVelocity(rocket), velocityPos)
 
         
