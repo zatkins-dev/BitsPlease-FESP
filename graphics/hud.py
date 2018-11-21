@@ -225,6 +225,26 @@ class HUD():
 
         return gauge
 
+    def _updateSASIndicator(self, rocket):
+        indicatorSize = (35,30)
+        indicatorBorder = 5
+        indicator = pg.Surface(indicatorSize)
+
+        indicator.fill((50,50,50))
+
+        # find the correct interior color: red if off, green if on
+        color = (255,0,0)
+        if rocket.isAngleLocked:
+            color = (0,255,0)
+
+        # fill the interior
+        indicator.fill(color, ((0, indicatorBorder), (indicatorSize[0] - 1 * indicatorBorder, indicatorSize[1] - 2 * indicatorBorder)))
+
+        graph.drawTextCenter(((indicatorSize[0]-indicatorBorder)/2, indicatorSize[1]/2), "SAS", self._font, (255,255,255), indicator)
+
+        return indicator
+            
+
 
     def updateHUD(self, rocket):
         """
@@ -255,6 +275,11 @@ class HUD():
         sasFuelPos = (navBallPos[0] + 2*self._navBallRadius, navBallPos[1])
         pg.display.get_surface().blit(sasFuel, sasFuelPos)
 
+        sasIndicator = self._updateSASIndicator(rocket)
+        sasIndicatorPos = (sasFuelPos[0] + sasFuel.get_width(), pg.display.get_surface().get_height() - sasIndicator.get_height())
+        pg.display.get_surface().blit(sasIndicator, sasIndicatorPos)
+
         thrusterFuel = self._updateThrusterFuel(rocket)
         thrusterFuelPos = (pg.display.get_surface().get_width() - thrusterFuel.get_width(), pg.display.get_surface().get_height() - thrusterFuel.get_height())
         pg.display.get_surface().blit(thrusterFuel, thrusterFuelPos)
+
