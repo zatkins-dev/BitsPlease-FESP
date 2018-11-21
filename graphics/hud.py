@@ -41,6 +41,8 @@ class HUD():
 
         self._fontColor = (255,255,255)
 
+        self._readableGreen = (0,175,0)
+
         if font is None:
             self._font = pg.font.SysFont("LucidaConsole", 12)
             self._bigFont = pg.font.SysFont("LucidaConsole", 16)
@@ -157,7 +159,7 @@ class HUD():
 
         textSize = self._bigFont.size(velString)
         velTextPosition = ((velSurf.get_height()-textSize[1])/2 + textSize[0]/2, velSurf.get_height()/2)
-        graph.drawTextCenter(velTextPosition, velString, self._bigFont, (255, 255, 255), velSurf)
+        graph.drawTextCenter(velTextPosition, velString, self._bigFont, self._fontColor, velSurf)
 
         return velSurf
 
@@ -183,7 +185,7 @@ class HUD():
         if maxFuel is not 0:
             fuelLeft = curFuel / maxFuel
 
-        gauge.fill((0,255,0), ( # fill a rect that is equal to the proportion of the gauge the fuel will fill
+        gauge.fill(self._readableGreen, ( # fill a rect that is equal to the proportion of the gauge the fuel will fill
             (gaugeBorder, gaugeBorder + (gaugeSize[1] - 2 * gaugeBorder) * (1 - fuelLeft)),
             (gaugeSize[0] - 2 * gaugeBorder, (gaugeSize[1] - 2 * gaugeBorder) * fuelLeft)
         ))
@@ -217,7 +219,7 @@ class HUD():
 
             fuelLeft = thruster.fuel / thruster.maxFuel
 
-            gauge.fill((0,255,0), (
+            gauge.fill(self._readableGreen, (
                 innerPos,
                 (fuelLeft * (gaugeSize[0] - 2*gaugeBorder), gaugeSize[1] - gaugeBorder)
             ))
@@ -240,7 +242,7 @@ class HUD():
         # find the correct interior color: red if off, green if on
         color = (255,0,0)
         if rocket.isAngleLocked:
-            color = (0,255,0)
+            color = self._readableGreen
 
         # fill the interior
         indicator.fill(color, ((0, indicatorBorder), (indicatorSize[0] - 1 * indicatorBorder, indicatorSize[1] - 2 * indicatorBorder)))
