@@ -1,5 +1,6 @@
 import pygame
 import sys
+import os
 from enum import Enum
 from graphics import Menu
 import simulationexec
@@ -7,6 +8,9 @@ from rocketbuilder import RocketBuilder
 
 
 def main():
+
+    pygame.display.set_icon(pygame.image.load(os.path.join("assets", "icon.png")))
+    pygame.display.set_caption("FESP: The Flat Earth Space Program")
     menu = Menu()
     clock = pygame.time.Clock()
     State = menu.State
