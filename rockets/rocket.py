@@ -26,7 +26,7 @@ class Rocket(Body):
         self.angular_velocity_limit = 400000
         self.destroyed=False
         self.throttle = 0
-        self.isAngleLocked = 0
+        self.isAngleLocked = False
 
     @property
     def throttle(self):
@@ -56,9 +56,12 @@ class Rocket(Body):
 
     @isAngleLocked.setter
     def isAngleLocked(self, newAngleLocked):
-        self._isAngleLocked = newAngleLocked
-        for sas in self.SASmodules:
-            sas.SASangle = self.angle
+        if len(self.SASmodules) is not 0:
+            self._isAngleLocked = newAngleLocked
+            for sas in self.SASmodules:
+                sas.SASangle = self.angle
+        else:
+            self._isAngleLocked = False
 
     @property
     def RCSThrusters(self):

@@ -45,6 +45,8 @@ class RocketBuilder:
 
     _bottomOfTabs = 0
 
+    _symmetry = False
+
     @classmethod
     def run(cls):
         # while loop to draw infinitely for testing purposes
@@ -233,22 +235,20 @@ class RocketBuilder:
             for key in dispInfo:
                 Graphics.drawText(textPos(currRow), key + ": " + str(dispInfo[key]), attributeFont, surface=cls.componentInfoSurface)
                 currRow += 1
-                
-
-            # find strings specific to this kind of component
-            for key in dispInfo:
-                print(key, dispInfo[key])
-
-            
-
-                
-
+        
         # draw a start button in the corner
         buttonMargin = cls.componentInfoSurface.get_width() * .05
         startButtonSize = (cls.componentInfoSurface.get_width() - 2 * buttonMargin, 80)
         startButtonPos = (buttonMargin, cls.componentInfoSurface.get_height() - 80 - buttonMargin)
         startButtonColor = ((0,200,0),(0,100,0))
         Graphics.drawButton(cls.componentInfoSurface, startButtonPos, startButtonSize, startButtonColor, "Start", 16, lambda: pg.event.post(pg.event.Event(cls.start_event)))
+
+        # draw a toggle symmetry button
+        symButtonSize = startButtonSize
+        symButtonPos = startButtonPos[0], startButtonPos[1] - buttonMargin - symButtonSize[1]
+        symButtonColor = ((150,150,150), (100,100,100))
+        symText = "Symmetry:  On" if cls._symmetry else "Symmetry: Off"
+        Graphics.drawButton(cls.componentInfoSurface, symButtonPos, symButtonSize, symButtonColor, symText, 16, cls.toggleSymmetry)
 
     @classmethod
     def drawRocket(cls):
@@ -258,9 +258,14 @@ class RocketBuilder:
     @classmethod
     def drawHeldSprite(cls):
         if cls.activeComponent is not None:
-            mouse_x, mouse_y = pg.mouse.get_pos()
-            pos = (mouse_x - cls.activeComponent._sprite.get_width()/2, mouse_y - cls.activeComponent._sprite.get_height()/2)
-            cls.surface.blit(cls.activeComponent._sprite, pos)
+            # create a test component at the mouse position
+            testComp = cls.activeComponent(None, transform=cls.mousePosToPymunkTransform(cls.activeComponent))
+            # give add the component to the rocket (and space)
+            cls.theRocket.addComponent(testComp)
+            # draw the part at this location...
+            Drawer.draw(cls.surface, testComp, Drawer.getOffset(cls.surface, cls.theRocket))
+            # then remove it.
+            cls.theRocket.removeComponent(testComp)
 
     @classmethod
     def updateSubSurfaces(cls):
@@ -284,12 +289,17 @@ class RocketBuilder:
         if cls.intersectsWithRocket(component) :
             transform = cls.mousePosToPymunkTransform(component)
             cls.theRocket.addComponent(component(body=None, transform=transform))
+            if cls._symmetry:
+                symTransform = cls.mousePosToPymunkTransform(component, True)
+                cls.theRocket.addComponent(component(body=None, transform=symTransform))
+                print("hello!")
+
             return True
         else:
             return False
         
     @classmethod
-    def mousePosToPymunkTransform(cls, component):
+    def mousePosToPymunkTransform(cls, component, reflected=False):
         """Takes in a component class or instance, and the mouse position. Assuming
            that the component is being held by mouse in its center, this finds the
            transform needed to translate between the component's inherent verteces
@@ -316,6 +326,9 @@ class RocketBuilder:
 
         # finding the mouse position, in pymunk space
         mousePos = pm.pygame_util.get_mouse_pos(cls.surface)
+        if reflected:
+            mousePosX, mousePosY = pm.pygame_util.get_mouse_pos(cls.surface)
+            mousePos = cls.surface.get_width() - mousePosX, mousePosY
 
         # vector to the center of the screen in pygame pixels
         dx, dy = (mousePos - screenCenter) - componentCenter
@@ -362,3 +375,7 @@ class RocketBuilder:
     @classmethod
     def setCurrentTab(cls, state):
         cls.selectedTab = state
+
+    @classmethod
+    def toggleSymmetry(cls):
+        cls._symmetry = not cls._symmetry
