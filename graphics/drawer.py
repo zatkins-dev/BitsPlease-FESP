@@ -169,6 +169,30 @@ class Drawer:
             screen.blit(rotSprite, (drawX, drawY))
 
     @classmethod
+    def drawBackground(cls, celestialBodies, rocket):
+        # find the closest celestial body in the list, then draw its atmosphere color
+        closestBody = min(celestialBodies, key=lambda x: (x.body.position - rocket.position).get_length())
+
+        atmColor = closestBody.atmosphereColor
+
+        if atmColor is not None:
+            # find the distance from the surface of the body
+            altitude = (closestBody.body.position - rocket.position).get_length() - closestBody.radius
+            
+            if altitude < closestBody.atmosphereHeight:
+                atmOpacity = (closestBody.atmosphereHeight - altitude) / closestBody.atmosphereHeight
+                if len(atmColor) is 4:
+                    atmOpacity *= atmColor[3]
+                surf = pg.display.get_surface()
+                surfSize = surf.get_size()
+                background = pg.Surface(surfSize)
+                background.fill((atmColor[0], atmColor[1], atmColor[2]))
+                background.set_alpha(int(255*atmOpacity))
+                surf.blit(background, (0,0))
+                print(atmOpacity)
+
+
+    @classmethod
     def getOffset(cls, screen, rocket):
         position = rocket.position
         centerOfScreen = cls.intVec2d(Vec2d(screen.get_size())/(2*cls._zoom))
