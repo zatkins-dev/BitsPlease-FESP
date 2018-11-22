@@ -4,6 +4,7 @@ import math
 from graphics import Graphics as graph
 from rockets import Thruster
 from rockets import SAS
+from physics import TimeScale
 from graphics.drawer import Drawer
 
 
@@ -189,6 +190,30 @@ class HUD():
 
         return zoomSurf
 
+    def _updateTimeScale(self, scale):
+        scaleSurfSize = (215,40)
+        scaleSurfBorder = 5
+        scaleSurf = pg.Surface(scaleSurfSize)
+        scaleSurf.fill(self._hudBackgroundColor)
+        scaleSurf.fill(self._hudForegroundColor, (scaleSurfBorder,scaleSurfBorder,scaleSurfSize[0]-scaleSurfBorder,scaleSurfSize[1]-2*scaleSurfBorder))
+
+        scaleString = "Time Scale: "
+
+        scaleMag = int(math.log2(scale))
+
+        scaleNumber = 2**abs(scaleMag)
+
+        # find the number of spaces we need to pad the string with
+        scaleString += " " * min(6, int(5-math.log10(scaleNumber))) if scaleMag < 0 else " " * min(6, int(7-math.log10(scaleNumber)))
+        scaleString += "1/" + str(scaleNumber) if scaleMag < 0 else str(scaleNumber)
+        scaleString += "x"
+
+        textSize = self._bigFont.size(scaleString)
+        scaleTextPosition = ((scaleSurf.get_height()-textSize[1])/2 + textSize[0]/2, scaleSurf.get_height()/2)
+        graph.drawTextCenter(scaleTextPosition, scaleString, self._bigFont, self._fontColor, scaleSurf)
+
+        return scaleSurf
+
     def _updateSASFuel(self, rocket):
         # define some properties of the gauge
         gaugeSize = (30, 2*self._navBallRadius)
@@ -307,6 +332,10 @@ class HUD():
         zoom = self._updateZoom(Drawer._zoom)
         zoomPos = (velocityPos[0], velocityPos[1]-zoom.get_height())
         pg.display.get_surface().blit(zoom, zoomPos)
+
+        timeScale = self._updateTimeScale(TimeScale.scale)
+        timeScalePos = (zoomPos[0], zoomPos[1]-timeScale.get_height())
+        pg.display.get_surface().blit(timeScale, timeScalePos)
 
         sasFuel = self._updateSASFuel(rocket)
         sasFuelPos = (navBallPos[0] + 2*self._navBallRadius, navBallPos[1])
