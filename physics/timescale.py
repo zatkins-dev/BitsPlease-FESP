@@ -4,7 +4,7 @@ class TimeScale(object):
     # Minimum value of 
     __BASE_SCALE = 1
     __MIN_SCALE = 0.125
-    __MAX_SCALE = 64.0
+    __MAX_SCALE = 512.0
     scale = 1
     __BASE_STEP_SIZE = 1/64
     step_size = __BASE_STEP_SIZE
