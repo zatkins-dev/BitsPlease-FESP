@@ -182,8 +182,6 @@ def run(rocket=None):
         if menu_enabled:
             returnCode = displayMenu(space)
             if returnCode is not None:
-                del rocket
-                del space
                 return returnCode
         pg.display.flip()
         clock.tick(60)
@@ -204,8 +202,6 @@ def run(rocket=None):
         Drawer.drawExplosion(screen, rocket_explosion, rocket.position + 20*Vec2d(0,1).rotated(rocket.angle), (150,150), Drawer.getOffset(screen, rocket))
         returnCode = displayMenu(space)
         if returnCode is not None:
-            del rocket
-            del space
             return returnCode
         pg.display.flip()
         clock.tick(60)
