@@ -231,16 +231,7 @@ class RocketBuilder:
             for key in dispInfo:
                 Graphics.drawText(textPos(currRow), key + ": " + str(dispInfo[key]), attributeFont, surface=cls.componentInfoSurface)
                 currRow += 1
-                
-
-            # find strings specific to this kind of component
-            for key in dispInfo:
-                print(key, dispInfo[key])
-
-            
-
-                
-
+        
         # draw a start button in the corner
         buttonMargin = cls.componentInfoSurface.get_width() * .05
         startButtonSize = (cls.componentInfoSurface.get_width() - 2 * buttonMargin, 80)
@@ -256,9 +247,14 @@ class RocketBuilder:
     @classmethod
     def drawHeldSprite(cls):
         if cls.activeComponent is not None:
-            mouse_x, mouse_y = pg.mouse.get_pos()
-            pos = (mouse_x - cls.activeComponent._sprite.get_width()/2, mouse_y - cls.activeComponent._sprite.get_height()/2)
-            cls.surface.blit(cls.activeComponent._sprite, pos)
+            # create a test component at the mouse position
+            testComp = cls.activeComponent(None, transform=cls.mousePosToPymunkTransform(cls.activeComponent))
+            # give add the component to the rocket (and space)
+            cls.theRocket.addComponent(testComp)
+            # draw the part at this location...
+            Drawer.draw(cls.surface, testComp, Drawer.getOffset(cls.surface, cls.theRocket))
+            # then remove it.
+            cls.theRocket.removeComponent(testComp)
 
     @classmethod
     def updateSubSurfaces(cls):
