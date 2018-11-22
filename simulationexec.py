@@ -129,12 +129,16 @@ def run(rocket=None):
                 Menu.demoPressed = False
             elif keyUp(event, pg.K_ESCAPE):
                 menu_enabled = False
+            elif keyDown(event, pg.K_MINUS):
+                TimeScale.slower()
+            elif keyDown(event, pg.K_EQUALS):
+                TimeScale.faster()
             elif event.type == pg.KEYDOWN:
                 rocket.handleEvent(event)
             
             elif event.type == pg.VIDEORESIZE:
                 screen = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
-
+            
             elif event.type == pg.MOUSEBUTTONDOWN:
                 if event.button == 4:
                     if Drawer._zoom > Drawer._minZoom:
@@ -144,7 +148,7 @@ def run(rocket=None):
                         Drawer._zoom *= 2
                 print("Zoom: {0}\n".format(Drawer._zoom))
 
-        rocket.tick()
+        rocket.tick(TimeScale.scale)
         grav = updateGravity(space, rocket, celestialBodies)
         space.step(TimeScale.step_size)
         pos = rocket.position

@@ -64,7 +64,7 @@ class Rocket(Body):
     def RCSThrusters(self):
         return list(filter(lambda c: isinstance(c, RCSThruster), self.components))
 
-    def tick(self):
+    def tick(self, timescale):
         # grab the keyboard state
         currentKeys = pg.key.get_pressed()
 
@@ -94,7 +94,7 @@ class Rocket(Body):
         if self.throttle is not 0:
             for thruster in self.thrusters:
                 if not thruster.destroyed:
-                    thruster.applyThrust(self.throttle)
+                    thruster.applyThrust(self.throttle, timescale)
 
         
 
