@@ -99,10 +99,10 @@ class Thruster(Component):
         """
         return self.thrustForce * self.thrustVector
 
-    def applyThrust(self, throttle):
+    def applyThrust(self, throttle, timescale):
         if self.fuel > 0 and 0 < throttle <= 1:
-            self.body.apply_impulse_at_local_point(throttle * self.thrust(), (self.center_of_gravity.x, self.center_of_gravity.y))
-            self.fuel -= 1 * throttle
+            self.body.apply_impulse_at_local_point(throttle * self.thrust() * timescale, (self.center_of_gravity.x, self.center_of_gravity.y))
+            self.fuel -= 1 * throttle * timescale
 
     @classmethod
     @abstractmethod

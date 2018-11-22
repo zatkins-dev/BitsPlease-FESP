@@ -29,10 +29,10 @@ def keyUp(e, key):
     return e.type == pg.KEYUP and e.key == key
 
 
-def updateGravity(space, rocket, objects, ticksPerSec):
+def updateGravity(space, rocket, objects):
     # space.gravity = Physics.netGravity(objects, rocket)
     deltaV = Vec2d(Physics.netGravity(objects, rocket.position))
-    pm.Body.update_velocity(rocket, deltaV, 1, 1/ticksPerSec)
+    pm.Body.update_velocity(rocket, deltaV, 1, TimeScale.step_size)
     return deltaV
 
 
@@ -109,7 +109,6 @@ def run(rocket=None):
     x, y = (0, earth.posy + earth.radius)
     rocket.position = int(x), int(y)
     print (rocket.position)
-    ticksPerSec = 50.0
     pg.mixer.music.play(-1)
 
     # Add collision handler
@@ -130,12 +129,16 @@ def run(rocket=None):
                 Menu.demoPressed = False
             elif keyUp(event, pg.K_ESCAPE):
                 menu_enabled = False
+            elif keyDown(event, pg.K_MINUS):
+                TimeScale.slower()
+            elif keyDown(event, pg.K_EQUALS):
+                TimeScale.faster()
             elif event.type == pg.KEYDOWN:
                 rocket.handleEvent(event)
             
             elif event.type == pg.VIDEORESIZE:
                 screen = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
-
+            
             elif event.type == pg.MOUSEBUTTONDOWN:
                 if event.button == 4:
                     if Drawer._zoom > Drawer._minZoom:
@@ -145,9 +148,9 @@ def run(rocket=None):
                         Drawer._zoom *= 2
                 print("Zoom: {0}\n".format(Drawer._zoom))
 
-        rocket.tick()
-        grav = updateGravity(space, rocket, celestialBodies, ticksPerSec)
-        space.step(1/ticksPerSec)
+        rocket.tick(TimeScale.scale)
+        grav = updateGravity(space, rocket, celestialBodies)
+        space.step(TimeScale.step_size)
         pos = rocket.position
         vel = rocket.velocity
         offset = Drawer.getOffset(screen, rocket)
@@ -186,12 +189,13 @@ def run(rocket=None):
         clock.tick(60)
     
     Menu.demoPressed = False
+    TimeScale.reset()
     displayMenu(space)
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT or keyDown(event, pg.K_ESCAPE):
                 return Menu.State.Exit
-        space.step(1/ticksPerSec)
+        space.step(TimeScale.step_size)
         rocket.velocity = (0,0)
         offset = Drawer.getOffset(screen, rocket)
         updateCamera(screen, offset)
