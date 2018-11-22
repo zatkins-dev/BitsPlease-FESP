@@ -45,7 +45,7 @@ def clear(space):
         space.remove(s)
     for b in space.bodies:
         space.remove(b)
-    space.step(1/50)
+    space.step(TimeScale.step_size)
 
 def displayMenu(space):
     Menu.drawMenu(100)
@@ -122,7 +122,8 @@ def run(rocket=None):
             elif keyDown(event, pg.K_MINUS):
                 TimeScale.slower()
             elif keyDown(event, pg.K_EQUALS):
-                TimeScale.faster()
+                if TimeScale.scale < 8 or rocket.velocity.length > 1000:
+                    TimeScale.faster()
             elif event.type == pg.KEYDOWN:
                 rocket.handleEvent(event)
             
@@ -142,6 +143,11 @@ def run(rocket=None):
         space.step(TimeScale.step_size)
         pos = rocket.position
         vel = rocket.velocity
+
+        if rocket.velocity.length < 1000:
+            while TimeScale.scale > 8:
+                TimeScale.slower()
+
         offset = Drawer.getOffset(screen, rocket)
 
         updateCamera(screen, offset)
@@ -172,6 +178,8 @@ def run(rocket=None):
         if menu_enabled:
             returnCode = displayMenu(space)
             if returnCode is not None:
+                TimeScale.reset()
+                Drawer.reset_zoom()
                 return returnCode
         pg.display.flip()
         clock.tick(60)
