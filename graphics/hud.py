@@ -165,6 +165,30 @@ class HUD():
 
         return velSurf
 
+    def _updateZoom(self, zoom):
+        zoomSurfSize = (215,40)
+        zoomSurfBorder = 5
+        zoomSurf = pg.Surface(zoomSurfSize)
+        zoomSurf.fill(self._hudBackgroundColor)
+        zoomSurf.fill(self._hudForegroundColor, (zoomSurfBorder,zoomSurfBorder,zoomSurfSize[0]-zoomSurfBorder,zoomSurfSize[1]-2*zoomSurfBorder))
+
+        zoomString = "Zoom: "
+
+        zoomMag = int(math.log2(zoom))
+
+        zoomNumber = 2**abs(zoomMag)
+
+        # find the number of spaces we need to pad the string with
+        zoomString += " " * min(12, int(11-math.log10(zoomNumber))) if zoomMag < 0 else " " * min(12, int(13-math.log10(zoomNumber)))
+        zoomString += "1/" + str(zoomNumber) if zoomMag < 0 else str(zoomNumber)
+        zoomString += "x"
+
+        textSize = self._bigFont.size(zoomString)
+        zoomTextPosition = ((zoomSurf.get_height()-textSize[1])/2 + textSize[0]/2, zoomSurf.get_height()/2)
+        graph.drawTextCenter(zoomTextPosition, zoomString, self._bigFont, self._fontColor, zoomSurf)
+
+        return zoomSurf
+
     def _updateSASFuel(self, rocket):
         # define some properties of the gauge
         gaugeSize = (30, 2*self._navBallRadius)
@@ -279,6 +303,10 @@ class HUD():
         velocity = self._updateVelocity(rocket)
         velocityPos = (throttlePos[0]-velocity.get_width(), pg.display.get_surface().get_height()-velocity.get_height())
         pg.display.get_surface().blit(self._updateVelocity(rocket), velocityPos)
+
+        zoom = self._updateZoom(Drawer._zoom)
+        zoomPos = (velocityPos[0], velocityPos[1]-zoom.get_height())
+        pg.display.get_surface().blit(zoom, zoomPos)
 
         sasFuel = self._updateSASFuel(rocket)
         sasFuelPos = (navBallPos[0] + 2*self._navBallRadius, navBallPos[1])
