@@ -45,6 +45,8 @@ class RocketBuilder:
 
     _bottomOfTabs = 0
 
+    _symmetry = False
+
     @classmethod
     def run(cls):
         # while loop to draw infinitely for testing purposes
@@ -239,6 +241,13 @@ class RocketBuilder:
         startButtonColor = ((0,200,0),(0,100,0))
         Graphics.drawButton(cls.componentInfoSurface, startButtonPos, startButtonSize, startButtonColor, "Start", 16, lambda: pg.event.post(pg.event.Event(cls.start_event)))
 
+        # draw a toggle symmetry button
+        symButtonSize = startButtonSize
+        symButtonPos = startButtonPos[0], startButtonPos[1] - buttonMargin - symButtonSize[1]
+        symButtonColor = ((150,150,150), (100,100,100))
+        symText = "Symmetry:  On" if cls._symmetry else "Symmetry: Off"
+        Graphics.drawButton(cls.componentInfoSurface, symButtonPos, symButtonSize, symButtonColor, symText, 16, cls.toggleSymmetry)
+
     @classmethod
     def drawRocket(cls):
         Drawer.drawMultiple(cls.surface, cls.theRocket.components,
@@ -278,12 +287,17 @@ class RocketBuilder:
         if cls.intersectsWithRocket(component) :
             transform = cls.mousePosToPymunkTransform(component)
             cls.theRocket.addComponent(component(body=None, transform=transform))
+            if cls._symmetry:
+                symTransform = cls.mousePosToPymunkTransform(component, True)
+                cls.theRocket.addComponent(component(body=None, transform=symTransform))
+                print("hello!")
+
             return True
         else:
             return False
         
     @classmethod
-    def mousePosToPymunkTransform(cls, component):
+    def mousePosToPymunkTransform(cls, component, reflected=False):
         """Takes in a component class or instance, and the mouse position. Assuming
            that the component is being held by mouse in its center, this finds the
            transform needed to translate between the component's inherent verteces
@@ -310,6 +324,9 @@ class RocketBuilder:
 
         # finding the mouse position, in pymunk space
         mousePos = pm.pygame_util.get_mouse_pos(cls.surface)
+        if reflected:
+            mousePosX, mousePosY = pm.pygame_util.get_mouse_pos(cls.surface)
+            mousePos = cls.surface.get_width() - mousePosX, mousePosY
 
         # vector to the center of the screen in pygame pixels
         dx, dy = (mousePos - screenCenter) - componentCenter
@@ -356,3 +373,7 @@ class RocketBuilder:
     @classmethod
     def setCurrentTab(cls, state):
         cls.selectedTab = state
+
+    @classmethod
+    def toggleSymmetry(cls):
+        cls._symmetry = not cls._symmetry
