@@ -126,3 +126,14 @@ class Rocket(Body):
     def debugComponentPrint(self):
         for x in self.components :
             print(x.get_vertices())
+
+    def reset(self):
+        self.destroyed = False
+        self.position = (0,0)
+        self.velocity = (0,0)
+        self.angle = 0
+        self._throttle = 0
+        self._isAngleLocked = 0
+        for c in self.components:
+            print (c)
+            c.reset()

@@ -91,6 +91,12 @@ class SAS(Component):
             elif targetAngVel < self.body.angular_velocity:
                 self.rotateClockwise()
 
+    def reset(self):
+        super().reset()
+        self._SASangle = 0
+        self._isLocked = False
+        self._fuel = self._maxFuel
+
     @property
     def SASangle(self):
         """Lock angle in radians for the SAS
