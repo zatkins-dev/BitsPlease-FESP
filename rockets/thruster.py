@@ -87,6 +87,8 @@ class Thruster(Component):
     def fuel(self, newFuel):
         if newFuel >= 0:
             self._fuel = newFuel
+        else:
+            self._fuel = 0
 
     def thrust(self):
         """Gets the scaled thrust vector for application of forces
@@ -97,10 +99,10 @@ class Thruster(Component):
         """
         return self.thrustForce * self.thrustVector
 
-    def applyThrust(self):
-        if self.fuel > 0:
-            self.body.apply_impulse_at_local_point(self.thrust(), (self.center_of_gravity.x, self.center_of_gravity.y))
-            self.fuel = self.fuel -1
+    def applyThrust(self, throttle):
+        if self.fuel > 0 and 0 < throttle <= 1:
+            self.body.apply_impulse_at_local_point(throttle * self.thrust(), (self.center_of_gravity.x, self.center_of_gravity.y))
+            self.fuel -= 1 * throttle
 
     @classmethod
     @abstractmethod

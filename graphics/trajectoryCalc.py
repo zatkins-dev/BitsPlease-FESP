@@ -24,6 +24,11 @@ class TrajectoryCalc():
         self._time = 0
         self._dt = 0.5
         # self._pixelArr = pg.PixelArray(pg.Surface(pg.display.get_surface().get_size()))
+    def hitsPlanet(self, position, planets):
+        for planet in planets:
+            if planet.shape.point_query(position)[0] < 0:
+                return True
+        return False
     def velocity(self,v_prev,dt,mass,grav,k):
         dvdt = grav - k/mass * Vec2d(v_prev[0]**2, v_prev[1]**2)
         return Vec2d(v_prev + dt*dvdt)
@@ -43,7 +48,7 @@ class TrajectoryCalc():
         v_prev = velocity
         pos_prev = position
         curr_step = 0
-        while Drawer.inRange((x,y), Drawer._zoom*(pos_prev+offset)) and curr_step < timesteps:
+        while Drawer.inRange((x,y), Drawer._zoom*(pos_prev+offset)) and curr_step < timesteps and not self.hitsPlanet(pos_prev, planetBodies):
             if len(self._points)>40 and (pos_prev-self._points[0]).length < 1000:
                 break
             v_prev = self.velocity(v_prev,dt,rocket.mass,phy.netGravity(planetBodies, pos_prev), 0)
@@ -54,8 +59,9 @@ class TrajectoryCalc():
         self._points = list(map(lambda x: (x+offset)*Drawer._zoom, self._points))
         self._points = list(map(lambda x: (x[0],y-x[1]), self._points))
 
-        pg.draw.aalines(surface, (255,255,255), False, self._points)
-        pg.draw.lines(surface, (255,255,255), False, list(map(Drawer.intVec2d, self._points)), 2)
+        if len(self._points) > 1:
+            pg.draw.aalines(surface, (255,255,255), False, self._points)
+            pg.draw.lines(surface, (255,255,255), False, list(map(Drawer.intVec2d, self._points)), 2)
                 
 
     def updateTrajectory(self, surface, x, y, Vx, Vy, Vdeg, Ax, Ay, Adeg, time, dt, celestialBodies, offset=0):

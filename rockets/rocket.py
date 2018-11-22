@@ -25,74 +25,86 @@ class Rocket(Body):
         self.components = components
         self.angular_velocity_limit = 400000
         self.destroyed=False
+        self.throttle = 0
+        self.isAngleLocked = 0
+
+    @property
+    def throttle(self):
+        return self._throttle
+
+    @throttle.setter
+    def throttle(self, newThrottle):
+        # never leave the 0 or 1 range
+        if 0 <= newThrottle <= 1:
+            self._throttle = newThrottle
+        elif newThrottle > 1:
+            self._throttle = 1
+        elif newThrottle < 0:
+            self._throttle = 0
 
     @property
     def thrusters(self):
-        return list(filter(lambda c: isinstance(c, Thruster), self.components))
+        return list(filter(lambda c: isinstance(c, Thruster) and not isinstance(c, RCSThruster), self.components))
 
     @property
     def SASmodules(self):
         return list(filter(lambda c: isinstance(c, SAS), self.components))
 
-    """def turn_SAS(self, k, coeffPower):
-        #Turn SAS in direction determined by key k with power coeffPower.
+    @property
+    def isAngleLocked(self):
+        return self._isAngleLocked
 
-        #Args:
-         #   k (Int): Directional key in which to engage SAS.
-          #  coeffPower (Float): Power of SAS to engage.
+    @isAngleLocked.setter
+    def isAngleLocked(self, newAngleLocked):
+        self._isAngleLocked = newAngleLocked
+        for sas in self.SASmodules:
+            sas.SASangle = self.angle
 
-        
-        for m in self.components:
-            if not isinstance(m, SAS):
-                continue
-            else:
-                if m.fuel > 0:
-                    if m.leftKey == k:
-                        self.angular_velocity += m.SASpower * coeffPower
-                        m.fuel -= 1 * coeffPower
+    @property
+    def RCSThrusters(self):
+        return list(filter(lambda c: isinstance(c, RCSThruster), self.components))
 
-                    if m.rightKey == k:
-                        self.angular_velocity -= m.SASpower * coeffPower
-                        m.fuel -= 1 * coeffPower
-                else:
-                    # you silly goose
-                    print('SAS module is out of fuel')
+    def tick(self):
+        # grab the keyboard state
+        currentKeys = pg.key.get_pressed()
 
-    def auto_SAS(self, targetAngle):
-        #Engage SAS to sustain target angle
+        # Check for throttle commands from user
+        if currentKeys[pg.K_LSHIFT]:    # increase throttle
+            self.throttle += .01
+        if currentKeys[pg.K_LCTRL]:     # decrease throttle
+            self.throttle -= .01
+        if currentKeys[pg.K_z]:         # full throttle
+            self.throttle = 1
+        if currentKeys[pg.K_x]:         # cut throttle
+            self.throttle = 0
 
-        #Args:
-            #targetAngle (Float): Angle in radians to lock with SAS.
-
-        
-        if targetAngle > self.angle:
-            self.turn_SAS(pg.K_a, 0.25)
-        elif targetAngle < self.angle:
-            self.turn_SAS(pg.K_d, 0.25)
+        # let SAS modules fire rcs thrusters if needed,
+        # checking from input from users if not holding
+        if self.isAngleLocked:
+            for module in self.SASmodules:
+                module.holdAngle()
         else:
-            pass
-            # do nothing, on course
-    """
+            for module in self.SASmodules:
+                if currentKeys[pg.K_a]:
+                    module.rotateCounterClockwise()
+                if currentKeys[pg.K_d]:
+                    module.rotateClockwise()
 
-    def handleEvent(self, eventKey):
-        if eventKey == pg.K_f : # Apply main thrust
-            for ts in self.thrusters:
-                # check to make sure this isn't an RCS thruster
-                if not isinstance(ts, RCSThruster) and not ts.destroyed:
-                    ts.applyThrust()
-        elif eventKey == pg.K_a : # Counter-Clockwise Rotation
-            for sas in self.SASmodules:
-                if not sas.destroyed:
-                    sas.rotateCounterClockwise()
-        elif eventKey == pg.K_d : # Clockwise Rotation
-            for sas in self.SASmodules:
-                if not sas.destroyed:
-                    sas.rotateClockwise()
-        elif eventKey == pg.K_v : # Toggle Rotation Lock
-            for sas in self.SASmodules:
-                if not sas.isAngleLocked:
-                    sas.SASangle = self.angle
-                sas.toggleAngleLock()
+        # apply all of the thrusters, with the current throttle
+        if self.throttle is not 0:
+            for thruster in self.thrusters:
+                if not thruster.destroyed:
+                    thruster.applyThrust(self.throttle)
+
+        
+
+    def handleEvent(self, event):
+        if event.type is pg.KEYDOWN:
+            # new key has been pressed, place edge sensitive
+            # commands in here, i.e. things that only run once
+            # per key press
+            if event.key is pg.K_v:  # Toggle SAS Lock
+                self.isAngleLocked = not self.isAngleLocked
         
 
     def addComponent(self, c):
@@ -114,11 +126,3 @@ class Rocket(Body):
     def debugComponentPrint(self):
         for x in self.components :
             print(x.get_vertices())
-    
-    #def getFuel():
-        #adds all fuel stored in each fuel tank
-
-    #def _decreaseFuel():
-
-        #decreases fuel from first found fuel tank that contains fuel
-    
