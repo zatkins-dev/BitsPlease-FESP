@@ -1,4 +1,5 @@
 import pygame
+from graphics.drawer import Drawer
 import random
 
 class Graphics(object):
@@ -257,7 +258,7 @@ class Graphics(object):
                 y = random.randrange(0, cls._starsHeight)
                 cls._stars.append([x, y, colorStar])
             cls._isBackgroundDrawn = True
-        for i in range(1000):
+        for i in range(min(int(1000 / Drawer._zoom), 1000)):
             # decide the new star size (twinkling)
             temp = random.uniform(0, 1)
             width = 0
@@ -270,6 +271,8 @@ class Graphics(object):
             else:
                 width = 3
 
-            starX = int(cls._stars[i][0] + .05 * pos[0]) % cls._starsWidth
-            starY = int(cls._stars[i][1] - .05 * pos[1]) % cls._starsHeight
+            paralaxModifier = .05 * Drawer._zoom
+
+            starX = int(cls._stars[i][0] + paralaxModifier * pos[0]) % cls._starsWidth
+            starY = int(cls._stars[i][1] - paralaxModifier * pos[1]) % cls._starsHeight
             pygame.draw.circle(screen, cls._stars[i][2], (starX, starY), width)
