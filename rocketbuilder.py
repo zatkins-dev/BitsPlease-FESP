@@ -50,6 +50,8 @@ class RocketBuilder:
         # while loop to draw infinitely for testing purposes
         clock = pg.time.Clock()     # create clock to manage game time
         cls.theRocket.reset()
+        if not cls.theRocket.components:
+            cls.theRocket.components.append(cls._baseComponent)
         cls.space.add(cls.theRocket)
         cls.updateSubSurfaces()
         while True:                 # drawn menu infinitely

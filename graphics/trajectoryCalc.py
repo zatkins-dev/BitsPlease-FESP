@@ -88,7 +88,6 @@ class TrajectoryCalc():
         self._yAccel.append(Ay)
         self._aDeg = Adeg
         self._time = time
-        testdt = self._dt
         if Drawer._zoom == 1:
             self._time = time
         elif Drawer._zoom > 1:
