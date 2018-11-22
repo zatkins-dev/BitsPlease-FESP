@@ -87,15 +87,6 @@ def run(rocket=None):
                     796375 + 43500000, 796375, 0.9, 0, pm.Body.DYNAMIC)
     celestialBodies.append(earthMoon1)
 
-    # planetGage = CelestialBody('planetGage', space, 10**12, 200, 1000, 1000, 0.9, 0, 0)
-    # celestialBodies.append(planetGage)
-    #
-    # planetThomas = CelestialBody('planetThomas', space, 10**13, 200, 1500, 1500, .9, 0, 0)
-    # celestialBodies.append(planetThomas)
-    #
-    # planetZach = CelestialBody('planetZach', space, 10**13, 200, 2000, 1000, 0.9, 0, 0)
-    # celestialBodies.append(planetZach)
-
     if rocket is None:
         rocket = tr.genRocket(space)
     else:
@@ -103,7 +94,6 @@ def run(rocket=None):
         for component in rocket.components:
             space.add(component)
     rocket.debugComponentPrint()
-    # draw_options = pygame_util.DrawOptions(game)
     space.damping = 1
 
     x, y = (0, earth.posy + earth.radius)
@@ -139,14 +129,13 @@ def run(rocket=None):
             elif event.type == pg.VIDEORESIZE:
                 screen = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
             
-            elif event.type == pg.MOUSEBUTTONDOWN:
+            elif event.type == pg.MOUSEBUTTONDOWN and menu_enabled == False:
                 if event.button == 4:
                     if Drawer._zoom > Drawer._minZoom:
                         Drawer._zoom /= 2
                 elif event.button == 5:
                     if Drawer._zoom < Drawer._maxZoom:
                         Drawer._zoom *= 2
-                print("Zoom: {0}\n".format(Drawer._zoom))
 
         rocket.tick(TimeScale.scale)
         grav = updateGravity(space, rocket, celestialBodies)
@@ -188,6 +177,7 @@ def run(rocket=None):
     
     Menu.demoPressed = False
     TimeScale.reset()
+    Drawer.reset_zoom()
     displayMenu(space)
     while True:
         for event in pg.event.get():

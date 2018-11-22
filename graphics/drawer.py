@@ -14,14 +14,8 @@ class Drawer:
     _zoom = float(1)
 
     @classmethod
-    def get_zoom(cls):
-        return cls._zoom
-
-    @classmethod
-    def set_zoom(cls, zoom):
-        cls._zoom = zoom
-
-    zoom = property(get_zoom, set_zoom)
+    def reset_zoom(cls):
+        cls._zoom = 1
 
     @classmethod
     def draw(cls, screen, toDraw, offset):
