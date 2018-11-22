@@ -55,3 +55,7 @@ class Component(ABC, pm.Poly):
            Information to display in the rocket builder
         """
         pass
+
+    @abstractmethod
+    def reset(self):
+        self.destroyed = False

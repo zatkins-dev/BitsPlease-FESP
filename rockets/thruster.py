@@ -104,6 +104,10 @@ class Thruster(Component):
             self.body.apply_impulse_at_local_point(throttle * self.thrust() * timescale, (self.center_of_gravity.x, self.center_of_gravity.y))
             self.fuel -= 1 * throttle * timescale
 
+    def reset(self):
+        super().reset()
+        self._fuel = self.maxFuel
+
     @classmethod
     @abstractmethod
     def getInfo(cls):
@@ -180,6 +184,7 @@ class LeftRCS(RCSThruster):
             "thrustForce":  5000,
             "thrustVector": Vec2d((-1, 0)),
             "sprite":       cls._sprite,
+            "maxFuel":      0,
             "density":      45
         }
 
@@ -197,6 +202,7 @@ class RightRCS(RCSThruster):
             "thrustForce":  5000,
             "thrustVector": Vec2d((1, 0)),
             "sprite":       cls._sprite,
+            "maxFuel":      0,
             "density":      45
         }
 

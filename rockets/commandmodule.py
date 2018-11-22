@@ -17,7 +17,10 @@ class CommandModule(Component):
     def __init__(self, body, transform=None, radius=0):
         Component.__init__(self, body, self._vertices, transform, radius)
         self.density = self._density
-        
+    
+    def reset(self):
+        super().reset()
+
     @classmethod
     def getDisplayInfo(cls):
         return {
