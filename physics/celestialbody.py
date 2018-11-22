@@ -31,19 +31,16 @@ class CelestialBody():
 
     """
     def __init__(self, name_, space_, mass_, radius_, position_x, position_y,
-                 elasticity_, atmosphere_, bodytype_):
+                 elasticity_, atmosphere_color, atmosphere_height, bodytype_):
         self.mass = mass_
         self.name = name_
         self.radius = radius_
         self.posx = position_x
         self.posy = position_y
         self.elasticity = elasticity_
-        self.atmosphere = atmosphere_
+        self.atmosphereColor = atmosphere_color
+        self.atmosphereHeight = atmosphere_height
         self.bodytype = bodytype_
-        # if self.bodytype == 0:
-        #     self.body = pm.Body(body_type=pm.Body.STATIC)
-        # else:
-        #     self.body = pm.Body(body_type=pm.Body.KINEMATIC)
         self.body = pm.Body(body_type=bodytype_)
         self.shape = pm.Circle(self.body, self.radius)
         self.shape.friction = 0.80
@@ -52,24 +49,3 @@ class CelestialBody():
         self.shape.collision_type = CT_CELESTIAL_BODY
         self.body.position = self.posx, self.posy
         space_.add(self.body, self.shape)
-
-    @property
-    def sprite(self):
-        """Image Sprite for the component
-
-        Returns:
-            Surface: Component Sprite
-        """
-        if self._sprite is None:
-            return None
-        else:
-            return self._sprite
-
-    @sprite.setter
-    def sprite(self, sprite):
-        """Setter for {sprite} property
-
-        Args:
-            sprite (surface): New Surface to use as component sprite
-        """
-        self._sprite = sprite
