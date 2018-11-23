@@ -1,12 +1,13 @@
 from rockets import Component
 import pygame as pg
 import os
+from . import _ASSETS_PATH
 
 
 class CommandModule(Component):
     _vertices = [(12, 4), (-12, 4), (0, 42)]
     _density = 34
-    _sprite = pg.image.load(os.path.join("assets", "sprites", "orbiter.png"))
+    _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "orbiter.png"))
 
     # Should we choose to make different types of command modules, we will
     # abstract this. For now, we'll just have one

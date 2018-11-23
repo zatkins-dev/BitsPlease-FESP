@@ -3,10 +3,9 @@
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
-SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = FlatEarthSpaceProgram
-SOURCEDIR     = .
-BUILDDIR      = _build
+SPHINXBUILD   = /Library/Frameworks/Python.framework/Versions/3.7/bin/sphinx-build
+SOURCEDIR     = source
+BUILDDIR      = build
 
 # Put it first so that "make" without argument is like "make help".
 help:

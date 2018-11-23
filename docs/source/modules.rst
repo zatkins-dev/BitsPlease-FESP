@@ -5,7 +5,7 @@ BitsPlease-FESP
    :maxdepth: 4
 
    graphics
-   main
    physics
+   rocketbuilder
    rockets
    simulationexec

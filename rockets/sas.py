@@ -2,6 +2,8 @@ import pygame as pg
 from rockets import Component
 import math
 import os
+from . import _ASSETS_PATH
+
 
 
 class SAS(Component):
@@ -127,10 +129,15 @@ class SAS(Component):
 
 
 class AdvancedSAS(SAS):
+    # __ASSETS_PATH = ""
+    # if os.path.exists(os.path.abspath("assets")):
+    #     __ASSETS_PATH = os.path.abspath("assets")
+    # elif os.path.exists(os.path.abspath("../assets")):
+    #     __ASSETS_PATH = os.path.abspath("../assets")
     _vertices = [(-12,4), (-12,-6), (12,-6), (12,4)]
     _SASPower = 2
     _tolerance = .01
-    _sprite = pg.image.load(os.path.join("assets", "sprites", "AdvancedSAS.png"))
+    _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "AdvancedSAS.png"))
     _maxFuel = 20000
 
     def __init__(self, body, transform=None, radius=0):
