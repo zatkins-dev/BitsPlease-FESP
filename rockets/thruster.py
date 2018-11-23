@@ -130,12 +130,13 @@ class Thruster(Component):
 
 
 class RCSThruster(Thruster):
-    """An RCS Thruster is intended to be a smaller thruster, that pulls
-       fuel from the rocket's SAS fuel instead of its own supply.
-
+    """
+    An RCS Thruster is intended to be a smaller thruster, that pulls
+    fuel from the rocket's SAS fuel instead of its own supply and is
+    used for rotation instead of direct motion.
     """
 
-    def __init__(self, body, vertices=None, thrustForce=None, thrustVector=None, density=None, transform=None, radius=0):
+    def __init__(self, body, transform=None, radius=0):
         Component.__init__(self, body, self.getInfo()["vertices"], transform, radius)
 
         self.density = self.getInfo()["density"]
@@ -222,8 +223,6 @@ class UpGoer2000(Thruster):
                 
 class DeltaVee(Thruster):
     
-
-
     _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "DeltaVee.png")).convert()
     
     def __init__(self, body, transform=None, radius=0):
