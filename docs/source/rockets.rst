@@ -59,7 +59,6 @@ rockets.thruster module
 
 .. automodule:: rockets.thruster
     :members:
-    :undoc-members:
     :show-inheritance:
     :private-members:
     
