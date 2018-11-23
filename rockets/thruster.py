@@ -26,27 +26,7 @@ class Thruster(Component):
 
     """
 
-    _infoDict = {
-        "vertices": None,
-        "thrustForce": None,
-        "thrustVector": None,
-        "sprite": None,
-        "maxFuel": None,
-        "density": None
-    }
-
-    def __init__(self, body, vertices=None, thrustForce=None, thrustVector=None, maxFuel=None, density=None, transform=None, radius=0):
-        if vertices is not None:
-            self.getInfo()["vertices"] = vertices
-        if thrustForce is not None:
-            self.getInfo()["thrustForce"] = thrustForce
-        if thrustVector is not None:
-            self.getInfo()["thrustVector"] = thrustVector
-        if maxFuel is not None:
-            self.getInfo()["maxFuel"] = maxFuel
-        if density is not None:
-            self.getInfo()["density"] = density
-
+    def __init__(self, body, transform=None, radius=0):
         Component.__init__(self, body, self.getInfo()["vertices"], transform, radius)
 
         self.density = self.getInfo()["density"]
@@ -176,7 +156,7 @@ class LeftRCS(RCSThruster):
     _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "RCSLeft.png")).convert_alpha()
 
     def __init(self, body, transform=None, radius=0):
-        Thruster.__init__(self, body, transform=transform, radius=radius)
+        Thruster.__init__(self, body, transform, radius)
 
     @classmethod
     def getInfo(cls):
@@ -194,7 +174,7 @@ class RightRCS(RCSThruster):
     _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "RCSRight.png")).convert_alpha()
 
     def __init(self, body, transform=None, radius=0):
-        Thruster.__init__(self, body, transform=transform, radius=radius)
+        Thruster.__init__(self, body, transform, radius)
 
     @classmethod
     def getInfo(cls):
@@ -212,7 +192,7 @@ class UpGoer2000(Thruster):
     _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "UpGoer2000.png")).convert()
    
     def __init__(self, body, transform=None, radius=0):
-       Thruster.__init__(self, body, self.vertices, transform=transform, radius=radius)
+       Thruster.__init__(self, body, transform,radius)
 
     @classmethod
     def getInfo(cls):
@@ -232,7 +212,7 @@ class DeltaVee(Thruster):
     _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "DeltaVee.png")).convert()
     
     def __init__(self, body, transform=None, radius=0):
-       Thruster.__init__(self, body, self.vertices, transform=transform, radius=radius)
+       Thruster.__init__(self, body, transform, radius)
 
     @classmethod
     def getInfo(cls):
