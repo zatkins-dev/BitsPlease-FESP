@@ -12,7 +12,7 @@ from functools import reduce
 from graphics import HUD
 from graphics import Graphics as graph
 from graphics import Drawer
-from graphics import TrajectoryCalc
+from graphics import Trajectory
 from graphics import Explosion
 from graphics import Menu
 
@@ -85,7 +85,6 @@ def run(rocket=None):
     space = pm.Space(threaded=True)
     space.threads = 2
     hud = HUD()
-    traj = TrajectoryCalc()
 
     earth = CelestialBody('earth', space, 9.331*10**22, 796375, 0, 0, 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
     celestialBodies.append(earth)
@@ -169,7 +168,7 @@ def run(rocket=None):
 
         updateCamera(screen, offset)
         Drawer.drawBackground(closestBody, altitude)
-        traj.updateTrajectory2(screen, pos, vel, 1000, 1, celestialBodies, rocket, offset)
+        Trajectory.draw(screen, pos, vel, 1000, 1, celestialBodies, rocket, offset)
         Drawer.drawMultiple(screen, space.shapes, offset)
         Drawer.drawMultiple(screen, celestialBodies, offset)
         hud.updateHUD(rocket)
