@@ -8,14 +8,16 @@ from . import _ASSETS_PATH
 
 
 class Thruster(Component):
-    """Thruster Interface for creation of thrusters. Individual named
+    """
+    Thruster Interface for creation of thrusters. Individual named
     thrusters inherit from and implement this class. Most of the implementation
     is already done within this interface, with key parts left out for the 
     subclasses to make their own.
     """
 
     def __init__(self, body, transform=None, radius=0):
-        """Constructor for a Thruster. The important things done in this constructor include
+        """
+        Constructor for a Thruster. The important things done in this constructor include
         creating the Component base using the vertices defined in the getInfo method, and 
         setting the density and initial fuel of the thruster also using values from the 
         getInfo method.
@@ -29,33 +31,45 @@ class Thruster(Component):
         self.density = self.getInfo()["density"]
         self.fuel = self.getInfo()["maxFuel"]
 
-    #: The vertices of this specific type of thruster. This returns the value defined in 
-    #: the getInfo method.
     @property
     def vertices(self):
+        """
+        The vertices of this specific type of thruster. This returns the value defined in
+        the getInfo method.
+        """
         return self.getInfo()["vertices"]
 
-    #: The magnitude of the thrust of this specific type of thruster. This returns the value
-    #: defined in the getInfo method.
     @property
     def thrustForce(self):
+        """
+        The magnitude of the thrust of this specific type of thruster. This returns the value
+        defined in the getInfo method.
+        """
         return self.getInfo()["thrustForce"]
 
-    #: The direction that the thruster will apply thrust. This returns the value defined
-    #: in the getInfo method.
+    
     @property
     def thrustVector(self):
+        """
+        The direction that the thruster will apply thrust. This returns the value defined
+        in the getInfo method.
+        """
         return self.getInfo()["thrustVector"]
 
-    #: The maximum ammount of fuel that the thruster starts with. This returns the value
-    #: defined in the getInfo method.
+    
     @property
     def maxFuel(self):
+        """
+        The maximum ammount of fuel that the thruster starts with. This returns the value
+        defined in the getInfo method.
+        """
         return self.getInfo()["maxFuel"]
 
-    #: The current ammout of fuel that the thruster has. Cannot be set below zero.
     @property
     def fuel(self):
+        """
+        The current ammout of fuel that the thruster has. Cannot be set below zero.
+        """
         return self._fuel
 
     @fuel.setter
@@ -311,6 +325,8 @@ class UpGoer2000(Thruster):
                 
 class DeltaVee(Thruster):
     
+    #: Holds the thruster sprite to prevent repeated loading. Sprite is 
+    #: `DeltaVee.png <https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/DeltaVee.png>`_
     _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "DeltaVee.png")).convert_alpha()
     
     def __init__(self, body, transform=None, radius=0):
