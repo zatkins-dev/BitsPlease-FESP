@@ -93,26 +93,27 @@ class Thruster(Component):
     @classmethod
     @abstractmethod
     def getInfo(cls):
-        """This method is what will define the properties of a specific Thruster subclass.
-           It should return a dictionary with the following values:
+        """
+        This method is what will define the properties of a specific Thruster subclass.
+        It should return a dictionary with the following values:
 
-           +----------------+-------------------------------------------------+
-           | Dictionary Key |              Dictionary Value Type              |
-           +================+=================================================+
-           |    vertices    |   (*List of* :py:class:`pymunk.vec2d.Vec2d`)    |
-           +----------------+-------------------------------------------------+
-           |   thrustForce  |                    (*float*)                    |
-           +----------------+-------------------------------------------------+
-           |  thrustVector  |        (:py:class:`pymunk.vec2d.Vec2d`)         |
-           +----------------+-------------------------------------------------+
-           |                | (:py:class:`pygame.surface.Surface`) It is      |
-           |     sprite     | advised this be stored as a class variable, and |
-           |                | returned by this method to improve performance. |
-           +----------------+-------------------------------------------------+
-           |     maxFuel    |                    (*float*)                    |
-           +----------------+-------------------------------------------------+
-           |     density    |                    (*float*)                    |
-           +----------------+-------------------------------------------------+
+        +----------------+-------------------------------------------------+
+        | Dictionary Key |              Dictionary Value Type              |
+        +================+=================================================+
+        |    vertices    |   (*List of* :py:class:`pymunk.vec2d.Vec2d`)    |
+        +----------------+-------------------------------------------------+
+        |   thrustForce  |                    (*float*)                    |
+        +----------------+-------------------------------------------------+
+        |  thrustVector  |        (:py:class:`pymunk.vec2d.Vec2d`)         |
+        +----------------+-------------------------------------------------+
+        |                | (:py:class:`pygame.surface.Surface`) It is      |
+        |     sprite     | advised this be stored as a class variable, and |
+        |                | returned by this method to improve performance. |
+        +----------------+-------------------------------------------------+
+        |     maxFuel    |                    (*float*)                    |
+        +----------------+-------------------------------------------------+
+        |     density    |                    (*float*)                    |
+        +----------------+-------------------------------------------------+
         """
         pass
 
@@ -137,12 +138,25 @@ class RCSThruster(Thruster):
     """
 
     def __init__(self, body, transform=None, radius=0):
+        """
+        RCSThruster constructor. Initializes the underlying component and sets the 
+        density of the thruster from the value defined in the getInfo method.
+
+        :param pymunk.Body body: The body to attatch this thruster to.
+        :param pymunk.Transform transform: The transform to apply to the Thruster on creation.
+        :param float radius: The radius to give to the Thruster's corners.
+        """
         Component.__init__(self, body, self.getInfo()["vertices"], transform, radius)
 
         self.density = self.getInfo()["density"]
         self.fuel = 0
     
     def applyThrust(self):
+        """
+        The RCSThruster applies thrust differently from normal Thrusters. The
+        RCSThruster will check if there is an SAS module on the host Rocket
+        that it can draw fuel from before it fires.
+        """
         sasModule = None
         for module in self.body.SASmodules:
             if module.fuel > 0:
@@ -155,15 +169,25 @@ class RCSThruster(Thruster):
     @classmethod
     @abstractmethod
     def getInfo(cls):
-        """This method is what will define the properties of a specific RCSThruster subclass.
-           It is identical to the Thruster getInfo, but does not need a "maxFuel" member.
-           It should return a dictionary with the following values:
-                vertices       : (list of tuples)
-                thrustForce    : (float)
-                thrustVector   : (tuple or pymunk.Vec2d)
-                sprite         : (pygame.Surface, advised to store this as a class variable
-                                   and return it via this dictionary for performance)
-                density        : (float)
+        """
+        This method is what will define the properties of a specific RCSThruster subclass.
+        It is identical to the Thruster getInfo, but does not need a "maxFuel" member.
+
+        +----------------+-------------------------------------------------+
+        | Dictionary Key |              Dictionary Value Type              |
+        +================+=================================================+
+        |    vertices    |   (*List of* :py:class:`pymunk.vec2d.Vec2d`)    |
+        +----------------+-------------------------------------------------+
+        |   thrustForce  |                    (*float*)                    |
+        +----------------+-------------------------------------------------+
+        |  thrustVector  |        (:py:class:`pymunk.vec2d.Vec2d`)         |
+        +----------------+-------------------------------------------------+
+        |                | (:py:class:`pygame.surface.Surface`) It is      |
+        |     sprite     | advised this be stored as a class variable, and |
+        |                | returned by this method to improve performance. |
+        +----------------+-------------------------------------------------+
+        |     density    |                    (*float*)                    |
+        +----------------+-------------------------------------------------+
         """
         pass
 
