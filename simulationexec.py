@@ -5,7 +5,7 @@ import sys
 import os
 import rockets.testrocket as tr
 import math
-from physics import * 
+from physics import *
 from rockets import Thruster
 from functools import reduce
 
@@ -15,6 +15,8 @@ from graphics import Drawer
 from graphics import Trajectory
 from graphics import Explosion
 from graphics import Menu
+
+from audio import AudioManager
 
 import pymunkoptions
 pymunkoptions.options["debug"] = False
@@ -74,8 +76,7 @@ def displayMenu(space):
 
 
 def run(rocket=None):
-    pg.mixer.init()
-    pg.mixer.music.load(os.path.join(ASSETS_PATH, "sound/Sci-fiPulseLoop.wav"))
+    AudioManager.audioInitializer()
     celestialBodies = []
     screen = pg.display.get_surface()
     clock = pg.time.Clock()
@@ -99,24 +100,23 @@ def run(rocket=None):
         space.add(rocket)
         for component in rocket.components:
             space.add(component)
-            
+
     space.damping = 1
 
     x, y = (0, earth.posy + earth.radius)
     rocket.position = int(x), int(y)
-    
-    pg.mixer.music.play(-1)
 
     # Add collision handler
     collisions_component_celestialbody = space.add_collision_handler(CT_COMPONENT, CT_CELESTIAL_BODY)
     collisions_component_celestialbody.post_solve = post_solve_component_celestialbody
-    
+
     rocket_explosion = None
     crashed = False
     menu_enabled = False
     Menu.demoPressed = False
     Menu.builderPressed = False
     while not crashed:
+        AudioManager.musicChecker()
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return Menu.State.Exit
@@ -131,10 +131,10 @@ def run(rocket=None):
                 TimeScale.faster()
             elif event.type == pg.KEYDOWN:
                 rocket.handleEvent(event)
-            
+
             elif event.type == pg.VIDEORESIZE:
                 screen = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
-            
+
             elif event.type == pg.MOUSEBUTTONDOWN and menu_enabled == False:
                 if event.button == 4:
                     Drawer.zoom.zoom_out()
@@ -180,7 +180,7 @@ def run(rocket=None):
             rocket_explosion = Explosion(remaining_fuel//10, explosion_images)
             rocket.velocity = grav
             crashed = True
-            
+
         if menu_enabled:
             returnCode = displayMenu(space)
             if returnCode is not None:
@@ -189,7 +189,7 @@ def run(rocket=None):
                 return returnCode
         pg.display.flip()
         clock.tick(60)
-    
+
     Menu.demoPressed = False
     TimeScale.reset()
     Drawer.zoom.reset()
