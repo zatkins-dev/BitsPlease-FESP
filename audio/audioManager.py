@@ -1,6 +1,7 @@
 import sys
 import os
 import pygame as pg
+import random
 
 class AudioManager(object):
     """The AudioManager utility class is designed to manage both the music in
@@ -8,9 +9,11 @@ class AudioManager(object):
 
         **Class Variables:**
             *SOUND_PATH*:  A String with the file pathway to the sound assets
+            *MUSIC_LIST*:  A List of the music file names
     """
 
     SOUND_PATH = os.path.abspath("assets/sound/")
+    MUSIC_LIST = ["Sci-fiPulseLoop.wav", "Astrometrics_-_02_-_Fire_in_the_Mountains.mp3", "bensound-scifi.mp3"]
     @staticmethod
     def audioInitializer():
         """
@@ -48,5 +51,5 @@ class AudioManager(object):
             Nothing.
         """
         if(pg.mixer.music.get_busy() == False):
-            pg.mixer.music.load(os.path.join(AudioManager.SOUND_PATH, "Astrometrics_-_02_-_Fire_in_the_Mountains.mp3"))
+            pg.mixer.music.load(os.path.join(AudioManager.SOUND_PATH, random.choice(AudioManager.MUSIC_LIST)))
             pg.mixer.music.play(1)
