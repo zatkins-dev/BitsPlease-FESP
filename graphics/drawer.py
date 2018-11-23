@@ -112,12 +112,7 @@ class Drawer:
         if isOnScreen:
             # translate the sprite to be the same size as the component...
             verts = component.get_vertices()
-            Xs = list(map(lambda x: x[0], verts))
-            Ys = list(map(lambda y: y[1], verts))
-            minX = min(Xs)
-            maxX = max(Xs)
-            minY = min(Ys)
-            maxY = max(Ys)
+            minX, maxX, minY, maxY = cls.getXYMinMax(verts)
 
             # find the center of the geometry, and rotate it
             if component.body is not None:
@@ -140,6 +135,22 @@ class Drawer:
             drawY = int(pos[1] - center[1] - rotSprite.get_height()/2)
 
             screen.blit(rotSprite, (drawX, drawY))
+
+    @classmethod
+    def getXYMinMax(cls, vertices):
+        Xs = list(map(lambda x: x[0], vertices))
+        Ys = list(map(lambda y: y[1], vertices))
+        minX = min(Xs)
+        maxX = max(Xs)
+        minY = min(Ys)
+        maxY = max(Ys)
+
+        return (minX, maxX, minY, maxY)
+    
+    @classmethod
+    def scaleSpriteToVerts(cls, sprite, vertices):
+        minX, maxX, minY, maxY = cls.getXYMinMax(vertices)
+        return pg.transform.scale(sprite, (int(maxX - minX), int(maxY - minY)))
 
     @classmethod
     def drawBackground(cls, closestBody, altitude):
