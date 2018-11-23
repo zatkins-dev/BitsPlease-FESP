@@ -75,7 +75,7 @@ def displayMenu(space):
 
 def run(rocket=None):
     pg.mixer.init()
-    pg.mixer.music.load("sound/Sci-fiPulseLoop.wav")
+    pg.mixer.music.load(os.path.join(ASSETS_PATH, "sound/Sci-fiPulseLoop.wav"))
     celestialBodies = []
     screen = pg.display.get_surface()
     clock = pg.time.Clock()
@@ -143,7 +143,7 @@ def run(rocket=None):
                     Drawer.zoom.zoom_in()
         rocket.tick(TimeScale.scale)
         grav = updateGravity(space, rocket, celestialBodies)
-        space.step(TimeScale.step_size)
+
         pos = rocket.position
         vel = rocket.velocity
         (closestBody, altitude) = get_altitude(celestialBodies, rocket)
@@ -160,9 +160,10 @@ def run(rocket=None):
         if altitude < 12500:
             while TimeScale.scale > 2:
                 TimeScale.slower()
-        # if altitude < 5000:
-        #     Drawer.zoom.reset()
+        if altitude < vel.length*TimeScale.scale:
+            Drawer.zoom.reset()
 
+        space.step(TimeScale.step_size)
 
         offset = Drawer.getOffset(screen, rocket)
 
