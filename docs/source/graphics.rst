@@ -12,7 +12,6 @@ graphics.drawer module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
 
 graphics.explosion module
 -------------------------

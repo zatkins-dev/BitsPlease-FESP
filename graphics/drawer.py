@@ -9,12 +9,29 @@ from graphics.zoom import Zoom
 
 
 class Drawer:
+    """
+    Static class for drawing game components to pygame
+    """
+
+    #: Maximum zoom level, 8x normal zoom
     _maxZoom = 8
+
+    #: Minimum zoom level, (2^-16)x normal zoom
     _minZoom = 2**-16
+
+    #: :class:`Zoom` object for handling current zoom level
     zoom = Zoom()
 
     @classmethod
     def draw(cls, screen, toDraw, offset):
+        """
+        Draws an object to the screen
+
+        :param Surface screen: Pygame surface to draw to
+        :param toDraw: Object to draw
+        :param Vec2d offset: Offset bewteen pymunk and pygame coordinates
+        """
+
         if isinstance(toDraw, CelestialBody):
             Drawer.drawCelestialBody(screen, toDraw, offset)
         elif hasattr(toDraw, 'sprite') and toDraw.sprite is not None:
@@ -26,6 +43,9 @@ class Drawer:
 
     @classmethod
     def drawMultiple(cls, screen, list, offset):
+        """
+        """
+    
         for shape in list:
             Drawer.draw(screen, shape, offset)
 
