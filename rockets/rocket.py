@@ -1,7 +1,6 @@
 from pymunk import Body as Body
 import pygame as pg
-from rockets import Thruster, RCSThruster
-from rockets import SAS
+from rockets import Thruster, RCSThruster, SAS, CommandModule
 
 
 class Rocket(Body):
@@ -22,7 +21,7 @@ class Rocket(Body):
         Body.__init__(self)
         for c in components:
             c.body = self
-        self.components = components
+        self._components = components
         self.angular_velocity_limit = 400000
         self.destroyed=False
         self.throttle = 0
@@ -43,12 +42,24 @@ class Rocket(Body):
             self._throttle = 0
 
     @property
+    def components(self):
+        return self.thrusters + self.SASmodules + self.commandModules + self.RCSThrusters
+
+    @property
+    def commandModules(self):
+        return list(filter(lambda c: isinstance(c, CommandModule), self._components))
+
+    @property
     def thrusters(self):
-        return list(filter(lambda c: isinstance(c, Thruster) and not isinstance(c, RCSThruster), self.components))
+        return list(filter(lambda c: isinstance(c, Thruster) and not isinstance(c, RCSThruster), self._components))
+
+    @property
+    def RCSThrusters(self):
+        return list(filter(lambda c: isinstance(c, RCSThruster), self._components))
 
     @property
     def SASmodules(self):
-        return list(filter(lambda c: isinstance(c, SAS), self.components))
+        return list(filter(lambda c: isinstance(c, SAS), self._components))
 
     @property
     def isAngleLocked(self):
@@ -63,9 +74,6 @@ class Rocket(Body):
         else:
             self._isAngleLocked = False
 
-    @property
-    def RCSThrusters(self):
-        return list(filter(lambda c: isinstance(c, RCSThruster), self.components))
 
     def tick(self, timescale):
         # grab the keyboard state
@@ -118,12 +126,12 @@ class Rocket(Body):
 
         """
         c.body = self
-        self.components.append(c)
+        self._components.append(c)
 
     def removeComponent(self, c):
         for x in self.components:
             if x.get_vertices() == c.get_vertices() :
-                self.components.remove(x)
+                self._components.remove(x)
 
 
     def debugComponentPrint(self):
@@ -138,5 +146,4 @@ class Rocket(Body):
         self._throttle = 0
         self._isAngleLocked = 0
         for c in self.components:
-            print (c)
             c.reset()
