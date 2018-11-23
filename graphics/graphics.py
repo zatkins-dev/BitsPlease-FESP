@@ -258,7 +258,7 @@ class Graphics(object):
                 y = random.randrange(0, cls._starsHeight)
                 cls._stars.append([x, y, colorStar])
             cls._isBackgroundDrawn = True
-        for i in range(min(int(1000 / Drawer._zoom), 1000)):
+        for i in range(min(int(1000 / Drawer.zoom.zoom), 1000)):
             # decide the new star size (twinkling)
             temp = random.uniform(0, 1)
             width = 0
@@ -271,7 +271,7 @@ class Graphics(object):
             else:
                 width = 3
 
-            paralaxModifier = .05 * Drawer._zoom
+            paralaxModifier = .05 * Drawer.zoom.zoom
 
             starX = int(cls._stars[i][0] + paralaxModifier * pos[0]) % cls._starsWidth
             starY = int(cls._stars[i][1] - paralaxModifier * pos[1]) % cls._starsHeight

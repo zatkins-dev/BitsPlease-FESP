@@ -90,11 +90,9 @@ class RocketBuilder:
                                 cls.theRocket.removeComponent(component)
                                 break
                     if event.button == 4:
-                        if Drawer._zoom > Drawer._minZoom:
-                            Drawer._zoom /= 2
+                        Drawer.zoom.zoom_out()
                     elif event.button == 5:
-                        if Drawer._zoom < Drawer._maxZoom:
-                            Drawer._zoom *= 2
+                        Drawer.zoom.zoom_in()
                 if event.type == pg.MOUSEBUTTONUP :
                     if cls.activeComponent is not None:
                         cls.placeComponenet(cls.activeComponent)

@@ -88,10 +88,10 @@ class HUD():
 
         # draw the rocket onto the new subNavball
         # set the zoom level to 1, and then restore afterwards
-        preZoom = Drawer._zoom
-        Drawer._zoom = 1
+        preZoom = Drawer.zoom.zoom
+        Drawer.zoom.reset()
         Drawer.drawMultiple(subNavBall, rocket.components, Drawer.getOffset(subNavBall, rocket))
-        Drawer._zoom = preZoom
+        Drawer.zoom._set_zoom(preZoom)
 
         # for any place where the mask showed a transparency, we should set to be transparent again
         # this gives the look of a circular viewport
@@ -329,7 +329,7 @@ class HUD():
         velocityPos = (throttlePos[0]-velocity.get_width(), pg.display.get_surface().get_height()-velocity.get_height())
         pg.display.get_surface().blit(self._updateVelocity(rocket), velocityPos)
 
-        zoom = self._updateZoom(Drawer._zoom)
+        zoom = self._updateZoom(Drawer.zoom.zoom)
         zoomPos = (velocityPos[0], velocityPos[1]-zoom.get_height())
         pg.display.get_surface().blit(zoom, zoomPos)
 

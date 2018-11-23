@@ -39,16 +39,16 @@ class TrajectoryCalc():
         self._points = []
         self._points.append(position)
         dt = math.log(velocity.length+1.01)
-        if Drawer._zoom < 1:
-            dt = min(dt*-math.log2(Drawer._zoom), 10)
-        elif Drawer._zoom > 1:
-            dt = max(dt/math.log2(Drawer._zoom), 0.01)
+        if Drawer.zoom.zoom < 1:
+            dt = min(dt*-math.log2(Drawer.zoom.zoom), 10)
+        elif Drawer.zoom.zoom > 1:
+            dt = max(dt/math.log2(Drawer.zoom.zoom), 0.01)
         if dt == 0:
             return
         v_prev = velocity
         pos_prev = position
         curr_step = 0
-        while Drawer.inRange((x,y), Drawer._zoom*(pos_prev+offset)) and curr_step < timesteps and not self.hitsPlanet(pos_prev, planetBodies):
+        while Drawer.inRange((x,y), Drawer.zoom.zoom*(pos_prev+offset)) and curr_step < timesteps and not self.hitsPlanet(pos_prev, planetBodies):
             if len(self._points)>40 and (pos_prev-self._points[0]).length < 1000:
                 break
             v_prev = self.velocity(v_prev,dt,rocket.mass,phy.netGravity(planetBodies, pos_prev), 0)
@@ -56,7 +56,7 @@ class TrajectoryCalc():
             self._points.append(pos_prev)
             curr_step += 1
         
-        self._points = list(map(lambda x: (x+offset)*Drawer._zoom, self._points))
+        self._points = list(map(lambda x: (x+offset)*Drawer.zoom.zoom, self._points))
         self._points = list(map(lambda x: (x[0],y-x[1]), self._points))
 
         if len(self._points) > 1:
@@ -88,16 +88,16 @@ class TrajectoryCalc():
         self._yAccel.append(Ay)
         self._aDeg = Adeg
         self._time = time
-        if Drawer._zoom == 1:
+        if Drawer.zoom.zoom == 1:
             self._time = time
-        elif Drawer._zoom > 1:
-            self._time = math.ceil(time/math.log2(Drawer._zoom))
+        elif Drawer.zoom.zoom > 1:
+            self._time = math.ceil(time/math.log2(Drawer.zoom.zoom))
         else:
-            self._time = 2*math.ceil(time*-math.log2(Drawer._zoom))
+            self._time = 2*math.ceil(time*-math.log2(Drawer.zoom.zoom))
 
         for i in range(self._time):
             if(i == 0):
-                point = Vec2d(x + offset[0], y + offset[1])*Drawer._zoom
+                point = Vec2d(x + offset[0], y + offset[1])*Drawer.zoom.zoom
                 self._points.append(point)
                 continue
             #calculate x, y position for each i
@@ -109,7 +109,7 @@ class TrajectoryCalc():
             self._yVelocity.append(self._yVelocity[i-1] - self._yAccel[i-1] * self._dt)
             self._xPosition.append(self._xPosition[i-1] + self._xVelocity[i-1] * self._dt + .5 * self._xAccel[i-1] * self._dt**2)
             self._yPosition.append(self._yPosition[i-1] - self._yVelocity[i-1] * self._dt - .5 * self._yAccel[i-1] * self._dt**2)
-            self._points.append(Vec2d(self._xPosition[i] + offset[0], self._yPosition[i] + offset[1])*Drawer._zoom)
+            self._points.append(Vec2d(self._xPosition[i] + offset[0], self._yPosition[i] + offset[1])*Drawer.zoom.zoom)
             
         pg.draw.aalines(surface, (255,255,255), False, self._points)
         pg.draw.lines(surface, (255,255,255), False, list(map(Drawer.intVec2d, self._points)), 2)

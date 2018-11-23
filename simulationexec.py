@@ -138,12 +138,9 @@ def run(rocket=None):
             
             elif event.type == pg.MOUSEBUTTONDOWN and menu_enabled == False:
                 if event.button == 4:
-                    if Drawer._zoom > Drawer._minZoom:
-                        Drawer._zoom /= 2
+                    Drawer.zoom.zoom_out()
                 elif event.button == 5:
-                    if Drawer._zoom < Drawer._maxZoom:
-                        Drawer._zoom *= 2
-
+                    Drawer.zoom.zoom_in()
         rocket.tick(TimeScale.scale)
         grav = updateGravity(space, rocket, celestialBodies)
         space.step(TimeScale.step_size)
@@ -163,6 +160,9 @@ def run(rocket=None):
         if altitude < 12500:
             while TimeScale.scale > 2:
                 TimeScale.slower()
+        # if altitude < 5000:
+        #     Drawer.zoom.reset()
+
 
         offset = Drawer.getOffset(screen, rocket)
 
@@ -185,14 +185,14 @@ def run(rocket=None):
             returnCode = displayMenu(space)
             if returnCode is not None:
                 TimeScale.reset()
-                Drawer.reset_zoom()
+                Drawer.zoom.reset()
                 return returnCode
         pg.display.flip()
         clock.tick(60)
     
     Menu.demoPressed = False
     TimeScale.reset()
-    Drawer.reset_zoom()
+    Drawer.zoom.reset()
     displayMenu(space)
     while True:
         for event in pg.event.get():

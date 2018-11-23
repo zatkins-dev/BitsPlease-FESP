@@ -5,17 +5,13 @@ from physics import CelestialBody
 from graphics.explosion import Explosion
 import functools
 import math
+from graphics.zoom import Zoom
 
 
 class Drawer:
     _maxZoom = 8
     _minZoom = 2**-16
-
-    _zoom = float(1)
-
-    @classmethod
-    def reset_zoom(cls):
-        cls._zoom = 1
+    zoom = Zoom()
 
     @classmethod
     def draw(cls, screen, toDraw, offset):
@@ -39,7 +35,7 @@ class Drawer:
         max = Vec2d(screen.get_size())
         for v in shape.get_vertices():
             # Get pymunk global coordinates
-            newV = (v.rotated(shape.body.angle) + shape.body.position + offset)*cls._zoom
+            newV = (v.rotated(shape.body.angle) + shape.body.position + offset)*cls.zoom.zoom
             newVerts.append([cls.intVec2d(newV)[0],
                              max[1]-(cls.intVec2d(newV)[1])])
         isOnScreen = functools.reduce(lambda x, y: x or Drawer.inRange(max, y),
@@ -49,12 +45,12 @@ class Drawer:
 
     @classmethod
     def drawCircle(cls, screen, shape, offset):
-        r = shape.radius*cls._zoom
+        r = shape.radius*cls.zoom.zoom
         pos = cls.to_pygame(shape, Vec2d(0, 0), offset)
         max = Vec2d(screen.get_size())
 
         # find the center of the screen (1/2 screen diagonal)
-        center = cls.intVec2d(max/(2*cls._zoom))
+        center = cls.intVec2d(max/(2*cls.zoom.zoom))
 
         # check for farthest possible distance where we could see the planet:
         #       1/2 screen diagonal + r = distance from circle
@@ -69,13 +65,13 @@ class Drawer:
 
     @classmethod
     def drawCelestialBody(cls, screen, cb, offset):
-        pos = cls._zoom*(cb.body.position + offset)
+        pos = cls.zoom.zoom*(cb.body.position + offset)
         screenSize = Vec2d(screen.get_size())
-        screenCenter = cls.intVec2d(screenSize/(2*cls._zoom))
+        screenCenter = cls.intVec2d(screenSize/(2*cls.zoom.zoom))
         isOnScreen = pos.get_distance(screenCenter) \
-                     <= (cb.radius*cls._zoom + screenCenter.get_length())
+                     <= (cb.radius*cls.zoom.zoom + screenCenter.get_length())
         if isOnScreen:
-            if cls._zoom < 2.0**-4:
+            if cls.zoom.zoom < 2.0**-4:
                 cls.drawCircle(screen, cb.shape, offset)
                 return
 
@@ -97,8 +93,8 @@ class Drawer:
 
     @classmethod
     def drawExplosion(cls, screen, sprite, position, size, offset):
-        position = cls._zoom*(offset + position - cls.intVec2d((size[0]/2, size[1]/2)))
-        size = cls.intVec2d(Vec2d(size)*cls._zoom)
+        position = cls.zoom.zoom*(offset + position - cls.intVec2d((size[0]/2, size[1]/2)))
+        size = cls.intVec2d(Vec2d(size)*cls.zoom.zoom)
         explosionSprite = sprite.get_draw()
         if explosionSprite is None:
             return
@@ -125,40 +121,23 @@ class Drawer:
 
             # find the center of the geometry, and rotate it
             if component.body is not None:
-                center = cls._zoom*Vec2d((maxX+minX)/2, (maxY+minY)/2).rotated(component.body.angle)
+                center = cls.zoom.zoom*Vec2d((maxX+minX)/2, (maxY+minY)/2).rotated(component.body.angle)
             else:
-                center = cls._zoom*Vec2d((maxX+minX)/2, (maxY+minY)/2)
+                center = cls.zoom.zoom*Vec2d((maxX+minX)/2, (maxY+minY)/2)
             # finds the bounding box for the geometry, and transforms the
             # sprite to fit within the geometry
             scaledSprite = pg.transform.scale(component.sprite,
                                               (int(maxX-minX), int(maxY-minY)))
-            # removed for better looking alternative
-            # if component.destroyed:
-            #     if cls.explode is None:
-            #         cls.explode = Explosion()
-            #     scaledSprite = pg.transform.smoothscale(cls.explode.image, (int(maxX-minX), int(maxY-minY)))
-            #     rotSprite = pg.transform.rotozoom(scaledSprite, math.degrees(component.body.angle), cls._zoom)
-            #     drawX = int(pos[0] + center[0] - rotSprite.get_width()/2)
-            #     drawY = int(pos[1] - center[1] - rotSprite.get_height()/2)
-            #     screen.blit(rotSprite, (drawX,drawY))
-            #     cls.explode.update_frame()
-            #     return
-            # now rotate the sprited
+
             if component.body is not None:
-                rotSprite = pg.transform.rotozoom(scaledSprite, math.degrees(component.body.angle), cls._zoom)
+                rotSprite = pg.transform.rotozoom(scaledSprite, math.degrees(component.body.angle), cls.zoom.zoom)
             else:
-                rotSprite = pg.transform.rotozoom(scaledSprite, 0, cls._zoom)
+                rotSprite = pg.transform.rotozoom(scaledSprite, 0, cls.zoom.zoom)
 
             # the position we draw the sprite at will be the
             # position of the rocket,
             drawX = int(pos[0] + center[0] - rotSprite.get_width()/2)
             drawY = int(pos[1] - center[1] - rotSprite.get_height()/2)
-
-            # zWidth = int(rotSprite.get_width()*cls._zoom)
-            # zHeight = int(rotSprite.get_height()*cls._zoom)
-            #
-            # cls._zoomedSprite = pg.transform.smoothscale(rotSprite,
-            #                                         (zWidth, zHeight))
 
             screen.blit(rotSprite, (drawX, drawY))
 
@@ -189,14 +168,14 @@ class Drawer:
     @classmethod
     def getOffset(cls, screen, rocket):
         position = rocket.position
-        centerOfScreen = cls.intVec2d(Vec2d(screen.get_size())/(2*cls._zoom))
+        centerOfScreen = cls.intVec2d(Vec2d(screen.get_size())/(2*cls.zoom.zoom))
         return cls.intVec2d(centerOfScreen - position)
 
     @classmethod
     def to_pygame(cls, shape, coords, offset):
         if shape is None:
-            return cls.intVec2d(cls._zoom*Vec2d(coords + offset))
-        result = cls._zoom*Vec2d(coords.rotated(shape.body.angle)
+            return cls.intVec2d(cls.zoom.zoom*Vec2d(coords + offset))
+        result = cls.zoom.zoom*Vec2d(coords.rotated(shape.body.angle)
                                             + shape.body.position
                                             + offset)
         return cls.intVec2d(result)
