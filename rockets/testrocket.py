@@ -1,6 +1,6 @@
 import pygame as pg
 import pymunk as pm
-from rockets import *
+from rockets import Rocket, UpGoer2000, LeftRCS, RightRCS, CommandModule, AdvancedSAS
 
 import os
 import sys
@@ -57,8 +57,7 @@ def genRocket(space):
         Rocket: Generated prototype rocket.
 
     """
-    rocket = Rocket()
-    rocket.components = [genTank(rocket), genSAS(rocket), genOrbiter(rocket), LeftRCS(rocket), RightRCS(rocket)]
+    rocket = Rocket([genTank(None), genSAS(None), genOrbiter(None), LeftRCS(None), RightRCS(None)])
     space.add(rocket)
     for c in rocket.components:
         space.add(c)
