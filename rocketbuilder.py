@@ -144,8 +144,8 @@ class RocketBuilder:
         for component in cls.componentList:
             pos = ((i % numCols) * buttonSize + buttonMargin, int(i / numCols) * buttonSize + cls._bottomOfTabs + buttonMargin)
             size = (buttonSize - buttonMargin, buttonSize - buttonMargin)
-
-            Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, component._sprite, .8, lambda: cls.componentButtonClicked(component))
+            
+            Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, Drawer.scaleSpriteToVerts(component._sprite, component.getInfo()["vertices"]), .8, lambda: cls.componentButtonClicked(component))
 
             i += 1
 
@@ -296,7 +296,6 @@ class RocketBuilder:
             if cls._symmetry:
                 symTransform = cls.mousePosToPymunkTransform(component, True)
                 cls.theRocket.addComponent(component(body=None, transform=symTransform))
-                print("hello!")
 
             return True
         else:
