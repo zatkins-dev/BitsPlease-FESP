@@ -168,7 +168,7 @@ def run(rocket=None):
 
         updateCamera(screen, offset)
         Drawer.drawBackground(closestBody, altitude)
-        Trajectory.draw(screen, pos, vel, 1000, 1, celestialBodies, rocket, offset)
+        Trajectory.draw(rocket, celestialBodies, 1000, 1)
         Drawer.drawMultiple(screen, space.shapes, offset)
         Drawer.drawMultiple(screen, celestialBodies, offset)
         hud.updateHUD(rocket)
