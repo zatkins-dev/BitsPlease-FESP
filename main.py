@@ -1,4 +1,8 @@
 import pygame
+
+pygame.init()
+disp = pygame.display.set_mode((854, 480), pygame.RESIZABLE)
+
 import sys
 import os
 from enum import Enum
@@ -16,7 +20,6 @@ def main():
     State = menu.State
 
     currentState = State.Splash
-    disp = pygame.display.set_mode((854, 480), pygame.RESIZABLE)
 
     while currentState != State.Exit:
         clock.tick(60)

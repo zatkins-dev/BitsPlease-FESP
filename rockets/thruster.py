@@ -4,6 +4,7 @@ from pymunk import Body as Body
 import pygame as pg
 import os
 from abc import ABC, abstractmethod
+from . import _ASSETS_PATH
 
 
 class Thruster(Component):
@@ -172,7 +173,7 @@ class RCSThruster(Thruster):
 
 class LeftRCS(RCSThruster):
 
-    _sprite = pg.image.load(os.path.join("assets", "sprites", "RCSLeft.png"))
+    _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "RCSLeft.png")).convert_alpha()
 
     def __init(self, body, transform=None, radius=0):
         Thruster.__init__(self, body, transform=transform, radius=radius)
@@ -190,7 +191,7 @@ class LeftRCS(RCSThruster):
 
 class RightRCS(RCSThruster):
 
-    _sprite = pg.image.load(os.path.join("assets", "sprites", "RCSRight.png"))
+    _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "RCSRight.png")).convert_alpha()
 
     def __init(self, body, transform=None, radius=0):
         Thruster.__init__(self, body, transform=transform, radius=radius)
@@ -208,7 +209,7 @@ class RightRCS(RCSThruster):
 
 class UpGoer2000(Thruster):
     
-    _sprite = pg.image.load(os.path.join("assets", "sprites", "UpGoer2000.png"))
+    _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "UpGoer2000.png")).convert_alpha()
    
     def __init__(self, body, transform=None, radius=0):
        Thruster.__init__(self, body, self.vertices, transform=transform, radius=radius)
@@ -226,7 +227,9 @@ class UpGoer2000(Thruster):
                 
 class DeltaVee(Thruster):
     
-    _sprite = pg.image.load(os.path.join("assets", "sprites", "DeltaVee.png"))
+
+
+    _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "UpGoer2000.png")).convert_alpha()
     
     def __init__(self, body, transform=None, radius=0):
        Thruster.__init__(self, body, self.vertices, transform=transform, radius=radius)
