@@ -228,6 +228,8 @@ class LeftRCS(RCSThruster):
     +----------------+--------------------------------------------------------------------------------------------------------------+
     """
 
+    #: Holds the thruster sprite to prevent repeated loading. Sprite is 
+    #: `RCSLeft.png <https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSLeft.png>`_
     _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "RCSLeft.png")).convert_alpha()
 
     @classmethod
@@ -266,6 +268,8 @@ class RightRCS(RCSThruster):
     +----------------+----------------------------------------------------------------------------------------------------------------+
     """
 
+    #: Holds the thruster sprite to prevent repeated loading. Sprite is 
+    #: `RCSRight.png <https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSRight.png>`_
     _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "RCSRight.png")).convert_alpha()
 
     @classmethod
@@ -304,6 +308,8 @@ class UpGoer2000(Thruster):
     +----------------+--------------------------------------------------------------------------------------------------------------------+
     """
     
+    #: Holds the thruster sprite to prevent repeated loading. Sprite is 
+    #: `UpGoer2000.png <https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/UpGoer2000.png>`_
     _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "UpGoer2000.png")).convert_alpha()
 
     @classmethod
