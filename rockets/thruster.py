@@ -110,7 +110,7 @@ class Thruster(Component):
         |     sprite     | advised this be stored as a class variable, and |
         |                | returned by this method to improve performance. |
         +----------------+-------------------------------------------------+
-        |     maxFuel    |                    (*float*)                    |
+        |     maxFuel    |             (*float*) Should always be 0        |
         +----------------+-------------------------------------------------+
         |     density    |                    (*float*)                    |
         +----------------+-------------------------------------------------+
@@ -171,7 +171,7 @@ class RCSThruster(Thruster):
     def getInfo(cls):
         """
         This method is what will define the properties of a specific RCSThruster subclass.
-        It is identical to the Thruster getInfo, but does not need a "maxFuel" member.
+        It is identical to the Thruster getInfo, but the maxFuel member is always 0.
 
         +----------------+-------------------------------------------------+
         | Dictionary Key |              Dictionary Value Type              |
@@ -185,6 +185,8 @@ class RCSThruster(Thruster):
         |                | (:py:class:`pygame.surface.Surface`) It is      |
         |     sprite     | advised this be stored as a class variable, and |
         |                | returned by this method to improve performance. |
+        +----------------+-------------------------------------------------+
+        |     maxFuel    |          (*float*) Should always be 0           |
         +----------------+-------------------------------------------------+
         |     density    |                    (*float*)                    |
         +----------------+-------------------------------------------------+
@@ -200,6 +202,26 @@ class LeftRCS(RCSThruster):
 
     @classmethod
     def getInfo(cls):
+        """
+        LeftRCS Thrusters will all share these properties:
+
+        +----------------+--------------------------------------------------------------------------------------------------------------+
+        | Dictionary Key |              Dictionary Value Type                                                                           |
+        +================+==============================================================================================================+
+        |    vertices    |   (*List of* :py:class:`pymunk.vec2d.Vec2d`)                                                                 |
+        |                |      [(0, 37), (5, 37), (5, 42), (0, 42)]                                                                    |        
+        +----------------+--------------------------------------------------------------------------------------------------------------+
+        |   thrustForce  |                (*float*) 5000.0                                                                              |
+        +----------------+--------------------------------------------------------------------------------------------------------------+
+        |  thrustVector  |    (:py:class:`pymunk.vec2d.Vec2d`) (-1, 0)                                                                  |
+        +----------------+--------------------------------------------------------------------------------------------------------------+
+        |     sprite     | (:py:class:`pygame.surface.Surface`)                                                                         |
+        |                | `RCSLeft.png <https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSLeft.png>`_ |
+        +----------------+--------------------------------------------------------------------------------------------------------------+
+        |     density    |                 (*float*) 45.0                                                                               |
+        +----------------+--------------------------------------------------------------------------------------------------------------+
+        """
+
         return {
             "vertices":     [(0, 37), (5, 37), (5, 42), (0, 42)],
             "thrustForce":  5000,
@@ -218,6 +240,25 @@ class RightRCS(RCSThruster):
 
     @classmethod
     def getInfo(cls):
+        """
+        RightRCS Thrusters will all share these properties:
+
+        +----------------+----------------------------------------------------------------------------------------------------------------+
+        | Dictionary Key |              Dictionary Value Type                                                                             |
+        +================+================================================================================================================+
+        |    vertices    |   (*List of* :py:class:`pymunk.vec2d.Vec2d`)                                                                   |
+        |                |     [(0, 37), (-5, 37), (-5, 42), (0, 42)]                                                                     |        
+        +----------------+----------------------------------------------------------------------------------------------------------------+
+        |   thrustForce  |                (*float*) 5000.0                                                                                |
+        +----------------+----------------------------------------------------------------------------------------------------------------+
+        |  thrustVector  |    (:py:class:`pymunk.vec2d.Vec2d`) (1, 0)                                                                     |
+        +----------------+----------------------------------------------------------------------------------------------------------------+
+        |     sprite     | (:py:class:`pygame.surface.Surface`)                                                                           |
+        |                | `RCSRight.png <https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSRight.png>`_ |
+        +----------------+----------------------------------------------------------------------------------------------------------------+
+        |     density    |                 (*float*) 45.0                                                                                 |
+        +----------------+----------------------------------------------------------------------------------------------------------------+
+        """
         return {
             "vertices":     [(0, 37), (-5, 37), (-5, 42), (0, 42)],
             "thrustForce":  5000,
