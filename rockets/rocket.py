@@ -51,6 +51,10 @@ class Rocket(Body):
         return list(filter(lambda c: isinstance(c, SAS), self.components))
 
     @property
+    def Tanks(self):
+        return list(filter(lambda c: isinstance(c, Tank), self.components))
+
+    @property
     def isAngleLocked(self):
         return self._isAngleLocked
 
@@ -124,7 +128,20 @@ class Rocket(Body):
         for x in self.components:
             if x.get_vertices() == c.get_vertices() :
                 self.components.remove(x)
+    
+    def decreaseFuel(self, amnt):
+        if self.getTotalFuel() > 0:
+            for x in self.Tanks :
+                if x.fuel(x.fuel - amnt):
+                    return True
+        return False
+        
 
+    def getTotalFuel(self):
+        totalFuel = 0
+        for x in self.Tanks :
+            totalFuel = totalFuel + x.fuel
+        return totalFuel
 
     def debugComponentPrint(self):
         for x in self.components :

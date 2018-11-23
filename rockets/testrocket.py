@@ -47,6 +47,10 @@ def genSAS(b):
     sas = AdvancedSAS(b)
     return sas
 
+def genFuelTank(b):
+    tank = TestTank(b)
+    return tank
+
 def genRocket(space):
     """Generate prototype rocket with orbiter, thruster, and SAS.
 
@@ -58,7 +62,7 @@ def genRocket(space):
 
     """
     rocket = Rocket()
-    rocket.components = [genTank(rocket), genSAS(rocket), genOrbiter(rocket), LeftRCS(rocket), RightRCS(rocket)]
+    rocket.components = [genFuelTank(rocket), genTank(rocket), genSAS(rocket), genOrbiter(rocket), LeftRCS(rocket), RightRCS(rocket)]
     space.add(rocket)
     for c in rocket.components:
         space.add(c)

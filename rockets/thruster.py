@@ -1,5 +1,6 @@
 from pymunk.vec2d import Vec2d
-from rockets import Component
+
+from rockets import *
 from pymunk import Body as Body
 import pygame as pg
 import os
@@ -103,6 +104,12 @@ class Thruster(Component):
         if self.fuel > 0 and 0 < throttle <= 1:
             self.body.apply_impulse_at_local_point(throttle * self.thrust() * timescale, (self.center_of_gravity.x, self.center_of_gravity.y))
             self.fuel -= 1 * throttle * timescale
+    
+    def applyThrustGlobalFuel(self, throttle, timescale): #for thrusters that get fuel from the rocket's fuel supply
+        if self.body.getTotalFuel() > 0 and 0 < throttle <= 1:
+            self.body.apply_impulse_at_local_point(throttle * self.thrust() * timescale, (self.center_of_gravity.x, self.center_of_gravity.y))
+            self.body.decreaseFuel(1 * throttle * timescale)
+
 
     def reset(self):
         super().reset()

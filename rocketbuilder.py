@@ -13,6 +13,7 @@ from rockets import Component
 from rockets import Thruster, RCSThruster
 from rockets import SAS
 from rockets import Rocket
+from rockets import Tank
 from rockets import CommandModule
 
 from graphics import Drawer
@@ -29,7 +30,7 @@ class RocketBuilder:
     space = pm.Space(threaded=True)
     space.threads = 2
 
-    componentTabs = Enum("State", "Thruster Control")
+    componentTabs = Enum("State", "Thruster Control Tanks")
     componentList = []
     selectedTab = componentTabs.Thruster
     
@@ -132,7 +133,9 @@ class RocketBuilder:
             RCSList = RCSThruster.__subclasses__()
             cls.componentList = thrusterList + RCSList
         elif selectedTab == cls.componentTabs.Control:
-            cls.componentList = SAS.__subclasses__()              
+            cls.componentList = SAS.__subclasses__()  
+        elif selectedTab == cls.componentTabs.Tanks:
+            cls.componentList = Tank.__subclasses__()
 
         # find the number columns that can fit in the surface
         numCols = int((cls.componentSurface.get_width() + buttonMargin) / (buttonSize + buttonMargin))

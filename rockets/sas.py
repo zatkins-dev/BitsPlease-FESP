@@ -32,7 +32,7 @@ class SAS(Component):
     _tolerance = None
     _maxFuel = None
 
-    def __init__(self, body, transform=None, radius=0):
+    def __init__(self,  body, transform=None, radius=0):
         Component.__init__(self, body, self.vertices, transform, radius)
         self._SASangle = 0
         self._isLocked = False
