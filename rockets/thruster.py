@@ -335,7 +335,7 @@ class DeltaVee(Thruster):
     @classmethod
     def getInfo(cls):
         """
-        UpGoer2000 Thrusters will all share these properties:
+        DeltaVee Thrusters will all share these properties:
 
         +----------------+----------------------------------------------------------------------------------------------------------------+
         | Dictionary Key |              Dictionary Value Type                                                                             |
