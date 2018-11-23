@@ -27,9 +27,11 @@ class Drawer:
         """
         Draws an object to the screen
 
-        :param Surface screen: Pygame surface to draw to
+        :param screen: Pygame surface to draw to
+        :type screen: :py:class:`pygame.Surface`
         :param toDraw: Object to draw
-        :param Vec2d offset: Offset bewteen pymunk and pygame coordinates
+        :param offset: Offset bewteen pymunk and pygame coordinates
+        :type offset: :py:class:`pymunk.vec2d.Vec2d`
         """
 
         if isinstance(toDraw, CelestialBody):
@@ -44,6 +46,13 @@ class Drawer:
     @classmethod
     def drawMultiple(cls, screen, list, offset):
         """
+        Calls :py:meth:`.draw` on a list of drawable objects
+
+        :param screen: Pygame surface to draw to
+        :type screen: :py:class:`pygame.Surface`
+        :param toDraw: list of drawable objects
+        :param offset: Offset bewteen pymunk and pygame coordinates
+        :type offset: :py:class:`pymunk.vec2d.Vec2d`
         """
     
         for shape in list:
@@ -51,6 +60,17 @@ class Drawer:
 
     @classmethod
     def drawPoly(cls, screen, shape, offset):
+        """
+        Draws a :py:class:`pymunk.Poly` object
+
+        :param screen: Pygame surface to draw to
+        :type screen: :py:class:`pygame.Surface`
+        :param shape: `Poly` object to draw
+        :type shape: :py:class:`pymunk.Poly`
+        :param offset: Offset bewteen pymunk and pygame coordinates
+        :type offset: :py:class:`pymunk.vec2d.Vec2d`
+        """
+
         newVerts = []
         max = Vec2d(screen.get_size())
         for v in shape.get_vertices():
@@ -65,6 +85,16 @@ class Drawer:
 
     @classmethod
     def drawCircle(cls, screen, shape, offset):
+        """
+        Draws a :py:class:`pymunk.Circle` object
+
+        :param screen: Pygame surface to draw to
+        :type screen: :py:class:`pygame.Surface`
+        :param shape: `Circle` object to draw
+        :type shape: :py:class:`pymunk.Circle`
+        :param offset: Offset bewteen pymunk and pygame coordinates
+        :type offset: :py:class:`pymunk.vec2d.Vec2d`
+        """
         r = shape.radius*cls.zoom.zoom
         pos = cls.to_pygame(shape, Vec2d(0, 0), offset)
         max = Vec2d(screen.get_size())
@@ -85,6 +115,16 @@ class Drawer:
 
     @classmethod
     def drawCelestialBody(cls, screen, cb, offset):
+        """
+        Draws a :py:class:`...physics.CelestialBody` object
+
+        :param screen: Pygame surface to draw to
+        :type screen: :py:class:`pygame.Surface`
+        :param cb: `CelestialBody` object to draw
+        :type cb: :py:class:`..physics.CelestialBody`
+        :param offset: Offset bewteen pymunk and pygame coordinates
+        :type offset: :py:class:`pymunk.vec2d.Vec2d`
+        """
         pos = cls.zoom.zoom*(cb.body.position + offset)
         screenSize = Vec2d(screen.get_size())
         screenCenter = cls.intVec2d(screenSize/(2*cls.zoom.zoom))
@@ -113,6 +153,18 @@ class Drawer:
 
     @classmethod
     def drawExplosion(cls, screen, sprite, position, size, offset):
+        """
+        Draws a :py:class:`..Explosion` object
+
+        :param screen: Pygame surface to draw to
+        :type screen: :py:class:`pygame.Surface`
+        :param sprite: Explosion object to draw
+        :type sprite: :py:class:`..Explosion`
+        :param (int,int) position: Position in pymunk coordinates to draw the explosion
+        :param (int,int) size: Size of explosion
+        :param offset: Offset bewteen pymunk and pygame coordinates
+        :type offset: :py:class:`pymunk.vec2d.Vec2d`
+        """
         position = cls.zoom.zoom*(offset + position - cls.intVec2d((size[0]/2, size[1]/2)))
         size = cls.intVec2d(Vec2d(size)*cls.zoom.zoom)
         explosionSprite = sprite.get_draw()
@@ -124,6 +176,16 @@ class Drawer:
 
     @classmethod
     def drawSprite(cls, screen, component, offset):
+        """
+        Draws a :py:class:`...rockets.component` object
+
+        :param screen: Pygame surface to draw to
+        :type screen: :py:class:`pygame.Surface`
+        :param shape: `Component` object to draw
+        :type shape: :py:class:`...rockets.Component`
+        :param offset: Offset bewteen pymunk and pygame coordinates
+        :type offset: :py:class:`pymunk.vec2d.Vec2d` 
+        """
         pos = cls.to_pygame(component, Vec2d(0, 0), offset)
         screenSize = Vec2d(screen.get_size())
 
@@ -158,6 +220,13 @@ class Drawer:
 
     @classmethod
     def getXYMinMax(cls, vertices):
+        """
+        Helper function to get size for scaled sprite for :py:meth:`.drawSprite`
+
+        :param [(float,float)] vertices: List of component vertices
+        :returns: Tuple of (minX, maxX, minY, maxY)
+        :rtype: (int, int, int, int)
+        """
         Xs = list(map(lambda x: x[0], vertices))
         Ys = list(map(lambda y: y[1], vertices))
         minX = min(Xs)
@@ -169,11 +238,28 @@ class Drawer:
     
     @classmethod
     def scaleSpriteToVerts(cls, sprite, vertices):
+        """
+        Helper function to scaled sprite for :py:meth:`.drawSprite`
+
+        :param sprite: Sprite image to draw
+        :type sprite: :py:class:`pygame.Surface` 
+        :param [(float,float)] vertices: List of component vertices
+        :returns: Scaled sprite image
+        :rtype: :py:class:`pygame.Surface`
+        """
         minX, maxX, minY, maxY = cls.getXYMinMax(vertices)
         return pg.transform.scale(sprite, (int(maxX - minX), int(maxY - minY)))
 
     @classmethod
     def drawBackground(cls, closestBody, altitude):
+        """
+        Draws the planetary atmosphere of the closest body to the rocket based on altitude.
+
+        :param closestBody: :py:class:`CelestialBody` closest to the rocket
+        :type closestBody: :py:class:`...physics.CelestialBody`
+        :param float altitude: Height of the rocket above `closestBody`
+        """
+
         atmColor = closestBody.atmosphereColor
 
         if atmColor is not None and altitude < closestBody.atmosphereHeight:
@@ -198,12 +284,36 @@ class Drawer:
 
     @classmethod
     def getOffset(cls, screen, rocket):
+        """
+        Calculates the offset between pymunk and pygame coordinates such that the rocket is rendered in the center of the screen.
+
+        :param screen: Current display surface
+        :type screen: :py:class:`pygame.Surface` 
+        :param rocket: Rocket to place in the center of the screen
+        :type rocket: :py:class:`...rockets.Rocket`
+        :returns: Offset to add to pymunk coordinates
+        :rtype: :py:class:`pymunk.vec2d.Vec2d`
+        """
+
         position = rocket.position
         centerOfScreen = cls.intVec2d(Vec2d(screen.get_size())/(2*cls.zoom.zoom))
         return cls.intVec2d(centerOfScreen - position)
 
     @classmethod
     def to_pygame(cls, shape, coords, offset):
+        """
+        Convert local pymunk shape coordinates to pygame if shape is not :py:type:`None`, else convert global pymunk coordinates to pygame.
+
+        :param shape: Shape local coordinates are in reference to
+        :type shape: :py:class:`pymunk.Shape`
+        :param coords: Coordinates to convert
+        :type coords: :py:class:`pymunk.vec2d.Vec2d`
+        :param offset: Offset bewteen pymunk and pygame coordinates
+        :type offset: :py:class:`pymunk.vec2d.Vec2d`
+        :returns: Coordinates converted to pygame
+        :rtype: :py:class:`pymunk.vec2d.Vec2d`
+        """
+
         if shape is None:
             return cls.intVec2d(cls.zoom.zoom*Vec2d(coords + offset))
         result = cls.zoom.zoom*Vec2d(coords.rotated(shape.body.angle)
@@ -213,8 +323,30 @@ class Drawer:
 
     @classmethod
     def intVec2d(cls, v, func=int):
+        """
+        Helper function that applies function to each element of `v`. Default function is :py:func:`int`.
+
+        :param v: `Vec2d` to apply function to
+        :type v: :py:class:`pymunk.vec2d.Vec2d`
+        :param func: Function to apply to elements of `v`
+        :type func: :py:class:`types.FunctionType`
+        :returns: Vector `v` after function application
+        :rtype: :py:class:`pymunk.vec2d.Vec2d`
+        """
+
         return Vec2d(func(v[0]), func(v[1]))
 
     @classmethod
     def inRange(cls, max, coords):
+        """
+        Helper function that checks if coordinates are between (0,0) and `max`.
+
+        :param max: `Vec2d` of maximum coordinates
+        :type v: :py:class:`pymunk.vec2d.Vec2d`
+        :param max: `Vec2d` of coordinates to check
+        :type v: :py:class:`pymunk.vec2d.Vec2d`
+        :returns: `True` if `coords` is in range, `False` otherwise.
+        :rtype: bool
+        """
+
         return (0 <= coords[0] <= max[0]) and (0 <= coords[1] <= max[1])

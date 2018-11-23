@@ -21,7 +21,6 @@ graphics.explosion module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
 
 graphics.graphics module
 ------------------------
@@ -31,7 +30,6 @@ graphics.graphics module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
 
 graphics.hud module
 -------------------
@@ -41,7 +39,6 @@ graphics.hud module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
 
 graphics.menu module
 --------------------
@@ -51,7 +48,6 @@ graphics.menu module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
 
 graphics.trajectory module
 --------------------------
@@ -61,7 +57,6 @@ graphics.trajectory module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
 
 graphics.zoom module
 --------------------
@@ -71,7 +66,6 @@ graphics.zoom module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
 
 
 Module contents
@@ -82,4 +76,3 @@ Module contents
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
