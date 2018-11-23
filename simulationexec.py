@@ -99,12 +99,12 @@ def run(rocket=None):
         space.add(rocket)
         for component in rocket.components:
             space.add(component)
-    rocket.debugComponentPrint()
+            
     space.damping = 1
 
     x, y = (0, earth.posy + earth.radius)
     rocket.position = int(x), int(y)
-    print (rocket.position)
+    
     pg.mixer.music.play(-1)
 
     # Add collision handler
