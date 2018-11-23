@@ -226,7 +226,7 @@ class UpGoer2000(Thruster):
                 
 class DeltaVee(Thruster):
     
-    _sprite = pg.image.load(os.path.join("assets", "sprites", "UpGoer2000.png"))
+    _sprite = pg.image.load(os.path.join("assets", "sprites", "DeltaVee.png"))
     
     def __init__(self, body, transform=None, radius=0):
        Thruster.__init__(self, body, self.vertices, transform=transform, radius=radius)
