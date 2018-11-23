@@ -40,6 +40,13 @@ def updateCamera(screen, center):
     screen.fill((0, 0, 0))
     graph.drawStars(screen, center)
 
+
+def get_altitude(celestialBodies, rocket):
+    closestBody = min(celestialBodies, key=lambda x: (x.body.position - rocket.position).get_length())
+    altitude = (closestBody.body.position - rocket.position).get_length() - closestBody.radius
+    return (closestBody, altitude)
+
+
 def clear(space):
     for s in space.shapes:
         space.remove(s)
@@ -122,8 +129,7 @@ def run(rocket=None):
             elif keyDown(event, pg.K_MINUS):
                 TimeScale.slower()
             elif keyDown(event, pg.K_EQUALS):
-                if TimeScale.scale < 8 or rocket.velocity.length > 1000:
-                    TimeScale.faster()
+                TimeScale.faster()
             elif event.type == pg.KEYDOWN:
                 rocket.handleEvent(event)
             
@@ -143,21 +149,25 @@ def run(rocket=None):
         space.step(TimeScale.step_size)
         pos = rocket.position
         vel = rocket.velocity
+        (closestBody, altitude) = get_altitude(celestialBodies, rocket)
 
-        if rocket.velocity.length < 1000:
-            while TimeScale.scale > 8:
+        if altitude < 500000:
+            while TimeScale.scale > 256:
+                TimeScale.slower()
+        if altitude < 50000:
+            while TimeScale.scale > 32:
+                TimeScale.slower()
+        if altitude < 25000:
+            while TimeScale.scale > 4:
+                TimeScale.slower()
+        if altitude < 12500:
+            while TimeScale.scale > 2:
                 TimeScale.slower()
 
         offset = Drawer.getOffset(screen, rocket)
 
         updateCamera(screen, offset)
-        # activeComponents = list(filter(lambda c: not c.destroyed, rocket.components))
-        # destroyedComponents = list(filter(lambda c: c.destroyed, rocket.components))
-        # for c in destroyedComponents:
-        #     if c.sprite is not None:
-        #         Drawer.drawExplosion(screen, c.cache_bb().center(), c.sprite.get_size(), Drawer.getOffset(screen, rocket))
-        # updateTrajectory2(self, surface, position, velocity, timesteps, dt, planetBodies, rocket, offset)
-        Drawer.drawBackground(celestialBodies, rocket)
+        Drawer.drawBackground(closestBody, altitude)
         traj.updateTrajectory2(screen, pos, vel, 1000, 1, celestialBodies, rocket, offset)
         Drawer.drawMultiple(screen, space.shapes, offset)
         Drawer.drawMultiple(screen, celestialBodies, offset)
@@ -170,11 +180,7 @@ def run(rocket=None):
             rocket_explosion = Explosion(remaining_fuel//10, explosion_images)
             rocket.velocity = grav
             crashed = True
-            # while rocket_explosion.duration>0:
-            #     print(rocket_explosion.duration)
-            #     Drawer.drawExplosion(screen, rocket_explosion, rocket.position + 20*Vec2d(0,1).rotated(rocket.angle), (150,150), Drawer.getOffset(screen, rocket))
-            #     pg.display.flip()
-            #     clock.tick(60)
+            
         if menu_enabled:
             returnCode = displayMenu(space)
             if returnCode is not None:
