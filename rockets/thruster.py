@@ -230,9 +230,6 @@ class LeftRCS(RCSThruster):
 
     _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "RCSLeft.png")).convert_alpha()
 
-    def __init(self, body, transform=None, radius=0):
-        Thruster.__init__(self, body, transform, radius)
-
     @classmethod
     def getInfo(cls):
         """
@@ -271,9 +268,6 @@ class RightRCS(RCSThruster):
 
     _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "RCSRight.png")).convert_alpha()
 
-    def __init(self, body, transform=None, radius=0):
-        Thruster.__init__(self, body, transform, radius)
-
     @classmethod
     def getInfo(cls):
         """
@@ -311,9 +305,6 @@ class UpGoer2000(Thruster):
     """
     
     _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "UpGoer2000.png")).convert_alpha()
-   
-    def __init__(self, body, transform=None, radius=0):
-       Thruster.__init__(self, body, transform,radius)
 
     @classmethod
     def getInfo(cls):
@@ -354,9 +345,6 @@ class DeltaVee(Thruster):
     #: Holds the thruster sprite to prevent repeated loading. Sprite is 
     #: `DeltaVee.png <https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/DeltaVee.png>`_
     _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "DeltaVee.png")).convert_alpha()
-    
-    def __init__(self, body, transform=None, radius=0):
-       Thruster.__init__(self, body, transform, radius)
 
     @classmethod
     def getInfo(cls):
