@@ -205,7 +205,7 @@ class RightRCS(RCSThruster):
 
 class UpGoer2000(Thruster):
     
-    _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "UpGoer2000.png")).convert()
+    _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "UpGoer2000.png")).convert_alpha()
    
     def __init__(self, body, transform=None, radius=0):
        Thruster.__init__(self, body, transform,radius)
@@ -223,7 +223,7 @@ class UpGoer2000(Thruster):
                 
 class DeltaVee(Thruster):
     
-    _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "DeltaVee.png")).convert()
+    _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "DeltaVee.png")).convert_alpha()
     
     def __init__(self, body, transform=None, radius=0):
        Thruster.__init__(self, body, transform, radius)
