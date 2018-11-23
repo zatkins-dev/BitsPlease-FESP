@@ -302,7 +302,7 @@ class Drawer:
     @classmethod
     def to_pygame(cls, shape, coords, offset):
         """
-        Convert local pymunk shape coordinates to pygame if shape is not :py:type:`None`, else convert global pymunk coordinates to pygame.
+        Convert local pymunk shape coordinates to pygame if shape is not `None`, else convert global pymunk coordinates to pygame.
 
         :param shape: Shape local coordinates are in reference to
         :type shape: :py:class:`pymunk.Shape`
