@@ -12,7 +12,7 @@ physics.celestialbody module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
+    
 
 physics.collision module
 ------------------------
@@ -22,7 +22,7 @@ physics.collision module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
+    
 
 physics.physics module
 ----------------------
@@ -32,7 +32,7 @@ physics.physics module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
+    
 
 physics.timescale module
 ------------------------
@@ -42,7 +42,7 @@ physics.timescale module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
+    
 
 
 Module contents
@@ -53,4 +53,4 @@ Module contents
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
+    

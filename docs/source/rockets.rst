@@ -12,7 +12,7 @@ rockets.commandmodule module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
+    
 
 rockets.component module
 ------------------------
@@ -22,7 +22,7 @@ rockets.component module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
+    
 
 rockets.rocket module
 ---------------------
@@ -32,7 +32,7 @@ rockets.rocket module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
+    
 
 rockets.sas module
 ------------------
@@ -42,7 +42,7 @@ rockets.sas module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
+    
 
 rockets.testrocket module
 -------------------------
@@ -52,7 +52,7 @@ rockets.testrocket module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
+    
 
 rockets.thruster module
 -----------------------
@@ -62,7 +62,7 @@ rockets.thruster module
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
+    
 
 
 Module contents
@@ -73,4 +73,4 @@ Module contents
     :undoc-members:
     :show-inheritance:
     :private-members:
-    :special-members:
+    

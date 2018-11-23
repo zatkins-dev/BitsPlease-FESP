@@ -12,25 +12,16 @@ class HUD():
     """
         HUD holds diagnostic info and prints values to the screen.
 
-        **Instance Variables**:
-            *_font*:            The font used to draw text to the screen
-            *_navBallRadius*:   The radius in pixels of the Hud's navball
-            *_navBallSubRadius*:The radius in pixels of the small viewport
-                                within the navball
+        :param _font: The font used to draw text to the screen
+        :type _font: :py:class:`pygame.Font`
+        :param int _navBallRadius: The radius in pixels of the Hud's navball
+        :param int _navBallSubRadius: The radius in pixels of the small viewport within the navball
 
     """
 
     def __init__(self, font=None):
         """
             Creates a new headsUpDisplay object, and initiailzes values to 0
-
-            **Preconditions**:
-                None.
-
-            **Postconditions**:
-                None.
-
-            **Returns**: A headsUpDisplay object.
         """
 
         # define a surface to hold a navball
