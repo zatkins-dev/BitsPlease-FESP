@@ -163,7 +163,7 @@ def run(rocket=None):
         if altitude < 12500:
             while TimeScale.scale > 2:
                 TimeScale.slower()
-        if altitude < vel.length*TimeScale.scale:
+        if altitude < vel.length*TimeScale.scale*64:
             Drawer.zoom.reset()
 
         space.step(TimeScale.step_size)
