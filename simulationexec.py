@@ -76,7 +76,8 @@ def displayMenu(space):
 
 
 def run(rocket=None):
-    AudioManager.audioInitializer()
+    sasActive = False #For use in AudioManager
+    audioManager = AudioManager()
     celestialBodies = []
     screen = pg.display.get_surface()
     clock = pg.time.Clock()
@@ -116,7 +117,7 @@ def run(rocket=None):
     Menu.demoPressed = False
     Menu.builderPressed = False
     while not crashed:
-        AudioManager.musicChecker()
+        audioManager.musicChecker()
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return Menu.State.Exit
@@ -141,6 +142,9 @@ def run(rocket=None):
                 elif event.button == 5:
                     Drawer.zoom.zoom_in()
         rocket.tick(TimeScale.scale)
+        audioManager.thrusterSoundEffect(rocket.throttle)
+        audioManager.sasSoundEffect(rocket.isAngleLocked)
+
         grav = updateGravity(space, rocket, celestialBodies)
 
         pos = rocket.position
