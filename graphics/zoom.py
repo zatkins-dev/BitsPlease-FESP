@@ -12,7 +12,12 @@ class Zoom(object):
         return self._set_zoom(self.zoom/2)
     
     def reset(self):
-        return self._set_zoom(self.__base_zoom)
+        while self.zoom != self.__base_zoom:
+            if self.zoom > self.__base_zoom:
+                if not self.zoom_out(): return False
+            else:
+                if not self.zoom_in(): return False
+        return True
 
     def _set_zoom(self, zoom):
         if self.__min_zoom <= zoom <= self.__max_zoom:
