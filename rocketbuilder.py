@@ -20,31 +20,52 @@ from graphics import Graphics
 
 class RocketBuilder:
 
+    #: The :py:class:`pygame.surface.Surface` that the builder will be drawn to
     surface = None
+
+    #: The Sub-Surface representing the :py:class:`pygame.surface.Surface` selection screen
     componentSurface = None
+    #: The Sub-Surface representing the component information display
     componentInfoSurface = None
 
+    #: A custom event for triggering the exit of the building step
+    #: and the beginning of the simulation
     start_event = pg.USEREVENT + 1
 
+    #: The :py:class:`pymunk.Space` used to construct the rocket
     space = pm.Space(threaded=True)
     space.threads = 2
 
+    #: Enumerator containing the different tabs of components
     componentTabs = Enum("State", "Thruster Control")
+    #: Holds the list of components to draw to the menu list
     componentList = []
+    #: The active category of components from componentTabs
+    #: Initialized to the Thruster category
     selectedTab = componentTabs.Thruster
     
-    # this component will be the base... and shouldn't be removed from the rocket
+    #: This component will be the base, and can't be removed from the rocket in construction
     _baseComponent = CommandModule(None)
+
+    #: The rocket being constructed
     theRocket = Rocket([_baseComponent])
 
+    #: Used to represent the component that is being held by the user's mouse
     activeComponent = None
-    activeSprite = None
+
+    #: The background color of the builder
     _bgColor = (0,0,0)
+    #: The color of the menu panes
     _menuPaneColor = (128,128,128)
+    #: The unfocused and focused colors of the menu buttons, respectively.
     _menuButtonColor = ((100,100,100),(64,64,64))  
 
+    #: Represents the y position seperating the component category tabs
+    #: from the actual buttons in the menu
     _bottomOfTabs = 0
 
+    #: Represents whether components will be placed with symmetry about
+    #: the center of the rocket
     _symmetry = False
 
     @classmethod
@@ -59,8 +80,6 @@ class RocketBuilder:
         while True:                 # drawn menu infinitely
             cls.drawMenu()
             pos = pg.mouse.get_pos()
-            if cls.activeSprite != None :
-                cls.activeSprite.set_rect(pos)
              
             for event in pg.event.get():
                 if event.type == pg.VIDEORESIZE:
@@ -97,7 +116,6 @@ class RocketBuilder:
                     if cls.activeComponent is not None:
                         cls.placeComponenet(cls.activeComponent)
                         cls.activeComponent = None
-                        cls.activeSprite = None
                 if event.type == cls.start_event:
                     cls.space.remove(cls.theRocket)
                     return cls.theRocket
@@ -148,8 +166,6 @@ class RocketBuilder:
             Graphics.drawButton(cls.componentSurface, pos, size, cls._menuButtonColor, Drawer.scaleSpriteToVerts(component._sprite, component.getInfo()["vertices"]), .8, lambda: cls.componentButtonClicked(component))
 
             i += 1
-
-        
 
     @classmethod
     def drawComponentTabs(cls):
