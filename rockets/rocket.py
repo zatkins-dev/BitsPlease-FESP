@@ -1,6 +1,7 @@
 from pymunk import Body as Body
 import pygame as pg
 from rockets import Thruster, RCSThruster, SAS, CommandModule
+from audio import AudioManager
 
 
 class Rocket(Body):
@@ -107,7 +108,7 @@ class Rocket(Body):
                 if not thruster.destroyed:
                     thruster.applyThrust(self.throttle, timescale)
 
-        
+
 
     def handleEvent(self, event):
         if event.type is pg.KEYDOWN:
@@ -116,7 +117,7 @@ class Rocket(Body):
             # per key press
             if event.key is pg.K_v:  # Toggle SAS Lock
                 self.isAngleLocked = not self.isAngleLocked
-        
+
 
     def addComponent(self, c):
         """Add a new component to the rocket
