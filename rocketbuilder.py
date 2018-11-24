@@ -19,7 +19,10 @@ from graphics import Drawer
 from graphics import Graphics
 
 class RocketBuilder:
-
+    """
+    Gets component information and facilitates the construction of a new and
+    unique :py:class:`rockets.rocket.Rocket` to use in the simulation
+    """
     #: The :py:class:`pygame.surface.Surface` that the builder will be drawn to
     surface = None
 
@@ -70,7 +73,10 @@ class RocketBuilder:
 
     @classmethod
     def run(cls):
-        # while loop to draw infinitely for testing purposes
+        """
+        Contains and executes the main event loop of the rocket builder.
+        """
+        
         clock = pg.time.Clock()     # create clock to manage game time
         cls.theRocket.reset()
         if not cls.theRocket.components:
@@ -124,6 +130,10 @@ class RocketBuilder:
             
     @classmethod
     def drawMenu(cls):
+        """
+        Method encapsulates drawing of the entire rocket builder display,
+        making this the top-level drawing method.
+        """
         cls.surface.fill(cls._bgColor)
         cls.drawComponentMenu()
         cls.drawComponentInfo()
@@ -133,13 +143,21 @@ class RocketBuilder:
 
     @classmethod
     def drawComponentMenu(cls):
-        # fill with color
+        """
+        Draws the component menu to the componentSurface class member, including
+        the componentTabs and the componentList.
+        """
         cls.componentSurface.fill(cls._menuPaneColor)
         cls.drawComponentTabs()
         cls.drawComponentList(cls.selectedTab)
 
     @classmethod
     def drawComponentList(cls, selectedTab):
+        """
+        Draws the list of available components to the screen using the provided category.
+        
+        :param enum.Enum selectedTab: The currently selected category of components to draw
+        """
         buttonMargin = 10
         buttonSize = 100
 
@@ -169,6 +187,9 @@ class RocketBuilder:
 
     @classmethod
     def drawComponentTabs(cls):
+        """
+        Draws the categorical tabs at the top of the componentSurface.
+        """
         font = pg.font.SysFont('Consolas', 16)
         buttonHeight = 40
         buttonTextMargin = 15
@@ -216,6 +237,9 @@ class RocketBuilder:
 
     @classmethod
     def drawComponentInfo(cls):
+        """
+        Uses the active component to draw component information to the right info pane on the screen.
+        """
         # fill with background color
         cls.componentInfoSurface.fill(cls._menuPaneColor)
 
@@ -272,11 +296,17 @@ class RocketBuilder:
 
     @classmethod
     def drawRocket(cls):
+        """
+        Draws the rocket-in-construction to the center of the display surface.
+        """
         Drawer.drawMultiple(cls.surface, cls.theRocket.components,
                             Drawer.getOffset(cls.surface, cls.theRocket))
 
     @classmethod
     def drawHeldSprite(cls):
+        """
+        Draws the sprite of the active component to the screen at the position of the mouse
+        """
         if cls.activeComponent is not None:
             # create a test component at the mouse position
             testComp = cls.activeComponent(None, transform=cls.mousePosToPymunkTransform(cls.activeComponent))
@@ -289,6 +319,10 @@ class RocketBuilder:
 
     @classmethod
     def updateSubSurfaces(cls):
+        """
+        A helper method the correctly set the size and position of the componentSurface and componentInfoSurface
+        when the game window is resized.
+        """
         cls.surface = pg.display.get_surface()
         cls.componentSurface = cls.surface.subsurface(
             pg.Rect(
@@ -305,6 +339,12 @@ class RocketBuilder:
 
     @classmethod
     def placeComponenet(cls, component):
+        """
+        Tests if it is possible to place the given component, and will place it if possible.
+        Returns True if the component was placed, and False if it was not.
+        
+        :param rockets.Component component: The component to attempt to place
+        """
         #if it's intersecting/directly adjacent to another component on the rocket
         if cls.intersectsWithRocket(component) :
             transform = cls.mousePosToPymunkTransform(component)
@@ -319,15 +359,14 @@ class RocketBuilder:
         
     @classmethod
     def mousePosToPymunkTransform(cls, component, reflected=False):
-        """Takes in a component class or instance, and the mouse position. Assuming
-           that the component is being held by mouse in its center, this finds the
-           transform needed to translate between the component's inherent verteces
-           and the mouse's current position in pymunk space.
+        """
+        Takes in a component class or instance, and the mouse position. Assuming
+        that the component is being held by mouse in its center, this finds the
+        transform needed to translate between the component's inherent verteces
+        and the mouse's current position in pymunk space.
 
-            Args:
-                mousePos (int, int): mouse's position to translate
-                component (component): the component who's verticies to translate
-
+        :param rockets.Component component: The component who's position to transform
+        :param Bool reflected: Will reflect the transform about the x axis if set to True
         """
         # pull in component boundaries
         #minX, maxX, minY, maxY = Component.getXYBoundingBox(component._vertices)
@@ -358,11 +397,21 @@ class RocketBuilder:
 
     @classmethod
     def removeComponent(cls, component):
+        """
+        Removes a component from the rocket.
+
+        :param rockets.Component component: The component to attempt to remove
+        """
         cls.theRocket.removeComponent(component)
    
     
     @classmethod
     def intersectsWithRocket(cls, component):
+        """
+        Tests whether or not a component, if placed at the current mouse position, will intersect with the rocket
+
+        :param rockets.Component component: The component class to test
+        """
         # make an instance of the component to test with, at the mouse position     
         transform = cls.mousePosToPymunkTransform(component)
         theComponent = component(None, transform=transform)
@@ -389,12 +438,23 @@ class RocketBuilder:
 
     @classmethod
     def componentButtonClicked(cls, component) :
+        """
+        A helper method that changes the selected component. This is used in the buttons in the component list
+        
+        :param rockets.Component component: The component class to set as active
+        """
         cls.activeComponent = component
 
     @classmethod
     def setCurrentTab(cls, state):
+        """
+        A helper method that changes the selected tab. This is used in the tab buttons to change the component list.
+        """
         cls.selectedTab = state
 
     @classmethod
     def toggleSymmetry(cls):
+        """
+        A helper method that toggles the symmetry flag.
+        """
         cls._symmetry = not cls._symmetry
