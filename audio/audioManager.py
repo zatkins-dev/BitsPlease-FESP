@@ -35,7 +35,7 @@ class AudioManager():
         pg.mixer.init()
         #start the initial music
         self._SOUND_PATH = os.path.abspath("assets/sound/")
-        self._MUSIC_LIST = ["Sci-fiPulseLoop.wav", "Astrometrics_-_02_-_Fire_in_the_Mountains.mp3", "bensound-scifi.mp3"]
+        self._MUSIC_LIST = ["Sci-fiPulseLoop.wav", "Astrometrics_-_02_-_Fire_in_the_Mountains.mp3", "Deep_Space_Destructors_-_01_-_Journey_To_The_Space_Mountain.mp3", "bensound-scifi.mp3"]
 
         #Set up Sound Effects
         self._ThrusterSound = pg.mixer.Sound(os.path.join(self._SOUND_PATH, "rocketLaunch.ogg"))
@@ -43,8 +43,8 @@ class AudioManager():
 
         pg.mixer.Channel(1).set_volume(30.0)
         pg.mixer.music.load(os.path.join(self._SOUND_PATH, "Sci-fiPulseLoop.wav"))
-        pg.mixer.music.play(1)
-        pg.mixer.music.set_volume(.5)
+        pg.mixer.music.play(0)
+        pg.mixer.music.set_volume(.75)
 
     def musicChecker(self):
         """
@@ -62,8 +62,8 @@ class AudioManager():
         """
         if(pg.mixer.music.get_busy() == False):
             pg.mixer.music.load(os.path.join(self._SOUND_PATH, random.choice(self._MUSIC_LIST)))
-            pg.mixer.music.play(1)
-            pg.mixer.music.set_volume(.5)
+            pg.mixer.music.play(0)
+            pg.mixer.music.set_volume(0.75)
 
     def sasSoundEffect(self, statusConst):
         """
@@ -83,7 +83,7 @@ class AudioManager():
         elif(pg.mixer.Channel(1).get_busy() == True and statusConst == False):
             pg.mixer.Channel(1).stop()
 
-    def thrusterSoundEffect(self, amount):
+    def thrusterSoundEffect(self, status, amount):
         """
         Plays an SAS sound effect until stopped.
 
@@ -96,6 +96,25 @@ class AudioManager():
         **Returns:**
             Nothing.
         """
-        if(pg.mixer.Channel(2).get_busy() == False):
-            pg.mixer.Channel(2).play(self._ThrusterSound, loops=1)
-        pg.mixer.Channel(2).set_volume(amount)
+        if(status):
+            if(pg.mixer.Channel(2).get_busy() == False):
+                pg.mixer.Channel(2).play(self._ThrusterSound, loops=1)
+            pg.mixer.Channel(2).set_volume(amount)
+        else:
+            pg.mixer.Channel(2).stop()
+
+    def silenceMusic(self):
+        """Stops the music.
+
+        **Preconditions**:
+            None.
+
+        **Postconditions**:
+            1. Construction Music playing.
+
+        **Returns**:
+            Nothing.
+        """
+        pg.mixer.Channel(2).stop()
+        pg.mixer.Channel(1).stop()
+        pg.mixer.music.stop()

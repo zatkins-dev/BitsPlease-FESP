@@ -19,9 +19,9 @@ class HUD():
 
     """
 
-    def __init__(self, font=None):
+    def __init__(self):
         """
-            Creates a new headsUpDisplay object, and initiailzes values to 0
+            creates a new HUD object 
         """
 
         # define a surface to hold a navball
@@ -35,14 +35,13 @@ class HUD():
 
         self._readableGreen = (0,175,0)
 
-        if font is None:
-            self._font = pg.font.SysFont("LucidaConsole", 12)
-            self._bigFont = pg.font.SysFont("LucidaConsole", 16)
-        else:
-            self._font = font
-            self._bigFont = font
+        self._font = pg.font.SysFont("LucidaConsole", 12)
+        self._bigFont = pg.font.SysFont("LucidaConsole", 16)
 
     def _drawCompassLine(self, surface, angle, size, color=(255,255,255,255), innerRadius=None, outerRadius=None):
+        """
+        Helper function to draw a line along the normal/radius of a circle
+        """
         if innerRadius is None or outerRadius is None:
             innerRadius = self._navBallSubRadius
             outerRadius = self._navBallRadius
@@ -52,6 +51,11 @@ class HUD():
         
 
     def _updateNavBall(self, rocket):
+        """
+        Creates and returns a navball, containing directional information to a pygame Surface.
+        
+        :param rockets.rocket rocket: The rocket who's information to use.
+        """
         # create a navball
         navBall = pg.Surface((2*self._navBallRadius, 2*self._navBallRadius), pg.SRCALPHA)
         navBall.fill((0,0,0,0))
@@ -101,6 +105,12 @@ class HUD():
         return navBall
 
     def _updateThrottle(self, rocket):
+        """
+        Creates and returns a surface containing the throttle of the provided rocket.
+        
+        :param rockets.rocket rocket: The rocket who's throttle to use.
+        """
+
         # define some properties of the gauge
         gaugeSize = (30, 2*self._navBallRadius)
         gaugeBorder= 5
@@ -135,6 +145,12 @@ class HUD():
         return gauge
 
     def _updateVelocity(self, rocket):
+        """
+        Creates and returns a surface containing the velocity of the provided rocket.
+        
+        :param rockets.rocket rocket: The rocket who's velocity to use.
+        """
+
         velSurfSize = (215,40)
         velSurfBorder = 5
         velSurf = pg.Surface(velSurfSize)
@@ -158,6 +174,12 @@ class HUD():
         return velSurf
 
     def _updateZoom(self, zoom):
+        """
+        Creates and returns a surface containing the current zoom level.
+        
+        :param float zoom: The current zoom level.
+        """
+
         zoomSurfSize = (215,40)
         zoomSurfBorder = 5
         zoomSurf = pg.Surface(zoomSurfSize)
@@ -182,6 +204,11 @@ class HUD():
         return zoomSurf
 
     def _updateTimeScale(self, scale):
+        """
+        Creates and returns a surface containing the current ammount time is scaled by.
+        
+        :param float scale: The current ammount time is scaled by.
+        """
         scaleSurfSize = (215,40)
         scaleSurfBorder = 5
         scaleSurf = pg.Surface(scaleSurfSize)
@@ -206,6 +233,13 @@ class HUD():
         return scaleSurf
 
     def _updateSASFuel(self, rocket):
+        """
+        Creates and returns a surface containing the ammound of SAS Fuel that the provided
+        rocket has remaining.
+        
+        :param rockets.rocket rocket: The rocket who's SAS Fuel should be displayed.
+        """
+
         # define some properties of the gauge
         gaugeSize = (30, 2*self._navBallRadius)
         gaugeBorder= 5
@@ -239,6 +273,12 @@ class HUD():
         return gauge
 
     def _updateThrusterFuel(self, rocket):
+        """
+        Creates and returns a surface displaying the ammount of fuel left in each of the thrusters on the provided rocket
+        
+        :param rockets.rocket rocket: The rocket who's thruster fuel should be displayed.
+        """
+
         thrusters = rocket.thrusters
         thrusters.sort(key=lambda x: x.maxFuel)
 
@@ -275,6 +315,12 @@ class HUD():
         return gauge
 
     def _updateSASIndicator(self, rocket):
+        """
+        Creates and returns a surface indicating whether or not the provided rocket is currently locked to an angle using SAS.
+        
+        :param rockets.rocket rocket: The rocket who's SAS state should be checked.
+        """
+
         indicatorSize = (35,30)
         indicatorBorder = 5
         indicator = pg.Surface(indicatorSize)
@@ -297,16 +343,8 @@ class HUD():
 
     def updateHUD(self, rocket):
         """
-            Update the values that are displayed on the screen,
-            then draw the text to the screen
-
-            **Preconditions**:
-                None.
-
-            **Postconditions**:
-                None.
-
-            **Returns**: None.
+        Draws relevant information from the provided rocket to the screen, like the throttle,
+        velocity, and fuel. Also displays time and zoom information.
         """
         
         navBallPos = (int(pg.display.get_surface().get_width()/2 - self._navBallRadius), int(pg.display.get_surface().get_height()-2*self._navBallRadius))

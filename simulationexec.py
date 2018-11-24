@@ -142,8 +142,8 @@ def run(rocket=None):
                 elif event.button == 5:
                     Drawer.zoom.zoom_in()
         rocket.tick(TimeScale.scale)
-        audioManager.thrusterSoundEffect(rocket.throttle)
-        audioManager.sasSoundEffect(rocket.isAngleLocked)
+        audioManager.thrusterSoundEffect(len(rocket.thrusters) != 0, rocket.throttle)
+        audioManager.sasSoundEffect(len(rocket.SASmodules) != 0 and rocket.isAngleLocked)
 
         grav = updateGravity(space, rocket, celestialBodies)
 
@@ -185,6 +185,7 @@ def run(rocket=None):
             if returnCode is not None:
                 TimeScale.reset()
                 Drawer.zoom.reset()
+                audioManager.silenceMusic()
                 return returnCode
         pg.display.flip()
         clock.tick(60)
