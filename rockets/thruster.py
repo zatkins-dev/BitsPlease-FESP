@@ -56,6 +56,12 @@ class Thruster(Component):
         """
         return self.getInfo()["thrustVector"]
 
+    @property
+    def sprite(self):
+        """
+        The sprite to use to render the thruster. This returns the value defined in the getInfo method.
+        """
+        return self.getInfo()["sprite"]
     
     @property
     def maxFuel(self):

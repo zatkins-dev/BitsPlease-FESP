@@ -2,6 +2,7 @@ import pygame as pg
 from rockets import Component
 import math
 import os
+from abc import ABC, abstractmethod
 from . import _ASSETS_PATH
 
 
@@ -28,16 +29,9 @@ class SAS(Component):
 
     """
 
-    _vertices = None
-    _sprite = None
-    _SASPower = None
-    _tolerance = None
-    _maxFuel = None
-
     def __init__(self, body, transform=None, radius=0):
         Component.__init__(self, body, self.vertices, transform, radius)
         self._SASangle = 0
-        self._isLocked = False
 
     @property
     def fuel(self):
@@ -49,10 +43,6 @@ class SAS(Component):
             self._fuel = newFuel
         else:
             self._fuel = 0
-
-    @property
-    def maxFuel(self):
-        return self._maxFuel
 
     def rotateCounterClockwise(self):
         for ts in self.body.RCSThrusters:
@@ -96,8 +86,7 @@ class SAS(Component):
     def reset(self):
         super().reset()
         self._SASangle = 0
-        self._isLocked = False
-        self._fuel = self._maxFuel
+        self._fuel = self.maxFuel
 
     @property
     def SASangle(self):
@@ -120,34 +109,103 @@ class SAS(Component):
         self._SASangle = newAngle
 
     @property
+    def vertices(self):
+        return self.getInfo()["vertices"]
+
+    @property
     def SASPower(self):
-        return self._SASPower
+        return self.getInfo()["SASPower"]
 
     @property
     def tolerance(self):
-        return self._tolerance
+        return self.getInfo()["tolerance"]
 
+    @property
+    def sprite(self):
+        return self.getInfo()["sprite"]
+    
+    @property
+    def maxFuel(self):
+        return self.getInfo()["maxFuel"]
 
-class AdvancedSAS(SAS):
-    # __ASSETS_PATH = ""
-    # if os.path.exists(os.path.abspath("assets")):
-    #     __ASSETS_PATH = os.path.abspath("assets")
-    # elif os.path.exists(os.path.abspath("../assets")):
-    #     __ASSETS_PATH = os.path.abspath("../assets")
-    _vertices = [(-12,4), (-12,-6), (12,-6), (12,4)]
-    _SASPower = 2
-    _tolerance = .01
-    _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "AdvancedSAS.png"))
-    _maxFuel = 20000
+    @property
+    def density(self):
+        return self.getInfo()["density"]
 
-    def __init__(self, body, transform=None, radius=0):
-        SAS.__init__(self, body, transform, radius)
-        self._fuel = self._maxFuel
+    @classmethod
+    @abstractmethod
+    def getInfo(cls):
+        """
+        This method is what will define the properties of a specific SAS subclass.
+        It should return a dictionary with the following values:
+
+        +----------------+-------------------------------------------------+
+        | Dictionary Key |              Dictionary Value Type              |
+        +================+=================================================+
+        |    vertices    |   (*List of* :py:class:`pymunk.vec2d.Vec2d`)    |
+        +----------------+-------------------------------------------------+
+        |    SASPower    |                    (*float*)                    |
+        +----------------+-------------------------------------------------+
+        |    tolerance   |        (:py:class:`pymunk.vec2d.Vec2d`)         |
+        +----------------+-------------------------------------------------+
+        |                | (:py:class:`pygame.surface.Surface`) It is      |
+        |     sprite     | advised this be stored as a class variable, and |
+        |                | returned by this method to improve performance. |
+        +----------------+-------------------------------------------------+
+        |     maxFuel    |             (*float*) Should always be 0        |
+        +----------------+-------------------------------------------------+
+        |     density    |                    (*float*)                    |
+        +----------------+-------------------------------------------------+
+        """
+        pass
 
     @classmethod
     def getDisplayInfo(cls):
+        inf = cls.getInfo()
         return {
-            "SAS Power": str(cls._SASPower),
-            "Tolerance": str(round(math.degrees(cls._tolerance), 2)) + "°",
-            "RCS Fuel" : str(cls._maxFuel) + "L"
+            "SAS Power": str(inf["SASPower"]),
+            "Tolerance": str(round(math.degrees(inf["tolerance"]), 2)) + "°",
+            "RCS Fuel" : str(inf["maxFuel"]) + "L"
+        }
+
+
+class AdvancedSAS(SAS):
+
+    """
+    The AdvancedSAS components will all share these properties:
+
+    +----------------+----------------------------------------------------------------------------------------------------------------------+
+    | Dictionary Key |              Dictionary Value Type                                                                                   |
+    +================+======================================================================================================================+
+    |    vertices    | [(-12,4), (-12,-6), (12,-6), (12,4)]                                                                                 |        
+    +----------------+----------------------------------------------------------------------------------------------------------------------+
+    |    SASPower    | 2.0                                                                                                                  |
+    +----------------+----------------------------------------------------------------------------------------------------------------------+
+    |    tolerance   | .01                                                                                                                  |
+    +----------------+----------------------------------------------------------------------------------------------------------------------+
+    |     sprite     | `AdvancedSAS.png <https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/AdvancedSAS.png>`_ |
+    +----------------+----------------------------------------------------------------------------------------------------------------------+
+    |     maxFuel    | 20,000                                                                                                               |
+    +----------------+----------------------------------------------------------------------------------------------------------------------+
+    |     density    | 73.8                                                                                                                 |
+    +----------------+----------------------------------------------------------------------------------------------------------------------+
+    """
+
+    #: Holds the SAS sprite to prevent repeated loading. Sprite is 
+    #: `AdvancedSAS.png <https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/AdvancedSAS.png>`_
+    _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "AdvancedSAS.png"))
+
+    def __init__(self, body, transform=None, radius=0):
+        SAS.__init__(self, body, transform, radius)
+        self._fuel = self.maxFuel
+
+    @classmethod
+    def getInfo(cls):
+        return {
+            "vertices":     [(-12,4), (-12,-6), (12,-6), (12,4)],
+            "SASPower":  2,
+            "tolerance": .01,
+            "sprite":       cls._sprite,
+            "maxFuel":      20000,
+            "density":      100
         }

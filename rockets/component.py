@@ -18,35 +18,20 @@ class Component(ABC, pm.Poly):
 
     """
 
-    _vertices = None
-    _sprite = None
-
     def __init__(self, body, vertices, transform=None, radius=0):
         super().__init__(body, vertices, transform, radius)
         self.collision_type = CT_COMPONENT
         self.destroyed = False
         
     @property
+    @abstractmethod
     def vertices(self):
-        return self._vertices
+        pass
 
     @property
+    @abstractmethod
     def sprite(self):
-        """Image Sprite for the component
-
-        Returns:
-            Surface: Component Sprite
-        """
-        return self._sprite
-
-    @sprite.setter
-    def sprite(self, sprite):
-        """Setter for {sprite} property
-
-        Args:
-            sprite (surface): New Surface to use as component sprite
-        """
-        self._sprite = sprite
+        pass
 
     @classmethod
     @abstractmethod
