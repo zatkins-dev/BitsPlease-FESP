@@ -32,7 +32,6 @@ class SAS(Component):
     def __init__(self, body, transform=None, radius=0):
         Component.__init__(self, body, self.vertices, transform, radius)
         self._SASangle = 0
-        self._isLocked = False
 
     @property
     def fuel(self):
@@ -87,7 +86,6 @@ class SAS(Component):
     def reset(self):
         super().reset()
         self._SASangle = 0
-        self._isLocked = False
         self._fuel = self.maxFuel
 
     @property
