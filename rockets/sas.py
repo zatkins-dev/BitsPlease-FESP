@@ -2,6 +2,7 @@ import pygame as pg
 from rockets import Component
 import math
 import os
+from abc import ABC, abstractmethod
 from . import _ASSETS_PATH
 
 
@@ -28,12 +29,6 @@ class SAS(Component):
 
     """
 
-    _vertices = None
-    _sprite = None
-    _SASPower = None
-    _tolerance = None
-    _maxFuel = None
-
     def __init__(self, body, transform=None, radius=0):
         Component.__init__(self, body, self.vertices, transform, radius)
         self._SASangle = 0
@@ -49,10 +44,6 @@ class SAS(Component):
             self._fuel = newFuel
         else:
             self._fuel = 0
-
-    @property
-    def maxFuel(self):
-        return self._maxFuel
 
     def rotateCounterClockwise(self):
         for ts in self.body.RCSThrusters:
@@ -121,19 +112,50 @@ class SAS(Component):
 
     @property
     def SASPower(self):
-        return self._SASPower
+        return self.getInfo()["SASPower"]
 
     @property
     def tolerance(self):
-        return self._tolerance
+        return self.getInfo()["tolerance"]
+    
+    @property
+    def maxFuel(self):
+        return self.getInfo()["maxFuel"]
+
+    @property
+    def density(self):
+        return self.getInfo()["density"]
+
+    @classmethod
+    @abstractmethod
+    def getInfo(cls):
+        """
+        This method is what will define the properties of a specific Thruster subclass.
+        It should return a dictionary with the following values:
+
+        +----------------+-------------------------------------------------+
+        | Dictionary Key |              Dictionary Value Type              |
+        +================+=================================================+
+        |    vertices    |   (*List of* :py:class:`pymunk.vec2d.Vec2d`)    |
+        +----------------+-------------------------------------------------+
+        |    SASPower    |                    (*float*)                    |
+        +----------------+-------------------------------------------------+
+        |    tolerance   |        (:py:class:`pymunk.vec2d.Vec2d`)         |
+        +----------------+-------------------------------------------------+
+        |                | (:py:class:`pygame.surface.Surface`) It is      |
+        |     sprite     | advised this be stored as a class variable, and |
+        |                | returned by this method to improve performance. |
+        +----------------+-------------------------------------------------+
+        |     maxFuel    |             (*float*) Should always be 0        |
+        +----------------+-------------------------------------------------+
+        |     density    |                    (*float*)                    |
+        +----------------+-------------------------------------------------+
+        """
+        pass
 
 
 class AdvancedSAS(SAS):
-    # __ASSETS_PATH = ""
-    # if os.path.exists(os.path.abspath("assets")):
-    #     __ASSETS_PATH = os.path.abspath("assets")
-    # elif os.path.exists(os.path.abspath("../assets")):
-    #     __ASSETS_PATH = os.path.abspath("../assets")
+    
     _vertices = [(-12,4), (-12,-6), (12,-6), (12,4)]
     _SASPower = 2
     _tolerance = .01
