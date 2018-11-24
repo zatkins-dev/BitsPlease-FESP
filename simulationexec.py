@@ -147,10 +147,7 @@ def run(rocket=None):
 
         grav = updateGravity(space, rocket, celestialBodies)
 
-        pos = rocket.position
-        vel = rocket.velocity
         (closestBody, altitude) = get_altitude(celestialBodies, rocket)
-
         if altitude < 500000:
             while TimeScale.scale > 256:
                 TimeScale.slower()
@@ -163,8 +160,6 @@ def run(rocket=None):
         if altitude < 12500:
             while TimeScale.scale > 2:
                 TimeScale.slower()
-        if altitude < vel.length*TimeScale.scale*64:
-            Drawer.zoom.reset()
 
         space.step(TimeScale.step_size)
 
@@ -205,8 +200,11 @@ def run(rocket=None):
                 return Menu.State.Exit
         space.step(TimeScale.step_size)
         rocket.velocity = (0,0)
+        (closestBody, altitude) = get_altitude(celestialBodies, rocket)
+
         offset = Drawer.getOffset(screen, rocket)
         updateCamera(screen, offset)
+        Drawer.drawBackground(closestBody, altitude)
         Drawer.drawMultiple(screen, space.shapes, offset)
         Drawer.drawMultiple(screen, celestialBodies, offset)
         Drawer.drawExplosion(screen, rocket_explosion, rocket.position + 20*Vec2d(0,1).rotated(rocket.angle), (150,150), Drawer.getOffset(screen, rocket))
