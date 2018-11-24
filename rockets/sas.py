@@ -119,6 +119,10 @@ class SAS(Component):
     @property
     def tolerance(self):
         return self.getInfo()["tolerance"]
+
+    @property
+    def sprite(self):
+        return self.getInfo()["sprite"]
     
     @property
     def maxFuel(self):
