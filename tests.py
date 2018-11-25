@@ -220,7 +220,7 @@ class LiquidThrusterTestCase(unittest.TestCase):
         self.assertAlmostEqual(newFuel, prevFuel - throttle * timeScale)
 
 class AudioTestCase(unittest.TestCase):
-    def setup(self):
+    def setUp(self):
         self.space = pm.Space(threaded=True)
         self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
         self.rocket = Rocket(self.baseComponents)
@@ -434,7 +434,7 @@ class AudioTestCase(unittest.TestCase):
         self.assertFalse(pg.mixer.music.get_busy())
 class TankTestCase(unittest.TestCase):
 #TANK TESTS
-    def setup(self):
+    def setUp(self):
         self.space = pm.Space(threaded=True)
         self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
         self.rocket = Rocket(self.baseComponents)
@@ -453,7 +453,7 @@ class TankTestCase(unittest.TestCase):
 
 class SASTestCase(unittest.TestCase):
 #SAS TESTS
-    def setup(self):
+    def setUp(self):
         self.space = pm.Space(threaded=True)
         self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
         self.rocket = Rocket(self.baseComponents)
@@ -550,7 +550,7 @@ class ZoomTestCase(unittest.TestCase):
         self.assertEqual(self.zoom.zoom, 1)
 
 class PhysicsTestCase(unittest.TestCase):
-    def setup(self):
+    def setUp(self):
         self.space = pm.Space(threaded=True)
 
     def test_gravity(self):
@@ -567,7 +567,7 @@ class PhysicsTestCase(unittest.TestCase):
         self.assertEqual((Physics.netGravity([c1,c2]), testPosition), Vec2d(66.7384, 66738400))
 
 class DrawerTestCase(unittest.TestCase):
-    def setup(self):
+    def setUp(self):
         self.drawer = Drawer()
         self.space = pm.Space(threaded=True)
         self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
