@@ -7,8 +7,7 @@ from rockets import Rocket, CommandModule, UpGoer2000, DeltaVee, SandSquid, Adva
 import pymunk as pm
 import pygame as pg
 from time import sleep
-from physics import CelestialBody
-from physics import timescale
+from physics import Physics, CelestialBody, TimeScale
 
 from audioManager import AudioManager
 
@@ -479,13 +478,13 @@ class TimescaleTestCase(unittest.TestCase):
         scale = self.timescale.scale
         self.timescale.faster()
 
-        assertEqual(scale * 2, self.timescale.scale)
+        self.assertEqual(scale * 2, self.timescale.scale)
 
     def test_scale_slower(self):
         scale = self.timescale.scale
         self.timescale.slower()
 
-        assertEqual(scale / 2.0, self.timescale.scale)
+        self.assertEqual(scale / 2.0, self.timescale.scale)
 
     def test_scale_set(self):
         returnVal = self.timescale._set_scale(self.timescale._MAX_SCALE)
@@ -555,16 +554,16 @@ class PhysicsTestCase(unittest.TestCase):
 
     def test_gravity(self):
         c1 = CelestialBody('earth', self.space, 10**20, 796375, (0, 0), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
-        testPosition = Vec2D(0, 1000)
+        testPosition = pm.Vec2d(0, 1000)
 
-        self.assertEqual(Physics.gravity(c1, testPosition), Vec2D(0, 66738400))
+        self.assertEqual(Physics.gravity(c1, testPosition), pm.Vec2d(0, 66738400))
 
     def test_netGravity(self):
         c1 = CelestialBody('earth', self.space, 10**20, 796375, (0, 1000), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
         c2 = CelestialBody('moon', self.space, 10**15, 796375, (1000, 0), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
         testPosition = (0, 0)
 
-        self.assertEqual((Physics.netGravity([c1,c2]), testPosition), Vec2d(66.7384, 66738400))
+        self.assertEqual(Physics.netGravity([c1,c2], testPosition), pm.Vec2d(66.7384, 66738400))
 
 class DrawerTestCase(unittest.TestCase):
     def setUp(self):
@@ -575,9 +574,9 @@ class DrawerTestCase(unittest.TestCase):
     def test_drawer_inRange(self):
         coords =[-1, 99]
         themax = [77, 77]
-        self.assertFalse(inRange(themax, coords))
+        self.assertFalse(Drawer.inRange(themax, coords))
         coords =[5, 5]
-        self.assertTrue(inRange(themax, coords))
+        self.assertTrue(Drawer.inRange(themax, coords))
 
 
 if __name__ == '__main__':
