@@ -5,8 +5,6 @@ import os
 from abc import ABC, abstractmethod
 from . import _ASSETS_PATH
 
-
-
 class SAS(Component):
     """SAS component for rocket. Provides encapsulation for
        SAS autonomous angle and magnitude of SAS force.
@@ -30,11 +28,24 @@ class SAS(Component):
     """
 
     def __init__(self, body, transform=None, radius=0):
+        """
+        Initializes an SAS Module: the underlying component, and the angle & fuel value.
+
+        :param body: Body to attatch the SASModule to.
+        :type body: :py:class:`pymunk.Body`
+        :param transform: Transformation to apply to the shape
+        :type transform: :py:class:`pymunk.Transform`
+        :param float radius: Radius of the shape, used for smoothing.
+        """
         Component.__init__(self, body, self.vertices, transform, radius)
         self._SASangle = 0
+        self.fuel = self.maxFuel
 
     @property
     def fuel(self):
+        """
+        The current ammount of fuel that the SAS module has for maneuvering.
+        """
         return self._fuel
 
     @fuel.setter
@@ -45,6 +56,10 @@ class SAS(Component):
             self._fuel = 0
 
     def rotateCounterClockwise(self):
+        """
+        Uses the RCS Thrusters on the host rocket to turn the rocket counter-clockwise.
+        """
+
         for ts in self.body.RCSThrusters:
             # check the direction of each thruster, and apply if it will rotate counter clockwise
             if ts.thrustVector.x < 0 and ts.center_of_gravity.y > self.body.center_of_gravity.y:
@@ -55,6 +70,10 @@ class SAS(Component):
                 ts.applyThrust()
 
     def rotateClockwise(self):
+        """
+        Uses the RCS Thrusters on the host rocket to turn the rocket clockwise.
+        """
+
         for ts in self.body.RCSThrusters:
             # check the direction of each thruster, and apply if it will rotate clockwise
             if ts.thrustVector.x > 0 and ts.center_of_gravity.y > self.body.center_of_gravity.y:
@@ -65,6 +84,11 @@ class SAS(Component):
                 ts.applyThrust()
 
     def holdAngle(self):
+        """
+        Will work to hold the rocket at the set SASAngle. This is affected by the SASPower and the Tolerance
+        parameters of a specific SAS Module.
+        """
+
         # move to desired angle
         # find the difference between the current angle and the desired angle
         deltaAngle = self.SASangle - self.body.angle
@@ -84,52 +108,70 @@ class SAS(Component):
                 self.rotateClockwise()
 
     def reset(self):
+        """
+        Resets the SAS Module, including the set angle and fuel ammount.
+        """
         super().reset()
         self._SASangle = 0
         self._fuel = self.maxFuel
 
     @property
     def SASangle(self):
-        """Lock angle in radians for the SAS
-
-        Returns:
-            Float: Value of _SASangle
-
+        """
+        Lock angle in radians for the SAS
         """
         return self._SASangle
 
     @SASangle.setter
     def SASangle(self, newAngle):
-        """Setter for _SASangle
-
-        Args:
-            newAngle (Float): New value for _SASangle
-
-        """
         self._SASangle = newAngle
 
     @property
     def vertices(self):
+        """
+        The vertices of this specific type of SASModule. This returns the value defined in
+        the getInfo method.
+        """
         return self.getInfo()["vertices"]
 
     @property
     def SASPower(self):
+        """
+        The SASPower of this specific type of SASModule. This returns the value defined in
+        the getInfo method.
+        """
         return self.getInfo()["SASPower"]
 
     @property
     def tolerance(self):
+        """
+        The angle tolerance of this specific type of SASModule. This returns the value defined in
+        the getInfo method.
+        """
         return self.getInfo()["tolerance"]
 
     @property
     def sprite(self):
+        """
+        The sprite of this specific type of SASModule. This returns the value defined in
+        the getInfo method.
+        """
         return self.getInfo()["sprite"]
     
     @property
     def maxFuel(self):
+        """
+        The maximum fuel ammount of this specific type of SASModule. This returns the value defined in
+        the getInfo method.
+        """
         return self.getInfo()["maxFuel"]
 
     @property
     def density(self):
+        """
+        The density of this specific type of SASModule. This returns the value defined in
+        the getInfo method.
+        """
         return self.getInfo()["density"]
 
     @classmethod
@@ -170,7 +212,6 @@ class SAS(Component):
 
 
 class AdvancedSAS(SAS):
-
     """
     The AdvancedSAS components will all share these properties:
 
@@ -195,12 +236,11 @@ class AdvancedSAS(SAS):
     #: `AdvancedSAS.png <https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/AdvancedSAS.png>`_
     _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "AdvancedSAS.png"))
 
-    def __init__(self, body, transform=None, radius=0):
-        SAS.__init__(self, body, transform, radius)
-        self._fuel = self.maxFuel
-
     @classmethod
     def getInfo(cls):
+        """
+        Returns the dictionary with info specified by SAS.getInfo()
+        """
         return {
             "vertices":     [(-12,4), (-12,-6), (12,-6), (12,4)],
             "SASPower":  2,
