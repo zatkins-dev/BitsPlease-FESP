@@ -227,6 +227,7 @@ class AudioTestCase(unittest.TestCase):
         self.rocket = Rocket(self.baseComponents)
         self.audioManager = AudioManager()
         self.audioManager.silenceMusic()
+        self.audioManager.init()
 
     def test_SoundEffects_thursterDefault(self):
         #Test throttle at 0 + no thrusters - Should not play
