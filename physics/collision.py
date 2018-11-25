@@ -14,12 +14,14 @@ CT_CELESTIAL_BODY = 1
 
 
 # Collision Post-Solver: Component, Celestial Body
-def post_solve_component_celestialbody(arbiter, space, data):
+def post_solve_component_celestialbody(arbiter, space, _):
     """
     Determines what happens when two objects collide.
 
     :param arbiter: The :py:class:`Arbiter` that stores data about the collision.
     :type arbiter: :py:class:`pymunk.Arbiter`
+    :param space: :py:class:`Space` within which the collision occurred
+    :type space: :py:class:`pymunk.Space`
     """
     component = None
     for shape in arbiter.shapes:

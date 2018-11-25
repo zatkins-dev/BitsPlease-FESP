@@ -19,14 +19,16 @@ class Physics(object):
         :param celestialBody: The planet to use as the gravitational source
         :type celestialBody: :py:class:`CelestialBody`
         :param targetPosition: The (x,y) position of the target
-        :type targetPosition: tuple(float, float)
+        :type targetPosition: :py:class:`pymunk.vec2d.Vec2d`
+        :returns: Acceleration vector
+        :rtype: :py:class:`pymunk.vec2d.Vec2d`
         """
 
         #First, find the distance between the body and the target
         #Then, Use that distance to calculate gravity
         dPos = celestialBody.body.position - targetPosition
 
-        rSquared = targetPosition.get_dist_sqrd(celestialBody.body.position)
+        rSquared = dPos.get_length_sqrd()
 
         #Now, find acceleration due to gravity in the direction of R
         accelMagnitude = Physics._GRAV_CONSTANT * celestialBody.shape.mass / rSquared
@@ -41,7 +43,9 @@ class Physics(object):
         :param celestialBodies: The planets to use as the gravitational sources
         :type celestialBodies: [:py:class:`.CelestialBody`]
         :param targetPosition: The (x,y) position of the target
-        :type targetPosition: (float, float)
+        :type targetPosition: :py:class:`pymunk.vec2d.Vec2d`
+        :returns: Acceleration vector
+        :rtype: :py:class:`pymunk.vec2d.Vec2d`
         """
         accel = Vec2d(0,0)
         for celestialBody in celestialBodies:
