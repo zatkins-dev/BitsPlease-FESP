@@ -17,7 +17,9 @@ from rocketbuilder import RocketBuilder
 
 
 def main():
-
+    """
+    The top level function for FESP. Ferries the program between the menu, the rocket builder, and the simulation.
+    """
     pygame.display.set_icon(pygame.image.load(os.path.join(_ASSETS_PATH, "icon.png")))
     pygame.display.set_caption("FESP: The Flat Earth Space Program")
     menu = Menu()
