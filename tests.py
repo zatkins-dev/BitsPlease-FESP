@@ -77,9 +77,22 @@ class RocketTestCase(unittest.TestCase):
         self.rocket.throttle = 0.5
         self.rocket.isAngleLocked = True
         self.rocket.reset()
-        self.assertEqual(self.rocket.tanks, [])
+        self.assert(self.rocket.tanks, [])
         self.assertEqual(self.rocket.throttle, 0)
         self.assertEqual(self.rocket.isAngleLocked, False)
+
+    #TANK TESTS
+    def test_tank_fuel(self):
+        self.newTank = TestTank(self.rocket)
+        self.newTank.fuel = -100
+        self.assertEqual(self.newTank.fuel, 0)
+
+    def test_tank_reset(self):
+        self.newTank = TestTank(self.rocket)
+        self.newTank.fuel = 0
+        self.tank_capacity = self.newTank.capacity
+        self.newTank.reset()
+        self.assertEqual(self.tank_capacity, self.newTank.fuel)
 
 
 if __name__ == '__main__':
