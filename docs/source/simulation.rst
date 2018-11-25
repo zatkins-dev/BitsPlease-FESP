@@ -1,7 +1,8 @@
-simulationexec module
+simulation module
 =====================
 
-.. automodule:: simulationexec
+.. automodule:: simulation
     :members:
     :undoc-members:
+    :private-members:
     :show-inheritance:
