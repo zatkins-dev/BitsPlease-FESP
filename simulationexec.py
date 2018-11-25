@@ -165,6 +165,9 @@ def run(rocket=None):
             while TimeScale.scale > 2:
                 TimeScale.slower()
 
+        if TimeScale.scale > 1 and rocket.isAngleLocked:
+            rocket.isAngleLocked = False
+
         space.step(TimeScale.step_size)
 
         offset = Drawer.getOffset(screen, rocket)
