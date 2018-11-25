@@ -25,7 +25,7 @@ class AudioManager():
         pg.mixer.pre_init(44100, 16, 2, 4096)
         pg.mixer.init()
         #start the initial music
-        self._SOUND_PATH = os.path.abspath("assets/sound/")
+        self._SOUND_PATH = os.path.abspath("assets/sound/") if os.path.exists(os.path.abspath("assets/sound/")) else os.path.abspath("../assets/sound/")
         self._MUSIC_LIST = ["Sci-fiPulseLoop.wav", "Astrometrics_-_02_-_Fire_in_the_Mountains.mp3", "Deep_Space_Destructors_-_01_-_Journey_To_The_Space_Mountain.mp3", "bensound-scifi.mp3"]
 
         #Set up Sound Effects
