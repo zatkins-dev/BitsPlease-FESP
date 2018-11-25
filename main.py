@@ -12,7 +12,7 @@ disp = Video.get_display()
 
 from enum import Enum
 from graphics import Menu
-import simulationexec
+from simulation import Simulation
 from rocketbuilder import RocketBuilder
 
 
@@ -67,8 +67,7 @@ def main():
 
 
         if currentState == State.Playing:
-            currentState = simulationexec.run(rocket)
-            rocket =None
+            currentState = Simulation.run(rocket)
 
         pygame.display.flip()
 
@@ -76,4 +75,4 @@ def main():
     pygame.quit()
     sys.exit()
 
-main()
+if __name__ == '__main__': main()
