@@ -130,6 +130,8 @@ class RocketTestCase(unittest.TestCase):
         self.newTank = TestTank(self.rocket)
         self.newTank.fuel = -100
         self.assertEqual(self.newTank.fuel, 0)
+        self.newTank.fuel = 100
+        self.assertEqual(self.newTank.fuel, 100)
 
     def test_tank_reset(self):
         self.newTank = TestTank(self.rocket)
@@ -138,6 +140,12 @@ class RocketTestCase(unittest.TestCase):
         self.newTank.reset()
         self.assertEqual(self.tank_capacity, self.newTank.fuel)
 
-
+    #SAS TESTS
+    def test_sas_fuel(self):
+        self.theSAS = self.rocket.SASmodules[0]
+        self.theSAS.fuel = -100
+        self.assertEqual(self.theSAS.fuel, 0)
+        self.theSAS.fuel = 100
+        self.assertEqual(self.theSAS.fuel, 100)
 if __name__ == '__main__':
     unittest.main()
