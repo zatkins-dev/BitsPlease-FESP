@@ -115,12 +115,12 @@ class Drawer:
     @classmethod
     def drawCelestialBody(cls, screen, cb, offset, color=pg.Color("blue")):
         """
-        Draws a :py:class:`...physics.CelestialBody` object
+        Draws a :py:class:`physics.CelestialBody` object
 
         :param screen: Pygame surface to draw to
         :type screen: :py:class:`pygame.Surface`
         :param cb: `CelestialBody` object to draw
-        :type cb: :py:class:`..physics.CelestialBody`
+        :type cb: :py:class:`...physics.CelestialBody`
         :param offset: Offset bewteen pymunk and pygame coordinates
         :type offset: :py:class:`pymunk.vec2d.Vec2d`
         :param color: Color of circle

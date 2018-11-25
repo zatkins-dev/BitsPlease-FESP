@@ -2,6 +2,7 @@ import pygame as pg
 from rockets import Component
 import math
 import os
+from . import _ASSETS_PATH
 
 class Tank(Component):
     
@@ -49,7 +50,7 @@ class Tank(Component):
 class TestTank(Tank):
     _vertices = [(-6, 18), (-6, -18), (6, -18), (6, 18)]
     _capacity = 20000
-    _sprite = pg.image.load(os.path.join("assets", "sprites", "fueltank.png"))
+    _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "fueltank.png"))
     _density = 73.8
 
     def __init__(self, body, transform=None, radius=0):

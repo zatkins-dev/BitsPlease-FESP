@@ -455,7 +455,7 @@ class DeltaVee(SolidThruster):
         }
 
 class SandSquid(LiquidThruster):
-    _sprite = pg.image.load(os.path.join("assets", "sprites", "SandSquid.png"))
+    _sprite = pg.image.load(os.path.join(_ASSETS_PATH, "sprites", "SandSquid.png"))
     
     def __init__(self, body, transform=None, radius=0):
        LiquidThruster.__init__(self, body, transform=transform,  radius=radius)
