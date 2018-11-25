@@ -19,6 +19,8 @@ class RocketTestCase(unittest.TestCase):
         self.rocket = Rocket(self.baseComponents)
 
     def test_default_rocket(self):
+        self.rocket = genRocket(self.space)
+
         # test if rocket was actually added to our space
         self.assertEqual(self.rocket.space, self.space)
 
@@ -26,9 +28,6 @@ class RocketTestCase(unittest.TestCase):
         self.assertIs(self.rocket.components, self.baseComponents)
 
     def test_rocket_constructor(self):
-
-        self.rocket = Rocket(genRocket)
-
         # test initial conditions... destroyed, saslock, etc.
         self.assertFalse(self.rocket.destroyed)
         self.assertFalse(self.rocket.isAngleLocked)
