@@ -34,7 +34,7 @@ class RocketTestCase(unittest.TestCase):
         self.assertEqual(self.rocket.throttle, 0)
 
         # test that the component lists are the same
-        self.assertListEqual(self.rocket.components, self.baseComponents)
+        self.assertCountEqual(self.rocket.components, self.baseComponents)
 
         # test that components bodies were made to be the rocket
         for component in self.rocket.components:
@@ -137,11 +137,11 @@ class RocketTestCase(unittest.TestCase):
 
     def test_rocket_angle_locking(self):
         self.rocket.isAngleLocked = True
-        self.assertEqual(self.rocket.isAngleLocked, True)
+        self.assertTrue(self.rocket.isAngleLocked)
         self.rocket.removeComponent(self.rocket.SASmodules[0])
-        self.assertEqual(self.rocket.isAngleLocked, False)
+        self.assertFalse(self.rocket.isAngleLocked)
         self.rocket.isAngleLocked = True
-        self.assertEqual(self.rocket.isAngleLocked, False)
+        self.assertFalse(self.rocket.isAngleLocked)
 
     def test_rocket_reset(self):
         self.newTank = TestTank(self.rocket)
@@ -149,10 +149,11 @@ class RocketTestCase(unittest.TestCase):
         self.rocket.addComponent(self.newTank)
         self.rocket.throttle = 0.5
         self.rocket.isAngleLocked = True
+        self.rocket.destroyed = True
         self.rocket.reset()
-        self.assertEqual(self.rocket.tanks, [])
+        self.assertFalse(self.rocket.destroyed)
         self.assertEqual(self.rocket.throttle, 0)
-        self.assertEqual(self.rocket.isAngleLocked, False)
+        self.assertFalse(self.rocket.isAngleLocked)
 
 class SolidThrusterTestCase(unittest.TestCase):
     def setUp(self):
@@ -538,7 +539,7 @@ class ZoomTestCase(unittest.TestCase):
         self.assertEqual(2, self.zoom.zoom)
 
     def test_zoom_zoomin_zoomout(self):
-        curzoom = self.zoom
+        curzoom = self.zoom.zoom
         self.zoom.zoom_in()
         self.assertEqual(curzoom*2, self.zoom.zoom)
         self.zoom.zoom_out()
