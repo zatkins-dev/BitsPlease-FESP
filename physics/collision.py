@@ -18,8 +18,8 @@ def post_solve_component_celestialbody(arbiter, space, data):
     """
     Determines what happens when two objects collide.
 
-    :param arbiter: The :py:class:`pymunk.Body whose stats decide if a :py:class:`Component` will break.
-    :type arbiter: :py:class:`pymunk.Body`
+    :param arbiter: The :py:class:`Arbiter` that stores data about the collision.
+    :type arbiter: :py:class:`pymunk.Arbiter`
     """
     component = None
     for shape in arbiter.shapes:
