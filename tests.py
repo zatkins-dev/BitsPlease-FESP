@@ -134,5 +134,32 @@ class SolidThrusterTestCase(unittest.TestCase):
     def test_reset(self):
         self.assertEqual(self.thruster.fuel, self.thruster.maxFuel)
 
+class LiquidThrusterTestCase(unittest.TestCase):
+    def setUp(self):
+        self.space = pm.Space(threaded=True)
+        self.thruster = SandSquid(None)
+        self.tanks = [TestTank(None), TestTank(None)]
+        self.rocket = Rocket([self.thruster] + self.tanks)
+        self.space.add(self.rocket)
+        self.space.add(self.thruster)
+
+    def test_apply_thrust_fuel(self):
+        throttle = 1
+        timeScale = 1
+        prevFuel = self.thruster.fuel
+        self.thruster.applyThrust(throttle, timeScale)
+        newFuel = self.thruster.fuel
+
+        self.assertAlmostEqual(newFuel, prevFuel - throttle * timeScale)
+
+        throttle = .5
+        timeScale = 64
+        prevFuel = self.thruster.fuel
+        self.thruster.applyThrust(throttle, timeScale)
+        newFuel = self.thruster.fuel
+
+        self.assertAlmostEqual(newFuel, prevFuel - throttle * timeScale)
+
+
 if __name__ == '__main__':
     unittest.main()
