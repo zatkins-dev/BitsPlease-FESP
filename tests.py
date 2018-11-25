@@ -1,5 +1,5 @@
 import unittest
-from graphics import Video, Zoom
+from graphics import Video, Zoom, Explosion, Drawer
 Video.init()
 
 from rockets.testrocket import genRocket
@@ -7,6 +7,8 @@ from rockets import Rocket, CommandModule, UpGoer2000, DeltaVee, SandSquid, Adva
 import pymunk as pm
 import pygame as pg
 from time import sleep
+
+from physics import timescale
 
 from audio import AudioManager
 
@@ -214,7 +216,7 @@ class LiquidThrusterTestCase(unittest.TestCase):
 
         self.assertAlmostEqual(newFuel, prevFuel - throttle * timeScale)
 
-class  AudioTestCase(unittest.TestCase):
+class AudioTestCase(unittest.TestCase):
     def setup(self):
         self.space = pm.Space(threaded=True)
         self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
@@ -427,8 +429,7 @@ class  AudioTestCase(unittest.TestCase):
         #Should stop music
         audioManager.silenceMusic()
         self.assertFalse(pg.mixer.music.get_busy())
-
-class  TankTestCase(unittest.TestCase):
+class TankTestCase(unittest.TestCase):
 #TANK TESTS
     def setup(self):
         self.space = pm.Space(threaded=True)
@@ -447,13 +448,7 @@ class  TankTestCase(unittest.TestCase):
         self.newTank.reset()
         self.assertEqual(self.tank_capacity, self.newTank.fuel)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 3b77d5b5826ee496e3f5b7c6ca08c41734e0c17d
-=======
->>>>>>> d87349c6f4394c0a755d1e9467740aa9efd4ab87
-class  SASTestCase(unittest.TestCase):
+class SASTestCase(unittest.TestCase):
 #SAS TESTS
     def setup(self):
         self.space = pm.Space(threaded=True)
@@ -473,15 +468,114 @@ class  SASTestCase(unittest.TestCase):
         self.theSAS.reset()
         self.assertEqual(self.sas_maxfuel, self.theSAS.fuel)
 
+class TimescaleTestCase(unittest.TestCase):
+    def setUp(self):
+        self.timescale = TimeScale()
+
+    def test_scale_faster(self):
+        scale = self.timescale.scale
+        self.timescale.faster()
+
+        assertEquals(scale * 2, self.timescale.scale)
+
+    def test_scale_slower(self):
+        scale = self.timescale.scale
+        self.timescale.slower()
+
+        assertEquals(scale / 2.0, self.timescale.scale)
+
+    def test_scale_set(self):
+        returnVal = self.timescale._set_scale(self.timescale._MAX_SCALE)
+        self.assertEquals(self.timescale.scale, self.timescale._MAX_SCALE)
+        self.assertTrue(returnVal)
+
+        returnVal = self.timescale._set_scale(self.timescale._MIN_SCALE)
+        self.assertEquals(self.timescale.scale, self.timescale._MIN_SCALE)
+        self.assertTrue(returnVal)
+
+        prevScale = self.timescale.scale
+        returnVal = self.timescale._set_scale(self.timescale._MAX_SCALE + 1)
+        self.assertEqual(prevScale, self.timescale.scale)
+        self.assertFalse(returnVal)
+
+        self.timescale._set_scale(self.timescale._MIN_SCALE - 1)
+        self.assertEqual(prevScale, self.timescale.scale)
+        self.assertFalse(returnVal)
+
+    def test_scale_reset(self):
+        baseScale = self.timescale.scale
+        self.timescale._set_scale(self.timescale._MIN_SCALE)
+
+        self.assertTrue(self.timescale.reset())
+        self.assertEqual(self.timescale.scale, baseScale)
+
+class ExplosionTestCase(unittest.TestCase):
+    def setUp(self):
+        self.explosion = Explosion(1, range(5))
+
+    def test_explosion_loop(self):
+        numImages = len(self.explosion.images)
+        for i in range(numImages * 2):
+            self.assertEqual(i % numImages, self.explosion.current_frame)
+            self.assertEqual(i % numImages, self.explosion.image)
+
+            self.explosion.update_frame()
+
 class ZoomTestCase(unittest.TestCase):
     #ZOOM TESTS
+    def setUp(self):
+        self.zoom = Zoom()
+
+    def test_zoom_zoom(self):
+        curzoom = self.zoom
+        self.zoom.zoom = 2**-17
+        self.assertEqual(curzoom, self.zoom.zoom)
+        self.zoom.zoom = 80000
+        self.assertEqual(curzoom, self.zoom.zoom)
+        self.zoom.zoom = 2
+        self.assertEqual(2, self.zoom.zoom)
+
+    def test_zoom_zoomin_zoomout(self):
+        curzoom = self.zoom
+        self.zoom.zoom_in()
+        assertEquals(curzoom*2, self.zoom.zoom)
+        self.zoom.zoom_out()
+        assertEquals(curzoom, self.zoom.zoom)
+
+    def test_zoom_reset(self):
+        self.zoom.reset()
+        assertEquals(self.zoom.zoom, 1)
+
+class PhysicsTestCase(unittest.TestCase):
     def setup(self):
-<<<<<<< HEAD
-        self.zoom
-=======
->>>>>>> 3b77d5b5826ee496e3f5b7c6ca08c41734e0c17d
-=======
-        self.theZoom = self.
->>>>>>> d87349c6f4394c0a755d1e9467740aa9efd4ab87
+        self.space = pm.Space(threaded=True)
+
+    def test_gravity(self):
+        c1 = CelestialBody('earth', self.space, 10**20, 796375, (0, 0), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
+        testPosition = Vec2D(0, 1000)
+
+        self.assertEqual(Physics.gravity(c1, testPosition), Vec2D(0, 66738400))
+
+    def test_netGravity(self):
+        c1 = CelestialBody('earth', self.space, 10**20, 796375, (0, 1000), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
+        c2 = CelestialBody('moon', self.space, 10**15, 796375, (1000, 0), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
+        testPosition = (0, 0)
+
+        self.assertEqual((Physics.netGravity([c1,c2]), testPosition), Vec2d(66.7384, 66738400))
+
+class DrawerTestCase(unittest.TestCase):
+    def setup(self):
+        self.drawer = Drawer()
+        self.space = pm.Space(threaded=True)
+        self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
+        self.rocket = Rocket(self.baseComponents)
+    def test_drawer_inRange(self):
+        coords =[-1, 99]
+        themax = [77, 77]
+        self.assertFalse(inRange(themax, coords))
+        coords =[5, 5]
+        self.assertTrue(inRange(themax, coords))
+
+
 if __name__ == '__main__':
     unittest.main()
