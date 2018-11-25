@@ -540,13 +540,13 @@ class ZoomTestCase(unittest.TestCase):
     def test_zoom_zoomin_zoomout(self):
         curzoom = self.zoom
         self.zoom.zoom_in()
-        assertEqual(curzoom*2, self.zoom.zoom)
+        self.assertEqual(curzoom*2, self.zoom.zoom)
         self.zoom.zoom_out()
-        assertEqual(curzoom, self.zoom.zoom)
+        self.assertEqual(curzoom, self.zoom.zoom)
 
     def test_zoom_reset(self):
         self.zoom.reset()
-        assertEqual(self.zoom.zoom, 1)
+        self.assertEqual(self.zoom.zoom, 1)
 
 class PhysicsTestCase(unittest.TestCase):
     def setup(self):
