@@ -5,48 +5,6 @@ from rockets import Rocket, UpGoer2000, LeftRCS, RightRCS, CommandModule, Advanc
 import os
 import sys
 
-
-def genOrbiter(b):
-    """Generate new component (orbiter).
-
-    Args:
-        b (Body): Rocket body to attach to.
-
-    Returns:
-        Component: Orbiter component for prototype rocket.
-
-    """
-    orbiter = CommandModule(b, radius=1)
-    return orbiter
-
-
-def genTank(b):
-    """Generate new thruster for rocket.
-
-    Args:
-        b (Body): Rocket body to attach to.
-
-    Returns:
-        Thruster: Thruster for prototype rocket.
-
-    """
-    tank = UpGoer2000(b, radius=1)
-    return tank
-
-
-def genSAS(b):
-    """Generate new SAS for prototype rocket.
-
-    Args:
-        b (Body): Rocket body to attach to.
-
-    Returns:
-        SAS: SAS for prototype rocket.
-
-    """
-    sas = AdvancedSAS(b)
-    return sas
-
 def genRocket(space):
     """Generate prototype rocket with orbiter, thruster, and SAS.
 
@@ -57,7 +15,7 @@ def genRocket(space):
         Rocket: Generated prototype rocket.
 
     """
-    rocket = Rocket([genTank(None), genSAS(None), genOrbiter(None), LeftRCS(None), RightRCS(None)])
+    rocket = Rocket([UpGoer2000(None), AdvancedSAS(None), CommandModule(None), LeftRCS(None), RightRCS(None)])
     space.add(rocket)
     for c in rocket.components:
         space.add(c)
