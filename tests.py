@@ -9,6 +9,8 @@ import pygame as pg
 from time import sleep
 from physics import Physics, CelestialBody, TimeScale
 
+import time
+
 from audioManager import AudioManager
 
 class RocketTestCase(unittest.TestCase):
@@ -431,6 +433,7 @@ class AudioTestCase(unittest.TestCase):
         #Should stop music
         self.audioManager.silenceMusic()
         self.assertFalse(pg.mixer.music.get_busy())
+
 class TankTestCase(unittest.TestCase):
 #TANK TESTS
     def setUp(self):
