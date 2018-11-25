@@ -561,7 +561,7 @@ class PhysicsTestCase(unittest.TestCase):
         c2 = CelestialBody('moon', self.space, 10**15, 796375, (1000, 0), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
         testPosition = (0, 0)
 
-        self.assertEqual(Physics.netGravity([c1,c2]), testPosition), Vec2d(66.7384, 66738400))
+        self.assertEqual((Physics.netGravity([c1,c2]), testPosition), Vec2d(66.7384, 66738400))
 
 class DrawerTestCase(unittest.TestCase):
     def setup(self):
