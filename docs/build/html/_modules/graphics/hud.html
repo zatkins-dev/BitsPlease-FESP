@@ -1,0 +1,591 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>graphics.hud &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">BitsPlease-FESP</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>graphics.hud</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for graphics.hud</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pygame</span> <span class="k">as</span> <span class="nn">pg</span>
+<span class="kn">import</span> <span class="nn">pymunk</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Graphics</span> <span class="k">as</span> <span class="n">graph</span>
+<span class="kn">from</span> <span class="nn">rockets</span> <span class="k">import</span> <span class="n">Thruster</span>
+<span class="kn">from</span> <span class="nn">rockets</span> <span class="k">import</span> <span class="n">SAS</span>
+<span class="kn">from</span> <span class="nn">physics</span> <span class="k">import</span> <span class="n">TimeScale</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Drawer</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Zoom</span>
+
+
+<div class="viewcode-block" id="HUD"><a class="viewcode-back" href="../../graphics.html#graphics.HUD">[docs]</a><span class="k">class</span> <span class="nc">HUD</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        HUD holds diagnostic info and prints values to the screen.</span>
+
+<span class="sd">        :param _font: The font used to draw text to the screen</span>
+<span class="sd">        :type _font: :py:class:`pygame.Font`</span>
+<span class="sd">        :param int _navBallRadius: The radius in pixels of the Hud&#39;s navball</span>
+<span class="sd">        :param int _navBallSubRadius: The radius in pixels of the small viewport within the navball</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new HUD object </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># define a surface to hold a navball</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span> <span class="o">=</span> <span class="mi">75</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_navBallSubRadius</span> <span class="o">=</span> <span class="mi">65</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hudForegroundColor</span> <span class="o">=</span> <span class="p">(</span><span class="mi">75</span><span class="p">,</span><span class="mi">75</span><span class="p">,</span><span class="mi">75</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hudBackgroundColor</span> <span class="o">=</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fontColor</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_readableGreen</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">175</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_font</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s2">&quot;LucidaConsole&quot;</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bigFont</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s2">&quot;LucidaConsole&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_zoom</span> <span class="o">=</span> <span class="n">Zoom</span><span class="p">()</span>
+
+<div class="viewcode-block" id="HUD._drawCompassLine"><a class="viewcode-back" href="../../graphics.html#graphics.HUD._drawCompassLine">[docs]</a>    <span class="k">def</span> <span class="nf">_drawCompassLine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">innerRadius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outerRadius</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper function to draw a line along the normal/radius of a circle</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">innerRadius</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">outerRadius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">innerRadius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_navBallSubRadius</span>
+            <span class="n">outerRadius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span>
+        <span class="n">pg</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> 
+            <span class="p">(</span><span class="n">outerRadius</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span><span class="o">+</span><span class="n">outerRadius</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="n">outerRadius</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span><span class="o">+</span><span class="n">outerRadius</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">innerRadius</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span><span class="o">+</span><span class="n">outerRadius</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="n">innerRadius</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span><span class="o">+</span><span class="n">outerRadius</span><span class="p">),</span> <span class="n">size</span><span class="p">)</span></div>
+        
+
+<div class="viewcode-block" id="HUD._updateNavBall"><a class="viewcode-back" href="../../graphics.html#graphics.HUD._updateNavBall">[docs]</a>    <span class="k">def</span> <span class="nf">_updateNavBall</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rocket</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and returns a navball, containing directional information to a pygame Surface.</span>
+<span class="sd">        </span>
+<span class="sd">        :param rocket: The rocket who&#39;s information to use.</span>
+<span class="sd">        :type rocket: :py:class:`rockets.Rocket` </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># create a navball</span>
+        <span class="n">navBall</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">Surface</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span><span class="p">),</span> <span class="n">pg</span><span class="o">.</span><span class="n">SRCALPHA</span><span class="p">)</span>
+        <span class="n">navBall</span><span class="o">.</span><span class="n">fill</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="c1"># draw a circle - the navball</span>
+        <span class="n">pg</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">navBall</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hudForegroundColor</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span><span class="p">)</span>
+        <span class="c1"># draw some compass markings on the navball</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+            <span class="c1"># normal markings will have size 3</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="mi">3</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">3</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># markings on the poles (i=0,3,6,9) will have size 5</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="mi">5</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_drawCompassLine</span><span class="p">(</span><span class="n">navBall</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">6</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="c1"># make a new surface to blit into the navball</span>
+        <span class="n">subNavBall</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">Surface</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span><span class="p">),</span> <span class="n">pg</span><span class="o">.</span><span class="n">SRCALPHA</span><span class="p">)</span>
+        
+        <span class="c1"># the new surface will contain a darker inner circle for the navball</span>
+        <span class="c1"># this circle will contain a viewport for the rocket</span>
+        <span class="n">pg</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">subNavBall</span><span class="p">,</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_navBallSubRadius</span><span class="p">)</span>
+        <span class="c1"># create a mask, so we can sort out which parts are transparent when we blit the rocket</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">from_surface</span><span class="p">(</span><span class="n">subNavBall</span><span class="p">)</span>
+
+        <span class="c1"># draw the rocket onto the new subNavball</span>
+        <span class="c1"># set the zoom level to 1, and then restore afterwards</span>
+        <span class="n">preZoom</span> <span class="o">=</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span>
+        <span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zoom</span>
+        <span class="n">Drawer</span><span class="o">.</span><span class="n">drawMultiple</span><span class="p">(</span><span class="n">subNavBall</span><span class="p">,</span> <span class="n">rocket</span><span class="o">.</span><span class="n">components</span><span class="p">,</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">getOffset</span><span class="p">(</span><span class="n">subNavBall</span><span class="p">,</span> <span class="n">rocket</span><span class="p">))</span>
+        <span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="n">preZoom</span>
+
+        <span class="c1"># for any place where the mask showed a transparency, we should set to be transparent again</span>
+        <span class="c1"># this gives the look of a circular viewport</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">subNavBall</span><span class="o">.</span><span class="n">get_width</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">subNavBall</span><span class="o">.</span><span class="n">get_height</span><span class="p">()):</span>
+                <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">get_at</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">))</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">subNavBall</span><span class="o">.</span><span class="n">set_at</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_drawCompassLine</span><span class="p">(</span><span class="n">navBall</span><span class="p">,</span> <span class="n">rocket</span><span class="o">.</span><span class="n">angle</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">))</span>   <span class="c1"># direction</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_drawCompassLine</span><span class="p">(</span><span class="n">navBall</span><span class="p">,</span> <span class="n">rocket</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">angle</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>      <span class="c1"># velocity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_drawCompassLine</span><span class="p">(</span><span class="n">navBall</span><span class="p">,</span> <span class="n">rocket</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">angle</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>      <span class="c1"># anti-velocity</span>
+
+        <span class="n">navBall</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">subNavBall</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">navBall</span></div>
+
+<div class="viewcode-block" id="HUD._updateThrottle"><a class="viewcode-back" href="../../graphics.html#graphics.HUD._updateThrottle">[docs]</a>    <span class="k">def</span> <span class="nf">_updateThrottle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rocket</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and returns a surface containing the throttle of the provided `rocket`.</span>
+<span class="sd">        </span>
+<span class="sd">        :param rocket: The rocket whose throttle to use.</span>
+<span class="sd">        :type rocket: :py:class:`rockets.Rocket` </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># define some properties of the gauge</span>
+        <span class="n">gaugeSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span><span class="p">)</span>
+        <span class="n">gaugeBorder</span><span class="o">=</span> <span class="mi">5</span>
+
+        <span class="c1"># create the gauge, fill it, and draw a border</span>
+        <span class="n">gauge</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span><span class="n">gaugeSize</span><span class="p">)</span>
+        <span class="n">gauge</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hudBackgroundColor</span><span class="p">)</span>
+        <span class="n">gauge</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hudForegroundColor</span><span class="p">,</span> <span class="p">((</span><span class="n">gaugeBorder</span><span class="p">,</span><span class="n">gaugeBorder</span><span class="p">),(</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">gaugeBorder</span><span class="p">,</span> <span class="n">gaugeSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">gaugeBorder</span><span class="p">)))</span>
+
+        <span class="c1"># a small helper function to draw tick marks on the inside of the gauge</span>
+        <span class="k">def</span> <span class="nf">drawMark</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">)):</span>
+            <span class="n">pg</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">gauge</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> 
+                <span class="p">(</span><span class="n">gaugeBorder</span><span class="p">,</span> <span class="n">y</span><span class="o">*</span><span class="p">(</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">gaugeBorder</span><span class="p">)</span><span class="o">+</span><span class="n">gaugeBorder</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="p">(</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">gaugeBorder</span><span class="p">)</span><span class="o">+</span><span class="n">gaugeBorder</span><span class="p">,</span> <span class="n">y</span><span class="o">*</span><span class="p">(</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">gaugeBorder</span><span class="p">)</span><span class="o">+</span><span class="n">gaugeBorder</span><span class="p">),</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="c1"># draw tick marks at ever eighth</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">):</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="o">.</span><span class="mi">25</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">width</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="mi">3</span>
+            <span class="n">drawMark</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mi">8</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s2">&quot;Throttle&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fontColor</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+        <span class="n">gauge</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="p">((</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">)))</span>
+
+        <span class="c1"># draw one yellow mark to represent the current velocity</span>
+        <span class="n">drawMark</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">gauge</span></div>
+
+<div class="viewcode-block" id="HUD._updateVelocity"><a class="viewcode-back" href="../../graphics.html#graphics.HUD._updateVelocity">[docs]</a>    <span class="k">def</span> <span class="nf">_updateVelocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rocket</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and returns a surface containing the velocity of the provided `rocket`.</span>
+<span class="sd">        </span>
+<span class="sd">        :param rocket: The rocket whose velocity to use.</span>
+<span class="sd">        :type rocket: :py:class:`rockets.Rocket` </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">velSurfSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">215</span><span class="p">,</span><span class="mi">40</span><span class="p">)</span>
+        <span class="n">velSurfBorder</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">velSurf</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span><span class="n">velSurfSize</span><span class="p">)</span>
+        <span class="n">velSurf</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hudBackgroundColor</span><span class="p">)</span>
+        <span class="n">velSurf</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hudForegroundColor</span><span class="p">,</span> <span class="p">(</span><span class="n">velSurfBorder</span><span class="p">,</span><span class="n">velSurfBorder</span><span class="p">,</span><span class="n">velSurfSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">velSurfBorder</span><span class="p">,</span><span class="n">velSurfSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">velSurfBorder</span><span class="p">))</span>
+
+        <span class="n">velString</span> <span class="o">=</span> <span class="s2">&quot;Velocity: &quot;</span>
+
+
+        <span class="n">velNumber</span> <span class="o">=</span> <span class="n">rocket</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">length</span>
+
+        <span class="c1"># find the number of spaces we need to pad the string with</span>
+        <span class="n">velString</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">5</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">velNumber</span><span class="p">)))</span>
+        <span class="n">velString</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">velNumber</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">velString</span> <span class="o">+=</span> <span class="s2">&quot;m/s&quot;</span>
+
+        <span class="n">textSize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bigFont</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">velString</span><span class="p">)</span>
+        <span class="n">velTextPosition</span> <span class="o">=</span> <span class="p">((</span><span class="n">velSurf</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">-</span><span class="n">textSize</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">textSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">velSurf</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">drawTextCenter</span><span class="p">(</span><span class="n">velTextPosition</span><span class="p">,</span> <span class="n">velString</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bigFont</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fontColor</span><span class="p">,</span> <span class="n">velSurf</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">velSurf</span></div>
+
+<div class="viewcode-block" id="HUD._updateZoom"><a class="viewcode-back" href="../../graphics.html#graphics.HUD._updateZoom">[docs]</a>    <span class="k">def</span> <span class="nf">_updateZoom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zoom</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and returns a surface containing the current zoom level.</span>
+<span class="sd">        </span>
+<span class="sd">        :param float zoom: The current zoom level.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">zoomSurfSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">215</span><span class="p">,</span><span class="mi">35</span><span class="p">)</span>
+        <span class="n">zoomSurfBorder</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">zoomSurf</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span><span class="n">zoomSurfSize</span><span class="p">)</span>
+        <span class="n">zoomSurf</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hudBackgroundColor</span><span class="p">)</span>
+        <span class="n">zoomSurf</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hudForegroundColor</span><span class="p">,</span> <span class="p">(</span><span class="n">zoomSurfBorder</span><span class="p">,</span><span class="n">zoomSurfBorder</span><span class="p">,</span><span class="n">zoomSurfSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">zoomSurfBorder</span><span class="p">,</span><span class="n">zoomSurfSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">zoomSurfBorder</span><span class="p">))</span>
+
+        <span class="n">zoomString</span> <span class="o">=</span> <span class="s2">&quot;Zoom: &quot;</span>
+
+        <span class="n">zoomMag</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">zoom</span><span class="p">))</span>
+
+        <span class="n">zoomNumber</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="nb">abs</span><span class="p">(</span><span class="n">zoomMag</span><span class="p">)</span>
+
+        <span class="c1"># find the number of spaces we need to pad the string with</span>
+        <span class="n">zoomString</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">zoomNumber</span><span class="p">)))</span> <span class="k">if</span> <span class="n">zoomMag</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">13</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">zoomNumber</span><span class="p">)))</span>
+        <span class="n">zoomString</span> <span class="o">+=</span> <span class="s2">&quot;1/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">zoomNumber</span><span class="p">)</span> <span class="k">if</span> <span class="n">zoomMag</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">zoomNumber</span><span class="p">)</span>
+        <span class="n">zoomString</span> <span class="o">+=</span> <span class="s2">&quot;x&quot;</span>
+
+        <span class="n">textSize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bigFont</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">zoomString</span><span class="p">)</span>
+        <span class="n">zoomTextPosition</span> <span class="o">=</span> <span class="p">((</span><span class="n">zoomSurf</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">-</span><span class="n">textSize</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">textSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">zoomSurf</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="n">zoomSurfBorder</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">drawTextCenter</span><span class="p">(</span><span class="n">zoomTextPosition</span><span class="p">,</span> <span class="n">zoomString</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bigFont</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fontColor</span><span class="p">,</span> <span class="n">zoomSurf</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">zoomSurf</span></div>
+
+<div class="viewcode-block" id="HUD._updateTimeScale"><a class="viewcode-back" href="../../graphics.html#graphics.HUD._updateTimeScale">[docs]</a>    <span class="k">def</span> <span class="nf">_updateTimeScale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and returns a surface containing the current ammount time is scaled by.</span>
+<span class="sd">        </span>
+<span class="sd">        :param float scale: The current ammount time is scaled by.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scaleSurfSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">215</span><span class="p">,</span><span class="mi">35</span><span class="p">)</span>
+        <span class="n">scaleSurfBorder</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">scaleSurf</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span><span class="n">scaleSurfSize</span><span class="p">)</span>
+        <span class="n">scaleSurf</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hudBackgroundColor</span><span class="p">)</span>
+        <span class="n">scaleSurf</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hudForegroundColor</span><span class="p">,</span> <span class="p">(</span><span class="n">scaleSurfBorder</span><span class="p">,</span><span class="n">scaleSurfBorder</span><span class="p">,</span><span class="n">scaleSurfSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">scaleSurfBorder</span><span class="p">,</span><span class="n">scaleSurfSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">scaleSurfBorder</span><span class="p">))</span>
+
+        <span class="n">scaleString</span> <span class="o">=</span> <span class="s2">&quot;Time Scale: &quot;</span>
+
+        <span class="n">scaleMag</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">scale</span><span class="p">))</span>
+
+        <span class="n">scaleNumber</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="nb">abs</span><span class="p">(</span><span class="n">scaleMag</span><span class="p">)</span>
+
+        <span class="c1"># find the number of spaces we need to pad the string with</span>
+        <span class="n">scaleString</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">5</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">scaleNumber</span><span class="p">)))</span> <span class="k">if</span> <span class="n">scaleMag</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">7</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">scaleNumber</span><span class="p">)))</span>
+        <span class="n">scaleString</span> <span class="o">+=</span> <span class="s2">&quot;1/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">scaleNumber</span><span class="p">)</span> <span class="k">if</span> <span class="n">scaleMag</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">scaleNumber</span><span class="p">)</span>
+        <span class="n">scaleString</span> <span class="o">+=</span> <span class="s2">&quot;x&quot;</span>
+
+        <span class="n">textSize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bigFont</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">scaleString</span><span class="p">)</span>
+        <span class="n">scaleTextPosition</span> <span class="o">=</span> <span class="p">((</span><span class="n">scaleSurf</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">-</span><span class="n">textSize</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">textSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">scaleSurf</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="n">scaleSurfBorder</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">drawTextCenter</span><span class="p">(</span><span class="n">scaleTextPosition</span><span class="p">,</span> <span class="n">scaleString</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bigFont</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fontColor</span><span class="p">,</span> <span class="n">scaleSurf</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">scaleSurf</span></div>
+
+<div class="viewcode-block" id="HUD._updateSASFuel"><a class="viewcode-back" href="../../graphics.html#graphics.HUD._updateSASFuel">[docs]</a>    <span class="k">def</span> <span class="nf">_updateSASFuel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rocket</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and returns a surface containing the ammound of SAS Fuel that the provided</span>
+<span class="sd">        `rocket` has remaining.</span>
+<span class="sd">        </span>
+<span class="sd">        :param rocket: The rocket whose SAS Fuel should be displayed.</span>
+<span class="sd">        :type rocket: :py:class:`rockets.Rocket` </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># define some properties of the gauge</span>
+        <span class="n">gaugeSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span><span class="p">)</span>
+        <span class="n">gaugeBorder</span><span class="o">=</span> <span class="mi">5</span>
+
+        <span class="c1"># create the gauge, fill it, and draw a border</span>
+        <span class="n">gauge</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span><span class="n">gaugeSize</span><span class="p">)</span>
+        <span class="n">gauge</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hudBackgroundColor</span><span class="p">)</span>
+        <span class="n">gauge</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hudForegroundColor</span><span class="p">,</span> <span class="p">((</span><span class="n">gaugeBorder</span><span class="p">,</span><span class="n">gaugeBorder</span><span class="p">),(</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">gaugeBorder</span><span class="p">,</span> <span class="n">gaugeSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">gaugeBorder</span><span class="p">)))</span>
+
+        <span class="c1"># find the maximum SAS fuel, and the current fuel</span>
+        <span class="n">maxFuel</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">curFuel</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">rocket</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">:</span>
+            <span class="n">maxFuel</span> <span class="o">+=</span> <span class="n">module</span><span class="o">.</span><span class="n">maxFuel</span>
+            <span class="n">curFuel</span> <span class="o">+=</span> <span class="n">module</span><span class="o">.</span><span class="n">fuel</span>
+        
+        <span class="c1"># ratio of fuel left</span>
+        <span class="n">fuelLeft</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">maxFuel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">fuelLeft</span> <span class="o">=</span> <span class="n">curFuel</span> <span class="o">/</span> <span class="n">maxFuel</span>
+
+        <span class="n">gauge</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_readableGreen</span><span class="p">,</span> <span class="p">(</span> <span class="c1"># fill a rect that is equal to the proportion of the gauge the fuel will fill</span>
+            <span class="p">(</span><span class="n">gaugeBorder</span><span class="p">,</span> <span class="n">gaugeBorder</span> <span class="o">+</span> <span class="p">(</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gaugeBorder</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">fuelLeft</span><span class="p">)),</span>
+            <span class="p">(</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gaugeBorder</span><span class="p">,</span> <span class="p">(</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gaugeBorder</span><span class="p">)</span> <span class="o">*</span> <span class="n">fuelLeft</span><span class="p">)</span>
+        <span class="p">))</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s2">&quot;SAS Fuel&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fontColor</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+        <span class="n">gauge</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="p">((</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">gauge</span></div>
+
+<div class="viewcode-block" id="HUD._updateThrusterFuel"><a class="viewcode-back" href="../../graphics.html#graphics.HUD._updateThrusterFuel">[docs]</a>    <span class="k">def</span> <span class="nf">_updateThrusterFuel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rocket</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and returns a surface displaying the ammount of fuel left in each of the thrusters on the provided `rocket`</span>
+<span class="sd">        </span>
+<span class="sd">        :param rocket: The rocket whose thruster fuel should be displayed.</span>
+<span class="sd">        :type rocket: :py:class:`rockets.Rocket` </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">thrusters</span> <span class="o">=</span> <span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span>
+        <span class="n">thrusters</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">maxFuel</span><span class="p">)</span>
+
+        <span class="n">gaugeSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+        <span class="n">gaugeBorder</span><span class="o">=</span> <span class="mi">5</span>
+
+        <span class="n">overallSize</span> <span class="o">=</span> <span class="p">(</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gaugeSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">thrusters</span><span class="p">)</span> <span class="o">+</span> <span class="n">gaugeBorder</span><span class="p">)</span>
+
+        <span class="n">gauge</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span><span class="n">overallSize</span><span class="p">)</span>
+        <span class="n">gauge</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hudBackgroundColor</span><span class="p">)</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">thruster</span> <span class="ow">in</span> <span class="n">thrusters</span><span class="p">:</span>
+            <span class="n">innerPos</span> <span class="o">=</span> <span class="p">(</span><span class="n">gaugeBorder</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">gaugeSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">gaugeBorder</span><span class="p">)</span>
+            <span class="n">gauge</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hudForegroundColor</span><span class="p">,</span> <span class="p">(</span>
+                <span class="n">innerPos</span><span class="p">,</span> 
+                <span class="p">(</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">gaugeBorder</span><span class="p">,</span> <span class="n">gaugeSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">gaugeBorder</span><span class="p">)</span>
+            <span class="p">))</span>
+
+            <span class="n">fuelLeft</span> <span class="o">=</span> <span class="n">thruster</span><span class="o">.</span><span class="n">fuel</span> <span class="o">/</span> <span class="n">thruster</span><span class="o">.</span><span class="n">maxFuel</span>
+
+            <span class="n">gauge</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_readableGreen</span><span class="p">,</span> <span class="p">(</span>
+                <span class="n">innerPos</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">fuelLeft</span> <span class="o">*</span> <span class="p">(</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">gaugeBorder</span><span class="p">),</span> <span class="n">gaugeSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">gaugeBorder</span><span class="p">)</span>
+            <span class="p">))</span>
+
+            <span class="n">textPos</span> <span class="o">=</span> <span class="p">(</span><span class="n">innerPos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">gaugeBorder</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">innerPos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">gaugeSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">gaugeBorder</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+
+            <span class="n">graph</span><span class="o">.</span><span class="n">drawTextCenter</span><span class="p">(</span><span class="n">textPos</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">thruster</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fontColor</span><span class="p">,</span> <span class="n">gauge</span><span class="p">)</span>
+
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">gauge</span></div>
+
+<div class="viewcode-block" id="HUD._updateSASIndicator"><a class="viewcode-back" href="../../graphics.html#graphics.HUD._updateSASIndicator">[docs]</a>    <span class="k">def</span> <span class="nf">_updateSASIndicator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rocket</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and returns a surface indicating whether or not the provided `rocket` is currently locked to an angle using SAS.</span>
+<span class="sd">        </span>
+<span class="sd">        :param rocket: The rocket whose SAS state should be checked.</span>
+<span class="sd">        :type rocket: :py:class:`rockets.Rocket` </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">indicatorSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">35</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">indicatorBorder</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">indicator</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span><span class="n">indicatorSize</span><span class="p">)</span>
+
+        <span class="n">indicator</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hudBackgroundColor</span><span class="p">)</span>
+
+        <span class="c1"># find the correct interior color: red if off, green if on</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readableGreen</span>
+
+        <span class="c1"># fill the interior</span>
+        <span class="n">indicator</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="n">indicatorBorder</span><span class="p">),</span> <span class="p">(</span><span class="n">indicatorSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">indicatorBorder</span><span class="p">,</span> <span class="n">indicatorSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">indicatorBorder</span><span class="p">)))</span>
+
+        <span class="n">graph</span><span class="o">.</span><span class="n">drawTextCenter</span><span class="p">(((</span><span class="n">indicatorSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">indicatorBorder</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">indicatorSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;SAS&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fontColor</span><span class="p">,</span> <span class="n">indicator</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">indicator</span></div>
+            
+
+
+<div class="viewcode-block" id="HUD.updateHUD"><a class="viewcode-back" href="../../graphics.html#graphics.HUD.updateHUD">[docs]</a>    <span class="k">def</span> <span class="nf">updateHUD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rocket</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws relevant information from the provided `rocket` to the screen, like the throttle,</span>
+<span class="sd">        velocity, and fuel. Also displays time and zoom information.</span>
+
+<span class="sd">        :param rocket: The rocket whose information should be checked.</span>
+<span class="sd">        :type rocket: :py:class:`rockets.Rocket` </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">navBallPos</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span><span class="p">))</span>
+        <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_updateNavBall</span><span class="p">(</span><span class="n">rocket</span><span class="p">),</span> <span class="n">navBallPos</span><span class="p">)</span>
+
+        <span class="n">throttleGauge</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_updateThrottle</span><span class="p">(</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="n">throttlePos</span> <span class="o">=</span> <span class="p">(</span><span class="n">navBallPos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">throttleGauge</span><span class="o">.</span><span class="n">get_width</span><span class="p">(),</span> <span class="n">navBallPos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_updateThrottle</span><span class="p">(</span><span class="n">rocket</span><span class="p">),</span> <span class="n">throttlePos</span><span class="p">)</span>
+
+        <span class="n">velocity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_updateVelocity</span><span class="p">(</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="n">velocityPos</span> <span class="o">=</span> <span class="p">(</span><span class="n">throttlePos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">velocity</span><span class="o">.</span><span class="n">get_width</span><span class="p">(),</span> <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">-</span><span class="n">velocity</span><span class="o">.</span><span class="n">get_height</span><span class="p">())</span>
+        <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_updateVelocity</span><span class="p">(</span><span class="n">rocket</span><span class="p">),</span> <span class="n">velocityPos</span><span class="p">)</span>
+
+        <span class="n">zoom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_updateZoom</span><span class="p">(</span><span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">)</span>
+        <span class="n">zoomPos</span> <span class="o">=</span> <span class="p">(</span><span class="n">velocityPos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">velocityPos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">zoom</span><span class="o">.</span><span class="n">get_height</span><span class="p">())</span>
+        <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">zoom</span><span class="p">,</span> <span class="n">zoomPos</span><span class="p">)</span>
+
+        <span class="n">timeScale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_updateTimeScale</span><span class="p">(</span><span class="n">TimeScale</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+        <span class="n">timeScalePos</span> <span class="o">=</span> <span class="p">(</span><span class="n">zoomPos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">zoomPos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">timeScale</span><span class="o">.</span><span class="n">get_height</span><span class="p">())</span>
+        <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">timeScale</span><span class="p">,</span> <span class="n">timeScalePos</span><span class="p">)</span>
+
+        <span class="n">sasFuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_updateSASFuel</span><span class="p">(</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="n">sasFuelPos</span> <span class="o">=</span> <span class="p">(</span><span class="n">navBallPos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_navBallRadius</span><span class="p">,</span> <span class="n">navBallPos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">sasFuel</span><span class="p">,</span> <span class="n">sasFuelPos</span><span class="p">)</span>
+
+        <span class="n">sasIndicator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_updateSASIndicator</span><span class="p">(</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="n">sasIndicatorPos</span> <span class="o">=</span> <span class="p">(</span><span class="n">sasFuelPos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">sasFuel</span><span class="o">.</span><span class="n">get_width</span><span class="p">(),</span> <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">-</span> <span class="n">sasIndicator</span><span class="o">.</span><span class="n">get_height</span><span class="p">())</span>
+        <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">sasIndicator</span><span class="p">,</span> <span class="n">sasIndicatorPos</span><span class="p">)</span>
+
+        <span class="n">thrusterFuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_updateThrusterFuel</span><span class="p">(</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="n">thrusterFuelPos</span> <span class="o">=</span> <span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">-</span> <span class="n">thrusterFuel</span><span class="o">.</span><span class="n">get_width</span><span class="p">(),</span> <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">-</span> <span class="n">thrusterFuel</span><span class="o">.</span><span class="n">get_height</span><span class="p">())</span>
+        <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">thrusterFuel</span><span class="p">,</span> <span class="n">thrusterFuelPos</span><span class="p">)</span></div></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

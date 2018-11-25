@@ -1,0 +1,408 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>graphics.graphics &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">BitsPlease-FESP</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>graphics.graphics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for graphics.graphics</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pygame</span>
+<span class="kn">from</span> <span class="nn">graphics.drawer</span> <span class="k">import</span> <span class="n">Drawer</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<div class="viewcode-block" id="Graphics"><a class="viewcode-back" href="../../graphics.html#graphics.Graphics">[docs]</a><span class="k">class</span> <span class="nc">Graphics</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Graphics contains a few very common graphics and UI components used in many places.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: A state variable that stores whether a button is currently being pressed.</span>
+    <span class="c1">#: This is used to prevent buttons&#39; actions from executing on every single frame.</span>
+    <span class="n">_buttonIsClicked</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">#: A state variable that stores whether the star background has been drawn before.</span>
+    <span class="c1">#: Used to initialize the backgroudn on the first call of drawStars()</span>
+    <span class="n">_isBackgroundDrawn</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">#: A list of tuples that hold information about stars. The first number</span>
+    <span class="c1">#: is the x position, and the second number is the y position. The</span>
+    <span class="c1">#: final member is an rgb color tuple.</span>
+    <span class="n">_stars</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1">#: The width of the stars Surface</span>
+    <span class="n">_starsWidth</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1">#: THe height of the stars Surface</span>
+    <span class="n">_starsHeight</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="Graphics.drawButton"><a class="viewcode-back" href="../../graphics.html#graphics.Graphics.drawButton">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawButton</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">destSurf</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">buttonContent</span><span class="p">,</span>
+                   <span class="n">buttonContentSize</span><span class="p">,</span> <span class="n">buttonFunction</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Utility function that draws a button to the screen</span>
+
+<span class="sd">        :param destSurf: The Surface to draw the button onto.</span>
+<span class="sd">        :type screen: :py:class:`pygame.Surface`</span>
+<span class="sd">        :param pos: The positon of the top-left corner of the button</span>
+<span class="sd">        :type pos: (int, int)</span>
+<span class="sd">        :param size: The width and height respectively of the button</span>
+<span class="sd">        :type size: (int, int)</span>
+<span class="sd">        :param colors: A tuple containing two colors. The first is the unfocused color, and the second is the focused color</span>
+<span class="sd">        :type colors: (:py:class:`pygame.Color`, :py:class:`pygame.Color`)</span>
+<span class="sd">        :param buttonContent: This can be either a surface or a string. Either will be drawn to the center of the button</span>
+<span class="sd">        :type buttonContent: :py:class:`pygame.Surface` or :py:class:`string`</span>
+<span class="sd">        :param buttonContentSize: If the button content is a string, this will be the size of font used to render the text. If the content is a surface, this is the ammount of the button the surface will occupy, from 0 to 1</span>
+<span class="sd">        :param buttonFunction: This is the function that will be executed when the button is clicked on.</span>
+<span class="sd">        :type buttonFunction: :py:class:`types.FunctionType`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">buttonContent</span><span class="p">)</span> <span class="ow">is</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">:</span>
+            <span class="c1">#find the size of the sprite within the button</span>
+            <span class="n">newWidth</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">buttonContentSize</span> <span class="o">*</span> <span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">newHeight</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">buttonContentSize</span> <span class="o">*</span> <span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="c1">#scale the sprite to fit within the button</span>
+            <span class="k">if</span> <span class="n">buttonContent</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">buttonContent</span><span class="o">.</span><span class="n">get_height</span><span class="p">():</span>
+                <span class="n">ratio</span> <span class="o">=</span> <span class="n">buttonContent</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">/</span> <span class="n">buttonContent</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">buttonContent</span><span class="p">,</span> <span class="p">(</span><span class="n">newWidth</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">newHeight</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">)))</span>
+            <span class="k">elif</span> <span class="n">buttonContent</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">buttonContent</span><span class="o">.</span><span class="n">get_height</span><span class="p">():</span>
+                <span class="n">ratio</span> <span class="o">=</span>  <span class="n">buttonContent</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">/</span> <span class="n">buttonContent</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">buttonContent</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">newWidth</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">),</span> <span class="n">newHeight</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">buttonContent</span><span class="p">,</span> <span class="p">(</span><span class="n">newWidth</span><span class="p">,</span> <span class="n">newHeight</span><span class="p">))</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">get_init</span><span class="p">()):</span>
+                <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+            <span class="n">t_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s1">&#39;lucidaconsole&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">buttonContentSize</span><span class="p">))</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">t_font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">buttonContent</span><span class="p">),</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+
+        <span class="n">button</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SRCALPHA</span><span class="p">)</span>
+
+        <span class="n">offset</span> <span class="o">=</span> <span class="n">destSurf</span><span class="o">.</span><span class="n">get_abs_offset</span><span class="p">()</span>
+
+        <span class="c1"># see if mouse is within the area of our button</span>
+        <span class="n">mousePos</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mousePos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> \
+           <span class="ow">and</span> <span class="n">mousePos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> \
+           <span class="ow">and</span> <span class="n">mousePos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> \
+           <span class="ow">and</span> <span class="n">mousePos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="c1"># mouse is over the button</span>
+            <span class="n">button</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="c1"># mouse is in the button, so it may click the</span>
+            <span class="c1"># button and run its function</span>
+            <span class="k">if</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pressed</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> \
+               <span class="ow">and</span> <span class="n">buttonFunction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> \
+               <span class="ow">and</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_buttonIsClicked</span><span class="p">:</span>
+                <span class="n">buttonFunction</span><span class="p">()</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">_buttonIsClicked</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pressed</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_buttonIsClicked</span><span class="p">:</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">_buttonIsClicked</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># mouse isn&#39;t in the button</span>
+            <span class="n">button</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># put button onto the screen,</span>
+        <span class="c1"># then text onto the screen centered over the button</span>
+        <span class="n">destSurf</span><span class="o">.</span><span class="n">blits</span><span class="p">([</span>
+            <span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="n">pos</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">content</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">content</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="p">])</span></div>
+
+<div class="viewcode-block" id="Graphics.drawText"><a class="viewcode-back" href="../../graphics.html#graphics.Graphics.drawText">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawText</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">textFont</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                 <span class="n">surface</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Utility function that draws a string to the screen</span>
+
+<span class="sd">        :param position: The XY position of the top-left corner of the text</span>
+<span class="sd">        :type position: (int, int)</span>
+<span class="sd">        :param string content: The string the be drawn </span>
+<span class="sd">        :param textFont: The font to use to render the text. </span>
+<span class="sd">        :type textFont: :py:class:`pygame.font.Font`</span>
+<span class="sd">        :param color: The rgb color of the text</span>
+<span class="sd">        :type color: :py:class:`pygame.Color`</span>
+<span class="sd">        :param surface: The surface to draw to</span>
+<span class="sd">        :type surface: :py:class:`pygame.Surface`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">surface</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">surface</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span>
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">get_init</span><span class="p">()):</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+        <span class="n">textSurface</span> <span class="o">=</span> <span class="n">textFont</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">content</span><span class="p">),</span> <span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+
+        <span class="n">surface</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">textSurface</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Graphics.drawTextCenter"><a class="viewcode-back" href="../../graphics.html#graphics.Graphics.drawTextCenter">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawTextCenter</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">textFont</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                       <span class="n">surface</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Utility function that draws a string to the screen</span>
+
+<span class="sd">        :param position: The XY position of the center of the text</span>
+<span class="sd">        :type position: (int, int)</span>
+<span class="sd">        :param str content: The string the be drawn </span>
+<span class="sd">        :param textFont: The font to use to render the text. </span>
+<span class="sd">        :type textFont: :py:class:`pygame.font.Font`</span>
+<span class="sd">        :param color: The rgb color of the text</span>
+<span class="sd">        :type color: :py:class:`pygame.Color`</span>
+<span class="sd">        :param surface: The surface to draw to</span>
+<span class="sd">        :type surface: :py:class:`pygame.Surface`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">surface</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">surface</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span>
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">get_init</span><span class="p">()):</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+        <span class="n">textSurface</span> <span class="o">=</span> <span class="n">textFont</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">content</span><span class="p">),</span> <span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">textSurface</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y</span><span class="o">/</span><span class="mi">2</span>
+
+        <span class="n">surface</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">textSurface</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Graphics.drawStars"><a class="viewcode-back" href="../../graphics.html#graphics.Graphics.drawStars">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawStars</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws a randomly generated background of stars to the provided surface.</span>
+<span class="sd">        Also creates a paralax effect for a moving target</span>
+
+<span class="sd">        :param screen: The :py:class:`pygame.Surface` to draw to.</span>
+<span class="sd">        :type screen: :py:class:`pygame.Surface`</span>
+<span class="sd">        :param pos: The position of the rocket, used to offset the stars and create a parallax effect.</span>
+<span class="sd">        :type pos: (float, float)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_starsWidth</span> <span class="o">!=</span> <span class="n">w</span><span class="p">):</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_isBackgroundDrawn</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_starsWidth</span> <span class="o">=</span> <span class="n">w</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_stars</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_starsHeight</span> <span class="o">!=</span> <span class="n">h</span><span class="p">):</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_isBackgroundDrawn</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_starsHeight</span> <span class="o">=</span> <span class="n">h</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_stars</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_isBackgroundDrawn</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+                <span class="n">colorSelector</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+                <span class="n">colorStar</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">colorSelector</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">colorSelector</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">colorStar</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+                <span class="k">elif</span><span class="p">(</span><span class="n">colorSelector</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+                    <span class="n">colorStar</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">elif</span><span class="p">(</span><span class="n">colorSelector</span> <span class="o">==</span> <span class="mi">3</span><span class="p">):</span>
+                    <span class="n">colorStar</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+                <span class="k">elif</span><span class="p">(</span><span class="n">colorSelector</span> <span class="o">==</span> <span class="mi">4</span><span class="p">):</span>
+                    <span class="n">colorStar</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_starsWidth</span><span class="p">)</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_starsHeight</span><span class="p">)</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">_stars</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">colorStar</span><span class="p">])</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_isBackgroundDrawn</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">1000</span> <span class="o">/</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">),</span> <span class="mi">1000</span><span class="p">)):</span>
+            <span class="c1"># decide the new star size (twinkling)</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">temp</span> <span class="o">&lt;</span> <span class="o">.</span><span class="mi">01</span><span class="p">:</span>
+                <span class="n">width</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">elif</span> <span class="n">temp</span> <span class="o">&lt;</span> <span class="o">.</span><span class="mi">98</span><span class="p">:</span>
+                <span class="n">width</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">temp</span> <span class="o">&lt;</span> <span class="o">.</span><span class="mi">99</span><span class="p">:</span>
+                <span class="n">width</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">width</span> <span class="o">=</span> <span class="mi">3</span>
+
+            <span class="n">paralaxModifier</span> <span class="o">=</span> <span class="o">.</span><span class="mi">05</span> <span class="o">*</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span>
+
+            <span class="n">starX</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_stars</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">paralaxModifier</span> <span class="o">*</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">%</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_starsWidth</span>
+            <span class="n">starY</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_stars</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">paralaxModifier</span> <span class="o">*</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">%</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_starsHeight</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_stars</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="p">(</span><span class="n">starX</span><span class="p">,</span> <span class="n">starY</span><span class="p">),</span> <span class="n">width</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,2414 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>rockets package &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="audioManager module" href="audioManager.html" />
+    <link rel="prev" title="physics package" href="physics.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">BitsPlease-FESP</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="graphics.html">graphics package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="physics.html">physics package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">rockets package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-rockets">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-rockets.commandmodule">rockets.commandmodule module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-rockets.component">rockets.component module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-rockets.rocket">rockets.rocket module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-rockets.sas">rockets.sas module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-rockets.testrocket">rockets.testrocket module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-rockets.thruster">rockets.thruster module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="audioManager.html">audioManager module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rocketbuilder.html">rocketbuilder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation.html">simulation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">BitsPlease-FESP</a> &raquo;</li>
+        
+      <li>rockets package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/rockets.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rockets-package">
+<h1>rockets package<a class="headerlink" href="#rockets-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-rockets">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-rockets" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rockets.Component">
+<em class="property">class </em><code class="descclassname">rockets.</code><code class="descname">Component</code><span class="sig-paren">(</span><em>body</em>, <em>vertices</em>, <em>density</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/component.html#Component"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Component" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.shapes.Poly</span></code></p>
+<p>Extention of pymunk Poly class with properties for sprites/textures and shape (vertices)</p>
+<dl class="classmethod">
+<dt id="rockets.Component.getDisplayInfo">
+<em class="property">classmethod </em><code class="descname">getDisplayInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/component.html#Component.getDisplayInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Component.getDisplayInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary that contains relevant
+“pretty” Information to display in the rocket builder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of formatted component properties</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.Component.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/component.html#Component.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Component.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of specific component properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of unformatted component properties</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.Component.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/component.html#Component.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Component.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the destroyed status of the component.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Component._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.Component._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Component.sprite">
+<code class="descname">sprite</code><a class="headerlink" href="#rockets.Component.sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>This should return a surface that represents the component’s sprite/texture</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Component.vertices">
+<code class="descname">vertices</code><a class="headerlink" href="#rockets.Component.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>This should return the vertices of the component</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.SAS">
+<em class="property">class </em><code class="descclassname">rockets.</code><code class="descname">SAS</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#SAS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.SAS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.component.Component" title="rockets.component.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.component.Component</span></code></a></p>
+<p>SAS component for rocket. Provides encapsulation for
+SAS autonomous angle and magnitude of SAS force.
+Must be attached to a body.</p>
+<dl class="classmethod">
+<dt id="rockets.SAS.getDisplayInfo">
+<em class="property">classmethod </em><code class="descname">getDisplayInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#SAS.getDisplayInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.SAS.getDisplayInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary that contains relevant
+“pretty” Information to display in the rocket builder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of formatted component properties</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.SAS.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#SAS.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.SAS.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is what will define the properties of a specific SAS subclass.
+It should return a dictionary with the following values:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>(<em>List of</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>SASPower</td>
+<td>(<em>float</em>)</td>
+</tr>
+<tr class="row-even"><td>tolerance</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.surface.Surface</span></code>) It is
+advised this be stored as a class variable, and
+returned by this method to improve performance.</td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>(<em>float</em>) Should always be 0</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>(<em>float</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.SAS.holdAngle">
+<code class="descname">holdAngle</code><span class="sig-paren">(</span><em>timescale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#SAS.holdAngle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.SAS.holdAngle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will work to hold the rocket at the set SASAngle. This is affected by the SASPower and the Tolerance
+parameters of a specific SAS Module.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.SAS.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#SAS.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.SAS.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the SAS Module, including the set angle and fuel ammount.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.SAS.rotateClockwise">
+<code class="descname">rotateClockwise</code><span class="sig-paren">(</span><em>timescale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#SAS.rotateClockwise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.SAS.rotateClockwise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the RCS Thrusters on the host rocket to turn the rocket clockwise.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.SAS.rotateCounterClockwise">
+<code class="descname">rotateCounterClockwise</code><span class="sig-paren">(</span><em>timescale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#SAS.rotateCounterClockwise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.SAS.rotateCounterClockwise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the RCS Thrusters on the host rocket to turn the rocket counter-clockwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.SAS.SASPower">
+<code class="descname">SASPower</code><a class="headerlink" href="#rockets.SAS.SASPower" title="Permalink to this definition">¶</a></dt>
+<dd><p>The SASPower of this specific type of SASModule. This returns the value defined in
+the getInfo method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.SAS.SASangle">
+<code class="descname">SASangle</code><a class="headerlink" href="#rockets.SAS.SASangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lock angle in radians for the SAS</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.SAS._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.SAS._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.SAS.fuel">
+<code class="descname">fuel</code><a class="headerlink" href="#rockets.SAS.fuel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current ammount of fuel that the SAS module has for maneuvering.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.SAS.maxFuel">
+<code class="descname">maxFuel</code><a class="headerlink" href="#rockets.SAS.maxFuel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum fuel ammount of this specific type of SASModule. This returns the value defined in
+the getInfo method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.SAS.sprite">
+<code class="descname">sprite</code><a class="headerlink" href="#rockets.SAS.sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sprite of this specific type of SASModule. This returns the value defined in
+the getInfo method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.SAS.tolerance">
+<code class="descname">tolerance</code><a class="headerlink" href="#rockets.SAS.tolerance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The angle tolerance of this specific type of SASModule. This returns the value defined in
+the getInfo method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.SAS.vertices">
+<code class="descname">vertices</code><a class="headerlink" href="#rockets.SAS.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>The vertices of this specific type of SASModule. This returns the value defined in
+the getInfo method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.AdvancedSAS">
+<em class="property">class </em><code class="descclassname">rockets.</code><code class="descname">AdvancedSAS</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#AdvancedSAS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.AdvancedSAS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.sas.SAS" title="rockets.sas.SAS"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.sas.SAS</span></code></a></p>
+<p>The AdvancedSAS components will all share these properties:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>[(-12,4), (-12,-6), (12,-6), (12,4)]</td>
+</tr>
+<tr class="row-odd"><td>SASPower</td>
+<td>2.0</td>
+</tr>
+<tr class="row-even"><td>tolerance</td>
+<td>.01</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td><a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/AdvancedSAS.png">AdvancedSAS.png</a></td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>20,000</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>73.8</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="rockets.AdvancedSAS.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#AdvancedSAS.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.AdvancedSAS.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is what will define the properties of a specific SAS subclass.
+It should return a dictionary with the following values:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>(<em>List of</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>SASPower</td>
+<td>(<em>float</em>)</td>
+</tr>
+<tr class="row-even"><td>tolerance</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.surface.Surface</span></code>) It is
+advised this be stored as a class variable, and
+returned by this method to improve performance.</td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>(<em>float</em>) Should always be 0</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>(<em>float</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.AdvancedSAS._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.AdvancedSAS._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.AdvancedSAS._sprite">
+<code class="descname">_sprite</code><em class="property"> = &lt;Surface(24x10x32 SW)&gt;</em><a class="headerlink" href="#rockets.AdvancedSAS._sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the SAS sprite to prevent repeated loading. Sprite is 
+<a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/AdvancedSAS.png">AdvancedSAS.png</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.Tank">
+<em class="property">class </em><code class="descclassname">rockets.</code><code class="descname">Tank</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/tank.html#Tank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Tank" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.component.Component" title="rockets.component.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.component.Component</span></code></a></p>
+<p>Tank Component for rocket. Holds fuel for all liquid thrusters to pull from as a source
+Must be attached to a body.</p>
+<dl class="method">
+<dt id="rockets.Tank.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/tank.html#Tank.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Tank.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the Tank, resets fuel amount to the capacity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Tank._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.Tank._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Tank.capacity">
+<code class="descname">capacity</code><a class="headerlink" href="#rockets.Tank.capacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum amount of fuel a tank can hold
+The tank will be initialized with this amount of fuel</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Tank.fuel">
+<code class="descname">fuel</code><a class="headerlink" href="#rockets.Tank.fuel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current ammount of fuel remaining in the Tank</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Tank.sprite">
+<code class="descname">sprite</code><a class="headerlink" href="#rockets.Tank.sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sprite of this specific type of Tank. This returns the value defined in the getInfo method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Tank.vertices">
+<code class="descname">vertices</code><a class="headerlink" href="#rockets.Tank.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>The vertices of this specific type of Tank. This returns the value defined in the getInfo method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.TestTank">
+<em class="property">class </em><code class="descclassname">rockets.</code><code class="descname">TestTank</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/tank.html#TestTank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.TestTank" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.tank.Tank</span></code></p>
+<p>The TestTank components will all share these properties:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>[(-6, 18), (-6, -18), (6, -18), (6, 18)]</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td><a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/TestTank.png">TestTank.png</a></td>
+</tr>
+<tr class="row-even"><td>capacity</td>
+<td>20,000</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>73.8</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="rockets.TestTank.getDisplayInfo">
+<em class="property">classmethod </em><code class="descname">getDisplayInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/tank.html#TestTank.getDisplayInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.TestTank.getDisplayInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary that contains relevant
+“pretty” Information to display in the rocket builder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of formatted component properties</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.TestTank.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/tank.html#TestTank.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.TestTank.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns unformatted</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.TestTank._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.TestTank._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.TestTank._capacity">
+<code class="descname">_capacity</code><em class="property"> = 20000</em><a class="headerlink" href="#rockets.TestTank._capacity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.TestTank._density">
+<code class="descname">_density</code><em class="property"> = 73.8</em><a class="headerlink" href="#rockets.TestTank._density" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.TestTank._sprite">
+<code class="descname">_sprite</code><em class="property"> = &lt;Surface(12x36x24 SW)&gt;</em><a class="headerlink" href="#rockets.TestTank._sprite" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.TestTank._vertices">
+<code class="descname">_vertices</code><em class="property"> = [(-6, 18), (-6, -18), (6, -18), (6, 18)]</em><a class="headerlink" href="#rockets.TestTank._vertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.CommandModule">
+<em class="property">class </em><code class="descclassname">rockets.</code><code class="descname">CommandModule</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/commandmodule.html#CommandModule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.CommandModule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.component.Component" title="rockets.component.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.component.Component</span></code></a></p>
+<p>The CommandModule doesn’t serve much purpose on its own other than being a shape with
+collision and a sprite. It is supposed to represent the center/heart of the rocket, being
+a cockpit for its hypothetical crew.</p>
+<dl class="classmethod">
+<dt id="rockets.CommandModule.getDisplayInfo">
+<em class="property">classmethod </em><code class="descname">getDisplayInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/commandmodule.html#CommandModule.getDisplayInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.CommandModule.getDisplayInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return “pretty” info for disply in the rocket builder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of display properties</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.CommandModule.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/commandmodule.html#CommandModule.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.CommandModule.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of specific component properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of unformatted component properties</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.CommandModule.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/commandmodule.html#CommandModule.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.CommandModule.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the command module’s underlying component</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.CommandModule._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.CommandModule._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.CommandModule._density">
+<code class="descname">_density</code><em class="property"> = 34</em><a class="headerlink" href="#rockets.CommandModule._density" title="Permalink to this definition">¶</a></dt>
+<dd><p>The density of the command module.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.CommandModule._sprite">
+<code class="descname">_sprite</code><em class="property"> = &lt;Surface(100x100x32 SW)&gt;</em><a class="headerlink" href="#rockets.CommandModule._sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sprite of the command module.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.CommandModule.sprite">
+<code class="descname">sprite</code><a class="headerlink" href="#rockets.CommandModule.sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sprite of the command module.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.CommandModule.vertices">
+<code class="descname">vertices</code><a class="headerlink" href="#rockets.CommandModule.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>The vertices of the shape of the Command Module.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.Thruster">
+<em class="property">class </em><code class="descclassname">rockets.</code><code class="descname">Thruster</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#Thruster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Thruster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.component.Component" title="rockets.component.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.component.Component</span></code></a></p>
+<p>Thruster Interface for creation of thrusters. Individual named
+thrusters inherit from and implement this class. Most of the implementation
+is already done within this interface, with key parts left out for the 
+subclasses to make their own.</p>
+<dl class="method">
+<dt id="rockets.Thruster.applyThrust">
+<code class="descname">applyThrust</code><span class="sig-paren">(</span><em>throttle</em>, <em>timescale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#Thruster.applyThrust"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Thruster.applyThrust" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies thrust to the rocket, scaling the thrust to a throttle value between 0 and 1. The 
+thrust provided and fuel consumed are then scaled by the provide timescale.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>throttle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The ammount to throttle the thrust by, between 0 and 1</li>
+<li><strong>timescale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The ammount to scale the thrust provided and fuel consumed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.Thruster.getDisplayInfo">
+<em class="property">classmethod </em><code class="descname">getDisplayInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#Thruster.getDisplayInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Thruster.getDisplayInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary containing the “Thrust” and “Thrust Vector” of the rocket
+with units attatched for display to the screen or user.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.Thruster.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#Thruster.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Thruster.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is what will define the properties of a specific Thruster subclass.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.Thruster.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#Thruster.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Thruster.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets properties of the underlying component and the fuel of the thruster to restart the simulation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.Thruster.thrust">
+<code class="descname">thrust</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#Thruster.thrust"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Thruster.thrust" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the scaled thrust vector of the Thruster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Thruster._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.Thruster._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Thruster.sprite">
+<code class="descname">sprite</code><a class="headerlink" href="#rockets.Thruster.sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sprite to use to render the thruster. This returns the value defined in the getInfo method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Thruster.thrustForce">
+<code class="descname">thrustForce</code><a class="headerlink" href="#rockets.Thruster.thrustForce" title="Permalink to this definition">¶</a></dt>
+<dd><p>The magnitude of the thrust of this specific type of thruster. This returns the value
+defined in the getInfo method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Thruster.thrustVector">
+<code class="descname">thrustVector</code><a class="headerlink" href="#rockets.Thruster.thrustVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>The direction that the thruster will apply thrust. This returns the value defined
+in the getInfo method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Thruster.vertices">
+<code class="descname">vertices</code><a class="headerlink" href="#rockets.Thruster.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>The vertices of this specific type of thruster. This returns the value defined in
+the getInfo method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.DeltaVee">
+<em class="property">class </em><code class="descclassname">rockets.</code><code class="descname">DeltaVee</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#DeltaVee"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.DeltaVee" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.thruster.SolidThruster" title="rockets.thruster.SolidThruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.thruster.SolidThruster</span></code></a></p>
+<p>DeltaVee is the biggest, <em>baddest</em> Thruster and will all share these properties:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>[(12, 0), (-12, 0), (12, 70), (-12, 70)]</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>500000.0</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(1, 0)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td><a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/DeltaVee.png">DeltaVee.png</a></td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>40,000</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>73.8</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="rockets.DeltaVee.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#DeltaVee.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.DeltaVee.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the dictionary with info specified by Thruster.getInfo()</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.DeltaVee._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.DeltaVee._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.DeltaVee._sprite">
+<code class="descname">_sprite</code><em class="property"> = &lt;Surface(10x100x32 SW)&gt;</em><a class="headerlink" href="#rockets.DeltaVee._sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the thruster sprite to prevent repeated loading. Sprite is 
+<a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/DeltaVee.png">DeltaVee.png</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.UpGoer2000">
+<em class="property">class </em><code class="descclassname">rockets.</code><code class="descname">UpGoer2000</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#UpGoer2000"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.UpGoer2000" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.thruster.SolidThruster" title="rockets.thruster.SolidThruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.thruster.SolidThruster</span></code></a></p>
+<p>UpGoer2000 Thrusters will all share these properties:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>[(4.2, 0), (-4.2, 0), (4.2, 46.9), (-4.2, 46.9)]</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>50,000.0</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(1, 0)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td><a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/UpGoer2000.png">UpGoer2000.png</a></td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>10,000</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>73.8</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="rockets.UpGoer2000.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#UpGoer2000.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.UpGoer2000.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the dictionary with info specified by Thruster.getInfo()</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.UpGoer2000._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.UpGoer2000._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.UpGoer2000._sprite">
+<code class="descname">_sprite</code><em class="property"> = &lt;Surface(10x100x32 SW)&gt;</em><a class="headerlink" href="#rockets.UpGoer2000._sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the thruster sprite to prevent repeated loading. Sprite is 
+<a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/UpGoer2000.png">UpGoer2000.png</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.SandSquid">
+<em class="property">class </em><code class="descclassname">rockets.</code><code class="descname">SandSquid</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#SandSquid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.SandSquid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.thruster.LiquidThruster" title="rockets.thruster.LiquidThruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.thruster.LiquidThruster</span></code></a></p>
+<dl class="classmethod">
+<dt id="rockets.SandSquid.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#SandSquid.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.SandSquid.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is what will define the properties of a specific Thruster subclass.
+It should return a dictionary with the following values:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>(<em>List of</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>(<em>float</em>)</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.surface.Surface</span></code>) It is
+advised this be stored as a class variable, and
+returned by this method to improve performance.</td>
+</tr>
+<tr class="row-even"><td>density</td>
+<td>(<em>float</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.SandSquid._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.SandSquid._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.SandSquid._sprite">
+<code class="descname">_sprite</code><em class="property"> = &lt;Surface(10x10x24 SW)&gt;</em><a class="headerlink" href="#rockets.SandSquid._sprite" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.RCSThruster">
+<em class="property">class </em><code class="descclassname">rockets.</code><code class="descname">RCSThruster</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#RCSThruster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.RCSThruster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.thruster.Thruster" title="rockets.thruster.Thruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.thruster.Thruster</span></code></a></p>
+<p>An RCS Thruster is intended to be a smaller thruster, that pulls
+fuel from the rocket’s SAS fuel instead of its own supply and is
+used for rotation instead of direct motion.</p>
+<dl class="method">
+<dt id="rockets.RCSThruster.applyThrust">
+<code class="descname">applyThrust</code><span class="sig-paren">(</span><em>timescale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#RCSThruster.applyThrust"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.RCSThruster.applyThrust" title="Permalink to this definition">¶</a></dt>
+<dd><p>The RCSThruster applies thrust differently from normal Thrusters. The
+RCSThruster will check if there is an SAS module on the host Rocket
+that it can draw fuel from before it fires.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.RCSThruster.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#RCSThruster.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.RCSThruster.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is what will define the properties of a specific RCSThruster subclass.
+It is identical to the Thruster getInfo, but the maxFuel member is always 0.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>(<em>List of</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>(<em>float</em>)</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.surface.Surface</span></code>) It is
+advised this be stored as a class variable, and
+returned by this method to improve performance.</td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>(<em>float</em>) Should always be 0</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>(<em>float</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.RCSThruster.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#RCSThruster.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.RCSThruster.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets properties of the underlying component and the fuel of the thruster to restart the simulation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.RCSThruster._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.RCSThruster._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.RightRCS">
+<em class="property">class </em><code class="descclassname">rockets.</code><code class="descname">RightRCS</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#RightRCS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.RightRCS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.thruster.RCSThruster" title="rockets.thruster.RCSThruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.thruster.RCSThruster</span></code></a></p>
+<p>RightRCS Thrusters will all share these properties:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>[(0, 37), (-5, 37), (-5, 42), (0, 42)]</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>5000.0</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(1, 0)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td><a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSRight.png">RCSRight.png</a></td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>0.0</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>45.0</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="rockets.RightRCS.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#RightRCS.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.RightRCS.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the dictionary with info specified by Thruster.getInfo()</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.RightRCS._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.RightRCS._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.RightRCS._sprite">
+<code class="descname">_sprite</code><em class="property"> = &lt;Surface(5x5x32 SW)&gt;</em><a class="headerlink" href="#rockets.RightRCS._sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the thruster sprite to prevent repeated loading. Sprite is 
+<a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSRight.png">RCSRight.png</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.LeftRCS">
+<em class="property">class </em><code class="descclassname">rockets.</code><code class="descname">LeftRCS</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#LeftRCS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.LeftRCS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.thruster.RCSThruster" title="rockets.thruster.RCSThruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.thruster.RCSThruster</span></code></a></p>
+<p>LeftRCS Thrusters will all share these properties:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="87%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>[(0, 37), (5, 37), (5, 42), (0, 42)]</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>5000.0</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(-1, 0)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td><a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSLeft.png">RCSLeft.png</a></td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>0.0</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>45.0</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="rockets.LeftRCS.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#LeftRCS.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.LeftRCS.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is what will define the properties of a specific RCSThruster subclass.
+It is identical to the Thruster getInfo, but the maxFuel member is always 0.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>(<em>List of</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>(<em>float</em>)</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.surface.Surface</span></code>) It is
+advised this be stored as a class variable, and
+returned by this method to improve performance.</td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>(<em>float</em>) Should always be 0</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>(<em>float</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.LeftRCS._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.LeftRCS._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.LeftRCS._sprite">
+<code class="descname">_sprite</code><em class="property"> = &lt;Surface(5x5x32 SW)&gt;</em><a class="headerlink" href="#rockets.LeftRCS._sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the thruster sprite to prevent repeated loading. Sprite is 
+<a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSLeft.png">RCSLeft.png</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.Rocket">
+<em class="property">class </em><code class="descclassname">rockets.</code><code class="descname">Rocket</code><span class="sig-paren">(</span><em>components=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/rocket.html#Rocket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Rocket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.body.Body</span></code></p>
+<p>Extends pymunk.Body, and can hold and represent physics for the components of the rocket.</p>
+<dl class="method">
+<dt id="rockets.Rocket.addComponent">
+<code class="descname">addComponent</code><span class="sig-paren">(</span><em>c</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/rocket.html#Rocket.addComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Rocket.addComponent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new component to the rocket</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>c</strong> (<a class="reference internal" href="#rockets.Component" title="rockets.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">Component</span></code></a>) – The component to add to the rocket</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.Rocket.debugComponentPrint">
+<code class="descname">debugComponentPrint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/rocket.html#Rocket.debugComponentPrint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Rocket.debugComponentPrint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints out the verticies of all the components in this rocket.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.Rocket.handleEvent">
+<code class="descname">handleEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/rocket.html#Rocket.handleEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Rocket.handleEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>A pygame event handler, currently only checks for the SAS angle-toggle key V</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.Rocket.removeComponent">
+<code class="descname">removeComponent</code><span class="sig-paren">(</span><em>c</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/rocket.html#Rocket.removeComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Rocket.removeComponent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a component from the rocket</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>c</strong> (<a class="reference internal" href="#rockets.Component" title="rockets.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">Component</span></code></a>) – The component to remove from the rocket</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.Rocket.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/rocket.html#Rocket.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Rocket.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets information about this rocket for purposes of restarting the simulation.
+This includes the destroyed flag, the position, velocity, angle, throttle, isAngleLocked,
+and also resets every component of the rocket.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.Rocket.tick">
+<code class="descname">tick</code><span class="sig-paren">(</span><em>timescale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/rocket.html#Rocket.tick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.Rocket.tick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows the rocket to perform its functions, checking input and applying thrust and rotation to itself.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Rocket.RCSThrusters">
+<code class="descname">RCSThrusters</code><a class="headerlink" href="#rockets.Rocket.RCSThrusters" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all of the <code class="xref py py-class docutils literal notranslate"><span class="pre">RCSThruster</span></code> components that have been attatched to the rocket.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Rocket.SASmodules">
+<code class="descname">SASmodules</code><a class="headerlink" href="#rockets.Rocket.SASmodules" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all of the <code class="xref py py-class docutils literal notranslate"><span class="pre">SAS</span></code> components that have been attatched to the rocket.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Rocket.commandModules">
+<code class="descname">commandModules</code><a class="headerlink" href="#rockets.Rocket.commandModules" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all of the <code class="xref py py-class docutils literal notranslate"><span class="pre">CommandModule</span></code> components that have been attatched to the rocket.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Rocket.components">
+<code class="descname">components</code><a class="headerlink" href="#rockets.Rocket.components" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all of the individual <code class="xref py py-class docutils literal notranslate"><span class="pre">Component</span></code> objects that have been attatched to the rocket.
+The list is presented in the order of <code class="xref py py-class docutils literal notranslate"><span class="pre">Thruster</span></code>, <a class="reference internal" href="#rockets.SAS" title="rockets.SAS"><code class="xref py py-class docutils literal notranslate"><span class="pre">SAS</span></code></a>, <a class="reference internal" href="#rockets.CommandModule" title="rockets.CommandModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">CommandModule</span></code></a>, <a class="reference internal" href="#rockets.RCSThruster" title="rockets.RCSThruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">RCSThruster</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Rocket.isAngleLocked">
+<code class="descname">isAngleLocked</code><a class="headerlink" href="#rockets.Rocket.isAngleLocked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Boolean, whether or not the rocket is attempting to hold itself to a certain angle.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Rocket.tanks">
+<code class="descname">tanks</code><a class="headerlink" href="#rockets.Rocket.tanks" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Tank</span></code> components that have been attatched to the rocket.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Rocket.throttle">
+<code class="descname">throttle</code><a class="headerlink" href="#rockets.Rocket.throttle" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Throttle represents how much of the thrusters’ power is being used, from 0 - 1.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.Rocket.thrusters">
+<code class="descname">thrusters</code><a class="headerlink" href="#rockets.Rocket.thrusters" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Thruster</span></code> components - but not <a class="reference internal" href="#rockets.RCSThruster" title="rockets.RCSThruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">RCSThruster</span></code></a> components - that have been attatched to the rocket.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-rockets.commandmodule">
+<span id="rockets-commandmodule-module"></span><h2>rockets.commandmodule module<a class="headerlink" href="#module-rockets.commandmodule" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rockets.commandmodule.CommandModule">
+<em class="property">class </em><code class="descclassname">rockets.commandmodule.</code><code class="descname">CommandModule</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/commandmodule.html#CommandModule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.commandmodule.CommandModule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.component.Component" title="rockets.component.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.component.Component</span></code></a></p>
+<p>The CommandModule doesn’t serve much purpose on its own other than being a shape with
+collision and a sprite. It is supposed to represent the center/heart of the rocket, being
+a cockpit for its hypothetical crew.</p>
+<dl class="classmethod">
+<dt id="rockets.commandmodule.CommandModule.getDisplayInfo">
+<em class="property">classmethod </em><code class="descname">getDisplayInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/commandmodule.html#CommandModule.getDisplayInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.commandmodule.CommandModule.getDisplayInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return “pretty” info for disply in the rocket builder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of display properties</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.commandmodule.CommandModule.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/commandmodule.html#CommandModule.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.commandmodule.CommandModule.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of specific component properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of unformatted component properties</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.commandmodule.CommandModule.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/commandmodule.html#CommandModule.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.commandmodule.CommandModule.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the command module’s underlying component</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.commandmodule.CommandModule._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.commandmodule.CommandModule._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.commandmodule.CommandModule._density">
+<code class="descname">_density</code><em class="property"> = 34</em><a class="headerlink" href="#rockets.commandmodule.CommandModule._density" title="Permalink to this definition">¶</a></dt>
+<dd><p>The density of the command module.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.commandmodule.CommandModule._sprite">
+<code class="descname">_sprite</code><em class="property"> = &lt;Surface(100x100x32 SW)&gt;</em><a class="headerlink" href="#rockets.commandmodule.CommandModule._sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sprite of the command module.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.commandmodule.CommandModule.sprite">
+<code class="descname">sprite</code><a class="headerlink" href="#rockets.commandmodule.CommandModule.sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sprite of the command module.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.commandmodule.CommandModule.vertices">
+<code class="descname">vertices</code><a class="headerlink" href="#rockets.commandmodule.CommandModule.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>The vertices of the shape of the Command Module.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rockets.component">
+<span id="rockets-component-module"></span><h2>rockets.component module<a class="headerlink" href="#module-rockets.component" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rockets.component.Component">
+<em class="property">class </em><code class="descclassname">rockets.component.</code><code class="descname">Component</code><span class="sig-paren">(</span><em>body</em>, <em>vertices</em>, <em>density</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/component.html#Component"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.component.Component" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.shapes.Poly</span></code></p>
+<p>Extention of pymunk Poly class with properties for sprites/textures and shape (vertices)</p>
+<dl class="classmethod">
+<dt id="rockets.component.Component.getDisplayInfo">
+<em class="property">classmethod </em><code class="descname">getDisplayInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/component.html#Component.getDisplayInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.component.Component.getDisplayInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary that contains relevant
+“pretty” Information to display in the rocket builder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of formatted component properties</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.component.Component.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/component.html#Component.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.component.Component.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of specific component properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of unformatted component properties</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.component.Component.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/component.html#Component.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.component.Component.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the destroyed status of the component.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.component.Component._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.component.Component._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.component.Component.sprite">
+<code class="descname">sprite</code><a class="headerlink" href="#rockets.component.Component.sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>This should return a surface that represents the component’s sprite/texture</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.component.Component.vertices">
+<code class="descname">vertices</code><a class="headerlink" href="#rockets.component.Component.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>This should return the vertices of the component</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rockets.rocket">
+<span id="rockets-rocket-module"></span><h2>rockets.rocket module<a class="headerlink" href="#module-rockets.rocket" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rockets.rocket.Rocket">
+<em class="property">class </em><code class="descclassname">rockets.rocket.</code><code class="descname">Rocket</code><span class="sig-paren">(</span><em>components=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/rocket.html#Rocket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.rocket.Rocket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.body.Body</span></code></p>
+<p>Extends pymunk.Body, and can hold and represent physics for the components of the rocket.</p>
+<dl class="method">
+<dt id="rockets.rocket.Rocket.addComponent">
+<code class="descname">addComponent</code><span class="sig-paren">(</span><em>c</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/rocket.html#Rocket.addComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.rocket.Rocket.addComponent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new component to the rocket</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>c</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Component</span></code>) – The component to add to the rocket</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.rocket.Rocket.debugComponentPrint">
+<code class="descname">debugComponentPrint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/rocket.html#Rocket.debugComponentPrint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.rocket.Rocket.debugComponentPrint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints out the verticies of all the components in this rocket.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.rocket.Rocket.handleEvent">
+<code class="descname">handleEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/rocket.html#Rocket.handleEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.rocket.Rocket.handleEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>A pygame event handler, currently only checks for the SAS angle-toggle key V</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.rocket.Rocket.removeComponent">
+<code class="descname">removeComponent</code><span class="sig-paren">(</span><em>c</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/rocket.html#Rocket.removeComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.rocket.Rocket.removeComponent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a component from the rocket</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>c</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Component</span></code>) – The component to remove from the rocket</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.rocket.Rocket.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/rocket.html#Rocket.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.rocket.Rocket.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets information about this rocket for purposes of restarting the simulation.
+This includes the destroyed flag, the position, velocity, angle, throttle, isAngleLocked,
+and also resets every component of the rocket.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.rocket.Rocket.tick">
+<code class="descname">tick</code><span class="sig-paren">(</span><em>timescale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/rocket.html#Rocket.tick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.rocket.Rocket.tick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows the rocket to perform its functions, checking input and applying thrust and rotation to itself.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.rocket.Rocket.RCSThrusters">
+<code class="descname">RCSThrusters</code><a class="headerlink" href="#rockets.rocket.Rocket.RCSThrusters" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all of the <code class="xref py py-class docutils literal notranslate"><span class="pre">RCSThruster</span></code> components that have been attatched to the rocket.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.rocket.Rocket.SASmodules">
+<code class="descname">SASmodules</code><a class="headerlink" href="#rockets.rocket.Rocket.SASmodules" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all of the <code class="xref py py-class docutils literal notranslate"><span class="pre">SAS</span></code> components that have been attatched to the rocket.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.rocket.Rocket.commandModules">
+<code class="descname">commandModules</code><a class="headerlink" href="#rockets.rocket.Rocket.commandModules" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all of the <code class="xref py py-class docutils literal notranslate"><span class="pre">CommandModule</span></code> components that have been attatched to the rocket.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.rocket.Rocket.components">
+<code class="descname">components</code><a class="headerlink" href="#rockets.rocket.Rocket.components" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all of the individual <code class="xref py py-class docutils literal notranslate"><span class="pre">Component</span></code> objects that have been attatched to the rocket.
+The list is presented in the order of <code class="xref py py-class docutils literal notranslate"><span class="pre">Thruster</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">SAS</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">CommandModule</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">RCSThruster</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.rocket.Rocket.isAngleLocked">
+<code class="descname">isAngleLocked</code><a class="headerlink" href="#rockets.rocket.Rocket.isAngleLocked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Boolean, whether or not the rocket is attempting to hold itself to a certain angle.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.rocket.Rocket.tanks">
+<code class="descname">tanks</code><a class="headerlink" href="#rockets.rocket.Rocket.tanks" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Tank</span></code> components that have been attatched to the rocket.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.rocket.Rocket.throttle">
+<code class="descname">throttle</code><a class="headerlink" href="#rockets.rocket.Rocket.throttle" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Throttle represents how much of the thrusters’ power is being used, from 0 - 1.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.rocket.Rocket.thrusters">
+<code class="descname">thrusters</code><a class="headerlink" href="#rockets.rocket.Rocket.thrusters" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Thruster</span></code> components - but not <code class="xref py py-class docutils literal notranslate"><span class="pre">RCSThruster</span></code> components - that have been attatched to the rocket.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rockets.sas">
+<span id="rockets-sas-module"></span><h2>rockets.sas module<a class="headerlink" href="#module-rockets.sas" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rockets.sas.AdvancedSAS">
+<em class="property">class </em><code class="descclassname">rockets.sas.</code><code class="descname">AdvancedSAS</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#AdvancedSAS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.sas.AdvancedSAS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.sas.SAS" title="rockets.sas.SAS"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.sas.SAS</span></code></a></p>
+<p>The AdvancedSAS components will all share these properties:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>[(-12,4), (-12,-6), (12,-6), (12,4)]</td>
+</tr>
+<tr class="row-odd"><td>SASPower</td>
+<td>2.0</td>
+</tr>
+<tr class="row-even"><td>tolerance</td>
+<td>.01</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td><a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/AdvancedSAS.png">AdvancedSAS.png</a></td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>20,000</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>73.8</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="rockets.sas.AdvancedSAS.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#AdvancedSAS.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.sas.AdvancedSAS.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is what will define the properties of a specific SAS subclass.
+It should return a dictionary with the following values:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>(<em>List of</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>SASPower</td>
+<td>(<em>float</em>)</td>
+</tr>
+<tr class="row-even"><td>tolerance</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.surface.Surface</span></code>) It is
+advised this be stored as a class variable, and
+returned by this method to improve performance.</td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>(<em>float</em>) Should always be 0</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>(<em>float</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.sas.AdvancedSAS._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.sas.AdvancedSAS._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.sas.AdvancedSAS._sprite">
+<code class="descname">_sprite</code><em class="property"> = &lt;Surface(24x10x32 SW)&gt;</em><a class="headerlink" href="#rockets.sas.AdvancedSAS._sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the SAS sprite to prevent repeated loading. Sprite is 
+<a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/AdvancedSAS.png">AdvancedSAS.png</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.sas.SAS">
+<em class="property">class </em><code class="descclassname">rockets.sas.</code><code class="descname">SAS</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#SAS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.sas.SAS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.component.Component" title="rockets.component.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.component.Component</span></code></a></p>
+<p>SAS component for rocket. Provides encapsulation for
+SAS autonomous angle and magnitude of SAS force.
+Must be attached to a body.</p>
+<dl class="classmethod">
+<dt id="rockets.sas.SAS.getDisplayInfo">
+<em class="property">classmethod </em><code class="descname">getDisplayInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#SAS.getDisplayInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.sas.SAS.getDisplayInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary that contains relevant
+“pretty” Information to display in the rocket builder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of formatted component properties</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.sas.SAS.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#SAS.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.sas.SAS.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is what will define the properties of a specific SAS subclass.
+It should return a dictionary with the following values:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>(<em>List of</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>SASPower</td>
+<td>(<em>float</em>)</td>
+</tr>
+<tr class="row-even"><td>tolerance</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.surface.Surface</span></code>) It is
+advised this be stored as a class variable, and
+returned by this method to improve performance.</td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>(<em>float</em>) Should always be 0</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>(<em>float</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.sas.SAS.holdAngle">
+<code class="descname">holdAngle</code><span class="sig-paren">(</span><em>timescale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#SAS.holdAngle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.sas.SAS.holdAngle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will work to hold the rocket at the set SASAngle. This is affected by the SASPower and the Tolerance
+parameters of a specific SAS Module.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.sas.SAS.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#SAS.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.sas.SAS.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the SAS Module, including the set angle and fuel ammount.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.sas.SAS.rotateClockwise">
+<code class="descname">rotateClockwise</code><span class="sig-paren">(</span><em>timescale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#SAS.rotateClockwise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.sas.SAS.rotateClockwise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the RCS Thrusters on the host rocket to turn the rocket clockwise.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.sas.SAS.rotateCounterClockwise">
+<code class="descname">rotateCounterClockwise</code><span class="sig-paren">(</span><em>timescale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/sas.html#SAS.rotateCounterClockwise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.sas.SAS.rotateCounterClockwise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the RCS Thrusters on the host rocket to turn the rocket counter-clockwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.sas.SAS.SASPower">
+<code class="descname">SASPower</code><a class="headerlink" href="#rockets.sas.SAS.SASPower" title="Permalink to this definition">¶</a></dt>
+<dd><p>The SASPower of this specific type of SASModule. This returns the value defined in
+the getInfo method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.sas.SAS.SASangle">
+<code class="descname">SASangle</code><a class="headerlink" href="#rockets.sas.SAS.SASangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lock angle in radians for the SAS</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.sas.SAS._abc_impl">
+<code class="descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#rockets.sas.SAS._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.sas.SAS.fuel">
+<code class="descname">fuel</code><a class="headerlink" href="#rockets.sas.SAS.fuel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current ammount of fuel that the SAS module has for maneuvering.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.sas.SAS.maxFuel">
+<code class="descname">maxFuel</code><a class="headerlink" href="#rockets.sas.SAS.maxFuel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum fuel ammount of this specific type of SASModule. This returns the value defined in
+the getInfo method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.sas.SAS.sprite">
+<code class="descname">sprite</code><a class="headerlink" href="#rockets.sas.SAS.sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sprite of this specific type of SASModule. This returns the value defined in
+the getInfo method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.sas.SAS.tolerance">
+<code class="descname">tolerance</code><a class="headerlink" href="#rockets.sas.SAS.tolerance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The angle tolerance of this specific type of SASModule. This returns the value defined in
+the getInfo method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.sas.SAS.vertices">
+<code class="descname">vertices</code><a class="headerlink" href="#rockets.sas.SAS.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>The vertices of this specific type of SASModule. This returns the value defined in
+the getInfo method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rockets.testrocket">
+<span id="rockets-testrocket-module"></span><h2>rockets.testrocket module<a class="headerlink" href="#module-rockets.testrocket" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="rockets.testrocket.genRocket">
+<code class="descclassname">rockets.testrocket.</code><code class="descname">genRocket</code><span class="sig-paren">(</span><em>space</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/testrocket.html#genRocket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.testrocket.genRocket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate prototype rocket with orbiter, thruster, and SAS.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>space</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Space</span></code>) – Space to hold generated rocket.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rockets.thruster">
+<span id="rockets-thruster-module"></span><h2>rockets.thruster module<a class="headerlink" href="#module-rockets.thruster" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rockets.thruster.DeltaVee">
+<em class="property">class </em><code class="descclassname">rockets.thruster.</code><code class="descname">DeltaVee</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#DeltaVee"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.DeltaVee" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.thruster.SolidThruster" title="rockets.thruster.SolidThruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.thruster.SolidThruster</span></code></a></p>
+<p>DeltaVee is the biggest, <em>baddest</em> Thruster and will all share these properties:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>[(12, 0), (-12, 0), (12, 70), (-12, 70)]</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>500000.0</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(1, 0)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td><a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/DeltaVee.png">DeltaVee.png</a></td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>40,000</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>73.8</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="rockets.thruster.DeltaVee.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#DeltaVee.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.DeltaVee.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the dictionary with info specified by Thruster.getInfo()</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.thruster.DeltaVee._sprite">
+<code class="descname">_sprite</code><em class="property"> = &lt;Surface(10x100x32 SW)&gt;</em><a class="headerlink" href="#rockets.thruster.DeltaVee._sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the thruster sprite to prevent repeated loading. Sprite is 
+<a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/DeltaVee.png">DeltaVee.png</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.thruster.LeftRCS">
+<em class="property">class </em><code class="descclassname">rockets.thruster.</code><code class="descname">LeftRCS</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#LeftRCS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.LeftRCS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.thruster.RCSThruster" title="rockets.thruster.RCSThruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.thruster.RCSThruster</span></code></a></p>
+<p>LeftRCS Thrusters will all share these properties:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="87%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>[(0, 37), (5, 37), (5, 42), (0, 42)]</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>5000.0</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(-1, 0)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td><a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSLeft.png">RCSLeft.png</a></td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>0.0</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>45.0</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="rockets.thruster.LeftRCS.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#LeftRCS.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.LeftRCS.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is what will define the properties of a specific RCSThruster subclass.
+It is identical to the Thruster getInfo, but the maxFuel member is always 0.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>(<em>List of</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>(<em>float</em>)</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.surface.Surface</span></code>) It is
+advised this be stored as a class variable, and
+returned by this method to improve performance.</td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>(<em>float</em>) Should always be 0</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>(<em>float</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.thruster.LeftRCS._sprite">
+<code class="descname">_sprite</code><em class="property"> = &lt;Surface(5x5x32 SW)&gt;</em><a class="headerlink" href="#rockets.thruster.LeftRCS._sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the thruster sprite to prevent repeated loading. Sprite is 
+<a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSLeft.png">RCSLeft.png</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.thruster.LiquidThruster">
+<em class="property">class </em><code class="descclassname">rockets.thruster.</code><code class="descname">LiquidThruster</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#LiquidThruster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.LiquidThruster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.thruster.Thruster" title="rockets.thruster.Thruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.thruster.Thruster</span></code></a></p>
+<dl class="method">
+<dt id="rockets.thruster.LiquidThruster.applyThrust">
+<code class="descname">applyThrust</code><span class="sig-paren">(</span><em>throttle</em>, <em>timescale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#LiquidThruster.applyThrust"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.LiquidThruster.applyThrust" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies thrust to the rocket, scaling the thrust to a throttle value between 0 and 1. The 
+thrust provided and fuel consumed are then scaled by the provide timescale.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>throttle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The ammount to throttle the thrust by, between 0 and 1</li>
+<li><strong>timescale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The ammount to scale the thrust provided and fuel consumed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.thruster.LiquidThruster.getDisplayInfo">
+<em class="property">classmethod </em><code class="descname">getDisplayInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#LiquidThruster.getDisplayInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.LiquidThruster.getDisplayInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary containing the “Thrust” and “Thrust Vector” of the rocket
+with units attatched for display to the screen or user.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.thruster.LiquidThruster.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#LiquidThruster.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.LiquidThruster.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is what will define the properties of a specific Thruster subclass.
+It should return a dictionary with the following values:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>(<em>List of</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>(<em>float</em>)</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.surface.Surface</span></code>) It is
+advised this be stored as a class variable, and
+returned by this method to improve performance.</td>
+</tr>
+<tr class="row-even"><td>density</td>
+<td>(<em>float</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.thruster.LiquidThruster.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#LiquidThruster.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.LiquidThruster.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets properties of the underlying component and the fuel of the thruster to restart the simulation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.thruster.RCSThruster">
+<em class="property">class </em><code class="descclassname">rockets.thruster.</code><code class="descname">RCSThruster</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#RCSThruster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.RCSThruster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.thruster.Thruster" title="rockets.thruster.Thruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.thruster.Thruster</span></code></a></p>
+<p>An RCS Thruster is intended to be a smaller thruster, that pulls
+fuel from the rocket’s SAS fuel instead of its own supply and is
+used for rotation instead of direct motion.</p>
+<dl class="method">
+<dt id="rockets.thruster.RCSThruster.applyThrust">
+<code class="descname">applyThrust</code><span class="sig-paren">(</span><em>timescale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#RCSThruster.applyThrust"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.RCSThruster.applyThrust" title="Permalink to this definition">¶</a></dt>
+<dd><p>The RCSThruster applies thrust differently from normal Thrusters. The
+RCSThruster will check if there is an SAS module on the host Rocket
+that it can draw fuel from before it fires.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.thruster.RCSThruster.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#RCSThruster.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.RCSThruster.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is what will define the properties of a specific RCSThruster subclass.
+It is identical to the Thruster getInfo, but the maxFuel member is always 0.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>(<em>List of</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>(<em>float</em>)</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.surface.Surface</span></code>) It is
+advised this be stored as a class variable, and
+returned by this method to improve performance.</td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>(<em>float</em>) Should always be 0</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>(<em>float</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.thruster.RCSThruster.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#RCSThruster.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.RCSThruster.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets properties of the underlying component and the fuel of the thruster to restart the simulation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.thruster.RightRCS">
+<em class="property">class </em><code class="descclassname">rockets.thruster.</code><code class="descname">RightRCS</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#RightRCS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.RightRCS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.thruster.RCSThruster" title="rockets.thruster.RCSThruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.thruster.RCSThruster</span></code></a></p>
+<p>RightRCS Thrusters will all share these properties:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>[(0, 37), (-5, 37), (-5, 42), (0, 42)]</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>5000.0</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(1, 0)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td><a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSRight.png">RCSRight.png</a></td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>0.0</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>45.0</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="rockets.thruster.RightRCS.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#RightRCS.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.RightRCS.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the dictionary with info specified by Thruster.getInfo()</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.thruster.RightRCS._sprite">
+<code class="descname">_sprite</code><em class="property"> = &lt;Surface(5x5x32 SW)&gt;</em><a class="headerlink" href="#rockets.thruster.RightRCS._sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the thruster sprite to prevent repeated loading. Sprite is 
+<a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSRight.png">RCSRight.png</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.thruster.SandSquid">
+<em class="property">class </em><code class="descclassname">rockets.thruster.</code><code class="descname">SandSquid</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#SandSquid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.SandSquid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.thruster.LiquidThruster" title="rockets.thruster.LiquidThruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.thruster.LiquidThruster</span></code></a></p>
+<dl class="classmethod">
+<dt id="rockets.thruster.SandSquid.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#SandSquid.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.SandSquid.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is what will define the properties of a specific Thruster subclass.
+It should return a dictionary with the following values:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>(<em>List of</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>(<em>float</em>)</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.surface.Surface</span></code>) It is
+advised this be stored as a class variable, and
+returned by this method to improve performance.</td>
+</tr>
+<tr class="row-even"><td>density</td>
+<td>(<em>float</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.thruster.SolidThruster">
+<em class="property">class </em><code class="descclassname">rockets.thruster.</code><code class="descname">SolidThruster</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#SolidThruster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.SolidThruster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.thruster.Thruster" title="rockets.thruster.Thruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.thruster.Thruster</span></code></a></p>
+<dl class="method">
+<dt id="rockets.thruster.SolidThruster.applyThrust">
+<code class="descname">applyThrust</code><span class="sig-paren">(</span><em>throttle</em>, <em>timescale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#SolidThruster.applyThrust"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.SolidThruster.applyThrust" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies thrust to the rocket, scaling the thrust to a throttle value between 0 and 1. The 
+thrust provided and fuel consumed are then scaled by the provide timescale.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>throttle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The ammount to throttle the thrust by, between 0 and 1</li>
+<li><strong>timescale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The ammount to scale the thrust provided and fuel consumed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.thruster.SolidThruster.getDisplayInfo">
+<em class="property">classmethod </em><code class="descname">getDisplayInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#SolidThruster.getDisplayInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.SolidThruster.getDisplayInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary containing the “Thrust” and “Thrust Vector” of the rocket
+with units attatched for display to the screen or user.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.thruster.SolidThruster.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#SolidThruster.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.SolidThruster.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is what will define the properties of a specific Thruster subclass.
+It should return a dictionary with the following values:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>(<em>List of</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>(<em>float</em>)</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td>(<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.surface.Surface</span></code>) It is
+advised this be stored as a class variable, and
+returned by this method to improve performance.</td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>(<em>float</em>) Should always be 0</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>(<em>float</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.thruster.SolidThruster.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#SolidThruster.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.SolidThruster.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets properties of the underlying component and the fuel of the thruster to restart the simulation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.thruster.SolidThruster.fuel">
+<code class="descname">fuel</code><a class="headerlink" href="#rockets.thruster.SolidThruster.fuel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current ammout of fuel that the thruster has. Cannot be set below zero.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.thruster.SolidThruster.maxFuel">
+<code class="descname">maxFuel</code><a class="headerlink" href="#rockets.thruster.SolidThruster.maxFuel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum ammount of fuel that the thruster starts with. This returns the value
+defined in the getInfo method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.thruster.Thruster">
+<em class="property">class </em><code class="descclassname">rockets.thruster.</code><code class="descname">Thruster</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#Thruster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.Thruster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.component.Component" title="rockets.component.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.component.Component</span></code></a></p>
+<p>Thruster Interface for creation of thrusters. Individual named
+thrusters inherit from and implement this class. Most of the implementation
+is already done within this interface, with key parts left out for the 
+subclasses to make their own.</p>
+<dl class="method">
+<dt id="rockets.thruster.Thruster.applyThrust">
+<code class="descname">applyThrust</code><span class="sig-paren">(</span><em>throttle</em>, <em>timescale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#Thruster.applyThrust"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.Thruster.applyThrust" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies thrust to the rocket, scaling the thrust to a throttle value between 0 and 1. The 
+thrust provided and fuel consumed are then scaled by the provide timescale.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>throttle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The ammount to throttle the thrust by, between 0 and 1</li>
+<li><strong>timescale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The ammount to scale the thrust provided and fuel consumed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.thruster.Thruster.getDisplayInfo">
+<em class="property">classmethod </em><code class="descname">getDisplayInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#Thruster.getDisplayInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.Thruster.getDisplayInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary containing the “Thrust” and “Thrust Vector” of the rocket
+with units attatched for display to the screen or user.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rockets.thruster.Thruster.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#Thruster.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.Thruster.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is what will define the properties of a specific Thruster subclass.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.thruster.Thruster.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#Thruster.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.Thruster.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets properties of the underlying component and the fuel of the thruster to restart the simulation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rockets.thruster.Thruster.thrust">
+<code class="descname">thrust</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#Thruster.thrust"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.Thruster.thrust" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the scaled thrust vector of the Thruster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.thruster.Thruster.sprite">
+<code class="descname">sprite</code><a class="headerlink" href="#rockets.thruster.Thruster.sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sprite to use to render the thruster. This returns the value defined in the getInfo method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.thruster.Thruster.thrustForce">
+<code class="descname">thrustForce</code><a class="headerlink" href="#rockets.thruster.Thruster.thrustForce" title="Permalink to this definition">¶</a></dt>
+<dd><p>The magnitude of the thrust of this specific type of thruster. This returns the value
+defined in the getInfo method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.thruster.Thruster.thrustVector">
+<code class="descname">thrustVector</code><a class="headerlink" href="#rockets.thruster.Thruster.thrustVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>The direction that the thruster will apply thrust. This returns the value defined
+in the getInfo method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.thruster.Thruster.vertices">
+<code class="descname">vertices</code><a class="headerlink" href="#rockets.thruster.Thruster.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>The vertices of this specific type of thruster. This returns the value defined in
+the getInfo method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rockets.thruster.UpGoer2000">
+<em class="property">class </em><code class="descclassname">rockets.thruster.</code><code class="descname">UpGoer2000</code><span class="sig-paren">(</span><em>body</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#UpGoer2000"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.UpGoer2000" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rockets.thruster.SolidThruster" title="rockets.thruster.SolidThruster"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.thruster.SolidThruster</span></code></a></p>
+<p>UpGoer2000 Thrusters will all share these properties:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dictionary Key</th>
+<th class="head">Dictionary Value Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vertices</td>
+<td>[(4.2, 0), (-4.2, 0), (4.2, 46.9), (-4.2, 46.9)]</td>
+</tr>
+<tr class="row-odd"><td>thrustForce</td>
+<td>50,000.0</td>
+</tr>
+<tr class="row-even"><td>thrustVector</td>
+<td>(1, 0)</td>
+</tr>
+<tr class="row-odd"><td>sprite</td>
+<td><a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/UpGoer2000.png">UpGoer2000.png</a></td>
+</tr>
+<tr class="row-even"><td>maxFuel</td>
+<td>10,000</td>
+</tr>
+<tr class="row-odd"><td>density</td>
+<td>73.8</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="rockets.thruster.UpGoer2000.getInfo">
+<em class="property">classmethod </em><code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rockets/thruster.html#UpGoer2000.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rockets.thruster.UpGoer2000.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the dictionary with info specified by Thruster.getInfo()</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rockets.thruster.UpGoer2000._sprite">
+<code class="descname">_sprite</code><em class="property"> = &lt;Surface(10x100x32 SW)&gt;</em><a class="headerlink" href="#rockets.thruster.UpGoer2000._sprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the thruster sprite to prevent repeated loading. Sprite is 
+<a class="reference external" href="https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/UpGoer2000.png">UpGoer2000.png</a></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="audioManager.html" class="btn btn-neutral float-right" title="audioManager module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="physics.html" class="btn btn-neutral" title="physics package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
