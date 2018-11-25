@@ -369,13 +369,13 @@ class  AudioTestCase(unittest.TestCase):
         #Should stop music
         audioManager.silenceMusic()
         self.assertFalse(pg.mixer.music.get_busy())
-<<<<<<< HEAD
 
-=======
->>>>>>> 3b77d5b5826ee496e3f5b7c6ca08c41734e0c17d
 class  TankTestCase(unittest.TestCase):
 #TANK TESTS
-    def setup(self)
+    def setup(self):
+        self.space = pm.Space(threaded=True)
+        self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
+        self.rocket = Rocket(self.baseComponents)
         self.newTank = TestTank(self.rocket)
     def test_tank_fuel(self):
         self.newTank.fuel = -100
@@ -388,14 +388,13 @@ class  TankTestCase(unittest.TestCase):
         self.tank_capacity = self.newTank.capacity
         self.newTank.reset()
         self.assertEqual(self.tank_capacity, self.newTank.fuel)
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> 3b77d5b5826ee496e3f5b7c6ca08c41734e0c17d
 class  SASTestCase(unittest.TestCase):
 #SAS TESTS
     def setup(self):
+        self.space = pm.Space(threaded=True)
+        self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
+        self.rocket = Rocket(self.baseComponents)
         self.theSAS = self.rocket.SASmodules[0]
 
     def test_sas_fuel(self):
@@ -409,13 +408,10 @@ class  SASTestCase(unittest.TestCase):
         self.theSAS.fuel = 0
         self.theSAS.reset()
         self.assertEqual(self.sas_maxfuel, self.theSAS.fuel)
-<<<<<<< HEAD
 
 class ZoomTestCase(unittest.TestCase):
     #ZOOM TESTS
     def setup(self):
-        self.zoom 
-=======
->>>>>>> 3b77d5b5826ee496e3f5b7c6ca08c41734e0c17d
+        self.theZoom = self.
 if __name__ == '__main__':
     unittest.main()
