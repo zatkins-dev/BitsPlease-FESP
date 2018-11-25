@@ -1,0 +1,671 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>rocketbuilder &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">BitsPlease-FESP</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>rocketbuilder</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for rocketbuilder</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pygame</span> <span class="k">as</span> <span class="nn">pg</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Video</span>
+<span class="n">Video</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">pymunk</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">pymunk.pygame_util</span> <span class="k">as</span> <span class="nn">pygame_util</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">pymunk</span> <span class="k">import</span> <span class="n">Poly</span> <span class="k">as</span> <span class="n">Poly</span>
+<span class="kn">from</span> <span class="nn">pymunk</span> <span class="k">import</span> <span class="n">Body</span> <span class="k">as</span> <span class="n">Body</span>
+<span class="kn">from</span> <span class="nn">pymunk</span> <span class="k">import</span> <span class="n">Shape</span> <span class="k">as</span> <span class="n">Shape</span>
+
+<span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">rockets</span> <span class="k">import</span> <span class="n">Component</span>
+<span class="kn">from</span> <span class="nn">rockets</span> <span class="k">import</span> <span class="n">Thruster</span><span class="p">,</span> <span class="n">SolidThruster</span><span class="p">,</span> <span class="n">LiquidThruster</span><span class="p">,</span> <span class="n">RCSThruster</span>
+<span class="kn">from</span> <span class="nn">rockets</span> <span class="k">import</span> <span class="n">SAS</span>
+<span class="kn">from</span> <span class="nn">rockets</span> <span class="k">import</span> <span class="n">Rocket</span>
+<span class="kn">from</span> <span class="nn">rockets</span> <span class="k">import</span> <span class="n">Tank</span>
+<span class="kn">from</span> <span class="nn">rockets</span> <span class="k">import</span> <span class="n">CommandModule</span>
+
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Drawer</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Graphics</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Video</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Zoom</span>
+
+<div class="viewcode-block" id="RocketBuilder"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder">[docs]</a><span class="k">class</span> <span class="nc">RocketBuilder</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets component information and facilitates the construction of a new and</span>
+<span class="sd">    unique :py:class:`rockets.Rocket` to use in the simulation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#: The :py:class:`pygame.surface.Surface` that the builder will be drawn to</span>
+    <span class="n">surface</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: The Sub-Surface representing the :py:class:`pygame.surface.Surface` selection screen</span>
+    <span class="n">componentSurface</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: The Sub-Surface representing the component information display</span>
+    <span class="n">componentInfoSurface</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: A custom event for triggering the exit of the building step</span>
+    <span class="c1">#: and the beginning of the simulation</span>
+    <span class="n">start_event</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">USEREVENT</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1">#: The :py:class:`pymunk.Space` used to construct the rocket</span>
+    <span class="n">space</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Space</span><span class="p">(</span><span class="n">threaded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">space</span><span class="o">.</span><span class="n">threads</span> <span class="o">=</span> <span class="mi">2</span>
+    
+    <span class="c1">#: Categories of :py:class:`rockets.Component`</span>
+    <span class="n">componentTabs</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="s2">&quot;State&quot;</span><span class="p">,</span> <span class="s2">&quot;Thruster Control Tanks&quot;</span><span class="p">)</span>
+    <span class="c1">#: List of currently displayed :py:class:`rockets.Component` types</span>
+    <span class="n">componentList</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1">#: The active category of components from componentTabs</span>
+    <span class="c1">#: Initialized to the Thruster category</span>
+    <span class="n">selectedTab</span> <span class="o">=</span> <span class="n">componentTabs</span><span class="o">.</span><span class="n">Thruster</span>
+    
+    <span class="c1">#: This component will be the base, and can&#39;t be removed from the rocket in construction</span>
+    <span class="n">_baseComponent</span> <span class="o">=</span> <span class="n">CommandModule</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="c1">#: The rocket being constructed</span>
+    <span class="n">theRocket</span> <span class="o">=</span> <span class="n">Rocket</span><span class="p">([</span><span class="n">_baseComponent</span><span class="p">])</span>
+
+    <span class="c1">#: Used to represent the component that is being held by the user&#39;s mouse</span>
+    <span class="n">activeComponent</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: The background color of the builder</span>
+    <span class="n">_bgColor</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1">#: The color of the menu panes</span>
+    <span class="n">_menuPaneColor</span> <span class="o">=</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">)</span>
+    <span class="c1">#: The unfocused and focused colors of the menu buttons, respectively.</span>
+    <span class="n">_menuButtonColor</span> <span class="o">=</span> <span class="p">((</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">),(</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">))</span>  
+
+    <span class="c1">#: Represents the y position seperating the component category tabs</span>
+    <span class="c1">#: from the actual buttons in the menu</span>
+    <span class="n">_bottomOfTabs</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1">#: Represents whether components will be placed with symmetry about</span>
+    <span class="c1">#: the center of the rocket</span>
+    <span class="n">_symmetry</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="n">_zoom</span> <span class="o">=</span> <span class="n">Zoom</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RocketBuilder.run"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.run">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Contains and executes the main event loop of the rocket builder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">clock</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>     <span class="c1"># create clock to manage game time</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_zoom</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_baseComponent</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">updateSubSurfaces</span><span class="p">()</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>                 <span class="c1"># drawn menu infinitely</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">drawMenu</span><span class="p">()</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()</span>
+             
+            <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pg</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pg</span><span class="o">.</span><span class="n">VIDEORESIZE</span><span class="p">:</span>
+                    <span class="n">Video</span><span class="o">.</span><span class="n">set_display</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">w</span><span class="p">,</span><span class="n">event</span><span class="o">.</span><span class="n">h</span><span class="p">)</span>
+                    <span class="bp">cls</span><span class="o">.</span><span class="n">surface</span> <span class="o">=</span> <span class="n">Video</span><span class="o">.</span><span class="n">get_display</span><span class="p">()</span>
+                    <span class="bp">cls</span><span class="o">.</span><span class="n">updateSubSurfaces</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pg</span><span class="o">.</span><span class="n">QUIT</span><span class="p">:</span>
+                    <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+                    <span class="n">pg</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="n">pg</span><span class="o">.</span><span class="n">MOUSEBUTTONDOWN</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">activeComponent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="c1"># no component in hand, so try to pick one up if possible</span>
+
+                        <span class="c1"># find the position of the mouse in our space</span>
+                        <span class="n">screenCenter</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Vec2d</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">get_size</span><span class="p">())</span><span class="o">/</span><span class="mi">2</span>
+                        <span class="n">mousePos</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">pygame_util</span><span class="o">.</span><span class="n">get_mouse_pos</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span> <span class="o">-</span> <span class="n">screenCenter</span>
+
+                        <span class="c1"># check every component in the list from back-to-front</span>
+                        <span class="c1"># the last items in the component list will render on top,</span>
+                        <span class="c1"># so this feels more natural to pick up</span>
+                        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="o">.</span><span class="n">components</span><span class="p">):</span>
+                            <span class="n">component</span><span class="o">.</span><span class="n">cache_bb</span><span class="p">()</span>
+                            <span class="c1"># check if the mosue is within the component geometry</span>
+                            <span class="k">if</span> <span class="n">component</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_baseComponent</span> <span class="ow">and</span> <span class="n">component</span><span class="o">.</span><span class="n">point_query</span><span class="p">(</span><span class="n">mousePos</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                                <span class="c1"># if so, set this as the shape and remove it</span>
+                                <span class="bp">cls</span><span class="o">.</span><span class="n">activeComponent</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
+                                <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="o">.</span><span class="n">removeComponent</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
+                                <span class="k">break</span>
+                    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                        <span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom_out</span><span class="p">()</span>
+                    <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                        <span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom_in</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pg</span><span class="o">.</span><span class="n">MOUSEBUTTONUP</span> <span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">activeComponent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="bp">cls</span><span class="o">.</span><span class="n">placeComponenet</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">activeComponent</span><span class="p">)</span>
+                        <span class="bp">cls</span><span class="o">.</span><span class="n">activeComponent</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">start_event</span><span class="p">:</span>
+                    <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span>
+                
+            <span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span></div>
+            
+<div class="viewcode-block" id="RocketBuilder.drawMenu"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.drawMenu">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawMenu</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method encapsulates drawing of the entire rocket builder display,</span>
+<span class="sd">        making this the top-level drawing method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_bgColor</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">drawComponentMenu</span><span class="p">()</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">drawComponentInfo</span><span class="p">()</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">drawRocket</span><span class="p">()</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">drawHeldSprite</span><span class="p">()</span>
+        <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RocketBuilder.drawComponentMenu"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.drawComponentMenu">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawComponentMenu</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws the component menu to the componentSurface class member, including</span>
+<span class="sd">        the componentTabs and the componentList.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">componentSurface</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_menuPaneColor</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">drawComponentTabs</span><span class="p">()</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">drawComponentList</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">selectedTab</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RocketBuilder.drawComponentList"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.drawComponentList">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawComponentList</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">selectedTab</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws the list of available components to the screen using the provided category.</span>
+<span class="sd">        </span>
+<span class="sd">        :param string selectedTab: The currently selected category of components to draw</span>
+<span class="sd">        :type selectedTab: :py:class:`componentTabs`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">buttonMargin</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">buttonSize</span> <span class="o">=</span> <span class="mi">100</span>
+
+        <span class="bp">cls</span><span class="o">.</span><span class="n">componentList</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">selectedTab</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">componentTabs</span><span class="o">.</span><span class="n">Thruster</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">componentList</span> <span class="o">=</span> <span class="p">[</span><span class="n">thruster</span> <span class="k">for</span> <span class="n">thruster</span> <span class="ow">in</span> <span class="n">SolidThruster</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span> <span class="o">+</span> <span class="n">LiquidThruster</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span> <span class="o">+</span> <span class="n">RCSThruster</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()]</span>
+        <span class="k">elif</span> <span class="n">selectedTab</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">componentTabs</span><span class="o">.</span><span class="n">Control</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">componentList</span> <span class="o">=</span> <span class="n">SAS</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span>  
+        <span class="k">elif</span> <span class="n">selectedTab</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">componentTabs</span><span class="o">.</span><span class="n">Tanks</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">componentList</span> <span class="o">=</span> <span class="n">Tank</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span>
+
+        <span class="c1"># find the number columns that can fit in the surface</span>
+        <span class="n">numCols</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">cls</span><span class="o">.</span><span class="n">componentSurface</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">+</span> <span class="n">buttonMargin</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">buttonSize</span> <span class="o">+</span> <span class="n">buttonMargin</span><span class="p">))</span>
+        <span class="n">numRows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">componentList</span><span class="p">)</span> <span class="o">/</span> <span class="n">numCols</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">componentList</span><span class="p">)</span> <span class="o">%</span> <span class="n">numCols</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">numRows</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">componentList</span><span class="p">:</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="p">((</span><span class="n">i</span> <span class="o">%</span> <span class="n">numCols</span><span class="p">)</span> <span class="o">*</span> <span class="n">buttonSize</span> <span class="o">+</span> <span class="n">buttonMargin</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">numCols</span><span class="p">)</span> <span class="o">*</span> <span class="n">buttonSize</span> <span class="o">+</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_bottomOfTabs</span> <span class="o">+</span> <span class="n">buttonMargin</span><span class="p">)</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">buttonSize</span> <span class="o">-</span> <span class="n">buttonMargin</span><span class="p">,</span> <span class="n">buttonSize</span> <span class="o">-</span> <span class="n">buttonMargin</span><span class="p">)</span>
+            
+            <span class="n">Graphics</span><span class="o">.</span><span class="n">drawButton</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">componentSurface</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_menuButtonColor</span><span class="p">,</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">scaleSpriteToVerts</span><span class="p">(</span><span class="n">component</span><span class="o">.</span><span class="n">_sprite</span><span class="p">,</span> <span class="n">component</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;vertices&quot;</span><span class="p">]),</span> <span class="o">.</span><span class="mi">8</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">componentButtonClicked</span><span class="p">(</span><span class="n">component</span><span class="p">))</span>
+
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="RocketBuilder.drawComponentTabs"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.drawComponentTabs">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawComponentTabs</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws the categorical tabs at the top of the componentSurface.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s1">&#39;Consolas&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="n">buttonHeight</span> <span class="o">=</span> <span class="mi">40</span>
+        <span class="n">buttonTextMargin</span> <span class="o">=</span> <span class="mi">15</span>
+
+        <span class="c1"># find the size of the text of each menu tab</span>
+        <span class="n">tabTexts</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">component</span><span class="p">)[</span><span class="mi">6</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">component</span><span class="p">))]</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">componentTabs</span><span class="p">]</span>
+        <span class="n">buttonSizes</span> <span class="o">=</span> <span class="p">[</span><span class="n">font</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">tabTexts</span><span class="p">]</span>
+        <span class="n">buttonSizes</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">buttonTextMargin</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="n">buttonSizes</span><span class="p">]</span>
+        <span class="n">buttonLines</span> <span class="o">=</span> <span class="p">[[]]</span>
+
+
+        <span class="c1"># work out which string goes on which line</span>
+        <span class="n">currLine</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">buttonSizes</span><span class="p">)):</span>
+            <span class="c1"># find the width of this string</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="n">buttonSizes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            
+            <span class="c1"># find the width of the rest of this line</span>
+            <span class="n">lineWidth</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">buttonLines</span><span class="p">[</span><span class="n">currLine</span><span class="p">]:</span>
+                <span class="n">lineWidth</span> <span class="o">+=</span> <span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">width</span> <span class="o">+</span> <span class="n">lineWidth</span> <span class="o">&lt;</span> <span class="bp">cls</span><span class="o">.</span><span class="n">componentSurface</span><span class="o">.</span><span class="n">get_width</span><span class="p">():</span>
+                <span class="n">buttonLines</span><span class="p">[</span><span class="n">currLine</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">buttonSizes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">tabTexts</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">currLine</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">buttonLines</span><span class="o">.</span><span class="n">append</span><span class="p">([(</span><span class="n">buttonSizes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">tabTexts</span><span class="p">[</span><span class="n">i</span><span class="p">])])</span>
+
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_bottomOfTabs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">buttonLines</span><span class="p">)</span> <span class="o">*</span> <span class="n">buttonHeight</span>
+
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">buttonLines</span><span class="p">)):</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">componentSurface</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">buttonLines</span><span class="p">[</span><span class="n">row</span><span class="p">]))</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">buttonLines</span><span class="p">[</span><span class="n">row</span><span class="p">])):</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">col</span> <span class="o">*</span> <span class="n">width</span><span class="p">,</span> <span class="n">row</span> <span class="o">*</span> <span class="n">buttonHeight</span><span class="p">)</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="c1"># now check if this is the rightmost button in a row</span>
+                <span class="c1"># if so, need to extend it to dodge the integer division required earlier</span>
+                <span class="c1"># from leaving a gap</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">buttonLines</span><span class="p">[</span><span class="n">row</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">componentSurface</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">buttonHeight</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">buttonHeight</span><span class="p">)</span>
+                <span class="n">Graphics</span><span class="o">.</span><span class="n">drawButton</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">componentSurface</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_menuButtonColor</span><span class="p">,</span> <span class="n">buttonLines</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="mi">16</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">setCurrentTab</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">componentTabs</span><span class="p">[</span><span class="n">buttonLines</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">][</span><span class="mi">1</span><span class="p">]]))</span></div>
+
+<div class="viewcode-block" id="RocketBuilder.drawComponentInfo"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.drawComponentInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawComponentInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Uses the active component to draw component information to the right info pane on the screen.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># fill with background color</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">componentInfoSurface</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_menuPaneColor</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">activeComponent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># find the size &amp; mass of the component</span>
+            <span class="n">globalAttributes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Width: &quot;</span><span class="p">,</span> <span class="s2">&quot;Height: &quot;</span><span class="p">,</span> <span class="s2">&quot;Mass: &quot;</span><span class="p">]</span>
+            
+            <span class="n">testComponent</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">activeComponent</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">testComponent</span><span class="p">)</span>
+            <span class="n">bb</span> <span class="o">=</span> <span class="n">testComponent</span><span class="o">.</span><span class="n">cache_bb</span><span class="p">()</span>
+
+            <span class="c1"># find the geometric center of the component</span>
+            <span class="n">globalAttributes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">right</span> <span class="o">-</span> <span class="n">bb</span><span class="o">.</span><span class="n">left</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;m&quot;</span>
+            <span class="n">globalAttributes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">top</span> <span class="o">-</span> <span class="n">bb</span><span class="o">.</span><span class="n">bottom</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;m&quot;</span>
+            <span class="n">globalAttributes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">testComponent</span><span class="o">.</span><span class="n">mass</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;kg&quot;</span>
+
+            <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">testComponent</span><span class="p">)</span>
+
+            <span class="c1"># print the values to the side</span>
+
+            <span class="n">nameFont</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s2">&quot;lucidaconsole&quot;</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">attributeFont</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s2">&quot;lucidaconsole&quot;</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+            <span class="n">rowHeight</span> <span class="o">=</span> <span class="mi">24</span>
+            <span class="n">margin</span> <span class="o">=</span> <span class="mi">10</span>
+
+            <span class="n">textPos</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">rowNum</span><span class="p">:</span> <span class="p">(</span><span class="n">margin</span><span class="p">,</span> <span class="n">rowHeight</span> <span class="o">*</span> <span class="n">rowNum</span> <span class="o">+</span> <span class="n">margin</span><span class="p">)</span>
+
+            <span class="n">Graphics</span><span class="o">.</span><span class="n">drawText</span><span class="p">(</span><span class="n">textPos</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="bp">cls</span><span class="o">.</span><span class="n">activeComponent</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">nameFont</span><span class="p">,</span> <span class="n">surface</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">componentInfoSurface</span><span class="p">)</span>
+
+            <span class="n">currRow</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">globalAttributes</span><span class="p">:</span>
+                <span class="n">Graphics</span><span class="o">.</span><span class="n">drawText</span><span class="p">(</span><span class="n">textPos</span><span class="p">(</span><span class="n">currRow</span><span class="p">),</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">attributeFont</span><span class="p">,</span> <span class="n">surface</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">componentInfoSurface</span><span class="p">)</span>
+                <span class="n">currRow</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+            <span class="n">dispInfo</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">activeComponent</span><span class="o">.</span><span class="n">getDisplayInfo</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dispInfo</span><span class="p">:</span>
+                <span class="n">Graphics</span><span class="o">.</span><span class="n">drawText</span><span class="p">(</span><span class="n">textPos</span><span class="p">(</span><span class="n">currRow</span><span class="p">),</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dispInfo</span><span class="p">[</span><span class="n">key</span><span class="p">]),</span> <span class="n">attributeFont</span><span class="p">,</span> <span class="n">surface</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">componentInfoSurface</span><span class="p">)</span>
+                <span class="n">currRow</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="c1"># draw a start button in the corner</span>
+        <span class="n">buttonMargin</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">componentInfoSurface</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">*</span> <span class="o">.</span><span class="mi">05</span>
+        <span class="n">startButtonSize</span> <span class="o">=</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">componentInfoSurface</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">buttonMargin</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+        <span class="n">startButtonPos</span> <span class="o">=</span> <span class="p">(</span><span class="n">buttonMargin</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">componentInfoSurface</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">-</span> <span class="mi">80</span> <span class="o">-</span> <span class="n">buttonMargin</span><span class="p">)</span>
+        <span class="n">startButtonColor</span> <span class="o">=</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">Graphics</span><span class="o">.</span><span class="n">drawButton</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">componentInfoSurface</span><span class="p">,</span> <span class="n">startButtonPos</span><span class="p">,</span> <span class="n">startButtonSize</span><span class="p">,</span> <span class="n">startButtonColor</span><span class="p">,</span> <span class="s2">&quot;Start&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">pg</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">Event</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">start_event</span><span class="p">)))</span>
+
+        <span class="c1"># draw a toggle symmetry button</span>
+        <span class="n">symButtonSize</span> <span class="o">=</span> <span class="n">startButtonSize</span>
+        <span class="n">symButtonPos</span> <span class="o">=</span> <span class="n">startButtonPos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">startButtonPos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">buttonMargin</span> <span class="o">-</span> <span class="n">symButtonSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">symButtonColor</span> <span class="o">=</span> <span class="p">((</span><span class="mi">150</span><span class="p">,</span><span class="mi">150</span><span class="p">,</span><span class="mi">150</span><span class="p">),</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">))</span>
+        <span class="n">symText</span> <span class="o">=</span> <span class="s2">&quot;Symmetry:  On&quot;</span> <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_symmetry</span> <span class="k">else</span> <span class="s2">&quot;Symmetry: Off&quot;</span>
+        <span class="n">Graphics</span><span class="o">.</span><span class="n">drawButton</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">componentInfoSurface</span><span class="p">,</span> <span class="n">symButtonPos</span><span class="p">,</span> <span class="n">symButtonSize</span><span class="p">,</span> <span class="n">symButtonColor</span><span class="p">,</span> <span class="n">symText</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">toggleSymmetry</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RocketBuilder.drawRocket"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.drawRocket">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawRocket</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws the rocket-in-construction to the center of the display surface.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Drawer</span><span class="o">.</span><span class="n">drawMultiple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="o">.</span><span class="n">components</span><span class="p">,</span>
+                            <span class="n">Drawer</span><span class="o">.</span><span class="n">getOffset</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="RocketBuilder.drawHeldSprite"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.drawHeldSprite">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawHeldSprite</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws the sprite of the active component to the screen at the position of the mouse</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">activeComponent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># create a test component at the mouse position</span>
+            <span class="n">testComp</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">activeComponent</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">mousePosToPymunkTransform</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">activeComponent</span><span class="p">))</span>
+            <span class="c1"># give add the component to the rocket (and space)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="n">testComp</span><span class="p">)</span>
+            <span class="c1"># draw the part at this location...</span>
+            <span class="n">Drawer</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">testComp</span><span class="p">,</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">getOffset</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="p">))</span>
+            <span class="c1"># then remove it.</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="o">.</span><span class="n">removeComponent</span><span class="p">(</span><span class="n">testComp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RocketBuilder.updateSubSurfaces"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.updateSubSurfaces">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">updateSubSurfaces</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A helper method the correctly set the size and position of the componentSurface and componentInfoSurface</span>
+<span class="sd">        when the game window is resized.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">surface</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">componentSurface</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">subsurface</span><span class="p">(</span>
+            <span class="n">pg</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span>
+                <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span>   <span class="c1"># top-left corner of screen</span>
+                <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">get_size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">get_size</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># left 1/4 of screen</span>
+             <span class="p">))</span>
+
+        <span class="bp">cls</span><span class="o">.</span><span class="n">componentInfoSurface</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">subsurface</span><span class="p">(</span>
+            <span class="n">pg</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span>
+                <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">get_size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>  <span class="c1"># origin of right 1/4 of screen</span>
+                <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">get_size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">get_size</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># right 1/4 of screen</span>
+            <span class="p">))</span></div>
+    
+
+<div class="viewcode-block" id="RocketBuilder.placeComponenet"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.placeComponenet">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">placeComponenet</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">component</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tests if it is possible to place the given component, and will place it if possible.</span>
+<span class="sd">        Returns True if the component was placed, and False if it was not.</span>
+<span class="sd">        </span>
+<span class="sd">        :param component: The component to attempt to place</span>
+<span class="sd">        :type component: :py:class:`rockets.Component`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#if it&#39;s intersecting/directly adjacent to another component on the rocket</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">intersectsWithRocket</span><span class="p">(</span><span class="n">component</span><span class="p">)</span> <span class="p">:</span>
+            <span class="n">transform</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">mousePosToPymunkTransform</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="n">component</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_symmetry</span><span class="p">:</span>
+                <span class="n">symTransform</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">mousePosToPymunkTransform</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="n">component</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">symTransform</span><span class="p">))</span>
+
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+        
+<div class="viewcode-block" id="RocketBuilder.mousePosToPymunkTransform"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.mousePosToPymunkTransform">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">mousePosToPymunkTransform</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">component</span><span class="p">,</span> <span class="n">reflected</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes in a component class or instance, and the mouse position. Assuming</span>
+<span class="sd">        that the component is being held by mouse in its center, this finds the</span>
+<span class="sd">        transform needed to translate between the component&#39;s inherent verteces</span>
+<span class="sd">        and the mouse&#39;s current position in pymunk space.</span>
+
+<span class="sd">        :param component: The component who&#39;s position to transform</span>
+<span class="sd">        :type component: :py:class:`rockets.Component`</span>
+<span class="sd">        :param bool reflected: Will reflect the transform about the x axis if set to True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># pull in component boundaries</span>
+        <span class="c1">#minX, maxX, minY, maxY = Component.getXYBoundingBox(component._vertices)</span>
+        <span class="n">testComponent</span> <span class="o">=</span> <span class="n">component</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">testComponent</span><span class="p">)</span>
+        <span class="n">bb</span> <span class="o">=</span> <span class="n">testComponent</span><span class="o">.</span><span class="n">cache_bb</span><span class="p">()</span>
+
+        <span class="c1"># find the geometric center of the component</span>
+        <span class="n">componentCenter</span> <span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">center</span><span class="p">()</span>
+
+        <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">testComponent</span><span class="p">)</span>
+
+        <span class="c1"># finding center of the screen</span>
+        <span class="n">screenCenter</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Vec2d</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">get_size</span><span class="p">())</span><span class="o">/</span><span class="mi">2</span>
+
+        <span class="c1"># finding the mouse position, in pymunk space</span>
+        <span class="n">mousePos</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">pygame_util</span><span class="o">.</span><span class="n">get_mouse_pos</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">reflected</span><span class="p">:</span>
+            <span class="n">mousePosX</span><span class="p">,</span> <span class="n">mousePosY</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">pygame_util</span><span class="o">.</span><span class="n">get_mouse_pos</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
+            <span class="n">mousePos</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">-</span> <span class="n">mousePosX</span><span class="p">,</span> <span class="n">mousePosY</span>
+
+        <span class="c1"># vector to the center of the screen in pygame pixels</span>
+        <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="p">(</span><span class="n">mousePos</span> <span class="o">-</span> <span class="n">screenCenter</span><span class="p">)</span> <span class="o">-</span> <span class="n">componentCenter</span>
+
+        <span class="c1"># flip dy between pymunk coordinates and pymunk screen-space coordinates</span>
+
+        <span class="k">return</span> <span class="n">pm</span><span class="o">.</span><span class="n">Transform</span><span class="p">(</span><span class="n">tx</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span> <span class="n">ty</span><span class="o">=</span><span class="n">dy</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RocketBuilder.removeComponent"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.removeComponent">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">removeComponent</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">component</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes a component from the rocket.</span>
+
+<span class="sd">        :param component: The component to attempt to remove</span>
+<span class="sd">        :type component: :py:class:`rockets.Component`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="o">.</span><span class="n">removeComponent</span><span class="p">(</span><span class="n">component</span><span class="p">)</span></div>
+   
+    
+<div class="viewcode-block" id="RocketBuilder.intersectsWithRocket"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.intersectsWithRocket">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">intersectsWithRocket</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">component</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tests whether or not a component, if placed at the current mouse position, will intersect with the rocket</span>
+
+<span class="sd">        :param component: The component class to test</span>
+<span class="sd">        :type component: :py:class:`rockets.Component`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># make an instance of the component to test with, at the mouse position     </span>
+        <span class="n">transform</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">mousePosToPymunkTransform</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
+        <span class="n">theComponent</span> <span class="o">=</span> <span class="n">component</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="n">theComponent</span><span class="p">)</span>
+
+        <span class="c1"># update the bounding box for the component</span>
+        <span class="n">theComponent</span><span class="o">.</span><span class="n">cache_bb</span><span class="p">()</span>
+
+        <span class="c1"># compare on every single component in the rocket</span>
+        <span class="k">for</span> <span class="n">rocketComponent</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+            <span class="c1"># except for the one we just made...</span>
+            <span class="k">if</span> <span class="n">rocketComponent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">theComponent</span><span class="p">:</span>
+                <span class="c1"># update the rocket component&#39;s bounding box...</span>
+                <span class="n">rocketComponent</span><span class="o">.</span><span class="n">cache_bb</span><span class="p">()</span>
+                <span class="c1"># ...and see if it collides with our shape</span>
+                <span class="k">if</span> <span class="n">theComponent</span><span class="o">.</span><span class="n">shapes_collide</span><span class="p">(</span><span class="n">rocketComponent</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">:</span>
+                    <span class="c1">#if it does, remove the component and return True!</span>
+                    <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="o">.</span><span class="n">removeComponent</span><span class="p">(</span><span class="n">theComponent</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="c1"># if it doesn&#39;t for any of the rocket components, remove it and return False</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">theRocket</span><span class="o">.</span><span class="n">removeComponent</span><span class="p">(</span><span class="n">theComponent</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="RocketBuilder.componentButtonClicked"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.componentButtonClicked">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">componentButtonClicked</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">component</span><span class="p">)</span> <span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A helper method that changes the selected component. This is used in the buttons in the component list</span>
+<span class="sd">        </span>
+<span class="sd">        :param component: The component class to set as active</span>
+<span class="sd">        :type component: :py:class:`rockets.Component`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">activeComponent</span> <span class="o">=</span> <span class="n">component</span></div>
+
+<div class="viewcode-block" id="RocketBuilder.setCurrentTab"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.setCurrentTab">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">setCurrentTab</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A helper method that changes the selected tab. This is used in the tab buttons to change the component list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">selectedTab</span> <span class="o">=</span> <span class="n">state</span></div>
+
+<div class="viewcode-block" id="RocketBuilder.toggleSymmetry"><a class="viewcode-back" href="../rocketbuilder.html#rocketbuilder.RocketBuilder.toggleSymmetry">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">toggleSymmetry</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A helper method that toggles the symmetry flag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_symmetry</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_symmetry</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

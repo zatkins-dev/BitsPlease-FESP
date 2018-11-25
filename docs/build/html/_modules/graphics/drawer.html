@@ -1,0 +1,545 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>graphics.drawer &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">BitsPlease-FESP</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>graphics.drawer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for graphics.drawer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pygame</span> <span class="k">as</span> <span class="nn">pg</span>
+<span class="kn">import</span> <span class="nn">pymunk</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
+<span class="kn">from</span> <span class="nn">physics</span> <span class="k">import</span> <span class="n">CelestialBody</span>
+<span class="kn">from</span> <span class="nn">graphics.explosion</span> <span class="k">import</span> <span class="n">Explosion</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">graphics.zoom</span> <span class="k">import</span> <span class="n">Zoom</span>
+
+
+<div class="viewcode-block" id="Drawer"><a class="viewcode-back" href="../../graphics.html#graphics.Drawer">[docs]</a><span class="k">class</span> <span class="nc">Drawer</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Static class for drawing game components to pygame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: Maximum zoom level, 8x normal zoom</span>
+    <span class="n">_maxZoom</span> <span class="o">=</span> <span class="mi">8</span>
+
+    <span class="c1">#: Minimum zoom level, (2^-16)x normal zoom</span>
+    <span class="n">_minZoom</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**-</span><span class="mi">16</span>
+
+    <span class="c1">#: :class:`Zoom` object for handling current zoom level</span>
+    <span class="n">zoom</span> <span class="o">=</span> <span class="n">Zoom</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Drawer.draw"><a class="viewcode-back" href="../../graphics.html#graphics.Drawer.draw">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">toDraw</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pg</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;blue&quot;</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws an object to the screen</span>
+
+<span class="sd">        :param screen: Pygame surface to draw to</span>
+<span class="sd">        :type screen: :py:class:`pygame.Surface`</span>
+<span class="sd">        :param toDraw: Object to draw</span>
+<span class="sd">        :param offset: Offset bewteen pymunk and pygame coordinates</span>
+<span class="sd">        :type offset: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">toDraw</span><span class="p">,</span> <span class="n">CelestialBody</span><span class="p">):</span>
+            <span class="n">Drawer</span><span class="o">.</span><span class="n">drawCelestialBody</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">toDraw</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">toDraw</span><span class="p">,</span> <span class="s1">&#39;sprite&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">toDraw</span><span class="o">.</span><span class="n">sprite</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Drawer</span><span class="o">.</span><span class="n">drawSprite</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">toDraw</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">toDraw</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">Poly</span><span class="p">):</span>
+            <span class="n">Drawer</span><span class="o">.</span><span class="n">drawPoly</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">toDraw</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">toDraw</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">Circle</span><span class="p">):</span>
+            <span class="n">Drawer</span><span class="o">.</span><span class="n">drawCircle</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">toDraw</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span><span class="n">color</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Drawer.drawMultiple"><a class="viewcode-back" href="../../graphics.html#graphics.Drawer.drawMultiple">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawMultiple</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pg</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;blue&quot;</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calls :py:meth:`draw` on a list of drawable objects</span>
+
+<span class="sd">        :param screen: Pygame surface to draw to</span>
+<span class="sd">        :type screen: :py:class:`pygame.Surface`</span>
+<span class="sd">        :param toDraw: list of drawable objects</span>
+<span class="sd">        :param offset: Offset bewteen pymunk and pygame coordinates</span>
+<span class="sd">        :type offset: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    
+        <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="n">Drawer</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Drawer.drawPoly"><a class="viewcode-back" href="../../graphics.html#graphics.Drawer.drawPoly">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawPoly</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pg</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;blue&quot;</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws a :py:class:`pymunk.Poly` object</span>
+
+<span class="sd">        :param screen: Pygame surface to draw to</span>
+<span class="sd">        :type screen: :py:class:`pygame.Surface`</span>
+<span class="sd">        :param shape: `Poly` object to draw</span>
+<span class="sd">        :type shape: :py:class:`pymunk.Poly`</span>
+<span class="sd">        :param offset: Offset bewteen pymunk and pygame coordinates</span>
+<span class="sd">        :type offset: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">newVerts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="nb">max</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">screen</span><span class="o">.</span><span class="n">get_size</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">shape</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">():</span>
+            <span class="c1"># Get pymunk global coordinates</span>
+            <span class="n">newV</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span> <span class="o">+</span> <span class="n">shape</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span><span class="o">*</span><span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span>
+            <span class="n">newVerts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="bp">cls</span><span class="o">.</span><span class="n">intVec2d</span><span class="p">(</span><span class="n">newV</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                             <span class="nb">max</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">intVec2d</span><span class="p">(</span><span class="n">newV</span><span class="p">)[</span><span class="mi">1</span><span class="p">])])</span>
+        <span class="n">isOnScreen</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="ow">or</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">inRange</span><span class="p">(</span><span class="nb">max</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+                                      <span class="n">newVerts</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">isOnScreen</span><span class="p">:</span>
+            <span class="n">pg</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">newVerts</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Drawer.drawCircle"><a class="viewcode-back" href="../../graphics.html#graphics.Drawer.drawCircle">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawCircle</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pg</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;blue&quot;</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws a :py:class:`pymunk.Circle` object</span>
+
+<span class="sd">        :param screen: Pygame surface to draw to</span>
+<span class="sd">        :type screen: :py:class:`pygame.Surface`</span>
+<span class="sd">        :param shape: :py:class:`Circle` object to draw</span>
+<span class="sd">        :type shape: :py:class:`pymunk.Circle`</span>
+<span class="sd">        :param offset: Offset bewteen pymunk and pygame coordinates</span>
+<span class="sd">        :type offset: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">to_pygame</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="nb">max</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">screen</span><span class="o">.</span><span class="n">get_size</span><span class="p">())</span>
+
+        <span class="c1"># find the center of the screen (1/2 screen diagonal)</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">intVec2d</span><span class="p">(</span><span class="nb">max</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">))</span>
+
+        <span class="c1"># check for farthest possible distance where we could see the planet:</span>
+        <span class="c1">#       1/2 screen diagonal + r = distance from circle</span>
+        <span class="c1"># as long as the distance is less than this, we should draw the circle</span>
+        <span class="n">isOnScreen</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">get_distance</span><span class="p">(</span><span class="n">center</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="n">center</span><span class="o">.</span><span class="n">get_length</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">isOnScreen</span><span class="p">:</span>
+            <span class="c1"># print(&quot;drawing circle: &quot;, (screen, pg.Color(&#39;blue&#39;),[pos[0], max[1]-pos[1]], int(r)))</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">intVec2d</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+            <span class="n">pg</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">max</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Drawer.drawCelestialBody"><a class="viewcode-back" href="../../graphics.html#graphics.Drawer.drawCelestialBody">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawCelestialBody</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">cb</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pg</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;blue&quot;</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws a :py:class:`physics.CelestialBody` object</span>
+
+<span class="sd">        :param screen: Pygame surface to draw to</span>
+<span class="sd">        :type screen: :py:class:`pygame.Surface`</span>
+<span class="sd">        :param cb: :py:class:`CelestialBody` object to draw</span>
+<span class="sd">        :type cb: :py:class:`physics.CelestialBody`</span>
+<span class="sd">        :param offset: Offset bewteen pymunk and pygame coordinates</span>
+<span class="sd">        :type offset: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        :param color: Color of circle</span>
+<span class="sd">        :type color: :py:class:`pygame.Color`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="o">*</span><span class="p">(</span><span class="n">cb</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="n">screenSize</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">screen</span><span class="o">.</span><span class="n">get_size</span><span class="p">())</span>
+        <span class="n">screenCenter</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">intVec2d</span><span class="p">(</span><span class="n">screenSize</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">))</span>
+        <span class="n">isOnScreen</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">get_distance</span><span class="p">(</span><span class="n">screenCenter</span><span class="p">)</span> \
+                     <span class="o">&lt;=</span> <span class="p">(</span><span class="n">cb</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span> <span class="o">+</span> <span class="n">screenCenter</span><span class="o">.</span><span class="n">get_length</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">isOnScreen</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span> <span class="o">&lt;</span> <span class="mf">2.0</span><span class="o">**-</span><span class="mi">4</span><span class="p">:</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">drawCircle</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">cb</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="n">rocket_pos</span> <span class="o">=</span> <span class="n">screenCenter</span> <span class="o">-</span> <span class="n">offset</span>
+            <span class="n">point_query</span> <span class="o">=</span> <span class="n">cb</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">point_query</span><span class="p">(</span><span class="n">rocket_pos</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">point_query</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">screenCenter</span><span class="o">.</span><span class="n">length</span><span class="p">:</span>
+                <span class="c1"># planet should appear</span>
+                <span class="n">closestPoint</span> <span class="o">=</span> <span class="n">point_query</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">point</span>
+                <span class="n">normal</span> <span class="o">=</span> <span class="n">point_query</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">gradient</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+                <span class="n">tangent</span> <span class="o">=</span> <span class="n">normal</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+                <span class="n">antitangent</span> <span class="o">=</span> <span class="n">normal</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+                <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">closestPoint</span> <span class="o">-</span> <span class="n">screenCenter</span><span class="o">.</span><span class="n">length</span><span class="o">*</span><span class="p">(</span><span class="n">tangent</span><span class="p">),</span>
+                          <span class="n">closestPoint</span> <span class="o">-</span> <span class="n">screenCenter</span><span class="o">.</span><span class="n">length</span><span class="o">*</span><span class="p">(</span><span class="n">antitangent</span><span class="p">),</span>
+                          <span class="n">closestPoint</span> <span class="o">-</span> <span class="n">screenCenter</span><span class="o">.</span><span class="n">length</span><span class="o">*</span><span class="p">(</span><span class="n">antitangent</span> <span class="o">-</span> <span class="n">normal</span><span class="p">),</span>
+                          <span class="n">closestPoint</span> <span class="o">-</span> <span class="n">screenCenter</span><span class="o">.</span><span class="n">length</span><span class="o">*</span><span class="p">(</span><span class="n">tangent</span> <span class="o">-</span> <span class="n">normal</span><span class="p">)]</span>
+                <span class="n">flipY</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y_max</span><span class="p">:</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">y_max</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">polyPoints</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">flipY</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">to_pygame</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">offset</span><span class="p">),</span> <span class="n">screenSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">points</span><span class="p">))</span>
+                <span class="n">pg</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">polyPoints</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Drawer.drawExplosion"><a class="viewcode-back" href="../../graphics.html#graphics.Drawer.drawExplosion">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawExplosion</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">sprite</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws a :py:class:`Explosion` object</span>
+
+<span class="sd">        :param screen: Pygame surface to draw to</span>
+<span class="sd">        :type screen: :py:class:`pygame.Surface`</span>
+<span class="sd">        :param sprite: Explosion object to draw</span>
+<span class="sd">        :type sprite: :py:class:`Explosion`</span>
+<span class="sd">        :param (int,int) position: Position in pymunk coordinates to draw the explosion</span>
+<span class="sd">        :param (int,int) size: Size of explosion</span>
+<span class="sd">        :param offset: Offset bewteen pymunk and pygame coordinates</span>
+<span class="sd">        :type offset: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="o">*</span><span class="p">(</span><span class="n">offset</span> <span class="o">+</span> <span class="n">position</span> <span class="o">-</span> <span class="bp">cls</span><span class="o">.</span><span class="n">intVec2d</span><span class="p">((</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)))</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">intVec2d</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">size</span><span class="p">)</span><span class="o">*</span><span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">)</span>
+        <span class="n">explosionSprite</span> <span class="o">=</span> <span class="n">sprite</span><span class="o">.</span><span class="n">get_draw</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">explosionSprite</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">scaledSprite</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">smoothscale</span><span class="p">(</span><span class="n">explosionSprite</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">scaledSprite</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">position</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Drawer.drawSprite"><a class="viewcode-back" href="../../graphics.html#graphics.Drawer.drawSprite">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawSprite</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">component</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws a :py:class:`rockets.Component` object</span>
+
+<span class="sd">        :param screen: Pygame surface to draw to</span>
+<span class="sd">        :type screen: :py:class:`pygame.Surface`</span>
+<span class="sd">        :param shape: `Component` object to draw</span>
+<span class="sd">        :type shape: :py:class:`rockets.Component`</span>
+<span class="sd">        :param offset: Offset bewteen pymunk and pygame coordinates</span>
+<span class="sd">        :type offset: :py:class:`pymunk.vec2d.Vec2d` </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">to_pygame</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="n">screenSize</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">screen</span><span class="o">.</span><span class="n">get_size</span><span class="p">())</span>
+
+        <span class="n">isOnScreen</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">inRange</span><span class="p">(</span><span class="n">screenSize</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">isOnScreen</span><span class="p">:</span>
+            <span class="c1"># translate the sprite to be the same size as the component...</span>
+            <span class="n">verts</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">()</span>
+            <span class="n">minX</span><span class="p">,</span> <span class="n">maxX</span><span class="p">,</span> <span class="n">minY</span><span class="p">,</span> <span class="n">maxY</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">getXYMinMax</span><span class="p">(</span><span class="n">verts</span><span class="p">)</span>
+
+            <span class="c1"># find the center of the geometry, and rotate it</span>
+            <span class="k">if</span> <span class="n">component</span><span class="o">.</span><span class="n">body</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">center</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="o">*</span><span class="n">Vec2d</span><span class="p">((</span><span class="n">maxX</span><span class="o">+</span><span class="n">minX</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">maxY</span><span class="o">+</span><span class="n">minY</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">component</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">center</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="o">*</span><span class="n">Vec2d</span><span class="p">((</span><span class="n">maxX</span><span class="o">+</span><span class="n">minX</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">maxY</span><span class="o">+</span><span class="n">minY</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+            <span class="c1"># finds the bounding box for the geometry, and transforms the</span>
+            <span class="c1"># sprite to fit within the geometry</span>
+            <span class="n">scaledSprite</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">component</span><span class="o">.</span><span class="n">sprite</span><span class="p">,</span>
+                                              <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">maxX</span><span class="o">-</span><span class="n">minX</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">maxY</span><span class="o">-</span><span class="n">minY</span><span class="p">)))</span>
+
+            <span class="k">if</span> <span class="n">component</span><span class="o">.</span><span class="n">body</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">rotSprite</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotozoom</span><span class="p">(</span><span class="n">scaledSprite</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">component</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">),</span> <span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">rotSprite</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotozoom</span><span class="p">(</span><span class="n">scaledSprite</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">)</span>
+
+            <span class="c1"># the position we draw the sprite at will be the</span>
+            <span class="c1"># position of the rocket,</span>
+            <span class="n">drawX</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">rotSprite</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">drawY</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">rotSprite</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+
+            <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">rotSprite</span><span class="p">,</span> <span class="p">(</span><span class="n">drawX</span><span class="p">,</span> <span class="n">drawY</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Drawer.getXYMinMax"><a class="viewcode-back" href="../../graphics.html#graphics.Drawer.getXYMinMax">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getXYMinMax</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">vertices</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper function to get size for scaled sprite for :py:meth:`drawSprite`</span>
+
+<span class="sd">        :param [(float,float)] vertices: List of component vertices</span>
+<span class="sd">        :returns: Tuple of (minX, maxX, minY, maxY)</span>
+<span class="sd">        :rtype: (int, int, int, int)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Xs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vertices</span><span class="p">))</span>
+        <span class="n">Ys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">vertices</span><span class="p">))</span>
+        <span class="n">minX</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">Xs</span><span class="p">)</span>
+        <span class="n">maxX</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">Xs</span><span class="p">)</span>
+        <span class="n">minY</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">Ys</span><span class="p">)</span>
+        <span class="n">maxY</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">Ys</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">minX</span><span class="p">,</span> <span class="n">maxX</span><span class="p">,</span> <span class="n">minY</span><span class="p">,</span> <span class="n">maxY</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Drawer.scaleSpriteToVerts"><a class="viewcode-back" href="../../graphics.html#graphics.Drawer.scaleSpriteToVerts">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">scaleSpriteToVerts</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">sprite</span><span class="p">,</span> <span class="n">vertices</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper function to scaled sprite for :py:meth:`drawSprite`</span>
+
+<span class="sd">        :param sprite: Sprite image to draw</span>
+<span class="sd">        :type sprite: :py:class:`pygame.Surface` </span>
+<span class="sd">        :param [(float,float)] vertices: List of component vertices</span>
+<span class="sd">        :returns: Scaled sprite image</span>
+<span class="sd">        :rtype: :py:class:`pygame.Surface`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">minX</span><span class="p">,</span> <span class="n">maxX</span><span class="p">,</span> <span class="n">minY</span><span class="p">,</span> <span class="n">maxY</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">getXYMinMax</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pg</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">sprite</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">maxX</span> <span class="o">-</span> <span class="n">minX</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">maxY</span> <span class="o">-</span> <span class="n">minY</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="Drawer.drawBackground"><a class="viewcode-back" href="../../graphics.html#graphics.Drawer.drawBackground">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawBackground</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">closestBody</span><span class="p">,</span> <span class="n">altitude</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws the planetary atmosphere of the closest body to the rocket based on altitude.</span>
+
+<span class="sd">        :param closestBody: :py:class:`CelestialBody` closest to the rocket</span>
+<span class="sd">        :type closestBody: :py:class:`physics.CelestialBody`</span>
+<span class="sd">        :param float altitude: Height of the rocket above `closestBody`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">surf</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span>
+        <span class="n">atmColor</span> <span class="o">=</span> <span class="n">closestBody</span><span class="o">.</span><span class="n">atmosphereColor</span>
+        <span class="k">if</span> <span class="n">atmColor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">altitude</span> <span class="o">&lt;</span> <span class="n">closestBody</span><span class="o">.</span><span class="n">atmosphereHeight</span><span class="p">:</span>
+            <span class="c1"># normalize the height to a 0-1 scale</span>
+            <span class="n">relHeight</span> <span class="o">=</span> <span class="p">(</span><span class="n">altitude</span> <span class="o">/</span> <span class="n">closestBody</span><span class="o">.</span><span class="n">atmosphereHeight</span><span class="p">)</span>
+            
+            <span class="c1"># find the opacity, in a quadratically decreasing fasion</span>
+            <span class="n">atmBrightness</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">relHeight</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+            <span class="c1"># scale atmColor</span>
+            <span class="n">atmColor</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">atmBrightness</span><span class="o">*</span><span class="n">c</span><span class="p">,</span> <span class="n">atmColor</span><span class="p">))</span> <span class="o">+</span><span class="p">[</span><span class="n">atmBrightness</span><span class="p">])</span>
+            <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">**-</span><span class="mi">5</span><span class="p">:</span>
+                <span class="c1"># create a background surface, and blit the background over it</span>
+                <span class="n">surf</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">atmColor</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">closestBody</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">radius</span><span class="o">+</span><span class="n">closestBody</span><span class="o">.</span><span class="n">atmosphereHeight</span><span class="p">)</span><span class="o">*</span><span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">to_pygame</span><span class="p">(</span><span class="n">closestBody</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">offset</span><span class="p">)</span>
+                <span class="n">pg</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">surf</span><span class="p">,</span> <span class="n">atmColor</span><span class="p">,</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">surf</span><span class="o">.</span><span class="n">get_size</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Drawer.getOffset"><a class="viewcode-back" href="../../graphics.html#graphics.Drawer.getOffset">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getOffset</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">rocket</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the offset between pymunk and pygame coordinates such that the rocket is rendered in the center of the screen.</span>
+
+<span class="sd">        :param screen: Current display surface</span>
+<span class="sd">        :type screen: :py:class:`pygame.Surface` </span>
+<span class="sd">        :param rocket: Rocket to place in the center of the screen</span>
+<span class="sd">        :type rocket: :py:class:`rockets.Rocket`</span>
+<span class="sd">        :returns: Offset to add to pymunk coordinates</span>
+<span class="sd">        :rtype: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">position</span> <span class="o">=</span> <span class="n">rocket</span><span class="o">.</span><span class="n">position</span>
+        <span class="n">centerOfScreen</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">intVec2d</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">screen</span><span class="o">.</span><span class="n">get_size</span><span class="p">())</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">intVec2d</span><span class="p">(</span><span class="n">centerOfScreen</span> <span class="o">-</span> <span class="n">position</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Drawer.to_pygame"><a class="viewcode-back" href="../../graphics.html#graphics.Drawer.to_pygame">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">to_pygame</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert local pymunk shape coordinates to pygame if shape is not `None`, else convert global pymunk coordinates to pygame.</span>
+
+<span class="sd">        :param shape: Shape local coordinates are in reference to</span>
+<span class="sd">        :type shape: :py:class:`pymunk.Shape`</span>
+<span class="sd">        :param coords: Coordinates to convert</span>
+<span class="sd">        :type coords: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        :param offset: Offset bewteen pymunk and pygame coordinates</span>
+<span class="sd">        :type offset: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        :returns: Coordinates converted to pygame</span>
+<span class="sd">        :rtype: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">intVec2d</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="o">*</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">coords</span> <span class="o">+</span> <span class="n">offset</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="o">*</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
+                                            <span class="o">+</span> <span class="n">shape</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span>
+                                            <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">intVec2d</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Drawer.intVec2d"><a class="viewcode-back" href="../../graphics.html#graphics.Drawer.intVec2d">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">intVec2d</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper function that applies function to each element of `v`. Default function is :py:func:`int`.</span>
+
+<span class="sd">        :param v: `Vec2d` to apply function to</span>
+<span class="sd">        :type v: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        :param func: Function to apply to elements of `v`</span>
+<span class="sd">        :type func: :py:class:`types.FunctionType`</span>
+<span class="sd">        :returns: Vector `v` after function application</span>
+<span class="sd">        :rtype: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">func</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="Drawer.inRange"><a class="viewcode-back" href="../../graphics.html#graphics.Drawer.inRange">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">inRange</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper function that checks if coordinates are between (0,0) and `max`.</span>
+
+<span class="sd">        :param max: `Vec2d` of maximum coordinates</span>
+<span class="sd">        :type v: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        :param max: `Vec2d` of coordinates to check</span>
+<span class="sd">        :type v: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        :returns: `True` if `coords` is in range, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,675 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>rockets.thruster &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">BitsPlease-FESP</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>rockets.thruster</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for rockets.thruster</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
+<span class="kn">from</span> <span class="nn">rockets</span> <span class="k">import</span> <span class="n">Component</span><span class="p">,</span> <span class="n">SAS</span><span class="p">,</span> <span class="n">Tank</span>
+<span class="kn">from</span> <span class="nn">pymunk</span> <span class="k">import</span> <span class="n">Body</span> <span class="k">as</span> <span class="n">Body</span>
+<span class="kn">import</span> <span class="nn">pygame</span> <span class="k">as</span> <span class="nn">pg</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_ASSETS_PATH</span>
+
+
+<div class="viewcode-block" id="Thruster"><a class="viewcode-back" href="../../rockets.html#rockets.Thruster">[docs]</a><span class="k">class</span> <span class="nc">Thruster</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Thruster Interface for creation of thrusters. Individual named</span>
+<span class="sd">    thrusters inherit from and implement this class. Most of the implementation</span>
+<span class="sd">    is already done within this interface, with key parts left out for the </span>
+<span class="sd">    subclasses to make their own.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for a Thruster. The important things done in this constructor include</span>
+<span class="sd">        creating the Component base using the vertices defined in the getInfo method, and </span>
+<span class="sd">        setting the density and initial fuel of the thruster also using values from the </span>
+<span class="sd">        getInfo method.</span>
+
+<span class="sd">        :param pymunk.Body body: The body to attatch this thruster to.</span>
+<span class="sd">        :param pymunk.Transform transform: The transform to apply to the Thruster on creation.</span>
+<span class="sd">        :param float radius: The radius to give to the Thruster&#39;s corners.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The vertices of this specific type of thruster. This returns the value defined in</span>
+<span class="sd">        the getInfo method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;vertices&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">thrustForce</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The magnitude of the thrust of this specific type of thruster. This returns the value</span>
+<span class="sd">        defined in the getInfo method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;thrustForce&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">thrustVector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The direction that the thruster will apply thrust. This returns the value defined</span>
+<span class="sd">        in the getInfo method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;thrustVector&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sprite</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The sprite to use to render the thruster. This returns the value defined in the getInfo method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;sprite&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Thruster.thrust"><a class="viewcode-back" href="../../rockets.html#rockets.Thruster.thrust">[docs]</a>    <span class="k">def</span> <span class="nf">thrust</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the scaled thrust vector of the Thruster.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">thrustForce</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">thrustVector</span></div>
+
+<div class="viewcode-block" id="Thruster.applyThrust"><a class="viewcode-back" href="../../rockets.html#rockets.Thruster.applyThrust">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">applyThrust</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">throttle</span><span class="p">,</span> <span class="n">timescale</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies thrust to the rocket, scaling the thrust to a throttle value between 0 and 1. The </span>
+<span class="sd">        thrust provided and fuel consumed are then scaled by the provide timescale.</span>
+
+<span class="sd">        :param float throttle: The ammount to throttle the thrust by, between 0 and 1</span>
+<span class="sd">        :param float timescale: The ammount to scale the thrust provided and fuel consumed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Thruster.reset"><a class="viewcode-back" href="../../rockets.html#rockets.Thruster.reset">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resets properties of the underlying component and the fuel of the thruster to restart the simulation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Thruster.getInfo"><a class="viewcode-back" href="../../rockets.html#rockets.Thruster.getInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method is what will define the properties of a specific Thruster subclass.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Thruster.getDisplayInfo"><a class="viewcode-back" href="../../rockets.html#rockets.Thruster.getDisplayInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getDisplayInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a dictionary containing the &quot;Thrust&quot; and &quot;Thrust Vector&quot; of the rocket</span>
+<span class="sd">        with units attatched for display to the screen or user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inf</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;Thrust&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">inf</span><span class="p">[</span><span class="s2">&quot;thrustForce&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Thrust Vector&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">inf</span><span class="p">[</span><span class="s2">&quot;thrustVector&quot;</span><span class="p">])),</span>
+        <span class="p">}</span></div></div>
+
+<div class="viewcode-block" id="SolidThruster"><a class="viewcode-back" href="../../rockets.html#rockets.SolidThruster">[docs]</a><span class="k">class</span> <span class="nc">SolidThruster</span><span class="p">(</span><span class="n">Thruster</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">Component</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;vertices&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;density&quot;</span><span class="p">],</span> <span class="n">transform</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;maxFuel&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">maxFuel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The maximum ammount of fuel that the thruster starts with. This returns the value</span>
+<span class="sd">        defined in the getInfo method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;maxFuel&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">fuel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The current ammout of fuel that the thruster has. Cannot be set below zero.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fuel</span>
+
+    <span class="nd">@fuel</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">fuel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">newFuel</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">newFuel</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fuel</span> <span class="o">=</span> <span class="n">newFuel</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fuel</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="SolidThruster.applyThrust"><a class="viewcode-back" href="../../rockets.html#rockets.SolidThruster.applyThrust">[docs]</a>    <span class="k">def</span> <span class="nf">applyThrust</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">throttle</span><span class="p">,</span> <span class="n">timescale</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies thrust to the rocket, scaling the thrust to a throttle value between 0 and 1. The </span>
+<span class="sd">        thrust provided and fuel consumed are then scaled by the provide timescale.</span>
+
+<span class="sd">        :param float throttle: The ammount to throttle the thrust by, between 0 and 1</span>
+<span class="sd">        :param float timescale: The ammount to scale the thrust provided and fuel consumed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fuel</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">throttle</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">apply_impulse_at_local_point</span><span class="p">(</span><span class="n">throttle</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">thrust</span><span class="p">()</span> <span class="o">*</span> <span class="n">timescale</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fuel</span> <span class="o">-=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">throttle</span> <span class="o">*</span> <span class="n">timescale</span></div>
+
+<div class="viewcode-block" id="SolidThruster.reset"><a class="viewcode-back" href="../../rockets.html#rockets.SolidThruster.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxFuel</span></div>
+
+<div class="viewcode-block" id="SolidThruster.getInfo"><a class="viewcode-back" href="../../rockets.html#rockets.SolidThruster.getInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method is what will define the properties of a specific Thruster subclass.</span>
+<span class="sd">        It should return a dictionary with the following values:</span>
+
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        | Dictionary Key |              Dictionary Value Type              |</span>
+<span class="sd">        +================+=================================================+</span>
+<span class="sd">        |    vertices    |   (*List of* :py:class:`pymunk.vec2d.Vec2d`)    |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |   thrustForce  |                    (*float*)                    |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |  thrustVector  |        (:py:class:`pymunk.vec2d.Vec2d`)         |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |                | (:py:class:`pygame.surface.Surface`) It is      |</span>
+<span class="sd">        |     sprite     | advised this be stored as a class variable, and |</span>
+<span class="sd">        |                | returned by this method to improve performance. |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |     maxFuel    |             (*float*) Should always be 0        |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |     density    |                    (*float*)                    |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="SolidThruster.getDisplayInfo"><a class="viewcode-back" href="../../rockets.html#rockets.SolidThruster.getDisplayInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getDisplayInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="n">inf</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">getDisplayInfo</span><span class="p">()</span>
+        <span class="n">inf</span><span class="p">[</span><span class="s2">&quot;Fuel Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Solid&quot;</span>
+        <span class="k">return</span> <span class="n">inf</span></div></div>
+
+<div class="viewcode-block" id="LiquidThruster"><a class="viewcode-back" href="../../rockets.html#rockets.LiquidThruster">[docs]</a><span class="k">class</span> <span class="nc">LiquidThruster</span><span class="p">(</span><span class="n">Thruster</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">Component</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;vertices&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;density&quot;</span><span class="p">],</span> <span class="n">transform</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">maxFuel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">tank</span><span class="o">.</span><span class="n">capacity</span> <span class="k">for</span> <span class="n">tank</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">tanks</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">fuel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">tank</span><span class="o">.</span><span class="n">fuel</span> <span class="k">for</span> <span class="n">tank</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">tanks</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="LiquidThruster.applyThrust"><a class="viewcode-back" href="../../rockets.html#rockets.LiquidThruster.applyThrust">[docs]</a>    <span class="k">def</span> <span class="nf">applyThrust</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">throttle</span><span class="p">,</span> <span class="n">timescale</span><span class="p">):</span>
+        
+        <span class="n">fuelTank</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">tank</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">tanks</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tank</span><span class="o">.</span><span class="n">fuel</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">fuelTank</span> <span class="o">=</span> <span class="n">tank</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">tank</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">apply_impulse_at_local_point</span><span class="p">(</span><span class="n">throttle</span> <span class="o">*</span> <span class="n">timescale</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">thrust</span><span class="p">(),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+            <span class="n">tank</span><span class="o">.</span><span class="n">fuel</span> <span class="o">-=</span> <span class="n">throttle</span> <span class="o">*</span> <span class="n">timescale</span> <span class="o">*</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="LiquidThruster.reset"><a class="viewcode-back" href="../../rockets.html#rockets.LiquidThruster.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="LiquidThruster.getInfo"><a class="viewcode-back" href="../../rockets.html#rockets.LiquidThruster.getInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method is what will define the properties of a specific Thruster subclass.</span>
+<span class="sd">        It should return a dictionary with the following values:</span>
+
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        | Dictionary Key |              Dictionary Value Type              |</span>
+<span class="sd">        +================+=================================================+</span>
+<span class="sd">        |    vertices    |   (*List of* :py:class:`pymunk.vec2d.Vec2d`)    |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |   thrustForce  |                    (*float*)                    |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |  thrustVector  |        (:py:class:`pymunk.vec2d.Vec2d`)         |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |                | (:py:class:`pygame.surface.Surface`) It is      |</span>
+<span class="sd">        |     sprite     | advised this be stored as a class variable, and |</span>
+<span class="sd">        |                | returned by this method to improve performance. |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |     density    |                    (*float*)                    |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="LiquidThruster.getDisplayInfo"><a class="viewcode-back" href="../../rockets.html#rockets.LiquidThruster.getDisplayInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getDisplayInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="n">inf</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">getDisplayInfo</span><span class="p">()</span>
+        <span class="n">inf</span><span class="p">[</span><span class="s2">&quot;Fuel Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Liquid&quot;</span>
+        <span class="k">return</span> <span class="n">inf</span></div></div>
+
+<div class="viewcode-block" id="RCSThruster"><a class="viewcode-back" href="../../rockets.html#rockets.RCSThruster">[docs]</a><span class="k">class</span> <span class="nc">RCSThruster</span><span class="p">(</span><span class="n">Thruster</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An RCS Thruster is intended to be a smaller thruster, that pulls</span>
+<span class="sd">    fuel from the rocket&#39;s SAS fuel instead of its own supply and is</span>
+<span class="sd">    used for rotation instead of direct motion.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        RCSThruster constructor. Initializes the underlying component and sets the </span>
+<span class="sd">        density of the thruster from the value defined in the getInfo method.</span>
+
+<span class="sd">        :param pymunk.Body body: The body to attatch this thruster to.</span>
+<span class="sd">        :param pymunk.Transform transform: The transform to apply to the Thruster on creation.</span>
+<span class="sd">        :param float radius: The radius to give to the Thruster&#39;s corners.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Component</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;vertices&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;density&quot;</span><span class="p">],</span> <span class="n">transform</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fuel</span> <span class="o">=</span> <span class="mi">0</span>
+    
+<div class="viewcode-block" id="RCSThruster.applyThrust"><a class="viewcode-back" href="../../rockets.html#rockets.RCSThruster.applyThrust">[docs]</a>    <span class="k">def</span> <span class="nf">applyThrust</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timescale</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The RCSThruster applies thrust differently from normal Thrusters. The</span>
+<span class="sd">        RCSThruster will check if there is an SAS module on the host Rocket</span>
+<span class="sd">        that it can draw fuel from before it fires.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sasModule</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">fuel</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">sasModule</span> <span class="o">=</span> <span class="n">module</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">sasModule</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">apply_impulse_at_local_point</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thrust</span><span class="p">()</span> <span class="o">*</span> <span class="n">timescale</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+            <span class="n">sasModule</span><span class="o">.</span><span class="n">fuel</span> <span class="o">-=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">timescale</span></div>
+
+<div class="viewcode-block" id="RCSThruster.reset"><a class="viewcode-back" href="../../rockets.html#rockets.RCSThruster.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RCSThruster.getInfo"><a class="viewcode-back" href="../../rockets.html#rockets.RCSThruster.getInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method is what will define the properties of a specific RCSThruster subclass.</span>
+<span class="sd">        It is identical to the Thruster getInfo, but the maxFuel member is always 0.</span>
+
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        | Dictionary Key |              Dictionary Value Type              |</span>
+<span class="sd">        +================+=================================================+</span>
+<span class="sd">        |    vertices    |   (*List of* :py:class:`pymunk.vec2d.Vec2d`)    |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |   thrustForce  |                    (*float*)                    |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |  thrustVector  |        (:py:class:`pymunk.vec2d.Vec2d`)         |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |                | (:py:class:`pygame.surface.Surface`) It is      |</span>
+<span class="sd">        |     sprite     | advised this be stored as a class variable, and |</span>
+<span class="sd">        |                | returned by this method to improve performance. |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |     maxFuel    |          (*float*) Should always be 0           |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |     density    |                    (*float*)                    |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+
+<div class="viewcode-block" id="LeftRCS"><a class="viewcode-back" href="../../rockets.html#rockets.LeftRCS">[docs]</a><span class="k">class</span> <span class="nc">LeftRCS</span><span class="p">(</span><span class="n">RCSThruster</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    LeftRCS Thrusters will all share these properties:</span>
+
+<span class="sd">    +----------------+--------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    | Dictionary Key |              Dictionary Value Type                                                                           |</span>
+<span class="sd">    +================+==============================================================================================================+</span>
+<span class="sd">    |    vertices    | [(0, 37), (5, 37), (5, 42), (0, 42)]                                                                         |        </span>
+<span class="sd">    +----------------+--------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |   thrustForce  | 5000.0                                                                                                       |</span>
+<span class="sd">    +----------------+--------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |  thrustVector  | (-1, 0)                                                                                                      |</span>
+<span class="sd">    +----------------+--------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |     sprite     | `RCSLeft.png &lt;https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSLeft.png&gt;`_ |</span>
+<span class="sd">    +----------------+--------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |     maxFuel    | 0.0                                                                                                          |</span>
+<span class="sd">    +----------------+--------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |     density    | 45.0                                                                                                         |</span>
+<span class="sd">    +----------------+--------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: Holds the thruster sprite to prevent repeated loading. Sprite is </span>
+    <span class="c1">#: `RCSLeft.png &lt;https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSLeft.png&gt;`_</span>
+    <span class="n">_sprite</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_ASSETS_PATH</span><span class="p">,</span> <span class="s2">&quot;sprites&quot;</span><span class="p">,</span> <span class="s2">&quot;RCSLeft.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">convert_alpha</span><span class="p">()</span>
+
+<div class="viewcode-block" id="LeftRCS.getInfo"><a class="viewcode-back" href="../../rockets.html#rockets.LeftRCS.getInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;vertices&quot;</span><span class="p">:</span>     <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">37</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">37</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">42</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">42</span><span class="p">)],</span>
+            <span class="s2">&quot;thrustForce&quot;</span><span class="p">:</span>  <span class="mi">5000</span><span class="p">,</span>
+            <span class="s2">&quot;thrustVector&quot;</span><span class="p">:</span> <span class="n">Vec2d</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+            <span class="s2">&quot;sprite&quot;</span><span class="p">:</span>       <span class="bp">cls</span><span class="o">.</span><span class="n">_sprite</span><span class="p">,</span>
+            <span class="s2">&quot;maxFuel&quot;</span><span class="p">:</span>      <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;density&quot;</span><span class="p">:</span>      <span class="mi">45</span>
+        <span class="p">}</span></div></div>
+
+<div class="viewcode-block" id="RightRCS"><a class="viewcode-back" href="../../rockets.html#rockets.RightRCS">[docs]</a><span class="k">class</span> <span class="nc">RightRCS</span><span class="p">(</span><span class="n">RCSThruster</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    RightRCS Thrusters will all share these properties:</span>
+
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    | Dictionary Key |              Dictionary Value Type                                                                             |</span>
+<span class="sd">    +================+================================================================================================================+</span>
+<span class="sd">    |    vertices    | [(0, 37), (-5, 37), (-5, 42), (0, 42)]                                                                         |        </span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |   thrustForce  | 5000.0                                                                                                         |</span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |  thrustVector  | (1, 0)                                                                                                         |</span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |     sprite     | `RCSRight.png &lt;https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSRight.png&gt;`_ |</span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |     maxFuel    | 0.0                                                                                                            |</span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |     density    | 45.0                                                                                                           |</span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: Holds the thruster sprite to prevent repeated loading. Sprite is </span>
+    <span class="c1">#: `RCSRight.png &lt;https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/RCSRight.png&gt;`_</span>
+    <span class="n">_sprite</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_ASSETS_PATH</span><span class="p">,</span> <span class="s2">&quot;sprites&quot;</span><span class="p">,</span> <span class="s2">&quot;RCSRight.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">convert_alpha</span><span class="p">()</span>
+
+<div class="viewcode-block" id="RightRCS.getInfo"><a class="viewcode-back" href="../../rockets.html#rockets.RightRCS.getInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the dictionary with info specified by Thruster.getInfo()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;vertices&quot;</span><span class="p">:</span>     <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">37</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">37</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">42</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">42</span><span class="p">)],</span>
+            <span class="s2">&quot;thrustForce&quot;</span><span class="p">:</span>  <span class="mi">5000</span><span class="p">,</span>
+            <span class="s2">&quot;thrustVector&quot;</span><span class="p">:</span> <span class="n">Vec2d</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+            <span class="s2">&quot;sprite&quot;</span><span class="p">:</span>       <span class="bp">cls</span><span class="o">.</span><span class="n">_sprite</span><span class="p">,</span>
+            <span class="s2">&quot;maxFuel&quot;</span><span class="p">:</span>      <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;density&quot;</span><span class="p">:</span>      <span class="mi">45</span>
+        <span class="p">}</span></div></div>
+
+<div class="viewcode-block" id="UpGoer2000"><a class="viewcode-back" href="../../rockets.html#rockets.UpGoer2000">[docs]</a><span class="k">class</span> <span class="nc">UpGoer2000</span><span class="p">(</span><span class="n">SolidThruster</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    UpGoer2000 Thrusters will all share these properties:</span>
+
+<span class="sd">    +----------------+--------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    | Dictionary Key |              Dictionary Value Type                                                                                 |</span>
+<span class="sd">    +================+====================================================================================================================+</span>
+<span class="sd">    |    vertices    | [(4.2, 0), (-4.2, 0), (4.2, 46.9), (-4.2, 46.9)]                                                                   |        </span>
+<span class="sd">    +----------------+--------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |   thrustForce  | 50,000.0                                                                                                           |</span>
+<span class="sd">    +----------------+--------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |  thrustVector  | (1, 0)                                                                                                             |</span>
+<span class="sd">    +----------------+--------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |     sprite     | `UpGoer2000.png &lt;https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/UpGoer2000.png&gt;`_ |</span>
+<span class="sd">    +----------------+--------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |     maxFuel    | 10,000                                                                                                             |</span>
+<span class="sd">    +----------------+--------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |     density    | 73.8                                                                                                               |</span>
+<span class="sd">    +----------------+--------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1">#: Holds the thruster sprite to prevent repeated loading. Sprite is </span>
+    <span class="c1">#: `UpGoer2000.png &lt;https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/UpGoer2000.png&gt;`_</span>
+    <span class="n">_sprite</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_ASSETS_PATH</span><span class="p">,</span> <span class="s2">&quot;sprites&quot;</span><span class="p">,</span> <span class="s2">&quot;UpGoer2000.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">convert_alpha</span><span class="p">()</span>
+
+<div class="viewcode-block" id="UpGoer2000.getInfo"><a class="viewcode-back" href="../../rockets.html#rockets.UpGoer2000.getInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the dictionary with info specified by Thruster.getInfo()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;vertices&quot;</span><span class="p">:</span>     <span class="p">[(</span><span class="mf">4.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">4.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mf">4.2</span><span class="p">,</span> <span class="mf">46.9</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">4.2</span><span class="p">,</span> <span class="mf">46.9</span><span class="p">)],</span>
+            <span class="s2">&quot;thrustForce&quot;</span><span class="p">:</span>  <span class="mi">50000</span><span class="p">,</span>
+            <span class="s2">&quot;thrustVector&quot;</span><span class="p">:</span> <span class="n">Vec2d</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span>
+            <span class="s2">&quot;sprite&quot;</span><span class="p">:</span>       <span class="bp">cls</span><span class="o">.</span><span class="n">_sprite</span><span class="p">,</span>
+            <span class="s2">&quot;maxFuel&quot;</span><span class="p">:</span>      <span class="mi">10000</span><span class="p">,</span>
+            <span class="s2">&quot;density&quot;</span><span class="p">:</span>      <span class="mf">73.8</span>
+        <span class="p">}</span></div></div>
+                
+<div class="viewcode-block" id="DeltaVee"><a class="viewcode-back" href="../../rockets.html#rockets.DeltaVee">[docs]</a><span class="k">class</span> <span class="nc">DeltaVee</span><span class="p">(</span><span class="n">SolidThruster</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DeltaVee is the biggest, *baddest* Thruster and will all share these properties:</span>
+
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    | Dictionary Key |              Dictionary Value Type                                                                             |</span>
+<span class="sd">    +================+================================================================================================================+</span>
+<span class="sd">    |    vertices    | [(12, 0), (-12, 0), (12, 70), (-12, 70)]                                                                       |        </span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |   thrustForce  | 500000.0                                                                                                       |</span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |  thrustVector  | (1, 0)                                                                                                         |</span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |     sprite     | `DeltaVee.png &lt;https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/DeltaVee.png&gt;`_ |</span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |     maxFuel    | 40,000                                                                                                         |</span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |     density    | 73.8                                                                                                           |</span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1">#: Holds the thruster sprite to prevent repeated loading. Sprite is </span>
+    <span class="c1">#: `DeltaVee.png &lt;https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/DeltaVee.png&gt;`_</span>
+    <span class="n">_sprite</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_ASSETS_PATH</span><span class="p">,</span> <span class="s2">&quot;sprites&quot;</span><span class="p">,</span> <span class="s2">&quot;DeltaVee.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">convert_alpha</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DeltaVee.getInfo"><a class="viewcode-back" href="../../rockets.html#rockets.DeltaVee.getInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the dictionary with info specified by Thruster.getInfo()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;vertices&quot;</span><span class="p">:</span>     <span class="p">[(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">70</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="mi">70</span><span class="p">)],</span>
+            <span class="s2">&quot;thrustForce&quot;</span><span class="p">:</span>  <span class="mi">500000</span><span class="p">,</span>
+            <span class="s2">&quot;thrustVector&quot;</span><span class="p">:</span> <span class="n">Vec2d</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span>
+            <span class="s2">&quot;sprite&quot;</span><span class="p">:</span>       <span class="bp">cls</span><span class="o">.</span><span class="n">_sprite</span><span class="p">,</span>
+            <span class="s2">&quot;maxFuel&quot;</span><span class="p">:</span>      <span class="mi">40000</span><span class="p">,</span>
+            <span class="s2">&quot;density&quot;</span><span class="p">:</span>      <span class="mf">73.8</span>
+        <span class="p">}</span></div></div>
+
+<div class="viewcode-block" id="SandSquid"><a class="viewcode-back" href="../../rockets.html#rockets.SandSquid">[docs]</a><span class="k">class</span> <span class="nc">SandSquid</span><span class="p">(</span><span class="n">LiquidThruster</span><span class="p">):</span>
+    <span class="n">_sprite</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_ASSETS_PATH</span><span class="p">,</span> <span class="s2">&quot;sprites&quot;</span><span class="p">,</span> <span class="s2">&quot;SandSquid.png&quot;</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+       <span class="n">LiquidThruster</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span>  <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SandSquid.getInfo"><a class="viewcode-back" href="../../rockets.html#rockets.SandSquid.getInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;vertices&quot;</span><span class="p">:</span>     <span class="p">[(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)],</span>
+            <span class="s2">&quot;thrustForce&quot;</span><span class="p">:</span>  <span class="mi">55000</span><span class="p">,</span>
+            <span class="s2">&quot;thrustVector&quot;</span><span class="p">:</span> <span class="n">Vec2d</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span>
+            <span class="s2">&quot;sprite&quot;</span><span class="p">:</span>       <span class="bp">cls</span><span class="o">.</span><span class="n">_sprite</span><span class="p">,</span>
+            <span class="s2">&quot;maxFuel&quot;</span><span class="p">:</span>      <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;density&quot;</span><span class="p">:</span>      <span class="mf">73.8</span><span class="p">,</span>
+            <span class="s2">&quot;Interior Crocodile Alligator&quot;</span><span class="p">:</span> <span class="s2">&quot;I drive a Chevrolet Movie Theater&quot;</span>
+        <span class="p">}</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
