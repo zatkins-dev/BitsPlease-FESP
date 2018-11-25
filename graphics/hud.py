@@ -198,7 +198,7 @@ class HUD():
         zoomString += "x"
 
         textSize = self._bigFont.size(zoomString)
-        zoomTextPosition = ((zoomSurf.get_height()-textSize[1])/2 + textSize[0]/2, zoomSurf.get_height()/2)
+        zoomTextPosition = ((zoomSurf.get_height()-textSize[1])/2 + textSize[0]/2, (zoomSurf.get_height() + zoomSurfBorder)/2)
         graph.drawTextCenter(zoomTextPosition, zoomString, self._bigFont, self._fontColor, zoomSurf)
 
         return zoomSurf
@@ -227,7 +227,7 @@ class HUD():
         scaleString += "x"
 
         textSize = self._bigFont.size(scaleString)
-        scaleTextPosition = ((scaleSurf.get_height()-textSize[1])/2 + textSize[0]/2, scaleSurf.get_height()/2)
+        scaleTextPosition = ((scaleSurf.get_height()-textSize[1])/2 + textSize[0]/2, (scaleSurf.get_height() + scaleSurfBorder)/2)
         graph.drawTextCenter(scaleTextPosition, scaleString, self._bigFont, self._fontColor, scaleSurf)
 
         return scaleSurf
