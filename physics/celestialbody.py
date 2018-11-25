@@ -32,20 +32,14 @@ class CelestialBody():
     """
     def __init__(self, name_, space_, mass_, radius_, position_x, position_y,
                  elasticity_, atmosphere_color, atmosphere_height, bodytype_):
-        self.mass = mass_
         self.name = name_
-        self.radius = radius_
-        self.posx = position_x
-        self.posy = position_y
-        self.elasticity = elasticity_
         self.atmosphereColor = atmosphere_color
         self.atmosphereHeight = atmosphere_height
-        self.bodytype = bodytype_
         self.body = pm.Body(body_type=bodytype_)
-        self.shape = pm.Circle(self.body, self.radius)
+        self.shape = pm.Circle(self.body, radius_)
         self.shape.friction = 0.80
-        self.shape.mass = self.mass
-        self.shape.elasticity = self.elasticity
+        self.shape.mass = mass_
+        self.shape.elasticity = elasticity_
         self.shape.collision_type = CT_CELESTIAL_BODY
-        self.body.position = self.posx, self.posy
+        self.body.position = position_x, position_y
         space_.add(self.body, self.shape)
