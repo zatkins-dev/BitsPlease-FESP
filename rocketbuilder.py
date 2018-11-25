@@ -10,7 +10,7 @@ from pymunk import Shape as Shape
 
 from enum import Enum
 from rockets import Component
-from rockets import Thruster, RCSThruster
+from rockets import Thruster, SolidThruster, LiquidThruster, RCSThruster
 from rockets import SAS
 from rockets import Rocket
 from rockets import Tank
@@ -163,9 +163,7 @@ class RocketBuilder:
         cls.componentList = None
 
         if selectedTab == cls.componentTabs.Thruster:
-            thrusterList = [thruster for thruster in Thruster.__subclasses__() if thruster is not RCSThruster]
-            RCSList = RCSThruster.__subclasses__()
-            cls.componentList = thrusterList + RCSList
+            cls.componentList = [thruster for thruster in SolidThruster.__subclasses__() + LiquidThruster.__subclasses__() + RCSThruster.__subclasses__()]
         elif selectedTab == cls.componentTabs.Control:
             cls.componentList = SAS.__subclasses__()  
         elif selectedTab == cls.componentTabs.Tanks:
