@@ -23,7 +23,7 @@ class Drawer:
     zoom = Zoom()
 
     @classmethod
-    def draw(cls, screen, toDraw, offset):
+    def draw(cls, screen, toDraw, offset, color=pg.Color("blue")):
         """
         Draws an object to the screen
 
@@ -35,16 +35,16 @@ class Drawer:
         """
 
         if isinstance(toDraw, CelestialBody):
-            Drawer.drawCelestialBody(screen, toDraw, offset)
+            Drawer.drawCelestialBody(screen, toDraw, offset, color)
         elif hasattr(toDraw, 'sprite') and toDraw.sprite is not None:
             Drawer.drawSprite(screen, toDraw, offset)
         elif isinstance(toDraw, pm.Poly):
-            Drawer.drawPoly(screen, toDraw, offset)
+            Drawer.drawPoly(screen, toDraw, offset, color)
         elif isinstance(toDraw, pm.Circle):
-            Drawer.drawCircle(screen, toDraw, offset)
+            Drawer.drawCircle(screen, toDraw, offset,color)
 
     @classmethod
-    def drawMultiple(cls, screen, list, offset):
+    def drawMultiple(cls, screen, list, offset, color=pg.Color("blue")):
         """
         Calls :py:meth:`.draw` on a list of drawable objects
 
@@ -59,7 +59,7 @@ class Drawer:
             Drawer.draw(screen, shape, offset)
 
     @classmethod
-    def drawPoly(cls, screen, shape, offset):
+    def drawPoly(cls, screen, shape, offset, color=pg.Color("blue")):
         """
         Draws a :py:class:`pymunk.Poly` object
 
@@ -81,10 +81,10 @@ class Drawer:
         isOnScreen = functools.reduce(lambda x, y: x or Drawer.inRange(max, y),
                                       newVerts, False)
         if isOnScreen:
-            pg.draw.polygon(screen, pg.Color('blue'), newVerts)
+            pg.draw.polygon(screen, color, newVerts)
 
     @classmethod
-    def drawCircle(cls, screen, shape, offset):
+    def drawCircle(cls, screen, shape, offset, color=pg.Color("blue")):
         """
         Draws a :py:class:`pymunk.Circle` object
 
@@ -110,11 +110,10 @@ class Drawer:
         if isOnScreen:
             # print("drawing circle: ", (screen, pg.Color('blue'),[pos[0], max[1]-pos[1]], int(r)))
             pos = cls.intVec2d(pos)
-            pg.draw.circle(screen, pg.Color('blue'),
-                           [pos[0], max[1]-pos[1]], int(r))
+            pg.draw.circle(screen, color, [pos[0], max[1]-pos[1]], int(r))
 
     @classmethod
-    def drawCelestialBody(cls, screen, cb, offset):
+    def drawCelestialBody(cls, screen, cb, offset, color=pg.Color("blue")):
         """
         Draws a :py:class:`...physics.CelestialBody` object
 
@@ -124,6 +123,8 @@ class Drawer:
         :type cb: :py:class:`..physics.CelestialBody`
         :param offset: Offset bewteen pymunk and pygame coordinates
         :type offset: :py:class:`pymunk.vec2d.Vec2d`
+        :param color: Color of circle
+        :type color: :py:class:`pygame.Color`
         """
         pos = cls.zoom.zoom*(cb.body.position + offset)
         screenSize = Vec2d(screen.get_size())
@@ -149,7 +150,7 @@ class Drawer:
                           closestPoint - screenCenter.length*(tangent - normal)]
                 flipY = lambda x, y_max: Vec2d(x[0],y_max-x[1])
                 polyPoints = list(map(lambda p: flipY(cls.to_pygame(None, p, offset), screenSize[1]), points))
-                pg.draw.polygon(screen, pg.Color("blue"), polyPoints)
+                pg.draw.polygon(screen, color, polyPoints)
 
     @classmethod
     def drawExplosion(cls, screen, sprite, position, size, offset):
@@ -251,7 +252,7 @@ class Drawer:
         return pg.transform.scale(sprite, (int(maxX - minX), int(maxY - minY)))
 
     @classmethod
-    def drawBackground(cls, closestBody, altitude):
+    def drawBackground(cls, closestBody, altitude, offset):
         """
         Draws the planetary atmosphere of the closest body to the rocket based on altitude.
 
@@ -259,28 +260,24 @@ class Drawer:
         :type closestBody: :py:class:`...physics.CelestialBody`
         :param float altitude: Height of the rocket above `closestBody`
         """
-
+        surf = pg.display.get_surface()
         atmColor = closestBody.atmosphereColor
-
         if atmColor is not None and altitude < closestBody.atmosphereHeight:
             # normalize the height to a 0-1 scale
             relHeight = (altitude / closestBody.atmosphereHeight)
             
             # find the opacity, in a quadratically decreasing fasion
-            atmOpacity = -1*(relHeight)**2 + 1
+            atmBrightness = 1 - (relHeight)**2
 
-            # check if the atmosphere color has an opacity, and combine with it
-            if len(atmColor) is 4:
-                atmOpacity *= atmColor[3]
-
-            # create a background surface, and blit the background over it
-            surf = pg.display.get_surface()
-            surfSize = surf.get_size()
-            background = pg.Surface(surfSize)
-            background.fill((atmColor[0], atmColor[1], atmColor[2]))
-            background.set_alpha(int(255*atmOpacity))
-            surf.blit(background, (0,0))
-
+            # scale atmColor
+            atmColor = tuple(list(map(lambda c: atmBrightness*c, atmColor)) +[atmBrightness])
+            if cls.zoom.zoom > 2**-5:
+                # create a background surface, and blit the background over it
+                surf.fill(atmColor)
+            else:
+                r = (closestBody.shape.radius+closestBody.atmosphereHeight)*cls.zoom.zoom
+                pos = cls.to_pygame(closestBody.shape, Vec2d(0, 0), offset)
+                pg.draw.circle(surf, atmColor, [pos[0], surf.get_size()[1]-pos[1]], int(r))
 
     @classmethod
     def getOffset(cls, screen, rocket):
