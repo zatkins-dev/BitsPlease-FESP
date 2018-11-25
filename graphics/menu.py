@@ -1,5 +1,8 @@
 import pygame
 from graphics import Graphics
+from graphics import Video
+from . import _ASSETS_PATH
+import os
 from enum import Enum
 
 class Menu(object):
@@ -29,6 +32,10 @@ class Menu(object):
 
     #: The color to use for the menu buttons
     _menuButtonColor = ((255, 255, 255, 64), (255, 255, 255, 128))
+
+    _fullscreen_icon = pygame.image.load(os.path.abspath(os.path.join(_ASSETS_PATH, "image", "open_fullscreen.png")))
+    _windowed_icon = pygame.image.load(os.path.abspath(os.path.join(_ASSETS_PATH, "image", "close_fullscreen.png")))
+
 
     @classmethod
     def drawBackground(cls, color_rgb, opacity):
@@ -110,6 +117,17 @@ class Menu(object):
         Graphics.drawButton(surface, buttonPosition(2), buttonSize,
                             cls._menuButtonColor, "Exit to Desktop", 25,
                             cls._quitCallback)
+        
+        fullscreenSize = (32,32)
+        fullscreenPos = (25,25)
+        # <div>Icons made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+        # <div>Icons made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+        isFullscreen = Video.get_fullscreen()
+        icon = cls._windowed_icon if isFullscreen else cls._fullscreen_icon
+        Graphics.drawButton(surface, fullscreenPos, fullscreenSize,
+                            pygame.Color("black"), "", 25,
+                            Video.toggle_fullscreen)
+        surface.blit(icon, fullscreenPos)
 
     @classmethod
     def _splashCallback(cls):
