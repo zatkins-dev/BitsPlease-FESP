@@ -21,7 +21,6 @@ class Rocket(Body):
         for c in components:
             c.body = self
         self._components = components
-        self.angular_velocity_limit = 400000
         self.destroyed=False
         self.throttle = 0
         self.isAngleLocked = False
