@@ -76,6 +76,7 @@ class RocketTestCase(unittest.TestCase):
         self.rocket.isAngleLocked = True
         self.assertEqual(self.rocket.isAngleLocked, True)
         self.rocket.removeComponent(self.rocket.SASmodules[0])
+        self.rocket.isAngleLocked = True
         self.assertEqual(self.rocket.isAngleLocked, False)
 
     def test_rocket_reset(self):
