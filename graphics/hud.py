@@ -5,7 +5,8 @@ from graphics import Graphics as graph
 from rockets import Thruster
 from rockets import SAS
 from physics import TimeScale
-from graphics.drawer import Drawer
+from graphics import Drawer
+from graphics import Zoom
 
 
 class HUD():
@@ -37,6 +38,8 @@ class HUD():
 
         self._font = pg.font.SysFont("LucidaConsole", 12)
         self._bigFont = pg.font.SysFont("LucidaConsole", 16)
+
+        self._zoom = Zoom()
 
     def _drawCompassLine(self, surface, angle, size, color=(255,255,255,255), innerRadius=None, outerRadius=None):
         """
@@ -84,10 +87,10 @@ class HUD():
 
         # draw the rocket onto the new subNavball
         # set the zoom level to 1, and then restore afterwards
-        preZoom = Drawer.zoom.zoom
-        Drawer.zoom.reset()
+        preZoom = Drawer.zoom
+        Drawer.zoom = self._zoom
         Drawer.drawMultiple(subNavBall, rocket.components, Drawer.getOffset(subNavBall, rocket))
-        Drawer.zoom._set_zoom(preZoom)
+        Drawer.zoom = preZoom
 
         # for any place where the mask showed a transparency, we should set to be transparent again
         # this gives the look of a circular viewport
