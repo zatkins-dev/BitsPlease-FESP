@@ -2,14 +2,14 @@ import pygame
 import sys
 import os
 
-pygame.init()
-disp = pygame.display.set_mode((854, 480), pygame.RESIZABLE)
-
 if os.path.exists(os.path.abspath("assets")):
     _ASSETS_PATH = os.path.abspath("assets")
 elif os.path.exists(os.path.abspath("../assets")):
     _ASSETS_PATH = os.path.abspath("../assets")
-    
+
+from graphics import Video
+disp = Video.get_display()
+
 from enum import Enum
 from graphics import Menu
 import simulationexec
@@ -35,7 +35,7 @@ def main():
             if event.type == pygame.QUIT:
                 currentState = State.Exit
             if event.type == pygame.VIDEORESIZE:
-                pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+                Video.set_display(event.w,event.h)
 
         rocket = None
 

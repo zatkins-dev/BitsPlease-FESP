@@ -15,8 +15,10 @@ from graphics import Drawer
 from graphics import Trajectory
 from graphics import Explosion
 from graphics import Menu
+from graphics import Video
 
 from audio import AudioManager
+
 
 import pymunkoptions
 pymunkoptions.options["debug"] = False
@@ -74,8 +76,9 @@ def displayMenu(space):
     else:
         return None
 
-
+global screen_width,screen_height
 def run(rocket=None):
+    info = pg.display.Info()
     sasActive = False #For use in AudioManager
     audioManager = AudioManager()
     celestialBodies = []
@@ -134,7 +137,8 @@ def run(rocket=None):
                 rocket.handleEvent(event)
 
             elif event.type == pg.VIDEORESIZE:
-                screen = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
+                Video.set_display(event.w, event.h)
+                screen = Video.get_display()
 
             elif event.type == pg.MOUSEBUTTONDOWN and menu_enabled == False:
                 if event.button == 4:
@@ -166,7 +170,7 @@ def run(rocket=None):
         offset = Drawer.getOffset(screen, rocket)
 
         updateCamera(screen, offset)
-        Drawer.drawBackground(closestBody, altitude)
+        Drawer.drawBackground(closestBody, altitude, offset)
         Trajectory.draw(rocket, celestialBodies, 1000, 1)
         Drawer.drawMultiple(screen, space.shapes, offset)
         Drawer.drawMultiple(screen, celestialBodies, offset)
@@ -204,7 +208,7 @@ def run(rocket=None):
 
         offset = Drawer.getOffset(screen, rocket)
         updateCamera(screen, offset)
-        Drawer.drawBackground(closestBody, altitude)
+        Drawer.drawBackground(closestBody, altitude, offset)
         Drawer.drawMultiple(screen, space.shapes, offset)
         Drawer.drawMultiple(screen, celestialBodies, offset)
         Drawer.drawExplosion(screen, rocket_explosion, rocket.position + 20*Vec2d(0,1).rotated(rocket.angle), (150,150), Drawer.getOffset(screen, rocket))

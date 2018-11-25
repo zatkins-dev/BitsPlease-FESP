@@ -17,6 +17,7 @@ from rockets import CommandModule
 
 from graphics import Drawer
 from graphics import Graphics
+from graphics import Video
 
 class RocketBuilder:
     """
@@ -89,7 +90,8 @@ class RocketBuilder:
              
             for event in pg.event.get():
                 if event.type == pg.VIDEORESIZE:
-                    cls.surface = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
+                    Video.set_display(event.w,event.h)
+                    cls.surface = Video.get_display()
                     cls.updateSubSurfaces()
                 if event.type == pg.QUIT:
                     pg.display.quit()

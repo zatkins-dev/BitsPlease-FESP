@@ -1,8 +1,6 @@
 import pygame
-if not pygame.display.get_init():
-    pygame.init()
-    pygame.display.set_mode((854, 480), pygame.RESIZABLE)
-
+from .video import Video
+Video.init()
 from .graphics import Graphics
 from .hud import HUD
 from .menu import Menu
