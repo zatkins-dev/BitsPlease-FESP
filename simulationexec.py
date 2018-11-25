@@ -45,7 +45,7 @@ def updateCamera(screen, center):
 
 def get_altitude(celestialBodies, rocket):
     closestBody = min(celestialBodies, key=lambda x: (x.body.position - rocket.position).get_length())
-    altitude = (closestBody.body.position - rocket.position).get_length() - closestBody.radius
+    altitude = (closestBody.body.position - rocket.position).get_length() - closestBody.shape.radius
     return (closestBody, altitude)
 
 
@@ -104,7 +104,7 @@ def run(rocket=None):
 
     space.damping = 1
 
-    x, y = (0, earth.posy + earth.radius)
+    x, y = (0, earth.body.position[1] + earth.shape.radius)
     rocket.position = int(x), int(y)
 
     # Add collision handler

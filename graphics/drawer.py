@@ -129,7 +129,7 @@ class Drawer:
         screenSize = Vec2d(screen.get_size())
         screenCenter = cls.intVec2d(screenSize/(2*cls.zoom.zoom))
         isOnScreen = pos.get_distance(screenCenter) \
-                     <= (cb.radius*cls.zoom.zoom + screenCenter.get_length())
+                     <= (cb.shape.radius*cls.zoom.zoom + screenCenter.get_length())
         if isOnScreen:
             if cls.zoom.zoom < 2.0**-4:
                 cls.drawCircle(screen, cb.shape, offset)
