@@ -1,6 +1,6 @@
 from pymunk.vec2d import Vec2d
 
-from rockets import *
+from rockets import Component, Tank, SAS
 from pymunk import Body as Body
 import pygame as pg
 import os
@@ -179,7 +179,6 @@ class SolidThruster(Thruster):
 
 class LiquidThruster(Thruster):
     def __init__(self, body, transform=None, radius=0):
-        print("HEEEEEEEEOOOOOOOOOOooo")
         Component.__init__(self, body, self.getInfo()["vertices"], self.getInfo()["density"], transform, radius)
 
     @property
