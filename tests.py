@@ -114,5 +114,22 @@ class SolidThrusterTestCase(unittest.TestCase):
         self.thruster.fuel = -100
         self.assertEqual(self.thruster.fuel, 0)
 
+    def test_apply_thrust_fuel(self):
+        throttle = 1
+        timeScale = 1
+        prevFuel = self.thruster.fuel
+        self.thruster.applyThrust(throttle, timeScale)
+        newFuel = self.thruster.fuel
+
+        self.assertAlmostEqual(newFuel, prevFuel - throttle * timeScale)
+
+        throttle = .5
+        timeScale = 64
+        prevFuel = self.thruster.fuel
+        self.thruster.applyThrust(throttle, timeScale)
+        newFuel = self.thruster.fuel
+
+        self.assertAlmostEqual(newFuel, prevFuel - throttle * timeScale)
+
 if __name__ == '__main__':
     unittest.main()
