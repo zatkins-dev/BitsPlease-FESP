@@ -4,58 +4,57 @@ from physics.collision import CT_COMPONENT
 from abc import ABC, abstractmethod
 
 class Component(ABC, pm.Poly):
-    """Extention of pymunk Poly class with properties for sprites/textures.
-
-    Args:
-        body (Body): Body to attach component to
-        vertices (List(Vec2d)): Vertices of Poly shape
-        transform (Transform): Transformation to apply to shape
-        radius (Float): Edge radius of shape for smoothing
-
-    Attributes:
-        _vertices (list of float, float): list of tuples holding x,y coordinates
-        _sprite (pygame.Surface): pygame Surface holding image of component
-
+    """
+    Extention of pymunk Poly class with properties for sprites/textures and shape (vertices)
     """
 
-    _vertices = None
-    _sprite = None
+    def __init__(self, body, vertices, density, transform=None, radius=0):
+        """
+        Passes the given parameters on to the underlying Pymunk shape, and initializes
+        some collision management and the destroyed status of the component.
 
-    def __init__(self, body, vertices, transform=None, radius=0):
+        :param body: Body to attatch the component to.
+        :type body: :py:class:`pymunk.Body`
+        :param vertices: Verticies of the shape
+        :type vertices: list(:py:class:`pymunk.vec2d.Vec2d`)
+        :param transform: Transformation to apply to the shape
+        :type transform: :py:class:`pymunk.Transform`
+        :param float radius: Radius of the shape, used for smoothing.
+        """
+
         super().__init__(body, vertices, transform, radius)
+        self.density = density
         self.collision_type = CT_COMPONENT
         self.destroyed = False
         
     @property
+    @abstractmethod
     def vertices(self):
-        return self._vertices
+        """
+        This should return the vertices of the component
+        """
+        pass
 
     @property
+    @abstractmethod
     def sprite(self):
-        """Image Sprite for the component
-
-        Returns:
-            Surface: Component Sprite
         """
-        return self._sprite
-
-    @sprite.setter
-    def sprite(self, sprite):
-        """Setter for {sprite} property
-
-        Args:
-            sprite (surface): New Surface to use as component sprite
+        This should return a surface that represents the component's sprite/texture
         """
-        self._sprite = sprite
+        pass
 
     @classmethod
     @abstractmethod
     def getDisplayInfo(cls):
-        """This will should return a dictionary that contains relevant
-           Information to display in the rocket builder
+        """
+        This will should return a dictionary that contains relevant
+        "pretty" Information to display in the rocket builder
         """
         pass
 
     @abstractmethod
     def reset(self):
+        """
+        Resets the destroyed status of the component.
+        """
         self.destroyed = False

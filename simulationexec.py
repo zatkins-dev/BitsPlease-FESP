@@ -5,7 +5,7 @@ import sys
 import os
 import rockets.testrocket as tr
 import math
-from physics import * 
+from physics import *
 from rockets import Thruster
 from functools import reduce
 
@@ -15,6 +15,8 @@ from graphics import Drawer
 from graphics import Trajectory
 from graphics import Explosion
 from graphics import Menu
+
+from audio import AudioManager
 
 import pymunkoptions
 pymunkoptions.options["debug"] = False
@@ -43,7 +45,7 @@ def updateCamera(screen, center):
 
 def get_altitude(celestialBodies, rocket):
     closestBody = min(celestialBodies, key=lambda x: (x.body.position - rocket.position).get_length())
-    altitude = (closestBody.body.position - rocket.position).get_length() - closestBody.radius
+    altitude = (closestBody.body.position - rocket.position).get_length() - closestBody.shape.radius
     return (closestBody, altitude)
 
 
@@ -74,8 +76,8 @@ def displayMenu(space):
 
 
 def run(rocket=None):
-    pg.mixer.init()
-    pg.mixer.music.load(os.path.join(ASSETS_PATH, "sound/Sci-fiPulseLoop.wav"))
+    sasActive = False #For use in AudioManager
+    audioManager = AudioManager()
     celestialBodies = []
     screen = pg.display.get_surface()
     clock = pg.time.Clock()
@@ -86,11 +88,11 @@ def run(rocket=None):
     space.threads = 2
     hud = HUD()
 
-    earth = CelestialBody('earth', space, 9.331*10**22, 796375, 0, 0, 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
+    earth = CelestialBody('earth', space, 9.331*10**22, 796375, (0, 0), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
     celestialBodies.append(earth)
 
     earthMoon1 = CelestialBody('earthMoon1', space, 1.148*10**21, 217125,
-                    796375 + 43500000, 796375, 0.9, None, 0, pm.Body.DYNAMIC)
+                    (796375 + 43500000, 796375), 0.9, None, 0, pm.Body.DYNAMIC)
     celestialBodies.append(earthMoon1)
 
     if rocket is None:
@@ -99,24 +101,23 @@ def run(rocket=None):
         space.add(rocket)
         for component in rocket.components:
             space.add(component)
-    rocket.debugComponentPrint()
+
     space.damping = 1
 
-    x, y = (0, earth.posy + earth.radius)
+    x, y = (0, earth.body.position[1] + earth.shape.radius)
     rocket.position = int(x), int(y)
-    print (rocket.position)
-    pg.mixer.music.play(-1)
 
     # Add collision handler
     collisions_component_celestialbody = space.add_collision_handler(CT_COMPONENT, CT_CELESTIAL_BODY)
     collisions_component_celestialbody.post_solve = post_solve_component_celestialbody
-    
+
     rocket_explosion = None
     crashed = False
     menu_enabled = False
     Menu.demoPressed = False
     Menu.builderPressed = False
     while not crashed:
+        audioManager.musicChecker()
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return Menu.State.Exit
@@ -131,22 +132,22 @@ def run(rocket=None):
                 TimeScale.faster()
             elif event.type == pg.KEYDOWN:
                 rocket.handleEvent(event)
-            
+
             elif event.type == pg.VIDEORESIZE:
                 screen = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
-            
+
             elif event.type == pg.MOUSEBUTTONDOWN and menu_enabled == False:
                 if event.button == 4:
                     Drawer.zoom.zoom_out()
                 elif event.button == 5:
                     Drawer.zoom.zoom_in()
         rocket.tick(TimeScale.scale)
+        audioManager.thrusterSoundEffect(len(rocket.thrusters) != 0, rocket.throttle)
+        audioManager.sasSoundEffect(len(rocket.SASmodules) != 0 and rocket.isAngleLocked)
+
         grav = updateGravity(space, rocket, celestialBodies)
 
-        pos = rocket.position
-        vel = rocket.velocity
         (closestBody, altitude) = get_altitude(celestialBodies, rocket)
-
         if altitude < 500000:
             while TimeScale.scale > 256:
                 TimeScale.slower()
@@ -159,8 +160,6 @@ def run(rocket=None):
         if altitude < 12500:
             while TimeScale.scale > 2:
                 TimeScale.slower()
-        if altitude < vel.length*TimeScale.scale:
-            Drawer.zoom.reset()
 
         space.step(TimeScale.step_size)
 
@@ -168,7 +167,7 @@ def run(rocket=None):
 
         updateCamera(screen, offset)
         Drawer.drawBackground(closestBody, altitude)
-        Trajectory.draw(screen, pos, vel, 1000, 1, celestialBodies, rocket, offset)
+        Trajectory.draw(rocket, celestialBodies, 1000, 1)
         Drawer.drawMultiple(screen, space.shapes, offset)
         Drawer.drawMultiple(screen, celestialBodies, offset)
         hud.updateHUD(rocket)
@@ -180,16 +179,17 @@ def run(rocket=None):
             rocket_explosion = Explosion(remaining_fuel//10, explosion_images)
             rocket.velocity = grav
             crashed = True
-            
+
         if menu_enabled:
             returnCode = displayMenu(space)
             if returnCode is not None:
                 TimeScale.reset()
                 Drawer.zoom.reset()
+                audioManager.silenceMusic()
                 return returnCode
         pg.display.flip()
         clock.tick(60)
-    
+
     Menu.demoPressed = False
     TimeScale.reset()
     Drawer.zoom.reset()
@@ -200,8 +200,11 @@ def run(rocket=None):
                 return Menu.State.Exit
         space.step(TimeScale.step_size)
         rocket.velocity = (0,0)
+        (closestBody, altitude) = get_altitude(celestialBodies, rocket)
+
         offset = Drawer.getOffset(screen, rocket)
         updateCamera(screen, offset)
+        Drawer.drawBackground(closestBody, altitude)
         Drawer.drawMultiple(screen, space.shapes, offset)
         Drawer.drawMultiple(screen, celestialBodies, offset)
         Drawer.drawExplosion(screen, rocket_explosion, rocket.position + 20*Vec2d(0,1).rotated(rocket.angle), (150,150), Drawer.getOffset(screen, rocket))

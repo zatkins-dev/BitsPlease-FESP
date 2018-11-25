@@ -4,34 +4,25 @@ import random
 
 class Graphics(object):
     """
-        Graphics is a utility class that is used to abstract drawing of
-        different common items, like text and buttons
-
-        **Class Variables**:
-            *_buttonIsClicked*: bool A state variable that stores whether
-                                     a button is currently being pressed.
-                                     This is used to prevent buttons' actions
-                                     from executing on every single frame.
-
-            *_isBackgroundDrawn*: bool A state variable that stores whether the
-                                       star background has been drawn before.
-                                       Used to initialize the backgroudn on the
-                                       first call of drawStars()
-
-            *_stars*: tuple (int, int, (int, int, int)) A list of tuples that
-                                                        hold information about
-                                                        stars. The first number
-                                                        is the x position, and
-                                                        the second number is
-                                                        the y position. The
-                                                        final member is an
-                                                        rgb color tuple.
+    Graphics contains a few very common graphics and UI components used in many places.
     """
 
+    #: A state variable that stores whether a button is currently being pressed.
+    #: This is used to prevent buttons' actions from executing on every single frame.
     _buttonIsClicked = False
+
+    #: A state variable that stores whether the star background has been drawn before.
+    #: Used to initialize the backgroudn on the first call of drawStars()
     _isBackgroundDrawn = False
+
+    #: A list of tuples that hold information about stars. The first number
+    #: is the x position, and the second number is the y position. The
+    #: final member is an rgb color tuple.
     _stars = []
+
+    #: The width of the stars Surface
     _starsWidth = 0
+    #: THe height of the stars Surface
     _starsHeight = 0
 
     @classmethod
@@ -40,47 +31,19 @@ class Graphics(object):
         """
         Utility function that draws a button to the screen
 
-        **Args**:
-                *destSurf*: Surface Surface on which to draw button
-
-                *pos*: Tuple (int, int) The (x,y) position of the button. This
-                                        point corresponds to the top-left
-                                        corner of the button.
-
-                *size*: Tuple (int, int) The (width, height) of the button to
-                                         be drawn.
-
-                *colors*: Tuple (Color, Color) The first member of the tuple is
-                                               the color of the button, and the
-                                               second member is the color of
-                                               the button while it is being
-                                               hovered over. These colors can
-                                               be given as pygame colors,
-                                               triples of RGB values, or
-                                               4-tuples of RGBA values if
-                                               transparency is desired
-
-                *buttonContent*: Can be one of two types: a string or a surface
-                              If it is a string, it is the text to be rendered
-                              at the center of the button. If it is a surface,
-                              that surface will be scaled and rendered in the
-                              center of the button
-
-                *buttonContentSize*: The size of the text to be rendered, or the
-                              scale of the surface passed in relative to the button
-                              size (e.g. 1 would be covering the entire button,
-                              .5 would be half the button, etc.)
-
-                *buttonFunction*: A callback function on button-press
-
-        **Preconditions**:
-                None.
-
-        **Postconditions**:
-                None.
-
-        **Returns**: None.
+        :param destSurf: The Surface to draw the button onto.
+        :type screen: :py:class:`pygame.Surface`
+        :param pos: The positon of the top-left corner of the button
+        :type pos: tuple(int, int)
+        :param size: The width and height respectively of the button
+        :type size: tuple(int, int)
+        :param colors: A tuple containing two colors. The first is the unfocused color, and the second is the focused color
+        :type colors: tuple(tuple(int, int, int), tuple(int, int, int))
+        :param buttonContent: This can be either a surface or a string. Either will be drawn to the center of the button
+        :param buttonContentSize: If the button content is a string, this will be the size of font used to render the text. If the content is a surface, this is the ammount of the button the surface will occupy, from 0 to 1
+        :param buttonFunction: This is the function that will be executed when the button is clicked on.
         """
+
         if type(buttonContent) is pygame.Surface:
             #find the size of the sprite within the button
             newWidth = int(buttonContentSize * size[0])
@@ -141,25 +104,15 @@ class Graphics(object):
         """
         Utility function that draws a string to the screen
 
-        **Args**:
-                *position*: Tuple (int, int) The (x,y) pixel coordinate of the
-                                             top-left corner of the text
-
-                *content*: str The string to be drawn
-
-                *textFont*: pygame.font The font to use to draw the text
-
-                *color*: Tuple (r,g,b) The rgb color values of the text to draw
-
-                *surface*: The surface to draw to. Default: pygame base surface
-
-        **Preconditions**:
-                None.
-
-        **Postconditions**:
-                None.
-
-        **Returns**: None.
+        :param position: The XY position of the top-left corner of the text
+        :type position: tuple(int, int)
+        :param str content: The string the be drawn 
+        :param textFont: The font to use to render the text. 
+        :type textFont: :py:class:`pygame.font.Font`
+        :param color: The rgb color of the text
+        :type color: tuple(int, int, int)
+        :param surface: The surface to draw to
+        :type surface: :py:class:`pygame.Surface`
         """
         if surface is None:
             surface = pygame.display.get_surface()
@@ -176,25 +129,15 @@ class Graphics(object):
         """
         Utility function that draws a string to the screen
 
-        **Args**:
-                *position*: Tuple (int, int) The (x,y) pixel coordinate of the
-                                             center of the text
-
-                *content*: str The string to be drawn
-
-                *textFont*: pygame.font The font to use to draw the text
-
-                *color*: Tuple (r,g,b) The rgb color values of the text to draw
-
-                *surface*: The surface to draw to. Default: pygame base surface
-
-        **Preconditions**:
-                None.
-
-        **Postconditions**:
-                None.
-
-        **Returns**: None.
+        :param position: The XY position of the center of the text
+        :type position: tuple(int, int)
+        :param str content: The string the be drawn 
+        :param textFont: The font to use to render the text. 
+        :type textFont: :py:class:`pygame.font.Font`
+        :param color: The rgb color of the text
+        :type color: tuple(int, int, int)
+        :param surface: The surface to draw to
+        :type surface: :py:class:`pygame.Surface`
         """
         if surface is None:
             surface = pygame.display.get_surface()
@@ -215,21 +158,10 @@ class Graphics(object):
         Draws a randomly generated background of stars to the provided surface.
         Also creates a paralax effect for a moving target
 
-        **Args**
-            *screen*:   pygame.Surface Surface on which to draw stars
-
-            *pos*:      tuple (int, int) The position of the focus of the
-                                         camera, which will shift the position
-                                         of the stars creating the paralax
-                                         effect
-
-        **Preconditions**:
-                None.
-
-        **Postconditions**:
-                None.
-
-        **Returns**: None.
+        :param screen: The :py:class:`pygame.Surface` to draw to.
+        :type screen: :py:class:`pygame.Surface`
+        :param pos: The position of the rocket, used to offset the stars and create a parallax effect.
+        :type pos: tuple(float, float)
         """
 
         w, h = screen.get_size()

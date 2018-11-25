@@ -1,6 +1,15 @@
 import pygame
 import sys
 import os
+
+pygame.init()
+disp = pygame.display.set_mode((854, 480), pygame.RESIZABLE)
+
+if os.path.exists(os.path.abspath("assets")):
+    _ASSETS_PATH = os.path.abspath("assets")
+elif os.path.exists(os.path.abspath("../assets")):
+    _ASSETS_PATH = os.path.abspath("../assets")
+    
 from enum import Enum
 from graphics import Menu
 import simulationexec
@@ -8,15 +17,16 @@ from rocketbuilder import RocketBuilder
 
 
 def main():
-
-    pygame.display.set_icon(pygame.image.load(os.path.join("assets", "icon.png")))
+    """
+    The top level function for FESP. Ferries the program between the menu, the rocket builder, and the simulation.
+    """
+    pygame.display.set_icon(pygame.image.load(os.path.join(_ASSETS_PATH, "icon.png")))
     pygame.display.set_caption("FESP: The Flat Earth Space Program")
     menu = Menu()
     clock = pygame.time.Clock()
     State = menu.State
 
     currentState = State.Splash
-    disp = pygame.display.set_mode((854, 480), pygame.RESIZABLE)
 
     while currentState != State.Exit:
         clock.tick(60)
