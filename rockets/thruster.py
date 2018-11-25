@@ -105,13 +105,8 @@ class Thruster(Component):
             self.body.apply_impulse_at_local_point(throttle * self.thrust() * timescale, (self.center_of_gravity.x, self.center_of_gravity.y))
             self.fuel -= 1 * throttle * timescale
     
-    def applyThrustGlobalFuel(self, throttle, timescale): #for thrusters that get fuel from the rocket's fuel supply
-        if 0 < throttle <= 1:
-            for x in self.body.Tanks:
-                if x.fuel > 0:
-                    self.body.apply_impulse_at_local_point(throttle * self.thrust() * timescale, (self.center_of_gravity.x, self.center_of_gravity.y))
-                    x.fuel -= 1 * throttle * timescale
-                
+    
+
 
     
 
@@ -258,5 +253,38 @@ class DeltaVee(Thruster):
 #class SolidThruster(Thruster):
 
 
-#class LiquidThruster(Thruster):
+class SandSquid(Thruster):
+    _sprite = pg.image.load(os.path.join("assets", "sprites", "SandSquid.png"))
+    
+    def __init__(self, body, transform=None, radius=0):
+       Thruster.__init__(self, body, self.vertices, transform=transform, radius=radius)
+
+    @classmethod
+    def getInfo(cls):
+        return {
+            "vertices":     [(5, 0), (-5, 0), (-5, 5), (5, 5)],
+            "thrustForce":  550000,
+            "thrustVector": Vec2d((0,1)),
+            "sprite":       cls._sprite,
+            "maxFuel":      1,
+            "density":      73.8,
+            "Interior Crocodile Alligator": "I drive a Chevrolet Movie Theater"
+        }
+
+    def updateFuel(self):
+        totalFuel = 0
+        for x in self.body.Tanks:
+            totalFuel = totalFuel + x.fuel
+        self.fuel = totalFuel
+
+
+    def applyThrust(self, throttle, timescale):
+        if 0 < throttle <= 1:
+            for x in self.body.Tanks:
+                if x.fuel > 0:
+                    self.body.apply_impulse_at_local_point(throttle * self.thrust() * timescale, (self.center_of_gravity.x, self.center_of_gravity.y))
+                    x.fuel -= 1 * throttle * timescale
+                    self.updateFuel
+                    return
+    
 

@@ -1,7 +1,8 @@
 from pymunk import Body as Body
 import pygame as pg
-from rockets import Thruster, RCSThruster
+from rockets import Thruster, RCSThruster, Tank
 from rockets import SAS
+
 
 
 class Rocket(Body):
@@ -101,7 +102,7 @@ class Rocket(Body):
         if self.throttle is not 0:
             for thruster in self.thrusters:
                 if not thruster.destroyed:
-                    thruster.applyThrustGlobalFuel(self.throttle, timescale)
+                    thruster.applyThrust(self.throttle, timescale)
 
         
 
@@ -129,6 +130,8 @@ class Rocket(Body):
             if x.get_vertices() == c.get_vertices() :
                 self.components.remove(x)
     
+    
+
 
     def debugComponentPrint(self):
         for x in self.components :
