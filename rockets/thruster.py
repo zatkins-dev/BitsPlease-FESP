@@ -1,5 +1,4 @@
 from pymunk.vec2d import Vec2d
-
 from rockets import Component, SAS, Tank
 from pymunk import Body as Body
 import pygame as pg

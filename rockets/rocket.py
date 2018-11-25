@@ -1,9 +1,6 @@
 from pymunk import Body as Body
 import pygame as pg
 from rockets import Thruster, RCSThruster, SAS, CommandModule, Tank
-from audio import AudioManager
-
-
 
 class Rocket(Body):
     """

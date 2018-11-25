@@ -1,4 +1,6 @@
 import pygame as pg
+from graphics import Video
+Video.init()
 import pymunk as pm
 import pymunk.pygame_util as pygame_util
 import sys

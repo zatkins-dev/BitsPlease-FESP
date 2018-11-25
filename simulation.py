@@ -1,5 +1,6 @@
 import pygame as pg
-
+from graphics import Video
+Video.init()
 import pymunk as pm
 from pymunk.vec2d import Vec2d
 import sys
@@ -8,8 +9,6 @@ import math
 
 from physics import *
 
-from graphics import Video
-Video.init()
 
 from rockets import Thruster
 import rockets.testrocket as tr
@@ -24,7 +23,7 @@ from graphics import Explosion
 from graphics import Menu
 from graphics import Zoom
 
-from audio import AudioManager
+from audioManager import AudioManager
 
 
 import pymunkoptions
@@ -35,8 +34,6 @@ class Simulation():
     ASSETS_PATH = os.path.relpath("assets/")
     #: Zoom for simulation
     _zoom = Zoom()
-    #: Manages sounds effects and music
-    audioManager = AudioManager()
     #: All :py:class:`physics.CelestialBody` objects in :py:attr:`space`
     celestialBodies = []
     #: :py:class:`pygame.Surface` for the current display
@@ -155,13 +152,13 @@ class Simulation():
         """
         cls._zoom = Zoom()
         Drawer.zoom = cls._zoom
+
         explosion_images = []
         for i in range(5):
                 explosion_images.append(pg.image.load(os.path.join(cls.ASSETS_PATH,"sprites/explosion"+str(i+1)+".png")).convert_alpha())
 
         earth = CelestialBody('earth', cls.space, 9.331*10**22, 796375, (0, 0), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
         cls.celestialBodies.append(earth)
-
         earthMoon1 = CelestialBody('earthMoon1', cls.space, 1.148*10**21, 217125,
                         (796375 + 43500000, 796375), 0.9, None, 0, pm.Body.DYNAMIC)
         cls.celestialBodies.append(earthMoon1)
@@ -184,8 +181,10 @@ class Simulation():
         menu_enabled = False
         Menu.demoPressed = False
         Menu.builderPressed = False
+
+        AudioManager.init()
         while not crashed:
-            cls.audioManager.musicChecker()
+            AudioManager.musicChecker()
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     return Menu.State.Exit
@@ -211,8 +210,8 @@ class Simulation():
                     elif event.button == 5:
                         Drawer.zoom.zoom_in()
             cls.rocket.tick(TimeScale.scale)
-            cls.audioManager.thrusterSoundEffect(len(cls.rocket.thrusters) != 0, cls.rocket.throttle)
-            cls.audioManager.sasSoundEffect(len(cls.rocket.SASmodules) != 0 and cls.rocket.isAngleLocked)
+            AudioManager.thrusterSoundEffect(len(cls.rocket.thrusters) != 0, cls.rocket.throttle)
+            AudioManager.sasSoundEffect(len(cls.rocket.SASmodules) != 0 and cls.rocket.isAngleLocked)
 
             grav = cls.updateGravity()
 
@@ -257,7 +256,7 @@ class Simulation():
                 if returnCode is not None:
                     TimeScale.reset()
                     Drawer.zoom.reset()
-                    cls.audioManager.silenceMusic()
+                    AudioManager.silenceMusic()
                     return returnCode
             pg.display.flip()
             cls.clock.tick(60)
