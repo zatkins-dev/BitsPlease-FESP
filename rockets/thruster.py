@@ -16,6 +16,7 @@ class Thruster(Component):
     subclasses to make their own.
     """
 
+    @abstractmethod
     def __init__(self, body, transform=None, radius=0):
         """
         Constructor for a Thruster. The important things done in this constructor include
@@ -27,9 +28,7 @@ class Thruster(Component):
         :param pymunk.Transform transform: The transform to apply to the Thruster on creation.
         :param float radius: The radius to give to the Thruster's corners.
         """
-        Component.__init__(self, body, self.getInfo()["vertices"], self.getInfo()["density"], transform, radius)
-
-        self.fuel = self.getInfo()["maxFuel"]
+        pass
 
     @property
     def vertices(self):
@@ -47,7 +46,6 @@ class Thruster(Component):
         """
         return self.getInfo()["thrustForce"]
 
-    
     @property
     def thrustVector(self):
         """
@@ -62,7 +60,58 @@ class Thruster(Component):
         The sprite to use to render the thruster. This returns the value defined in the getInfo method.
         """
         return self.getInfo()["sprite"]
-    
+
+    def thrust(self):
+        """
+        Returns the scaled thrust vector of the Thruster.
+        """
+        return self.thrustForce * self.thrustVector
+
+    @abstractmethod
+    def applyThrust(self, throttle, timescale):
+        """
+        Applies thrust to the rocket, scaling the thrust to a throttle value between 0 and 1. The 
+        thrust provided and fuel consumed are then scaled by the provide timescale.
+
+        :param float throttle: The ammount to throttle the thrust by, between 0 and 1
+        :param float timescale: The ammount to scale the thrust provided and fuel consumed.
+        """
+        pass
+
+    @abstractmethod
+    def reset(self):
+        """
+        Resets properties of the underlying component and the fuel of the thruster to restart the simulation
+        """
+        pass
+
+    @classmethod
+    @abstractmethod
+    def getInfo(cls):
+        """
+        This method is what will define the properties of a specific Thruster subclass.
+        """
+        pass
+
+    @classmethod
+    def getDisplayInfo(cls):
+        """
+        Returns a dictionary containing the "Thrust" and "Thrust Vector" of the rocket
+        with units attatched for display to the screen or user.
+        """
+        inf = cls.getInfo()
+        return {
+            "Thrust": str(inf["thrustForce"]) + "N",
+            "Thrust Vector": str(tuple(inf["thrustVector"])),
+        }
+
+class SolidThruster(Thruster):
+
+    def __init__(self, body, transform=None, radius=0):
+        Component.__init__(self, body, self.getInfo()["vertices"], self.getInfo()["density"], transform, radius)
+
+        self.fuel = self.getInfo()["maxFuel"]
+
     @property
     def maxFuel(self):
         """
@@ -85,12 +134,6 @@ class Thruster(Component):
         else:
             self._fuel = 0
 
-    def thrust(self):
-        """
-        Returns the scaled thrust vector of the Thruster.
-        """
-        return self.thrustForce * self.thrustVector
-
     def applyThrust(self, throttle, timescale):
         """
         Applies thrust to the rocket, scaling the thrust to a throttle value between 0 and 1. The 
@@ -102,16 +145,8 @@ class Thruster(Component):
         if self.fuel > 0 and 0 < throttle <= 1:
             self.body.apply_impulse_at_local_point(throttle * self.thrust() * timescale, (self.center_of_gravity.x, self.center_of_gravity.y))
             self.fuel -= 1 * throttle * timescale
-    
-    
-
-
-    
 
     def reset(self):
-        """
-        Resets properties of the underlying component and the fuel of the thruster to restart the simulation
-        """
         super().reset()
         self._fuel = self.maxFuel
 
@@ -142,18 +177,58 @@ class Thruster(Component):
         """
         pass
 
-    @classmethod
-    def getDisplayInfo(cls):
-        """
-        Returns a dictionary containing the "Thrust" and "Thrust Vector" of the rocket
-        with units attatched for display to the screen or user.
-        """
-        inf = cls.getInfo()
-        return {
-            "Thrust": str(inf["thrustForce"]) + "N",
-            "Thrust Vector": str(tuple(inf["thrustVector"])),
-        }
+class LiquidThruster(Thruster):
+    def __init__(self, body, transform=None, radius=0):
+        print("HEEEEEEEEOOOOOOOOOOooo")
+        Component.__init__(self, body, self.getInfo()["vertices"], self.getInfo()["density"], transform, radius)
 
+    @property
+    def maxFuel(self):
+        return sum([tank.capacity for tank in self.body.tanks])
+
+    @property
+    def fuel(self):
+        return sum([tank.fuel for tank in self.body.tanks])
+
+
+    def applyThrust(self, throttle, timescale):
+        
+        fuelTank = None
+        for tank in self.body.tanks:
+            if tank.fuel > 0:
+                fuelTank = tank
+                break
+        if tank is not None:
+            self.body.apply_impulse_at_local_point(throttle * self.thrust(), (self.center_of_gravity.x, self.center_of_gravity.y))
+            tank.fuel -= throttle * 1
+
+    def reset(self):
+        super().reset()
+
+    @classmethod
+    @abstractmethod
+    def getInfo(cls):
+        """
+        This method is what will define the properties of a specific Thruster subclass.
+        It should return a dictionary with the following values:
+
+        +----------------+-------------------------------------------------+
+        | Dictionary Key |              Dictionary Value Type              |
+        +================+=================================================+
+        |    vertices    |   (*List of* :py:class:`pymunk.vec2d.Vec2d`)    |
+        +----------------+-------------------------------------------------+
+        |   thrustForce  |                    (*float*)                    |
+        +----------------+-------------------------------------------------+
+        |  thrustVector  |        (:py:class:`pymunk.vec2d.Vec2d`)         |
+        +----------------+-------------------------------------------------+
+        |                | (:py:class:`pygame.surface.Surface`) It is      |
+        |     sprite     | advised this be stored as a class variable, and |
+        |                | returned by this method to improve performance. |
+        +----------------+-------------------------------------------------+
+        |     density    |                    (*float*)                    |
+        +----------------+-------------------------------------------------+
+        """
+        pass
 
 class RCSThruster(Thruster):
     """
@@ -189,6 +264,9 @@ class RCSThruster(Thruster):
         if sasModule is not None:
             self.body.apply_impulse_at_local_point(self.thrust(), (self.center_of_gravity.x, self.center_of_gravity.y))
             sasModule.fuel -= 1
+
+    def reset(self):
+        super().reset()
 
     @classmethod
     @abstractmethod
@@ -297,7 +375,7 @@ class RightRCS(RCSThruster):
             "density":      45
         }
 
-class UpGoer2000(Thruster):
+class UpGoer2000(SolidThruster):
     """
     UpGoer2000 Thrusters will all share these properties:
 
@@ -337,7 +415,7 @@ class UpGoer2000(Thruster):
             "density":      73.8
         }
                 
-class DeltaVee(Thruster):
+class DeltaVee(SolidThruster):
     """
     DeltaVee is the biggest, *baddest* Thruster and will all share these properties:
 
@@ -376,16 +454,11 @@ class DeltaVee(Thruster):
             "density":      73.8
         }
 
-
-
-#class SolidThruster(Thruster):
-
-
-class SandSquid(Thruster):
+class SandSquid(LiquidThruster):
     _sprite = pg.image.load(os.path.join("assets", "sprites", "SandSquid.png"))
     
     def __init__(self, body, transform=None, radius=0):
-       Thruster.__init__(self, body, transform=transform,  radius=radius)
+       LiquidThruster.__init__(self, body, transform=transform,  radius=radius)
 
     @classmethod
     def getInfo(cls):
@@ -398,21 +471,3 @@ class SandSquid(Thruster):
             "density":      73.8,
             "Interior Crocodile Alligator": "I drive a Chevrolet Movie Theater"
         }
-
-    def updateFuel(self):
-        totalFuel = 0
-        for x in self.body.Tanks:
-            totalFuel = totalFuel + x.fuel
-        self.fuel = totalFuel
-
-
-    def applyThrust(self, throttle, timescale):
-        if 0 < throttle <= 1:
-            for x in self.body.Tanks:
-                if x.fuel > 0:
-                    self.body.apply_impulse_at_local_point(throttle * self.thrust() * timescale, (self.center_of_gravity.x, self.center_of_gravity.y))
-                    x.fuel -= 1 * throttle * timescale
-                    self.updateFuel
-                    return
-    
-
