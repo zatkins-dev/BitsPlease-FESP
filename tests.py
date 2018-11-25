@@ -19,6 +19,8 @@ class RocketTestCase(unittest.TestCase):
         self.rocket = Rocket(self.baseComponents)
 
     def test_default_rocket(self):
+        self.rocket = genRocket(self.space)
+
         # test if rocket was actually added to our space
         self.assertEqual(self.rocket.space, self.space)
 
@@ -26,9 +28,6 @@ class RocketTestCase(unittest.TestCase):
         self.assertIs(self.rocket.components, self.baseComponents)
 
     def test_rocket_constructor(self):
-
-        self.rocket = Rocket(genRocket)
-
         # test initial conditions... destroyed, saslock, etc.
         self.assertFalse(self.rocket.destroyed)
         self.assertFalse(self.rocket.isAngleLocked)
@@ -141,9 +140,12 @@ class RocketTestCase(unittest.TestCase):
         self.assertEqual(self.rocket.isAngleLocked, True)
         self.rocket.removeComponent(self.rocket.SASmodules[0])
         self.assertEqual(self.rocket.isAngleLocked, False)
+        self.rocket.isAngleLocked = True
+        self.assertEqual(self.rocket.isAngleLocked, False)
 
     def test_rocket_reset(self):
         self.newTank = TestTank(self.rocket)
+
         self.rocket.addComponent(self.newTank)
         self.rocket.throttle = 0.5
         self.rocket.isAngleLocked = True
@@ -527,7 +529,7 @@ class ZoomTestCase(unittest.TestCase):
         self.zoom = Zoom()
 
     def test_zoom_zoom(self):
-        curzoom = self.zoom
+        curzoom = self.zoom.zoom
         self.zoom.zoom = 2**-17
         self.assertEqual(curzoom, self.zoom.zoom)
         self.zoom.zoom = 80000
@@ -538,13 +540,13 @@ class ZoomTestCase(unittest.TestCase):
     def test_zoom_zoomin_zoomout(self):
         curzoom = self.zoom
         self.zoom.zoom_in()
-        assertEquals(curzoom*2, self.zoom.zoom)
+        self.assertEqual(curzoom*2, self.zoom.zoom)
         self.zoom.zoom_out()
-        assertEquals(curzoom, self.zoom.zoom)
+        self.assertEqual(curzoom, self.zoom.zoom)
 
     def test_zoom_reset(self):
         self.zoom.reset()
-        assertEquals(self.zoom.zoom, 1)
+        self.assertEqual(self.zoom.zoom, 1)
 
 class PhysicsTestCase(unittest.TestCase):
     def setup(self):
