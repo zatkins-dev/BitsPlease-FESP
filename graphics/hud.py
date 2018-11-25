@@ -22,7 +22,7 @@ class HUD():
 
     def __init__(self):
         """
-            creates a new HUD object 
+        Creates a new HUD object 
         """
 
         # define a surface to hold a navball
@@ -58,7 +58,7 @@ class HUD():
         Creates and returns a navball, containing directional information to a pygame Surface.
         
         :param rocket: The rocket who's information to use.
-        :type rocket: :py:class:`...rockets.rocket` 
+        :type rocket: :py:class:`rockets.Rocket` 
         """
         # create a navball
         navBall = pg.Surface((2*self._navBallRadius, 2*self._navBallRadius), pg.SRCALPHA)
@@ -110,10 +110,10 @@ class HUD():
 
     def _updateThrottle(self, rocket):
         """
-        Creates and returns a surface containing the throttle of the provided rocket.
+        Creates and returns a surface containing the throttle of the provided `rocket`.
         
-        :param rocket: The rocket who's throttle to use.
-        :type rocket: :py:class:`...rockets.rocket` 
+        :param rocket: The rocket whose throttle to use.
+        :type rocket: :py:class:`rockets.Rocket` 
 
         """
 
@@ -152,10 +152,10 @@ class HUD():
 
     def _updateVelocity(self, rocket):
         """
-        Creates and returns a surface containing the velocity of the provided rocket.
+        Creates and returns a surface containing the velocity of the provided `rocket`.
         
-        :param rocket: The rocket who's velocity to use.
-        :type rocket: :py:class:`...rockets.rocket` 
+        :param rocket: The rocket whose velocity to use.
+        :type rocket: :py:class:`rockets.Rocket` 
 
         """
 
@@ -243,10 +243,10 @@ class HUD():
     def _updateSASFuel(self, rocket):
         """
         Creates and returns a surface containing the ammound of SAS Fuel that the provided
-        rocket has remaining.
+        `rocket` has remaining.
         
-        :param rocket: The rocket who's SAS Fuel should be displayed.
-        :type rocket: :py:class:`...rockets.rocket` 
+        :param rocket: The rocket whose SAS Fuel should be displayed.
+        :type rocket: :py:class:`rockets.Rocket` 
 
         """
 
@@ -284,10 +284,10 @@ class HUD():
 
     def _updateThrusterFuel(self, rocket):
         """
-        Creates and returns a surface displaying the ammount of fuel left in each of the thrusters on the provided rocket
+        Creates and returns a surface displaying the ammount of fuel left in each of the thrusters on the provided `rocket`
         
-        :param rocket: The rocket who's thruster fuel should be displayed.
-        :type rocket: :py:class:`...rockets.rocket` 
+        :param rocket: The rocket whose thruster fuel should be displayed.
+        :type rocket: :py:class:`rockets.Rocket` 
         """
 
         thrusters = rocket.thrusters
@@ -327,10 +327,10 @@ class HUD():
 
     def _updateSASIndicator(self, rocket):
         """
-        Creates and returns a surface indicating whether or not the provided rocket is currently locked to an angle using SAS.
+        Creates and returns a surface indicating whether or not the provided `rocket` is currently locked to an angle using SAS.
         
-        :param rocket: The rocket who's SAS state should be checked.
-        :type rocket: :py:class:`...rockets.rocket` 
+        :param rocket: The rocket whose SAS state should be checked.
+        :type rocket: :py:class:`rockets.Rocket` 
         """
 
         indicatorSize = (35,30)
@@ -355,11 +355,11 @@ class HUD():
 
     def updateHUD(self, rocket):
         """
-        Draws relevant information from the provided rocket to the screen, like the throttle,
+        Draws relevant information from the provided `rocket` to the screen, like the throttle,
         velocity, and fuel. Also displays time and zoom information.
 
-        :param rocket: The rocket who's SAS state should be checked.
-        :type rocket: :py:class:`...rockets.rocket` 
+        :param rocket: The rocket whose information should be checked.
+        :type rocket: :py:class:`rockets.Rocket` 
         """
         
         navBallPos = (int(pg.display.get_surface().get_width()/2 - self._navBallRadius), int(pg.display.get_surface().get_height()-2*self._navBallRadius))

@@ -17,7 +17,7 @@ class Physics(object):
         Calculate gravitational acceleration on target by body/shape pair.
 
         :param celestialBody: The planet to use as the gravitational source
-        :type celestialBody: :py:class:`CelestialBody`
+        :type celestialBody: :py:class:`physics.CelestialBody`
         :param targetPosition: The (x,y) position of the target
         :type targetPosition: :py:class:`pymunk.vec2d.Vec2d`
         :returns: Acceleration vector
@@ -41,7 +41,7 @@ class Physics(object):
         Calculate gravitational acceleration on a target by several bodies.
 
         :param celestialBodies: The planets to use as the gravitational sources
-        :type celestialBodies: [:py:class:`.CelestialBody`]
+        :type celestialBodies: [:py:class:`physics.CelestialBody`]
         :param targetPosition: The (x,y) position of the target
         :type targetPosition: :py:class:`pymunk.vec2d.Vec2d`
         :returns: Acceleration vector

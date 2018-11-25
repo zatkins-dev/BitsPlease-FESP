@@ -45,10 +45,24 @@ class Component(ABC, pm.Poly):
 
     @classmethod
     @abstractmethod
+    def getInfo(cls):
+        """
+        Dictionary of specific component properties.
+
+        :returns: Dictionary of unformatted component properties
+        :rtype: :py:class:`Dict`
+        """
+        pass
+
+    @classmethod
+    @abstractmethod
     def getDisplayInfo(cls):
         """
-        This will should return a dictionary that contains relevant
+        Returns a dictionary that contains relevant
         "pretty" Information to display in the rocket builder
+
+        :returns: Dictionary of formatted component properties
+        :rtype: :py:class:`Dict`
         """
         pass
 

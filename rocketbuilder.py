@@ -23,7 +23,7 @@ from graphics import Video
 class RocketBuilder:
     """
     Gets component information and facilitates the construction of a new and
-    unique :py:class:`rockets.rocket.Rocket` to use in the simulation
+    unique :py:class:`rockets.Rocket` to use in the simulation
     """
     #: The :py:class:`pygame.surface.Surface` that the builder will be drawn to
     surface = None
@@ -40,8 +40,10 @@ class RocketBuilder:
     #: The :py:class:`pymunk.Space` used to construct the rocket
     space = pm.Space(threaded=True)
     space.threads = 2
-
+    
+    #: Categories of :py:class:`rockets.component.Component`
     componentTabs = Enum("State", "Thruster Control Tanks")
+    #: List of currently displayed :py:class:`rockets.component.Component` types
     componentList = []
     #: The active category of components from componentTabs
     #: Initialized to the Thruster category

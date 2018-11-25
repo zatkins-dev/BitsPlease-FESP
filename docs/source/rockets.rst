@@ -1,6 +1,17 @@
 rockets package
 ===============
 
+Module contents
+---------------
+
+.. automodule:: rockets
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :private-members:
+    
+
+
 Submodules
 ----------
 
@@ -64,12 +75,3 @@ rockets.thruster module
     
 
 
-Module contents
----------------
-
-.. automodule:: rockets
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :private-members:
-    

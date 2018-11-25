@@ -333,10 +333,6 @@ class LeftRCS(RCSThruster):
 
     @classmethod
     def getInfo(cls):
-        """
-        Returns the dictionary with info specified by Thruster.getInfo()
-        """
-
         return {
             "vertices":     [(0, 37), (5, 37), (5, 42), (0, 42)],
             "thrustForce":  5000,
