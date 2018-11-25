@@ -179,7 +179,6 @@ class SolidThruster(Thruster):
 
 class LiquidThruster(Thruster):
     def __init__(self, body, transform=None, radius=0):
-        print("HEEEEEEEEOOOOOOOOOOooo")
         Component.__init__(self, body, self.getInfo()["vertices"], self.getInfo()["density"], transform, radius)
 
     @property
