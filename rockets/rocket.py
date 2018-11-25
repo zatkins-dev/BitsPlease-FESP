@@ -49,7 +49,7 @@ class Rocket(Body):
         A list of all of the individual :py:class:`Component` s that have been attatched to the rocket.
         The list is presented in the order of :py:class:`Thruster` s, :py:class:`SAS`, :py:class:`CommandModule` s, :py:class:`RCSThruster` s
         """
-        return self.Tanks + self.thrusters + self.SASmodules + self.commandModules + self.RCSThrusters
+        return self.tanks + self.thrusters + self.SASmodules + self.commandModules + self.RCSThrusters
 
     @property
     def commandModules(self):
@@ -80,7 +80,7 @@ class Rocket(Body):
         return list(filter(lambda c: isinstance(c, SAS), self._components))
 
     @property
-    def Tanks(self):
+    def tanks(self):
         return list(filter(lambda c: isinstance(c, Tank), self._components))
 
     @property
