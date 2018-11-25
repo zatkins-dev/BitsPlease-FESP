@@ -99,7 +99,6 @@ class RocketTestCase(unittest.TestCase):
         self.assertNotIn(self.c7, self.rocket.RCSThrusters)
         self.assertIn(self.c7, self.rocket.tanks)
 
-
     def test_rocket_throttle_bounds(self):
         self.rocket.throttle = 99
         self.assertEqual(self.rocket.throttle, 1)
