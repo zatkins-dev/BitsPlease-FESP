@@ -34,7 +34,7 @@ class RocketTestCase(unittest.TestCase):
         self.assertEqual(self.rocket.throttle, 0)
 
         # test that the component lists are the same
-        self.assertListEqual(self.rocket.components, self.baseComponents)
+        self.assertCountEqual(self.rocket.components, self.baseComponents)
 
         # test that components bodies were made to be the rocket
         for component in self.rocket.components:
