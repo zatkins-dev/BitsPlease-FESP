@@ -131,5 +131,8 @@ class SolidThrusterTestCase(unittest.TestCase):
 
         self.assertAlmostEqual(newFuel, prevFuel - throttle * timeScale)
 
+    def test_reset(self):
+        self.assertEqual(self.thruster.fuel, self.thruster.maxFuel)
+
 if __name__ == '__main__':
     unittest.main()
