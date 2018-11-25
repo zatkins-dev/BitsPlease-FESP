@@ -12,7 +12,10 @@ To run this prototype, you'll need [Python3](https://www.python.org/downloads/ "
  * [Pymunk](http://www.pymunk.org/en/latest/installation.html "Pymunk Installation Instructions") `pip install pymunk`
 
 ### Controls:
- * F - Thrust
+ * Left SHIFT - Increase Thrust Throttle
+ * Left CTRL - Decrease Thrust Throttle
+ * Z - Full Throttle
+ * X - Cut Thrust
  * A - Rotate Counter-Clockwise
  * D - Rotate Clockwise
  * V - Enable SAS, locking rocket to the current angle of rotation.
