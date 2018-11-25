@@ -1,5 +1,5 @@
 import unittest
-from graphics import Video, Zoom
+from graphics import Video, Zoom, Drawer
 Video.init()
 
 from rockets.testrocket import genRocket
@@ -550,6 +550,20 @@ class PhysicsTestCase(unittest.TestCase):
         testPosition = (0, 0)
 
         self.assertEqual(Physics.netGravity([c1,c2]), testPosition), Vec2d(66.7384, 66738400))
-                
+
+class DrawerTestCase(unittest.TestCase):
+    def setup(self):
+        self.drawer = Drawer()
+        self.space = pm.Space(threaded=True)
+        self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
+        self.rocket = Rocket(self.baseComponents)
+    def test_drawer_inRange(self):
+        coords =[-1, 99]
+        themax = [77, 77]
+        self.assertFalse(inRange(themax, coords))
+        coords =[5, 5]
+        self.assertTrue(inRange(themax, coords))
+
+
 if __name__ == '__main__':
     unittest.main()
