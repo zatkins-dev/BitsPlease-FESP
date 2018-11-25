@@ -30,4 +30,9 @@ class RocketTestCase(unittest.TestCase):
             self.newTank = TestTank(self.rocket)
             self.rocket.addComponent(self.newTank)
             self.assertIn(self.newTank, self.rocket.components)
-            self.tearDown()
+        
+        def test_rocket_throttle_bounds(self):
+            self.rocket.throttle = 99
+            self.assertEqual(self.rocket.throttle, 1)
+            self.rocket.throttle = -99
+            self.assertEqual(self.rocket.throttle, 0)
