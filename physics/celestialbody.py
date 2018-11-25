@@ -4,34 +4,29 @@ from physics.collision import CT_CELESTIAL_BODY
 
 
 class CelestialBody():
-    """Wrapper class for celestial bodies, contains Body and Shape
-
-    Args:
-        name_ (String): Name of planet
-        space_ (space): Space to embed planet in
-        mass_ (Float): Mass of body
-        radius_ (Float): Radius of circle
-        position_x (Float): Center position x
-        position_y (Float): Center position y
-        elasticity_ (Float): Elasticity of shape
-        atmosphere_ (Float): Damping coefficient for atmoshphere
-        bodytype_ (Int): Type of body
-
-    Attributes:
-        mass (type): Mass of body
-        name (type): Name of planet
-        radius (type): Radius of circle
-        posx (type): Center position x
-        posy (type): Center position y
-        elasticity (type): Elasticity of shape
-        atmosphere (Float): Damping coefficient for atmoshphere
-        bodytype (Int): Type of body
-        body (Body): Body object of planet
-        shape (Shape): Shape object of planet
-
     """
+    Wrapper class for celestial bodies, contains Body and Shape
+    """
+
     def __init__(self, name_, space_, mass_, radius_, position_,
                  elasticity_, atmosphere_color, atmosphere_height, bodytype_):
+        """
+        Creates the celestial body.
+
+        :param str name_: The name to give the planet
+        :param space_: The space to add the planet to
+        :type space_: :py:class:`pymunk.Space`
+        :param float mass_: The mass of the planet
+        :param float radius_: The radius of the planet
+        :param position_: The (x,y) position of the center of the planet
+        :type position_: tuple(float, float)
+        :param float elasticity_: The elasticity of the planet in collisions.
+        :param atmosphere_color: The color of the planet's sky.
+        :type atmosphere_color: tuple(int, int, int)
+        :param float atmosphere_height: The height of the planet's atmosphere.
+        :param int bodytype_: The type of body 
+
+        """
         self.name = name_
         self.atmosphereColor = atmosphere_color
         self.atmosphereHeight = atmosphere_height
