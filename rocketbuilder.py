@@ -19,6 +19,7 @@ from rockets import CommandModule
 from graphics import Drawer
 from graphics import Graphics
 from graphics import Video
+from graphics import Zoom
 
 class RocketBuilder:
     """
@@ -48,7 +49,6 @@ class RocketBuilder:
     #: The active category of components from componentTabs
     #: Initialized to the Thruster category
     selectedTab = componentTabs.Thruster
-    print (type(selectedTab))
     
     #: This component will be the base, and can't be removed from the rocket in construction
     _baseComponent = CommandModule(None)
@@ -74,6 +74,8 @@ class RocketBuilder:
     #: the center of the rocket
     _symmetry = False
 
+    _zoom = Zoom(1,1,1)
+
     @classmethod
     def run(cls):
         """
@@ -82,6 +84,7 @@ class RocketBuilder:
         
         clock = pg.time.Clock()     # create clock to manage game time
         cls.theRocket.reset()
+        Drawer.zoom = cls._zoom
         if not cls.theRocket.components:
             cls.theRocket.components.append(cls._baseComponent)
         cls.space.add(cls.theRocket)
