@@ -533,7 +533,7 @@ class ZoomTestCase(unittest.TestCase):
         self.zoom.zoom = 80000
         self.assertEqual(curzoom, self.zoom.zoom)
         self.zoom.zoom = 2
-        self.assertEqual(2. self.zoom.zoom)
+        self.assertEqual(2, self.zoom.zoom)
 
     def test_zoom_zoomin_zoomout(self):
         curzoom = self.zoom
