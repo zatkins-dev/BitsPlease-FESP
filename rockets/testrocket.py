@@ -6,14 +6,11 @@ import os
 import sys
 
 def genRocket(space):
-    """Generate prototype rocket with orbiter, thruster, and SAS.
+    """
+    Generate prototype rocket with orbiter, thruster, and SAS.
 
-    Args:
-        space (Space): Space to hold generated rocket.
-
-    Returns:
-        Rocket: Generated prototype rocket.
-
+    :param space:  Space to hold generated rocket.
+    :type space: :py:class:`pymunk.Space`
     """
     rocket = Rocket([UpGoer2000(None), AdvancedSAS(None), CommandModule(None), LeftRCS(None), RightRCS(None)])
     space.add(rocket)
