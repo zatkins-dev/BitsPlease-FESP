@@ -1,0 +1,2226 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>graphics package &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="physics package" href="physics.html" />
+    <link rel="prev" title="BitsPlease-FESP" href="modules.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">BitsPlease-FESP</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">graphics package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-graphics">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-graphics.drawer">graphics.drawer module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-graphics.explosion">graphics.explosion module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-graphics.graphics">graphics.graphics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-graphics.hud">graphics.hud module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-graphics.menu">graphics.menu module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-graphics.trajectory">graphics.trajectory module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-graphics.zoom">graphics.zoom module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="physics.html">physics package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rockets.html">rockets package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audioManager.html">audioManager module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rocketbuilder.html">rocketbuilder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation.html">simulation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">BitsPlease-FESP</a> &raquo;</li>
+        
+      <li>graphics package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/graphics.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="graphics-package">
+<h1>graphics package<a class="headerlink" href="#graphics-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-graphics">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-graphics" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="graphics.Graphics">
+<em class="property">class </em><code class="descclassname">graphics.</code><code class="descname">Graphics</code><a class="reference internal" href="_modules/graphics/graphics.html#Graphics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Graphics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Graphics contains a few very common graphics and UI components used in many places.</p>
+<dl class="classmethod">
+<dt id="graphics.Graphics.drawButton">
+<em class="property">classmethod </em><code class="descname">drawButton</code><span class="sig-paren">(</span><em>destSurf</em>, <em>pos</em>, <em>size</em>, <em>colors</em>, <em>buttonContent</em>, <em>buttonContentSize</em>, <em>buttonFunction=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/graphics.html#Graphics.drawButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Graphics.drawButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function that draws a button to the screen</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>destSurf</strong> – The Surface to draw the button onto.</li>
+<li><strong>pos</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>)</em>) – The positon of the top-left corner of the button</li>
+<li><strong>size</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>)</em>) – The width and height respectively of the button</li>
+<li><strong>colors</strong> ((<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Color</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Color</span></code>)) – A tuple containing two colors. The first is the unfocused color, and the second is the focused color</li>
+<li><strong>buttonContent</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code>) – This can be either a surface or a string. Either will be drawn to the center of the button</li>
+<li><strong>buttonContentSize</strong> – If the button content is a string, this will be the size of font used to render the text. If the content is a surface, this is the ammount of the button the surface will occupy, from 0 to 1</li>
+<li><strong>buttonFunction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">types.FunctionType</span></code>) – This is the function that will be executed when the button is clicked on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Graphics.drawStars">
+<em class="property">classmethod </em><code class="descname">drawStars</code><span class="sig-paren">(</span><em>screen</em>, <em>pos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/graphics.html#Graphics.drawStars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Graphics.drawStars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a randomly generated background of stars to the provided surface.
+Also creates a paralax effect for a moving target</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – The <code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code> to draw to.</li>
+<li><strong>pos</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>)</em>) – The position of the rocket, used to offset the stars and create a parallax effect.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Graphics.drawText">
+<em class="property">classmethod </em><code class="descname">drawText</code><span class="sig-paren">(</span><em>position</em>, <em>content</em>, <em>textFont</em>, <em>color=(0</em>, <em>0</em>, <em>0)</em>, <em>surface=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/graphics.html#Graphics.drawText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Graphics.drawText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function that draws a string to the screen</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>position</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>)</em>) – The XY position of the top-left corner of the text</li>
+<li><strong>content</strong> (<em>string</em>) – The string the be drawn</li>
+<li><strong>textFont</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.font.Font</span></code>) – The font to use to render the text.</li>
+<li><strong>color</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Color</span></code>) – The rgb color of the text</li>
+<li><strong>surface</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – The surface to draw to</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Graphics.drawTextCenter">
+<em class="property">classmethod </em><code class="descname">drawTextCenter</code><span class="sig-paren">(</span><em>position</em>, <em>content</em>, <em>textFont</em>, <em>color=(0</em>, <em>0</em>, <em>0)</em>, <em>surface=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/graphics.html#Graphics.drawTextCenter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Graphics.drawTextCenter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function that draws a string to the screen</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>position</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>)</em>) – The XY position of the center of the text</li>
+<li><strong>content</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The string the be drawn</li>
+<li><strong>textFont</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.font.Font</span></code>) – The font to use to render the text.</li>
+<li><strong>color</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Color</span></code>) – The rgb color of the text</li>
+<li><strong>surface</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – The surface to draw to</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Graphics._buttonIsClicked">
+<code class="descname">_buttonIsClicked</code><em class="property"> = False</em><a class="headerlink" href="#graphics.Graphics._buttonIsClicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>A state variable that stores whether a button is currently being pressed.
+This is used to prevent buttons’ actions from executing on every single frame.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Graphics._isBackgroundDrawn">
+<code class="descname">_isBackgroundDrawn</code><em class="property"> = False</em><a class="headerlink" href="#graphics.Graphics._isBackgroundDrawn" title="Permalink to this definition">¶</a></dt>
+<dd><p>A state variable that stores whether the star background has been drawn before.
+Used to initialize the backgroudn on the first call of drawStars()</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Graphics._stars">
+<code class="descname">_stars</code><em class="property"> = []</em><a class="headerlink" href="#graphics.Graphics._stars" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of tuples that hold information about stars. The first number
+is the x position, and the second number is the y position. The
+final member is an rgb color tuple.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Graphics._starsHeight">
+<code class="descname">_starsHeight</code><em class="property"> = 0</em><a class="headerlink" href="#graphics.Graphics._starsHeight" title="Permalink to this definition">¶</a></dt>
+<dd><p>THe height of the stars Surface</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Graphics._starsWidth">
+<code class="descname">_starsWidth</code><em class="property"> = 0</em><a class="headerlink" href="#graphics.Graphics._starsWidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>The width of the stars Surface</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="graphics.Zoom">
+<em class="property">class </em><code class="descclassname">graphics.</code><code class="descname">Zoom</code><span class="sig-paren">(</span><em>base_zoom=1</em>, <em>min_zoom=1.52587890625e-05</em>, <em>max_zoom=8</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/zoom.html#Zoom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Utility class to manage zooming in and out of the rocket</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>base_zoom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The default level of zoom</li>
+<li><strong>min_zoom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The minumum magnification</li>
+<li><strong>max_zoom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The maximum magnification</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="graphics.Zoom.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/zoom.html#Zoom.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Zoom.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the zoom level to the base zoom level</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.Zoom.zoom_in">
+<code class="descname">zoom_in</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/zoom.html#Zoom.zoom_in"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Zoom.zoom_in" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the zoom level to twice the current level.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.Zoom.zoom_out">
+<code class="descname">zoom_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/zoom.html#Zoom.zoom_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Zoom.zoom_out" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the zoom level to half the current level.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Zoom._base_zoom">
+<code class="descname">_base_zoom</code><em class="property"> = 1</em><a class="headerlink" href="#graphics.Zoom._base_zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>The starting zoom level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Zoom._max_zoom">
+<code class="descname">_max_zoom</code><em class="property"> = 8</em><a class="headerlink" href="#graphics.Zoom._max_zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maxumum magnification</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Zoom._min_zoom">
+<code class="descname">_min_zoom</code><em class="property"> = 1.52587890625e-05</em><a class="headerlink" href="#graphics.Zoom._min_zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>The minumum magnification</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Zoom._zoom">
+<code class="descname">_zoom</code><em class="property"> = 1</em><a class="headerlink" href="#graphics.Zoom._zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current zoom level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Zoom.zoom">
+<code class="descname">zoom</code><a class="headerlink" href="#graphics.Zoom.zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property storing the current value of <a class="reference internal" href="#graphics.Zoom._zoom" title="graphics.Zoom._zoom"><code class="xref py py-attr docutils literal notranslate"><span class="pre">_zoom</span></code></a>, supports setting and getting.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="graphics.Drawer">
+<em class="property">class </em><code class="descclassname">graphics.</code><code class="descname">Drawer</code><a class="reference internal" href="_modules/graphics/drawer.html#Drawer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Drawer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Static class for drawing game components to pygame</p>
+<dl class="classmethod">
+<dt id="graphics.Drawer.draw">
+<em class="property">classmethod </em><code class="descname">draw</code><span class="sig-paren">(</span><em>screen</em>, <em>toDraw</em>, <em>offset</em>, <em>color=(0</em>, <em>0</em>, <em>255</em>, <em>255)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Drawer.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws an object to the screen</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Pygame surface to draw to</li>
+<li><strong>toDraw</strong> – Object to draw</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Drawer.drawBackground">
+<em class="property">classmethod </em><code class="descname">drawBackground</code><span class="sig-paren">(</span><em>closestBody</em>, <em>altitude</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.drawBackground"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Drawer.drawBackground" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws the planetary atmosphere of the closest body to the rocket based on altitude.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>closestBody</strong> (<a class="reference internal" href="physics.html#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a>) – <code class="xref py py-class docutils literal notranslate"><span class="pre">CelestialBody</span></code> closest to the rocket</li>
+<li><strong>altitude</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Height of the rocket above <cite>closestBody</cite></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Drawer.drawCelestialBody">
+<em class="property">classmethod </em><code class="descname">drawCelestialBody</code><span class="sig-paren">(</span><em>screen</em>, <em>cb</em>, <em>offset</em>, <em>color=(0</em>, <em>0</em>, <em>255</em>, <em>255)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.drawCelestialBody"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Drawer.drawCelestialBody" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a <a class="reference internal" href="physics.html#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Pygame surface to draw to</li>
+<li><strong>cb</strong> (<a class="reference internal" href="physics.html#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a>) – <code class="xref py py-class docutils literal notranslate"><span class="pre">CelestialBody</span></code> object to draw</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+<li><strong>color</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Color</span></code>) – Color of circle</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Drawer.drawCircle">
+<em class="property">classmethod </em><code class="descname">drawCircle</code><span class="sig-paren">(</span><em>screen</em>, <em>shape</em>, <em>offset</em>, <em>color=(0</em>, <em>0</em>, <em>255</em>, <em>255)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.drawCircle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Drawer.drawCircle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Circle</span></code> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Pygame surface to draw to</li>
+<li><strong>shape</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Circle</span></code>) – <code class="xref py py-class docutils literal notranslate"><span class="pre">Circle</span></code> object to draw</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Drawer.drawExplosion">
+<em class="property">classmethod </em><code class="descname">drawExplosion</code><span class="sig-paren">(</span><em>screen</em>, <em>sprite</em>, <em>position</em>, <em>size</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.drawExplosion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Drawer.drawExplosion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a <a class="reference internal" href="#graphics.Explosion" title="graphics.Explosion"><code class="xref py py-class docutils literal notranslate"><span class="pre">Explosion</span></code></a> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Pygame surface to draw to</li>
+<li><strong>sprite</strong> (<a class="reference internal" href="#graphics.Explosion" title="graphics.Explosion"><code class="xref py py-class docutils literal notranslate"><span class="pre">Explosion</span></code></a>) – Explosion object to draw</li>
+<li><strong>position</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>)</em>) – Position in pymunk coordinates to draw the explosion</li>
+<li><strong>size</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>)</em>) – Size of explosion</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Drawer.drawMultiple">
+<em class="property">classmethod </em><code class="descname">drawMultiple</code><span class="sig-paren">(</span><em>screen</em>, <em>list</em>, <em>offset</em>, <em>color=(0</em>, <em>0</em>, <em>255</em>, <em>255)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.drawMultiple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Drawer.drawMultiple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls <a class="reference internal" href="#graphics.Drawer.draw" title="graphics.Drawer.draw"><code class="xref py py-meth docutils literal notranslate"><span class="pre">draw()</span></code></a> on a list of drawable objects</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Pygame surface to draw to</li>
+<li><strong>toDraw</strong> – list of drawable objects</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Drawer.drawPoly">
+<em class="property">classmethod </em><code class="descname">drawPoly</code><span class="sig-paren">(</span><em>screen</em>, <em>shape</em>, <em>offset</em>, <em>color=(0</em>, <em>0</em>, <em>255</em>, <em>255)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.drawPoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Drawer.drawPoly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Poly</span></code> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Pygame surface to draw to</li>
+<li><strong>shape</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Poly</span></code>) – <cite>Poly</cite> object to draw</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Drawer.drawSprite">
+<em class="property">classmethod </em><code class="descname">drawSprite</code><span class="sig-paren">(</span><em>screen</em>, <em>component</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.drawSprite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Drawer.drawSprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a <a class="reference internal" href="rockets.html#rockets.Component" title="rockets.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Component</span></code></a> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Pygame surface to draw to</li>
+<li><strong>shape</strong> (<a class="reference internal" href="rockets.html#rockets.Component" title="rockets.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Component</span></code></a>) – <cite>Component</cite> object to draw</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Drawer.getOffset">
+<em class="property">classmethod </em><code class="descname">getOffset</code><span class="sig-paren">(</span><em>screen</em>, <em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.getOffset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Drawer.getOffset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the offset between pymunk and pygame coordinates such that the rocket is rendered in the center of the screen.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Current display surface</li>
+<li><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – Rocket to place in the center of the screen</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Offset to add to pymunk coordinates</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Drawer.getXYMinMax">
+<em class="property">classmethod </em><code class="descname">getXYMinMax</code><span class="sig-paren">(</span><em>vertices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.getXYMinMax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Drawer.getXYMinMax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to get size for scaled sprite for <a class="reference internal" href="#graphics.Drawer.drawSprite" title="graphics.Drawer.drawSprite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drawSprite()</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vertices</strong> (<em>[</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>)</em><em>]</em>) – List of component vertices</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Tuple of (minX, maxX, minY, maxY)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Drawer.inRange">
+<em class="property">classmethod </em><code class="descname">inRange</code><span class="sig-paren">(</span><em>max</em>, <em>coords</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.inRange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Drawer.inRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that checks if coordinates are between (0,0) and <cite>max</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max</strong> – <cite>Vec2d</cite> of maximum coordinates</li>
+<li><strong>max</strong> – <cite>Vec2d</cite> of coordinates to check</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><cite>True</cite> if <cite>coords</cite> is in range, <cite>False</cite> otherwise.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Drawer.intVec2d">
+<em class="property">classmethod </em><code class="descname">intVec2d</code><span class="sig-paren">(</span><em>v</em>, <em>func=&lt;class 'int'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.intVec2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Drawer.intVec2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that applies function to each element of <cite>v</cite>. Default function is <code class="xref py py-func docutils literal notranslate"><span class="pre">int()</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>v</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – <cite>Vec2d</cite> to apply function to</li>
+<li><strong>func</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">types.FunctionType</span></code>) – Function to apply to elements of <cite>v</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Vector <cite>v</cite> after function application</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Drawer.scaleSpriteToVerts">
+<em class="property">classmethod </em><code class="descname">scaleSpriteToVerts</code><span class="sig-paren">(</span><em>sprite</em>, <em>vertices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.scaleSpriteToVerts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Drawer.scaleSpriteToVerts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to scaled sprite for <a class="reference internal" href="#graphics.Drawer.drawSprite" title="graphics.Drawer.drawSprite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drawSprite()</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sprite</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Sprite image to draw</li>
+<li><strong>vertices</strong> (<em>[</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>)</em><em>]</em>) – List of component vertices</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Scaled sprite image</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Drawer.to_pygame">
+<em class="property">classmethod </em><code class="descname">to_pygame</code><span class="sig-paren">(</span><em>shape</em>, <em>coords</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.to_pygame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Drawer.to_pygame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert local pymunk shape coordinates to pygame if shape is not <cite>None</cite>, else convert global pymunk coordinates to pygame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>shape</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Shape</span></code>) – Shape local coordinates are in reference to</li>
+<li><strong>coords</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Coordinates to convert</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Coordinates converted to pygame</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Drawer._maxZoom">
+<code class="descname">_maxZoom</code><em class="property"> = 8</em><a class="headerlink" href="#graphics.Drawer._maxZoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum zoom level, 8x normal zoom</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Drawer._minZoom">
+<code class="descname">_minZoom</code><em class="property"> = 1.52587890625e-05</em><a class="headerlink" href="#graphics.Drawer._minZoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum zoom level, (2^-16)x normal zoom</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Drawer.zoom">
+<code class="descname">zoom</code><em class="property"> = &lt;graphics.zoom.Zoom object&gt;</em><a class="headerlink" href="#graphics.Drawer.zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#graphics.Zoom" title="graphics.Zoom"><code class="xref py py-class docutils literal notranslate"><span class="pre">Zoom</span></code></a> object for handling current zoom level</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="graphics.HUD">
+<em class="property">class </em><code class="descclassname">graphics.</code><code class="descname">HUD</code><a class="reference internal" href="_modules/graphics/hud.html#HUD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.HUD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>HUD holds diagnostic info and prints values to the screen.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>_font</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Font</span></code>) – The font used to draw text to the screen</li>
+<li><strong>_navBallRadius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The radius in pixels of the Hud’s navball</li>
+<li><strong>_navBallSubRadius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The radius in pixels of the small viewport within the navball</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="graphics.HUD._drawCompassLine">
+<code class="descname">_drawCompassLine</code><span class="sig-paren">(</span><em>surface</em>, <em>angle</em>, <em>size</em>, <em>color=(255</em>, <em>255</em>, <em>255</em>, <em>255)</em>, <em>innerRadius=None</em>, <em>outerRadius=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._drawCompassLine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.HUD._drawCompassLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to draw a line along the normal/radius of a circle</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.HUD._updateNavBall">
+<code class="descname">_updateNavBall</code><span class="sig-paren">(</span><em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateNavBall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.HUD._updateNavBall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a navball, containing directional information to a pygame Surface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket who’s information to use.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.HUD._updateSASFuel">
+<code class="descname">_updateSASFuel</code><span class="sig-paren">(</span><em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateSASFuel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.HUD._updateSASFuel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a surface containing the ammound of SAS Fuel that the provided
+<cite>rocket</cite> has remaining.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket whose SAS Fuel should be displayed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.HUD._updateSASIndicator">
+<code class="descname">_updateSASIndicator</code><span class="sig-paren">(</span><em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateSASIndicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.HUD._updateSASIndicator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a surface indicating whether or not the provided <cite>rocket</cite> is currently locked to an angle using SAS.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket whose SAS state should be checked.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.HUD._updateThrottle">
+<code class="descname">_updateThrottle</code><span class="sig-paren">(</span><em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateThrottle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.HUD._updateThrottle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a surface containing the throttle of the provided <cite>rocket</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket whose throttle to use.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.HUD._updateThrusterFuel">
+<code class="descname">_updateThrusterFuel</code><span class="sig-paren">(</span><em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateThrusterFuel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.HUD._updateThrusterFuel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a surface displaying the ammount of fuel left in each of the thrusters on the provided <cite>rocket</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket whose thruster fuel should be displayed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.HUD._updateTimeScale">
+<code class="descname">_updateTimeScale</code><span class="sig-paren">(</span><em>scale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateTimeScale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.HUD._updateTimeScale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a surface containing the current ammount time is scaled by.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The current ammount time is scaled by.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.HUD._updateVelocity">
+<code class="descname">_updateVelocity</code><span class="sig-paren">(</span><em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateVelocity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.HUD._updateVelocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a surface containing the velocity of the provided <cite>rocket</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket whose velocity to use.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.HUD._updateZoom">
+<code class="descname">_updateZoom</code><span class="sig-paren">(</span><em>zoom</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateZoom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.HUD._updateZoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a surface containing the current zoom level.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>zoom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The current zoom level.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.HUD.updateHUD">
+<code class="descname">updateHUD</code><span class="sig-paren">(</span><em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD.updateHUD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.HUD.updateHUD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws relevant information from the provided <cite>rocket</cite> to the screen, like the throttle,
+velocity, and fuel. Also displays time and zoom information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket whose information should be checked.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="graphics.Menu">
+<em class="property">class </em><code class="descclassname">graphics.</code><code class="descname">Menu</code><a class="reference internal" href="_modules/graphics/menu.html#Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Menu is a class with methods that can draw different menu items or screens
+to the display.</p>
+<dl class="class">
+<dt id="graphics.Menu.State">
+<em class="property">class </em><code class="descname">State</code><a class="headerlink" href="#graphics.Menu.State" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<p>The different states that the menu can take</p>
+<dl class="attribute">
+<dt id="graphics.Menu.State.Building">
+<code class="descname">Building</code><em class="property"> = 3</em><a class="headerlink" href="#graphics.Menu.State.Building" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Menu.State.Exit">
+<code class="descname">Exit</code><em class="property"> = 5</em><a class="headerlink" href="#graphics.Menu.State.Exit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Menu.State.Menu">
+<code class="descname">Menu</code><em class="property"> = 2</em><a class="headerlink" href="#graphics.Menu.State.Menu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Menu.State.Playing">
+<code class="descname">Playing</code><em class="property"> = 4</em><a class="headerlink" href="#graphics.Menu.State.Playing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Menu.State.Splash">
+<code class="descname">Splash</code><em class="property"> = 1</em><a class="headerlink" href="#graphics.Menu.State.Splash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Menu._builderCallback">
+<em class="property">classmethod </em><code class="descname">_builderCallback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu._builderCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Menu._builderCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback function to be called when the Rocket Builder button is clicked. This sets the
+builderPressed bool to be true.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Menu._demoCallback">
+<em class="property">classmethod </em><code class="descname">_demoCallback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu._demoCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Menu._demoCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback function to be called when the “start demo” button is clicked. This sets the
+demoPressed bool to be true.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Menu._quitCallback">
+<em class="property">classmethod </em><code class="descname">_quitCallback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu._quitCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Menu._quitCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback function to be called when the quit button is clicked. This sets the
+quitPressed bool to be true.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Menu._splashCallback">
+<em class="property">classmethod </em><code class="descname">_splashCallback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu._splashCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Menu._splashCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback function to be called when the title screen is clicked. This sets the
+splashScreenPressed bool to be true.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Menu.drawBackground">
+<em class="property">classmethod </em><code class="descname">drawBackground</code><span class="sig-paren">(</span><em>color_rgb</em>, <em>opacity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu.drawBackground"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Menu.drawBackground" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws the background using the given color and opacity alpha value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>color_rgb</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Color</span></code>) – The color of the background</li>
+<li><strong>opacity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The alpha value with which to draw the background</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Menu.drawMenu">
+<em class="property">classmethod </em><code class="descname">drawMenu</code><span class="sig-paren">(</span><em>opacity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu.drawMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Menu.drawMenu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws the menu screen and buttons to pygame’s current display surface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>opacity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The alpha value with which to draw the menu background</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Menu.drawSplashScreen">
+<em class="property">classmethod </em><code class="descname">drawSplashScreen</code><span class="sig-paren">(</span><em>opacity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu.drawSplashScreen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Menu.drawSplashScreen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws the title screen to pygame’s current display surface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>opacity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The alpha value with which to draw the splash screen background</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Menu._fullscreen_icon">
+<code class="descname">_fullscreen_icon</code><em class="property"> = &lt;Surface(32x32x32 SW)&gt;</em><a class="headerlink" href="#graphics.Menu._fullscreen_icon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Icons made by <a class="reference external" href="www.freepic.com">Freepik</a> from <a class="reference external" href="https://www.flaticon.com/">Flaticon</a>. Licensed by <a class="reference external" href="http://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Menu._menuButtonColor">
+<code class="descname">_menuButtonColor</code><em class="property"> = ((255, 255, 255, 64), (255, 255, 255, 128))</em><a class="headerlink" href="#graphics.Menu._menuButtonColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>The color to use for the menu buttons</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Menu._windowed_icon">
+<code class="descname">_windowed_icon</code><em class="property"> = &lt;Surface(32x32x32 SW)&gt;</em><a class="headerlink" href="#graphics.Menu._windowed_icon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Icons made by <a class="reference external" href="www.freepic.com">Freepik</a> from <a class="reference external" href="https://www.flaticon.com/">Flaticon</a>. Licensed by <a class="reference external" href="http://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Menu.builderPressed">
+<code class="descname">builderPressed</code><em class="property"> = False</em><a class="headerlink" href="#graphics.Menu.builderPressed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Becomes true when the Rocket builder button has been pressed. A higher
+order class can watch htis and take appropriate action on change.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Menu.demoPressed">
+<code class="descname">demoPressed</code><em class="property"> = False</em><a class="headerlink" href="#graphics.Menu.demoPressed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Becomes true when the “start demo” button has been pressed. A higher order
+class can watch this and take appropriate action on change</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Menu.quitPressed">
+<code class="descname">quitPressed</code><em class="property"> = False</em><a class="headerlink" href="#graphics.Menu.quitPressed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Becomes true when a the quit button has been pressed. A higher order class can
+watch this and take appropriate action on change</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Menu.splashScreenPressed">
+<code class="descname">splashScreenPressed</code><em class="property"> = False</em><a class="headerlink" href="#graphics.Menu.splashScreenPressed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Becomes true when the first screen (title screen) has been clicked on.
+A higher order class can watch this and proceed to the actual menu.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="graphics.Trajectory">
+<em class="property">class </em><code class="descclassname">graphics.</code><code class="descname">Trajectory</code><a class="reference internal" href="_modules/graphics/trajectory.html#Trajectory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Trajectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Drawer for the projected trajectory of the rocket.</p>
+<dl class="classmethod">
+<dt id="graphics.Trajectory.draw">
+<em class="property">classmethod </em><code class="descname">draw</code><span class="sig-paren">(</span><em>rocket</em>, <em>planetBodies</em>, <em>max_timesteps</em>, <em>dt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/trajectory.html#Trajectory.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Trajectory.draw" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Draws the projected path of the rocket until a stopping condition is reached, namely:</dt>
+<dd><ul class="first last simple">
+<li>A point in the projection goes off the current display.</li>
+<li>A point in the planet intersect a planetary body.</li>
+<li>The iteration count exceeds <cite>max_timesteps</cite>.</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket to project</li>
+<li><strong>planetBodies</strong> ([<a class="reference internal" href="physics.html#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a>]) – List of all planetary bodies</li>
+<li><strong>max_timesteps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Maximum iterations before stopping</li>
+<li><strong>dt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Iteration step size</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Trajectory.eulers">
+<em class="property">classmethod </em><code class="descname">eulers</code><span class="sig-paren">(</span><em>f_prev</em>, <em>dt</em>, <em>dfdt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/trajectory.html#Trajectory.eulers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Trajectory.eulers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the forward Euler method to approximate the the value of a function at the next timestep. Specifically, returns <span class="math notranslate nohighlight">\(f_{next} = f_{prev} + \Delta t\cdot\frac{fp}{dt}\)</span>, where <span class="math notranslate nohighlight">\(\frac{df}{dt}\)</span> is the derivative of the fuction at the previous timestep.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>f_prev</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Function value at previous timestep</li>
+<li><strong>dt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Small change in time (<span class="math notranslate nohighlight">\(\Delta t\)</span>), a smaller value yields a more accurate approximation</li>
+<li><strong>dfdt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Value of the derivative <span class="math notranslate nohighlight">\(\frac{df}{dt}\)</span>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Projected function value at the next timestep</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.Trajectory.hitsPlanet">
+<em class="property">classmethod </em><code class="descname">hitsPlanet</code><span class="sig-paren">(</span><em>position</em>, <em>planets</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/trajectory.html#Trajectory.hitsPlanet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Trajectory.hitsPlanet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that provides a stopping condition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>position</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>)</em>) – Position to check</li>
+<li><strong>planets</strong> ([<a class="reference internal" href="physics.html#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a>]) – List of planets</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>True</cite> if position is inside one of <cite>planets</cite>, <cite>False</cite> otherwise</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="graphics.Explosion">
+<em class="property">class </em><code class="descclassname">graphics.</code><code class="descname">Explosion</code><span class="sig-paren">(</span><em>duration</em>, <em>images</em>, <em>*group</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/explosion.html#Explosion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Explosion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.sprite.Sprite</span></code></p>
+<p>Create a new explosion animation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>duration</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – number of ticks for which to display the explosion animation</li>
+<li><strong>images</strong> ([<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>]) – array of animation frames</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="graphics.Explosion.get_draw">
+<code class="descname">get_draw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/explosion.html#Explosion.get_draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Explosion.get_draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the current animation image if duration is non-zero.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#graphics.Explosion.image" title="graphics.Explosion.image"><code class="xref py py-attr docutils literal notranslate"><span class="pre">image</span></code></a> or <cite>None</cite></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.Explosion.update_frame">
+<code class="descname">update_frame</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/explosion.html#Explosion.update_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Explosion.update_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates <a class="reference internal" href="#graphics.Explosion.image" title="graphics.Explosion.image"><code class="xref py py-attr docutils literal notranslate"><span class="pre">image</span></code></a> to the next frame of the animation, looping around once the final frame is reached.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Explosion.current_frame">
+<code class="descname">current_frame</code><em class="property"> = None</em><a class="headerlink" href="#graphics.Explosion.current_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current frame step in animation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Explosion.duration">
+<code class="descname">duration</code><em class="property"> = None</em><a class="headerlink" href="#graphics.Explosion.duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of ticks for animation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Explosion.image">
+<code class="descname">image</code><em class="property"> = None</em><a class="headerlink" href="#graphics.Explosion.image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current displayed image</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Explosion.images">
+<code class="descname">images</code><em class="property"> = None</em><a class="headerlink" href="#graphics.Explosion.images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Animation frames passed from <cite>images</cite></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Explosion.rect">
+<code class="descname">rect</code><em class="property"> = None</em><a class="headerlink" href="#graphics.Explosion.rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>rectangle containing the surface of the sprite</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Explosion.size">
+<code class="descname">size</code><em class="property"> = None</em><a class="headerlink" href="#graphics.Explosion.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>size of explosion sprite</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-graphics.drawer">
+<span id="graphics-drawer-module"></span><h2>graphics.drawer module<a class="headerlink" href="#module-graphics.drawer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="graphics.drawer.Drawer">
+<em class="property">class </em><code class="descclassname">graphics.drawer.</code><code class="descname">Drawer</code><a class="reference internal" href="_modules/graphics/drawer.html#Drawer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.drawer.Drawer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Static class for drawing game components to pygame</p>
+<dl class="classmethod">
+<dt id="graphics.drawer.Drawer.draw">
+<em class="property">classmethod </em><code class="descname">draw</code><span class="sig-paren">(</span><em>screen</em>, <em>toDraw</em>, <em>offset</em>, <em>color=(0</em>, <em>0</em>, <em>255</em>, <em>255)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.drawer.Drawer.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws an object to the screen</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Pygame surface to draw to</li>
+<li><strong>toDraw</strong> – Object to draw</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.drawer.Drawer.drawBackground">
+<em class="property">classmethod </em><code class="descname">drawBackground</code><span class="sig-paren">(</span><em>closestBody</em>, <em>altitude</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.drawBackground"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.drawer.Drawer.drawBackground" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws the planetary atmosphere of the closest body to the rocket based on altitude.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>closestBody</strong> (<a class="reference internal" href="physics.html#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a>) – <code class="xref py py-class docutils literal notranslate"><span class="pre">CelestialBody</span></code> closest to the rocket</li>
+<li><strong>altitude</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Height of the rocket above <cite>closestBody</cite></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.drawer.Drawer.drawCelestialBody">
+<em class="property">classmethod </em><code class="descname">drawCelestialBody</code><span class="sig-paren">(</span><em>screen</em>, <em>cb</em>, <em>offset</em>, <em>color=(0</em>, <em>0</em>, <em>255</em>, <em>255)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.drawCelestialBody"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.drawer.Drawer.drawCelestialBody" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a <a class="reference internal" href="physics.html#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Pygame surface to draw to</li>
+<li><strong>cb</strong> (<a class="reference internal" href="physics.html#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a>) – <code class="xref py py-class docutils literal notranslate"><span class="pre">CelestialBody</span></code> object to draw</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+<li><strong>color</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Color</span></code>) – Color of circle</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.drawer.Drawer.drawCircle">
+<em class="property">classmethod </em><code class="descname">drawCircle</code><span class="sig-paren">(</span><em>screen</em>, <em>shape</em>, <em>offset</em>, <em>color=(0</em>, <em>0</em>, <em>255</em>, <em>255)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.drawCircle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.drawer.Drawer.drawCircle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Circle</span></code> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Pygame surface to draw to</li>
+<li><strong>shape</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Circle</span></code>) – <code class="xref py py-class docutils literal notranslate"><span class="pre">Circle</span></code> object to draw</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.drawer.Drawer.drawExplosion">
+<em class="property">classmethod </em><code class="descname">drawExplosion</code><span class="sig-paren">(</span><em>screen</em>, <em>sprite</em>, <em>position</em>, <em>size</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.drawExplosion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.drawer.Drawer.drawExplosion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a <code class="xref py py-class docutils literal notranslate"><span class="pre">Explosion</span></code> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Pygame surface to draw to</li>
+<li><strong>sprite</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Explosion</span></code>) – Explosion object to draw</li>
+<li><strong>position</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>)</em>) – Position in pymunk coordinates to draw the explosion</li>
+<li><strong>size</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>)</em>) – Size of explosion</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.drawer.Drawer.drawMultiple">
+<em class="property">classmethod </em><code class="descname">drawMultiple</code><span class="sig-paren">(</span><em>screen</em>, <em>list</em>, <em>offset</em>, <em>color=(0</em>, <em>0</em>, <em>255</em>, <em>255)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.drawMultiple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.drawer.Drawer.drawMultiple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls <a class="reference internal" href="#graphics.drawer.Drawer.draw" title="graphics.drawer.Drawer.draw"><code class="xref py py-meth docutils literal notranslate"><span class="pre">draw()</span></code></a> on a list of drawable objects</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Pygame surface to draw to</li>
+<li><strong>toDraw</strong> – list of drawable objects</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.drawer.Drawer.drawPoly">
+<em class="property">classmethod </em><code class="descname">drawPoly</code><span class="sig-paren">(</span><em>screen</em>, <em>shape</em>, <em>offset</em>, <em>color=(0</em>, <em>0</em>, <em>255</em>, <em>255)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.drawPoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.drawer.Drawer.drawPoly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Poly</span></code> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Pygame surface to draw to</li>
+<li><strong>shape</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Poly</span></code>) – <cite>Poly</cite> object to draw</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.drawer.Drawer.drawSprite">
+<em class="property">classmethod </em><code class="descname">drawSprite</code><span class="sig-paren">(</span><em>screen</em>, <em>component</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.drawSprite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.drawer.Drawer.drawSprite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a <a class="reference internal" href="rockets.html#rockets.Component" title="rockets.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Component</span></code></a> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Pygame surface to draw to</li>
+<li><strong>shape</strong> (<a class="reference internal" href="rockets.html#rockets.Component" title="rockets.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Component</span></code></a>) – <cite>Component</cite> object to draw</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.drawer.Drawer.getOffset">
+<em class="property">classmethod </em><code class="descname">getOffset</code><span class="sig-paren">(</span><em>screen</em>, <em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.getOffset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.drawer.Drawer.getOffset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the offset between pymunk and pygame coordinates such that the rocket is rendered in the center of the screen.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Current display surface</li>
+<li><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – Rocket to place in the center of the screen</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Offset to add to pymunk coordinates</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.drawer.Drawer.getXYMinMax">
+<em class="property">classmethod </em><code class="descname">getXYMinMax</code><span class="sig-paren">(</span><em>vertices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.getXYMinMax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.drawer.Drawer.getXYMinMax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to get size for scaled sprite for <a class="reference internal" href="#graphics.drawer.Drawer.drawSprite" title="graphics.drawer.Drawer.drawSprite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drawSprite()</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vertices</strong> (<em>[</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>)</em><em>]</em>) – List of component vertices</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Tuple of (minX, maxX, minY, maxY)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.drawer.Drawer.inRange">
+<em class="property">classmethod </em><code class="descname">inRange</code><span class="sig-paren">(</span><em>max</em>, <em>coords</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.inRange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.drawer.Drawer.inRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that checks if coordinates are between (0,0) and <cite>max</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max</strong> – <cite>Vec2d</cite> of maximum coordinates</li>
+<li><strong>max</strong> – <cite>Vec2d</cite> of coordinates to check</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><cite>True</cite> if <cite>coords</cite> is in range, <cite>False</cite> otherwise.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.drawer.Drawer.intVec2d">
+<em class="property">classmethod </em><code class="descname">intVec2d</code><span class="sig-paren">(</span><em>v</em>, <em>func=&lt;class 'int'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.intVec2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.drawer.Drawer.intVec2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that applies function to each element of <cite>v</cite>. Default function is <code class="xref py py-func docutils literal notranslate"><span class="pre">int()</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>v</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – <cite>Vec2d</cite> to apply function to</li>
+<li><strong>func</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">types.FunctionType</span></code>) – Function to apply to elements of <cite>v</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Vector <cite>v</cite> after function application</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.drawer.Drawer.scaleSpriteToVerts">
+<em class="property">classmethod </em><code class="descname">scaleSpriteToVerts</code><span class="sig-paren">(</span><em>sprite</em>, <em>vertices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.scaleSpriteToVerts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.drawer.Drawer.scaleSpriteToVerts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to scaled sprite for <a class="reference internal" href="#graphics.drawer.Drawer.drawSprite" title="graphics.drawer.Drawer.drawSprite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drawSprite()</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sprite</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – Sprite image to draw</li>
+<li><strong>vertices</strong> (<em>[</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>)</em><em>]</em>) – List of component vertices</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Scaled sprite image</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.drawer.Drawer.to_pygame">
+<em class="property">classmethod </em><code class="descname">to_pygame</code><span class="sig-paren">(</span><em>shape</em>, <em>coords</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/drawer.html#Drawer.to_pygame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.drawer.Drawer.to_pygame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert local pymunk shape coordinates to pygame if shape is not <cite>None</cite>, else convert global pymunk coordinates to pygame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>shape</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Shape</span></code>) – Shape local coordinates are in reference to</li>
+<li><strong>coords</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Coordinates to convert</li>
+<li><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Offset bewteen pymunk and pygame coordinates</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Coordinates converted to pygame</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.drawer.Drawer._maxZoom">
+<code class="descname">_maxZoom</code><em class="property"> = 8</em><a class="headerlink" href="#graphics.drawer.Drawer._maxZoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum zoom level, 8x normal zoom</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.drawer.Drawer._minZoom">
+<code class="descname">_minZoom</code><em class="property"> = 1.52587890625e-05</em><a class="headerlink" href="#graphics.drawer.Drawer._minZoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum zoom level, (2^-16)x normal zoom</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.drawer.Drawer.zoom">
+<code class="descname">zoom</code><em class="property"> = &lt;graphics.zoom.Zoom object&gt;</em><a class="headerlink" href="#graphics.drawer.Drawer.zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Zoom</span></code> object for handling current zoom level</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-graphics.explosion">
+<span id="graphics-explosion-module"></span><h2>graphics.explosion module<a class="headerlink" href="#module-graphics.explosion" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="graphics.explosion.Explosion">
+<em class="property">class </em><code class="descclassname">graphics.explosion.</code><code class="descname">Explosion</code><span class="sig-paren">(</span><em>duration</em>, <em>images</em>, <em>*group</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/explosion.html#Explosion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.explosion.Explosion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.sprite.Sprite</span></code></p>
+<p>Create a new explosion animation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>duration</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – number of ticks for which to display the explosion animation</li>
+<li><strong>images</strong> ([<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>]) – array of animation frames</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="graphics.explosion.Explosion.get_draw">
+<code class="descname">get_draw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/explosion.html#Explosion.get_draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.explosion.Explosion.get_draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the current animation image if duration is non-zero.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#graphics.explosion.Explosion.image" title="graphics.explosion.Explosion.image"><code class="xref py py-attr docutils literal notranslate"><span class="pre">image</span></code></a> or <cite>None</cite></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.explosion.Explosion.update_frame">
+<code class="descname">update_frame</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/explosion.html#Explosion.update_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.explosion.Explosion.update_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates <a class="reference internal" href="#graphics.explosion.Explosion.image" title="graphics.explosion.Explosion.image"><code class="xref py py-attr docutils literal notranslate"><span class="pre">image</span></code></a> to the next frame of the animation, looping around once the final frame is reached.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.explosion.Explosion.current_frame">
+<code class="descname">current_frame</code><em class="property"> = None</em><a class="headerlink" href="#graphics.explosion.Explosion.current_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current frame step in animation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.explosion.Explosion.duration">
+<code class="descname">duration</code><em class="property"> = None</em><a class="headerlink" href="#graphics.explosion.Explosion.duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of ticks for animation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.explosion.Explosion.image">
+<code class="descname">image</code><em class="property"> = None</em><a class="headerlink" href="#graphics.explosion.Explosion.image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current displayed image</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.explosion.Explosion.images">
+<code class="descname">images</code><em class="property"> = None</em><a class="headerlink" href="#graphics.explosion.Explosion.images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Animation frames passed from <cite>images</cite></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.explosion.Explosion.rect">
+<code class="descname">rect</code><em class="property"> = None</em><a class="headerlink" href="#graphics.explosion.Explosion.rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>rectangle containing the surface of the sprite</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.explosion.Explosion.size">
+<code class="descname">size</code><em class="property"> = None</em><a class="headerlink" href="#graphics.explosion.Explosion.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>size of explosion sprite</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-graphics.graphics">
+<span id="graphics-graphics-module"></span><h2>graphics.graphics module<a class="headerlink" href="#module-graphics.graphics" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="graphics.graphics.Graphics">
+<em class="property">class </em><code class="descclassname">graphics.graphics.</code><code class="descname">Graphics</code><a class="reference internal" href="_modules/graphics/graphics.html#Graphics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.graphics.Graphics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Graphics contains a few very common graphics and UI components used in many places.</p>
+<dl class="classmethod">
+<dt id="graphics.graphics.Graphics.drawButton">
+<em class="property">classmethod </em><code class="descname">drawButton</code><span class="sig-paren">(</span><em>destSurf</em>, <em>pos</em>, <em>size</em>, <em>colors</em>, <em>buttonContent</em>, <em>buttonContentSize</em>, <em>buttonFunction=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/graphics.html#Graphics.drawButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.graphics.Graphics.drawButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function that draws a button to the screen</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>destSurf</strong> – The Surface to draw the button onto.</li>
+<li><strong>pos</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>)</em>) – The positon of the top-left corner of the button</li>
+<li><strong>size</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>)</em>) – The width and height respectively of the button</li>
+<li><strong>colors</strong> ((<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Color</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Color</span></code>)) – A tuple containing two colors. The first is the unfocused color, and the second is the focused color</li>
+<li><strong>buttonContent</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code>) – This can be either a surface or a string. Either will be drawn to the center of the button</li>
+<li><strong>buttonContentSize</strong> – If the button content is a string, this will be the size of font used to render the text. If the content is a surface, this is the ammount of the button the surface will occupy, from 0 to 1</li>
+<li><strong>buttonFunction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">types.FunctionType</span></code>) – This is the function that will be executed when the button is clicked on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.graphics.Graphics.drawStars">
+<em class="property">classmethod </em><code class="descname">drawStars</code><span class="sig-paren">(</span><em>screen</em>, <em>pos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/graphics.html#Graphics.drawStars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.graphics.Graphics.drawStars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a randomly generated background of stars to the provided surface.
+Also creates a paralax effect for a moving target</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>screen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – The <code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code> to draw to.</li>
+<li><strong>pos</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>)</em>) – The position of the rocket, used to offset the stars and create a parallax effect.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.graphics.Graphics.drawText">
+<em class="property">classmethod </em><code class="descname">drawText</code><span class="sig-paren">(</span><em>position</em>, <em>content</em>, <em>textFont</em>, <em>color=(0</em>, <em>0</em>, <em>0)</em>, <em>surface=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/graphics.html#Graphics.drawText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.graphics.Graphics.drawText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function that draws a string to the screen</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>position</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>)</em>) – The XY position of the top-left corner of the text</li>
+<li><strong>content</strong> (<em>string</em>) – The string the be drawn</li>
+<li><strong>textFont</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.font.Font</span></code>) – The font to use to render the text.</li>
+<li><strong>color</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Color</span></code>) – The rgb color of the text</li>
+<li><strong>surface</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – The surface to draw to</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.graphics.Graphics.drawTextCenter">
+<em class="property">classmethod </em><code class="descname">drawTextCenter</code><span class="sig-paren">(</span><em>position</em>, <em>content</em>, <em>textFont</em>, <em>color=(0</em>, <em>0</em>, <em>0)</em>, <em>surface=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/graphics.html#Graphics.drawTextCenter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.graphics.Graphics.drawTextCenter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function that draws a string to the screen</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>position</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>)</em>) – The XY position of the center of the text</li>
+<li><strong>content</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The string the be drawn</li>
+<li><strong>textFont</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.font.Font</span></code>) – The font to use to render the text.</li>
+<li><strong>color</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Color</span></code>) – The rgb color of the text</li>
+<li><strong>surface</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code>) – The surface to draw to</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.graphics.Graphics._buttonIsClicked">
+<code class="descname">_buttonIsClicked</code><em class="property"> = False</em><a class="headerlink" href="#graphics.graphics.Graphics._buttonIsClicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>A state variable that stores whether a button is currently being pressed.
+This is used to prevent buttons’ actions from executing on every single frame.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.graphics.Graphics._isBackgroundDrawn">
+<code class="descname">_isBackgroundDrawn</code><em class="property"> = False</em><a class="headerlink" href="#graphics.graphics.Graphics._isBackgroundDrawn" title="Permalink to this definition">¶</a></dt>
+<dd><p>A state variable that stores whether the star background has been drawn before.
+Used to initialize the backgroudn on the first call of drawStars()</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.graphics.Graphics._stars">
+<code class="descname">_stars</code><em class="property"> = []</em><a class="headerlink" href="#graphics.graphics.Graphics._stars" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of tuples that hold information about stars. The first number
+is the x position, and the second number is the y position. The
+final member is an rgb color tuple.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.graphics.Graphics._starsHeight">
+<code class="descname">_starsHeight</code><em class="property"> = 0</em><a class="headerlink" href="#graphics.graphics.Graphics._starsHeight" title="Permalink to this definition">¶</a></dt>
+<dd><p>THe height of the stars Surface</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.graphics.Graphics._starsWidth">
+<code class="descname">_starsWidth</code><em class="property"> = 0</em><a class="headerlink" href="#graphics.graphics.Graphics._starsWidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>The width of the stars Surface</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-graphics.hud">
+<span id="graphics-hud-module"></span><h2>graphics.hud module<a class="headerlink" href="#module-graphics.hud" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="graphics.hud.HUD">
+<em class="property">class </em><code class="descclassname">graphics.hud.</code><code class="descname">HUD</code><a class="reference internal" href="_modules/graphics/hud.html#HUD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.hud.HUD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>HUD holds diagnostic info and prints values to the screen.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>_font</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Font</span></code>) – The font used to draw text to the screen</li>
+<li><strong>_navBallRadius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The radius in pixels of the Hud’s navball</li>
+<li><strong>_navBallSubRadius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The radius in pixels of the small viewport within the navball</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="graphics.hud.HUD._drawCompassLine">
+<code class="descname">_drawCompassLine</code><span class="sig-paren">(</span><em>surface</em>, <em>angle</em>, <em>size</em>, <em>color=(255</em>, <em>255</em>, <em>255</em>, <em>255)</em>, <em>innerRadius=None</em>, <em>outerRadius=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._drawCompassLine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.hud.HUD._drawCompassLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to draw a line along the normal/radius of a circle</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.hud.HUD._updateNavBall">
+<code class="descname">_updateNavBall</code><span class="sig-paren">(</span><em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateNavBall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.hud.HUD._updateNavBall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a navball, containing directional information to a pygame Surface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket who’s information to use.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.hud.HUD._updateSASFuel">
+<code class="descname">_updateSASFuel</code><span class="sig-paren">(</span><em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateSASFuel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.hud.HUD._updateSASFuel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a surface containing the ammound of SAS Fuel that the provided
+<cite>rocket</cite> has remaining.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket whose SAS Fuel should be displayed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.hud.HUD._updateSASIndicator">
+<code class="descname">_updateSASIndicator</code><span class="sig-paren">(</span><em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateSASIndicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.hud.HUD._updateSASIndicator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a surface indicating whether or not the provided <cite>rocket</cite> is currently locked to an angle using SAS.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket whose SAS state should be checked.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.hud.HUD._updateThrottle">
+<code class="descname">_updateThrottle</code><span class="sig-paren">(</span><em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateThrottle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.hud.HUD._updateThrottle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a surface containing the throttle of the provided <cite>rocket</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket whose throttle to use.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.hud.HUD._updateThrusterFuel">
+<code class="descname">_updateThrusterFuel</code><span class="sig-paren">(</span><em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateThrusterFuel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.hud.HUD._updateThrusterFuel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a surface displaying the ammount of fuel left in each of the thrusters on the provided <cite>rocket</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket whose thruster fuel should be displayed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.hud.HUD._updateTimeScale">
+<code class="descname">_updateTimeScale</code><span class="sig-paren">(</span><em>scale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateTimeScale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.hud.HUD._updateTimeScale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a surface containing the current ammount time is scaled by.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The current ammount time is scaled by.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.hud.HUD._updateVelocity">
+<code class="descname">_updateVelocity</code><span class="sig-paren">(</span><em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateVelocity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.hud.HUD._updateVelocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a surface containing the velocity of the provided <cite>rocket</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket whose velocity to use.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.hud.HUD._updateZoom">
+<code class="descname">_updateZoom</code><span class="sig-paren">(</span><em>zoom</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD._updateZoom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.hud.HUD._updateZoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a surface containing the current zoom level.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>zoom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The current zoom level.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.hud.HUD.updateHUD">
+<code class="descname">updateHUD</code><span class="sig-paren">(</span><em>rocket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/hud.html#HUD.updateHUD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.hud.HUD.updateHUD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws relevant information from the provided <cite>rocket</cite> to the screen, like the throttle,
+velocity, and fuel. Also displays time and zoom information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket whose information should be checked.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-graphics.menu">
+<span id="graphics-menu-module"></span><h2>graphics.menu module<a class="headerlink" href="#module-graphics.menu" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="graphics.menu.Menu">
+<em class="property">class </em><code class="descclassname">graphics.menu.</code><code class="descname">Menu</code><a class="reference internal" href="_modules/graphics/menu.html#Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.menu.Menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Menu is a class with methods that can draw different menu items or screens
+to the display.</p>
+<dl class="class">
+<dt id="graphics.menu.Menu.State">
+<em class="property">class </em><code class="descname">State</code><a class="headerlink" href="#graphics.menu.Menu.State" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<p>The different states that the menu can take</p>
+<dl class="attribute">
+<dt id="graphics.menu.Menu.State.Building">
+<code class="descname">Building</code><em class="property"> = 3</em><a class="headerlink" href="#graphics.menu.Menu.State.Building" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.menu.Menu.State.Exit">
+<code class="descname">Exit</code><em class="property"> = 5</em><a class="headerlink" href="#graphics.menu.Menu.State.Exit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.menu.Menu.State.Menu">
+<code class="descname">Menu</code><em class="property"> = 2</em><a class="headerlink" href="#graphics.menu.Menu.State.Menu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.menu.Menu.State.Playing">
+<code class="descname">Playing</code><em class="property"> = 4</em><a class="headerlink" href="#graphics.menu.Menu.State.Playing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.menu.Menu.State.Splash">
+<code class="descname">Splash</code><em class="property"> = 1</em><a class="headerlink" href="#graphics.menu.Menu.State.Splash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.menu.Menu._builderCallback">
+<em class="property">classmethod </em><code class="descname">_builderCallback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu._builderCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.menu.Menu._builderCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback function to be called when the Rocket Builder button is clicked. This sets the
+builderPressed bool to be true.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.menu.Menu._demoCallback">
+<em class="property">classmethod </em><code class="descname">_demoCallback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu._demoCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.menu.Menu._demoCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback function to be called when the “start demo” button is clicked. This sets the
+demoPressed bool to be true.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.menu.Menu._quitCallback">
+<em class="property">classmethod </em><code class="descname">_quitCallback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu._quitCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.menu.Menu._quitCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback function to be called when the quit button is clicked. This sets the
+quitPressed bool to be true.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.menu.Menu._splashCallback">
+<em class="property">classmethod </em><code class="descname">_splashCallback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu._splashCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.menu.Menu._splashCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback function to be called when the title screen is clicked. This sets the
+splashScreenPressed bool to be true.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.menu.Menu.drawBackground">
+<em class="property">classmethod </em><code class="descname">drawBackground</code><span class="sig-paren">(</span><em>color_rgb</em>, <em>opacity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu.drawBackground"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.menu.Menu.drawBackground" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws the background using the given color and opacity alpha value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>color_rgb</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Color</span></code>) – The color of the background</li>
+<li><strong>opacity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The alpha value with which to draw the background</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.menu.Menu.drawMenu">
+<em class="property">classmethod </em><code class="descname">drawMenu</code><span class="sig-paren">(</span><em>opacity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu.drawMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.menu.Menu.drawMenu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws the menu screen and buttons to pygame’s current display surface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>opacity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The alpha value with which to draw the menu background</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.menu.Menu.drawSplashScreen">
+<em class="property">classmethod </em><code class="descname">drawSplashScreen</code><span class="sig-paren">(</span><em>opacity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu.drawSplashScreen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.menu.Menu.drawSplashScreen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws the title screen to pygame’s current display surface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>opacity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The alpha value with which to draw the splash screen background</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.menu.Menu._fullscreen_icon">
+<code class="descname">_fullscreen_icon</code><em class="property"> = &lt;Surface(32x32x32 SW)&gt;</em><a class="headerlink" href="#graphics.menu.Menu._fullscreen_icon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Icons made by <a class="reference external" href="www.freepic.com">Freepik</a> from <a class="reference external" href="https://www.flaticon.com/">Flaticon</a>. Licensed by <a class="reference external" href="http://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.menu.Menu._menuButtonColor">
+<code class="descname">_menuButtonColor</code><em class="property"> = ((255, 255, 255, 64), (255, 255, 255, 128))</em><a class="headerlink" href="#graphics.menu.Menu._menuButtonColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>The color to use for the menu buttons</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.menu.Menu._windowed_icon">
+<code class="descname">_windowed_icon</code><em class="property"> = &lt;Surface(32x32x32 SW)&gt;</em><a class="headerlink" href="#graphics.menu.Menu._windowed_icon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Icons made by <a class="reference external" href="www.freepic.com">Freepik</a> from <a class="reference external" href="https://www.flaticon.com/">Flaticon</a>. Licensed by <a class="reference external" href="http://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.menu.Menu.builderPressed">
+<code class="descname">builderPressed</code><em class="property"> = False</em><a class="headerlink" href="#graphics.menu.Menu.builderPressed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Becomes true when the Rocket builder button has been pressed. A higher
+order class can watch htis and take appropriate action on change.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.menu.Menu.demoPressed">
+<code class="descname">demoPressed</code><em class="property"> = False</em><a class="headerlink" href="#graphics.menu.Menu.demoPressed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Becomes true when the “start demo” button has been pressed. A higher order
+class can watch this and take appropriate action on change</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.menu.Menu.quitPressed">
+<code class="descname">quitPressed</code><em class="property"> = False</em><a class="headerlink" href="#graphics.menu.Menu.quitPressed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Becomes true when a the quit button has been pressed. A higher order class can
+watch this and take appropriate action on change</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.menu.Menu.splashScreenPressed">
+<code class="descname">splashScreenPressed</code><em class="property"> = False</em><a class="headerlink" href="#graphics.menu.Menu.splashScreenPressed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Becomes true when the first screen (title screen) has been clicked on.
+A higher order class can watch this and proceed to the actual menu.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-graphics.trajectory">
+<span id="graphics-trajectory-module"></span><h2>graphics.trajectory module<a class="headerlink" href="#module-graphics.trajectory" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="graphics.trajectory.Trajectory">
+<em class="property">class </em><code class="descclassname">graphics.trajectory.</code><code class="descname">Trajectory</code><a class="reference internal" href="_modules/graphics/trajectory.html#Trajectory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.trajectory.Trajectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Drawer for the projected trajectory of the rocket.</p>
+<dl class="classmethod">
+<dt id="graphics.trajectory.Trajectory.draw">
+<em class="property">classmethod </em><code class="descname">draw</code><span class="sig-paren">(</span><em>rocket</em>, <em>planetBodies</em>, <em>max_timesteps</em>, <em>dt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/trajectory.html#Trajectory.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.trajectory.Trajectory.draw" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Draws the projected path of the rocket until a stopping condition is reached, namely:</dt>
+<dd><ul class="first last simple">
+<li>A point in the projection goes off the current display.</li>
+<li>A point in the planet intersect a planetary body.</li>
+<li>The iteration count exceeds <cite>max_timesteps</cite>.</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – The rocket to project</li>
+<li><strong>planetBodies</strong> ([<a class="reference internal" href="physics.html#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a>]) – List of all planetary bodies</li>
+<li><strong>max_timesteps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Maximum iterations before stopping</li>
+<li><strong>dt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Iteration step size</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.trajectory.Trajectory.eulers">
+<em class="property">classmethod </em><code class="descname">eulers</code><span class="sig-paren">(</span><em>f_prev</em>, <em>dt</em>, <em>dfdt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/trajectory.html#Trajectory.eulers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.trajectory.Trajectory.eulers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the forward Euler method to approximate the the value of a function at the next timestep. Specifically, returns <span class="math notranslate nohighlight">\(f_{next} = f_{prev} + \Delta t\cdot\frac{fp}{dt}\)</span>, where <span class="math notranslate nohighlight">\(\frac{df}{dt}\)</span> is the derivative of the fuction at the previous timestep.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>f_prev</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Function value at previous timestep</li>
+<li><strong>dt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Small change in time (<span class="math notranslate nohighlight">\(\Delta t\)</span>), a smaller value yields a more accurate approximation</li>
+<li><strong>dfdt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – Value of the derivative <span class="math notranslate nohighlight">\(\frac{df}{dt}\)</span>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Projected function value at the next timestep</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="graphics.trajectory.Trajectory.hitsPlanet">
+<em class="property">classmethod </em><code class="descname">hitsPlanet</code><span class="sig-paren">(</span><em>position</em>, <em>planets</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/trajectory.html#Trajectory.hitsPlanet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.trajectory.Trajectory.hitsPlanet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that provides a stopping condition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>position</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>)</em>) – Position to check</li>
+<li><strong>planets</strong> ([<a class="reference internal" href="physics.html#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a>]) – List of planets</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>True</cite> if position is inside one of <cite>planets</cite>, <cite>False</cite> otherwise</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-graphics.zoom">
+<span id="graphics-zoom-module"></span><h2>graphics.zoom module<a class="headerlink" href="#module-graphics.zoom" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="graphics.zoom.Zoom">
+<em class="property">class </em><code class="descclassname">graphics.zoom.</code><code class="descname">Zoom</code><span class="sig-paren">(</span><em>base_zoom=1</em>, <em>min_zoom=1.52587890625e-05</em>, <em>max_zoom=8</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/zoom.html#Zoom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.zoom.Zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Utility class to manage zooming in and out of the rocket</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>base_zoom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The default level of zoom</li>
+<li><strong>min_zoom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The minumum magnification</li>
+<li><strong>max_zoom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The maximum magnification</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="graphics.zoom.Zoom.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/zoom.html#Zoom.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.zoom.Zoom.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the zoom level to the base zoom level</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.zoom.Zoom.zoom_in">
+<code class="descname">zoom_in</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/zoom.html#Zoom.zoom_in"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.zoom.Zoom.zoom_in" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the zoom level to twice the current level.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="graphics.zoom.Zoom.zoom_out">
+<code class="descname">zoom_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/zoom.html#Zoom.zoom_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.zoom.Zoom.zoom_out" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the zoom level to half the current level.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.zoom.Zoom._base_zoom">
+<code class="descname">_base_zoom</code><em class="property"> = 1</em><a class="headerlink" href="#graphics.zoom.Zoom._base_zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>The starting zoom level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.zoom.Zoom._max_zoom">
+<code class="descname">_max_zoom</code><em class="property"> = 8</em><a class="headerlink" href="#graphics.zoom.Zoom._max_zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maxumum magnification</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.zoom.Zoom._min_zoom">
+<code class="descname">_min_zoom</code><em class="property"> = 1.52587890625e-05</em><a class="headerlink" href="#graphics.zoom.Zoom._min_zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>The minumum magnification</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.zoom.Zoom._zoom">
+<code class="descname">_zoom</code><em class="property"> = 1</em><a class="headerlink" href="#graphics.zoom.Zoom._zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current zoom level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.zoom.Zoom.zoom">
+<code class="descname">zoom</code><a class="headerlink" href="#graphics.zoom.Zoom.zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property storing the current value of <a class="reference internal" href="#graphics.zoom.Zoom._zoom" title="graphics.zoom.Zoom._zoom"><code class="xref py py-attr docutils literal notranslate"><span class="pre">_zoom</span></code></a>, supports setting and getting.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="physics.html" class="btn btn-neutral float-right" title="physics package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral" title="BitsPlease-FESP" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

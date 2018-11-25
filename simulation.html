@@ -1,0 +1,388 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>simulation module &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="main module" href="main.html" />
+    <link rel="prev" title="rocketbuilder module" href="rocketbuilder.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">BitsPlease-FESP</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="graphics.html">graphics package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="physics.html">physics package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rockets.html">rockets package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audioManager.html">audioManager module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rocketbuilder.html">rocketbuilder module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">simulation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">BitsPlease-FESP</a> &raquo;</li>
+        
+      <li>simulation module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/simulation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-simulation">
+<span id="simulation-module"></span><h1>simulation module<a class="headerlink" href="#module-simulation" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="simulation.Simulation">
+<em class="property">class </em><code class="descclassname">simulation.</code><code class="descname">Simulation</code><a class="reference internal" href="_modules/simulation.html#Simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation.Simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="classmethod">
+<dt id="simulation.Simulation.clear_space">
+<em class="property">classmethod </em><code class="descname">clear_space</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulation.html#Simulation.clear_space"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation.Simulation.clear_space" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Shape</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Body</span></code> objects from <a class="reference internal" href="#simulation.Simulation.space" title="simulation.Simulation.space"><code class="xref py py-attr docutils literal notranslate"><span class="pre">space</span></code></a>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="simulation.Simulation.displayMenu">
+<em class="property">classmethod </em><code class="descname">displayMenu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulation.html#Simulation.displayMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation.Simulation.displayMenu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws the menu and allows user to move between game views.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="simulation.Simulation.get_altitude">
+<em class="property">classmethod </em><code class="descname">get_altitude</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulation.html#Simulation.get_altitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation.Simulation.get_altitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the altitude of <a class="reference internal" href="#simulation.Simulation.rocket" title="simulation.Simulation.rocket"><code class="xref py py-attr docutils literal notranslate"><span class="pre">rocket</span></code></a> above the closest <a class="reference internal" href="physics.html#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a> in <a class="reference internal" href="#simulation.Simulation.celestialBodies" title="simulation.Simulation.celestialBodies"><code class="xref py py-attr docutils literal notranslate"><span class="pre">celestialBodies</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The closest <a class="reference internal" href="physics.html#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a> to <a class="reference internal" href="#simulation.Simulation.rocket" title="simulation.Simulation.rocket"><code class="xref py py-attr docutils literal notranslate"><span class="pre">rocket</span></code></a> and the altitude of <a class="reference internal" href="#simulation.Simulation.rocket" title="simulation.Simulation.rocket"><code class="xref py py-attr docutils literal notranslate"><span class="pre">rocket</span></code></a> above that <a class="reference internal" href="physics.html#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(<a class="reference internal" href="physics.html#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a>, float)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="simulation.Simulation.keyDown">
+<em class="property">classmethod </em><code class="descname">keyDown</code><span class="sig-paren">(</span><em>e</em>, <em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulation.html#Simulation.keyDown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation.Simulation.keyDown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a key is pressed</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>e</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Event</span></code>) – Pygame event</li>
+<li><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Pygame defined code for key to check against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><cite>True</cite> if key was pressed, <cite>False</cite> otherwise</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="simulation.Simulation.keyUp">
+<em class="property">classmethod </em><code class="descname">keyUp</code><span class="sig-paren">(</span><em>e</em>, <em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulation.html#Simulation.keyUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation.Simulation.keyUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a key is released</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>e</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Event</span></code>) – Pygame event</li>
+<li><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Pygame defined code for key to check against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><cite>True</cite> if key was released, <cite>False</cite> otherwise</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="simulation.Simulation.run">
+<em class="property">classmethod </em><code class="descname">run</code><span class="sig-paren">(</span><em>rocket=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulation.html#Simulation.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation.Simulation.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main execution of the simulation. Initializes space, planets, and rocket and enters event loop to recieve user input.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rocket</strong> (<a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a>) – Rocket from <a class="reference internal" href="rocketbuilder.html#rocketbuilder.RocketBuilder" title="rocketbuilder.RocketBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">RocketBuilder</span></code></a> or <cite>None</cite>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="simulation.Simulation.updateCamera">
+<em class="property">classmethod </em><code class="descname">updateCamera</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulation.html#Simulation.updateCamera"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation.Simulation.updateCamera" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws the background stars onto <a class="reference internal" href="#simulation.Simulation.screen" title="simulation.Simulation.screen"><code class="xref py py-attr docutils literal notranslate"><span class="pre">screen</span></code></a>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="simulation.Simulation.updateGravity">
+<em class="property">classmethod </em><code class="descname">updateGravity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulation.html#Simulation.updateGravity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation.Simulation.updateGravity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the acceleration due to gravity on <a class="reference internal" href="#simulation.Simulation.rocket" title="simulation.Simulation.rocket"><code class="xref py py-attr docutils literal notranslate"><span class="pre">rocket</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Change in velocity of rocket</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simulation.Simulation.ASSETS_PATH">
+<code class="descname">ASSETS_PATH</code><em class="property"> = 'assets'</em><a class="headerlink" href="#simulation.Simulation.ASSETS_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to game assets</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simulation.Simulation._zoom">
+<code class="descname">_zoom</code><em class="property"> = &lt;graphics.zoom.Zoom object&gt;</em><a class="headerlink" href="#simulation.Simulation._zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Zoom for simulation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simulation.Simulation.celestialBodies">
+<code class="descname">celestialBodies</code><em class="property"> = []</em><a class="headerlink" href="#simulation.Simulation.celestialBodies" title="Permalink to this definition">¶</a></dt>
+<dd><p>All <a class="reference internal" href="physics.html#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a> objects in <a class="reference internal" href="#simulation.Simulation.space" title="simulation.Simulation.space"><code class="xref py py-attr docutils literal notranslate"><span class="pre">space</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simulation.Simulation.clock">
+<code class="descname">clock</code><em class="property"> = &lt;Clock(fps=0.00)&gt;</em><a class="headerlink" href="#simulation.Simulation.clock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pygame clock to track in game time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simulation.Simulation.hud">
+<code class="descname">hud</code><em class="property"> = &lt;graphics.hud.HUD object&gt;</em><a class="headerlink" href="#simulation.Simulation.hud" title="Permalink to this definition">¶</a></dt>
+<dd><p>Heads-Up-Display for the rocket (<a class="reference internal" href="graphics.html#graphics.HUD" title="graphics.HUD"><code class="xref py py-class docutils literal notranslate"><span class="pre">graphics.HUD</span></code></a>)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simulation.Simulation.rocket">
+<code class="descname">rocket</code><em class="property"> = None</em><a class="headerlink" href="#simulation.Simulation.rocket" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="rockets.html#rockets.Rocket" title="rockets.Rocket"><code class="xref py py-class docutils literal notranslate"><span class="pre">rockets.Rocket</span></code></a> for the simulation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simulation.Simulation.screen">
+<code class="descname">screen</code><em class="property"> = &lt;Surface(854x480x32 SW)&gt;</em><a class="headerlink" href="#simulation.Simulation.screen" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.Surface</span></code> for the current display</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simulation.Simulation.space">
+<code class="descname">space</code><em class="property"> = &lt;pymunk.space.Space object&gt;</em><a class="headerlink" href="#simulation.Simulation.space" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulation space, <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Space</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="main.html" class="btn btn-neutral float-right" title="main module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rocketbuilder.html" class="btn btn-neutral" title="rocketbuilder module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
