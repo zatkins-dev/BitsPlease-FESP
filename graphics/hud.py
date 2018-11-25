@@ -180,11 +180,11 @@ class HUD():
         :param float zoom: The current zoom level.
         """
 
-        zoomSurfSize = (215,40)
+        zoomSurfSize = (215,35)
         zoomSurfBorder = 5
         zoomSurf = pg.Surface(zoomSurfSize)
         zoomSurf.fill(self._hudBackgroundColor)
-        zoomSurf.fill(self._hudForegroundColor, (zoomSurfBorder,zoomSurfBorder,zoomSurfSize[0]-zoomSurfBorder,zoomSurfSize[1]-2*zoomSurfBorder))
+        zoomSurf.fill(self._hudForegroundColor, (zoomSurfBorder,zoomSurfBorder,zoomSurfSize[0]-zoomSurfBorder,zoomSurfSize[1]-zoomSurfBorder))
 
         zoomString = "Zoom: "
 
@@ -209,11 +209,11 @@ class HUD():
         
         :param float scale: The current ammount time is scaled by.
         """
-        scaleSurfSize = (215,40)
+        scaleSurfSize = (215,35)
         scaleSurfBorder = 5
         scaleSurf = pg.Surface(scaleSurfSize)
         scaleSurf.fill(self._hudBackgroundColor)
-        scaleSurf.fill(self._hudForegroundColor, (scaleSurfBorder,scaleSurfBorder,scaleSurfSize[0]-scaleSurfBorder,scaleSurfSize[1]-2*scaleSurfBorder))
+        scaleSurf.fill(self._hudForegroundColor, (scaleSurfBorder,scaleSurfBorder,scaleSurfSize[0]-scaleSurfBorder,scaleSurfSize[1]-scaleSurfBorder))
 
         scaleString = "Time Scale: "
 
