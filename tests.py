@@ -114,7 +114,5 @@ class SolidThrusterTestCase(unittest.TestCase):
         self.thruster.fuel = -100
         self.assertEqual(self.thruster.fuel, 0)
 
-    def test_apply_thrust_fuel
-
 if __name__ == '__main__':
     unittest.main()
