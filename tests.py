@@ -16,3 +16,7 @@ class RocketTestCase(unittest.TestCase):
             self.newTank = TestTank(self.rocket)
             self.rocket.addComponent(self.newTank)
             self.assertIn(self.newTank, self.rocket.components)
+            self.tearDown()
+
+        def tearDown(self):
+            self.rocket.reset() 
