@@ -512,7 +512,28 @@ class TimescaleTestCase(unittest.TestCase):
 class ZoomTestCase(unittest.TestCase):
     #ZOOM TESTS
     def setup(self):
-        self.zoom
+        self.zoom = Zoom()
+    
+    def test_zoom_zoom(self):
+        curzoom = self.zoom
+        self.zoom.zoom = 2**-17
+        self.assertEqual(curzoom, self.zoom.zoom)
+        self.zoom.zoom = 80000
+        self.assertEqual(curzoom, self.zoom.zoom)
+        self.zoom.zoom = 2
+        self.assertEqual(2. self.zoom.zoom)
+    
+    def test_zoom_zoomin_zoomout(self):
+        curzoom = self.zoom
+        self.zoom.zoom_in()
+        assertEquals(curzoom*2, self.zoom.zoom)
+        self.zoom.zoom_out()
+        assertEquals(curzoom, self.zoom.zoom)
+
+    def test_zoom_reset(self):
+        self.zoom.reset()
+        assertEquals(self.zoom.zoom, 1)
+
         
 if __name__ == '__main__':
     unittest.main()
