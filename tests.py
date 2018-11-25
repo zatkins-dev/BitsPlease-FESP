@@ -10,7 +10,7 @@ from time import sleep
 
 from physics import timescale
 
-from audio import AudioManager
+from audioManager import AudioManager
 
 class RocketTestCase(unittest.TestCase):
     def setUp(self):
@@ -137,11 +137,11 @@ class RocketTestCase(unittest.TestCase):
 
     def test_rocket_angle_locking(self):
         self.rocket.isAngleLocked = True
-        self.assertEqual(self.rocket.isAngleLocked, True)
+        self.assertTrue(self.rocket.isAngleLocked)
         self.rocket.removeComponent(self.rocket.SASmodules[0])
-        self.assertEqual(self.rocket.isAngleLocked, False)
+        self.assertFalse(self.rocket.isAngleLocked)
         self.rocket.isAngleLocked = True
-        self.assertEqual(self.rocket.isAngleLocked, False)
+        self.assertFalse(self.rocket.isAngleLocked)
 
     def test_rocket_reset(self):
         self.newTank = TestTank(self.rocket)
@@ -149,10 +149,11 @@ class RocketTestCase(unittest.TestCase):
         self.rocket.addComponent(self.newTank)
         self.rocket.throttle = 0.5
         self.rocket.isAngleLocked = True
+        self.rocket.destroyed = True
         self.rocket.reset()
-        self.assertEqual(self.rocket.tanks, [])
+        self.assertFalse(self.rocket.destroyed)
         self.assertEqual(self.rocket.throttle, 0)
-        self.assertEqual(self.rocket.isAngleLocked, False)
+        self.assertFalse(self.rocket.isAngleLocked)
 
 class SolidThrusterTestCase(unittest.TestCase):
     def setUp(self):
