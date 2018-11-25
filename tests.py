@@ -8,6 +8,8 @@ import pymunk as pm
 import pygame as pg
 from time import sleep
 
+from physics import timescale
+
 from audio import AudioManager
 
 class RocketTestCase(unittest.TestCase):
@@ -156,7 +158,7 @@ class LiquidThrusterTestCase(unittest.TestCase):
 
         self.assertAlmostEqual(newFuel, prevFuel - throttle * timeScale)
 
-class  AudioTestCase(unittest.TestCase):
+class AudioTestCase(unittest.TestCase):
     def setup(self):
         self.space = pm.Space(threaded=True)
         self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
@@ -369,7 +371,7 @@ class  AudioTestCase(unittest.TestCase):
         #Should stop music
         audioManager.silenceMusic()
         self.assertFalse(pg.mixer.music.get_busy())
-class  TankTestCase(unittest.TestCase):
+class TankTestCase(unittest.TestCase):
 #TANK TESTS
     def setup(self)
         self.newTank = TestTank(self.rocket)
@@ -385,7 +387,7 @@ class  TankTestCase(unittest.TestCase):
         self.newTank.reset()
         self.assertEqual(self.tank_capacity, self.newTank.fuel)
     
-class  SASTestCase(unittest.TestCase):
+class SASTestCase(unittest.TestCase):
 #SAS TESTS
     def setup(self):
         self.theSAS = self.rocket.SASmodules[0]
@@ -401,5 +403,47 @@ class  SASTestCase(unittest.TestCase):
         self.theSAS.fuel = 0
         self.theSAS.reset()
         self.assertEqual(self.sas_maxfuel, self.theSAS.fuel)
+
+class TimescaleTestCase(unittest.TestCase):
+    def setUp(self):
+        self.timescale = TimeScale()
+
+    def test_scale_faster(self):
+        scale = self.timescale.scale
+        self.timescale.faster()
+
+        assertEquals(scale * 2, self.timescale.scale)
+        
+    def test_scale_slower(self):
+        scale = self.timescale.scale
+        self.timescale.slower()
+
+        assertEquals(scale / 2.0, self.timescale.scale)
+
+    def test_scale_set(self):
+        returnVal = self.timescale._set_scale(self.timescale._MAX_SCALE)
+        self.assertEquals(self.timescale.scale, self.timescale._MAX_SCALE)
+        self.assertTrue(returnVal)
+
+        returnVal = self.timescale._set_scale(self.timescale._MIN_SCALE)
+        self.assertEquals(self.timescale.scale, self.timescale._MIN_SCALE)
+        self.assertTrue(returnVal)
+       
+        prevScale = self.timescale.scale
+        returnVal = self.timescale._set_scale(self.timescale._MAX_SCALE + 1)
+        self.assertEqual(prevScale, self.timescale.scale)
+        self.assertFalse(returnVal)
+
+        self.timescale._set_scale(self.timescale._MIN_SCALE - 1)
+        self.assertEqual(prevScale, self.timescale.scale)
+        self.assertFalse(returnVal)
+
+    def test_scale_reset(self):
+        baseScale = self.timescale.scale
+        self.timescale._set_scale(self.timescale._MIN_SCALE)
+
+        self.assertTrue(self.timescale.reset())
+        self.assertEqual(self.timescale.scale, baseScale)
+
 if __name__ == '__main__':
     unittest.main()
