@@ -14,7 +14,7 @@ class RocketTestCase(unittest.TestCase):
         self.rocket = genRocket(self.space)
 
     def test_default_rocket(self):
-        self.setUp()
+
         # test if rocket was actually added to our space
         self.assertEqual(self.rocket.space, self.space)
 
@@ -27,14 +27,22 @@ class RocketTestCase(unittest.TestCase):
                     contains_type = True
             self.assertEqual(contains_type, True)
 
+    def test_rocket_constructor(self):
+
+        self.rocket = Rocket(genRocket)
+
         # test initial conditions... destroyed, saslock, etc.
         self.assertFalse(self.rocket.destroyed)
         self.assertFalse(self.rocket.isAngleLocked)
         self.assertEqual(self.rocket.throttle, 0)
 
+        # test that the component lists are the same
+        self.assertListEqual(self.rocket.components, self.baseComponents)
+
         # test that components bodies were made to be the rocket
         for component in self.rocket.components:
             self.assertIs(component.body, self.rocket)
+
 
     def test_append_component(self):
         self.newTank = TestTank(self.rocket)
