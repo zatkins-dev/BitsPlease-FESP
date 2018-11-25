@@ -8,7 +8,7 @@ class Component(ABC, pm.Poly):
     Extention of pymunk Poly class with properties for sprites/textures and shape (vertices)
     """
 
-    def __init__(self, body, vertices, transform=None, radius=0):
+    def __init__(self, body, vertices, density, transform=None, radius=0):
         """
         Passes the given parameters on to the underlying Pymunk shape, and initializes
         some collision management and the destroyed status of the component.
@@ -23,6 +23,7 @@ class Component(ABC, pm.Poly):
         """
 
         super().__init__(body, vertices, transform, radius)
+        self.density = density
         self.collision_type = CT_COMPONENT
         self.destroyed = False
         
