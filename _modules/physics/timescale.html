@@ -144,7 +144,7 @@
   <h1>Source code for physics.timescale</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">pymunk</span> <span class="k">as</span> <span class="nn">pm</span>
 
-<div class="viewcode-block" id="TimeScale"><a class="viewcode-back" href="../../physics.html#physics.timescale.TimeScale">[docs]</a><span class="k">class</span> <span class="nc">TimeScale</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="TimeScale"><a class="viewcode-back" href="../../physics.html#physics.TimeScale">[docs]</a><span class="k">class</span> <span class="nc">TimeScale</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Timescale manages how large the next time step is for the physics and graphics engines.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -161,7 +161,7 @@
     <span class="c1">#: Current step size</span>
     <span class="n">step_size</span> <span class="o">=</span> <span class="n">_BASE_STEP_SIZE</span>
 
-<div class="viewcode-block" id="TimeScale.faster"><a class="viewcode-back" href="../../physics.html#physics.timescale.TimeScale.faster">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TimeScale.faster"><a class="viewcode-back" href="../../physics.html#physics.TimeScale.faster">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">faster</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Doubles the current time scale.</span>
@@ -171,7 +171,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_set_scale</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">scale</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TimeScale.slower"><a class="viewcode-back" href="../../physics.html#physics.timescale.TimeScale.slower">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TimeScale.slower"><a class="viewcode-back" href="../../physics.html#physics.TimeScale.slower">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">slower</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Halfs the current time scale.</span>
@@ -181,7 +181,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_set_scale</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">scale</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TimeScale.reset"><a class="viewcode-back" href="../../physics.html#physics.timescale.TimeScale.reset">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TimeScale.reset"><a class="viewcode-back" href="../../physics.html#physics.TimeScale.reset">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Resets the time scale to default</span>
@@ -191,7 +191,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_set_scale</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_BASE_SCALE</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TimeScale._set_scale"><a class="viewcode-back" href="../../physics.html#physics.timescale.TimeScale._set_scale">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TimeScale._set_scale"><a class="viewcode-back" href="../../physics.html#physics.TimeScale._set_scale">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_set_scale</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the :py:attr:`scale` to `scale`, then updates :py:attr:`step_size`</span>
@@ -206,7 +206,7 @@
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="TimeScale._update_step_size"><a class="viewcode-back" href="../../physics.html#physics.timescale.TimeScale._update_step_size">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TimeScale._update_step_size"><a class="viewcode-back" href="../../physics.html#physics.TimeScale._update_step_size">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_update_step_size</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the :py:attr:`step_size` variable.</span>

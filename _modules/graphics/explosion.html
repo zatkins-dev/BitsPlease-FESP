@@ -146,7 +146,7 @@
 <span class="kn">import</span> <span class="nn">pygame</span>
 
 
-<div class="viewcode-block" id="Explosion"><a class="viewcode-back" href="../../graphics.html#graphics.explosion.Explosion">[docs]</a><span class="k">class</span> <span class="nc">Explosion</span><span class="p">(</span><span class="n">Sprite</span><span class="p">):</span>
+<div class="viewcode-block" id="Explosion"><a class="viewcode-back" href="../../graphics.html#graphics.Explosion">[docs]</a><span class="k">class</span> <span class="nc">Explosion</span><span class="p">(</span><span class="n">Sprite</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a new explosion animation</span>
 
@@ -175,7 +175,7 @@
         <span class="c1">#: Current displayed image</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_frame</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Explosion.update_frame"><a class="viewcode-back" href="../../graphics.html#graphics.explosion.Explosion.update_frame">[docs]</a>    <span class="k">def</span> <span class="nf">update_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Explosion.update_frame"><a class="viewcode-back" href="../../graphics.html#graphics.Explosion.update_frame">[docs]</a>    <span class="k">def</span> <span class="nf">update_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates :py:attr:`image` to the next frame of the animation, looping around once the final frame is reached.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -185,7 +185,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">current_frame</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_frame</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Explosion.get_draw"><a class="viewcode-back" href="../../graphics.html#graphics.explosion.Explosion.get_draw">[docs]</a>    <span class="k">def</span> <span class="nf">get_draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Explosion.get_draw"><a class="viewcode-back" href="../../graphics.html#graphics.Explosion.get_draw">[docs]</a>    <span class="k">def</span> <span class="nf">get_draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gets the current animation image if duration is non-zero.</span>
 

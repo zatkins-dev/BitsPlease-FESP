@@ -142,7 +142,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for graphics.zoom</h1><div class="highlight"><pre>
-<div class="viewcode-block" id="Zoom"><a class="viewcode-back" href="../../graphics.html#graphics.drawer.Zoom">[docs]</a><span></span><span class="k">class</span> <span class="nc">Zoom</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Zoom"><a class="viewcode-back" href="../../graphics.html#graphics.Zoom">[docs]</a><span></span><span class="k">class</span> <span class="nc">Zoom</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Utility class to manage zooming in and out of the rocket</span>
 
@@ -186,19 +186,19 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_zoom</span> <span class="o">&lt;=</span> <span class="n">zoom</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_zoom</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_zoom</span> <span class="o">=</span> <span class="n">zoom</span>
 
-<div class="viewcode-block" id="Zoom.zoom_in"><a class="viewcode-back" href="../../graphics.html#graphics.drawer.Zoom.zoom_in">[docs]</a>    <span class="k">def</span> <span class="nf">zoom_in</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Zoom.zoom_in"><a class="viewcode-back" href="../../graphics.html#graphics.Zoom.zoom_in">[docs]</a>    <span class="k">def</span> <span class="nf">zoom_in</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the zoom level to twice the current level.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_zoom</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Zoom.zoom_out"><a class="viewcode-back" href="../../graphics.html#graphics.drawer.Zoom.zoom_out">[docs]</a>    <span class="k">def</span> <span class="nf">zoom_out</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Zoom.zoom_out"><a class="viewcode-back" href="../../graphics.html#graphics.Zoom.zoom_out">[docs]</a>    <span class="k">def</span> <span class="nf">zoom_out</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the zoom level to half the current level.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_zoom</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Zoom.reset"><a class="viewcode-back" href="../../graphics.html#graphics.drawer.Zoom.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Zoom.reset"><a class="viewcode-back" href="../../graphics.html#graphics.Zoom.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Resets the zoom level to the base zoom level</span>
 <span class="sd">        &quot;&quot;&quot;</span>
