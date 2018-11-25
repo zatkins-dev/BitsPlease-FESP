@@ -6,6 +6,7 @@ from rockets.testrocket import genRocket
 from rockets import Rocket, CommandModule, UpGoer2000, DeltaVee, SandSquid, AdvancedSAS, RightRCS, LeftRCS, TestTank
 import pymunk as pm
 import pygame as pg
+from time import sleep
 
 from audio import AudioManager
 
@@ -281,6 +282,21 @@ class  AudioTestCase(unittest.TestCase):
         audioManager.silenceMusic()
         self.assertFalse(pg.mixer.Channel(1).get_busy())
 
+    def test_backgroundMusic(self):
+        #No music should be playing, should now be playing music
+        audioManager.musicChecker()
+        self.assertTrue(pg.mixer.music.get_busy())
+
+        #wait 5 seconds
+        time.sleep(5)
+
+        #Try to reset the song, it should not work
+        audioManager.musicChecker()
+        self.assertTrue(pg.mixer.music.get_pos() > 4500)
+
+        #Should stop music
+        audioManager.silenceMusic()
+        self.assertFalse(pg.mixer.music.get_busy())
 
 if __name__ == '__main__':
     unittest.main()
