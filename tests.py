@@ -447,7 +447,7 @@ class TankTestCase(unittest.TestCase):
         self.tank_capacity = self.newTank.capacity
         self.newTank.reset()
         self.assertEqual(self.tank_capacity, self.newTank.fuel)
-    
+
 class SASTestCase(unittest.TestCase):
 #SAS TESTS
     def setup(self):
@@ -477,7 +477,7 @@ class TimescaleTestCase(unittest.TestCase):
         self.timescale.faster()
 
         assertEquals(scale * 2, self.timescale.scale)
-        
+
     def test_scale_slower(self):
         scale = self.timescale.scale
         self.timescale.slower()
@@ -492,7 +492,7 @@ class TimescaleTestCase(unittest.TestCase):
         returnVal = self.timescale._set_scale(self.timescale._MIN_SCALE)
         self.assertEquals(self.timescale.scale, self.timescale._MIN_SCALE)
         self.assertTrue(returnVal)
-       
+
         prevScale = self.timescale.scale
         returnVal = self.timescale._set_scale(self.timescale._MAX_SCALE + 1)
         self.assertEqual(prevScale, self.timescale.scale)
@@ -509,11 +509,6 @@ class TimescaleTestCase(unittest.TestCase):
         self.assertTrue(self.timescale.reset())
         self.assertEqual(self.timescale.scale, baseScale)
 
-class ZoomTestCase(unittest.TestCase):
-    #ZOOM TESTS
-    def setup(self):
-        self.zoom
-
 class ExplosionTestCase(unittest.TestCase):
     def setUp(self):
         self.explosion = Explosion(1, range(5))
@@ -526,6 +521,47 @@ class ExplosionTestCase(unittest.TestCase):
 
             self.explosion.update_frame()
 
-        
+class ZoomTestCase(unittest.TestCase):
+    #ZOOM TESTS
+    def setUp(self):
+        self.zoom = Zoom()
+
+    def test_zoom_zoom(self):
+        curzoom = self.zoom
+        self.zoom.zoom = 2**-17
+        self.assertEqual(curzoom, self.zoom.zoom)
+        self.zoom.zoom = 80000
+        self.assertEqual(curzoom, self.zoom.zoom)
+        self.zoom.zoom = 2
+        self.assertEqual(2. self.zoom.zoom)
+
+    def test_zoom_zoomin_zoomout(self):
+        curzoom = self.zoom
+        self.zoom.zoom_in()
+        assertEquals(curzoom*2, self.zoom.zoom)
+        self.zoom.zoom_out()
+        assertEquals(curzoom, self.zoom.zoom)
+
+    def test_zoom_reset(self):
+        self.zoom.reset()
+        assertEquals(self.zoom.zoom, 1)
+
+class PhysicsTestCase(unittest.TestCase):
+    def setup(self):
+        self.space = pm.Space(threaded=True)
+
+    def test_gravity(self):
+        c1 = CelestialBody('earth', self.space, 10**20, 796375, (0, 0), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
+        testPosition = Vec2D(0, 1000)
+
+        self.assertEqual(Physics.gravity(c1, testPosition), Vec2D(0, 66738400))
+
+    def test_netGravity(self):
+        c1 = CelestialBody('earth', self.space, 10**20, 796375, (0, 1000), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
+        c2 = CelestialBody('moon', self.space, 10**15, 796375, (1000, 0), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
+        testPosition = (0, 0)
+
+        self.assertEqual(Physics.netGravity([c1,c2]), testPosition), Vec2d(66.7384, 66738400))
+                
 if __name__ == '__main__':
     unittest.main()
