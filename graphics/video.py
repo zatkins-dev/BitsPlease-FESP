@@ -45,4 +45,11 @@ class Video:
 
     @classmethod
     def get_fullscreen(cls):
+        """
+        Returns whether the screen is fullscreen
+
+        :returns: Current state of fullscreen
+        :rtype: bool
+        """
+
         return cls.__fullscreen

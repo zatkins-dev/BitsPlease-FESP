@@ -54,7 +54,8 @@ class HUD():
         """
         Creates and returns a navball, containing directional information to a pygame Surface.
         
-        :param rockets.rocket rocket: The rocket who's information to use.
+        :param rocket: The rocket who's information to use.
+        :type rocket: :py:class:`...rockets.rocket` 
         """
         # create a navball
         navBall = pg.Surface((2*self._navBallRadius, 2*self._navBallRadius), pg.SRCALPHA)
@@ -108,7 +109,9 @@ class HUD():
         """
         Creates and returns a surface containing the throttle of the provided rocket.
         
-        :param rockets.rocket rocket: The rocket who's throttle to use.
+        :param rocket: The rocket who's throttle to use.
+        :type rocket: :py:class:`...rockets.rocket` 
+
         """
 
         # define some properties of the gauge
@@ -148,7 +151,9 @@ class HUD():
         """
         Creates and returns a surface containing the velocity of the provided rocket.
         
-        :param rockets.rocket rocket: The rocket who's velocity to use.
+        :param rocket: The rocket who's velocity to use.
+        :type rocket: :py:class:`...rockets.rocket` 
+
         """
 
         velSurfSize = (215,40)
@@ -237,7 +242,9 @@ class HUD():
         Creates and returns a surface containing the ammound of SAS Fuel that the provided
         rocket has remaining.
         
-        :param rockets.rocket rocket: The rocket who's SAS Fuel should be displayed.
+        :param rocket: The rocket who's SAS Fuel should be displayed.
+        :type rocket: :py:class:`...rockets.rocket` 
+
         """
 
         # define some properties of the gauge
@@ -276,7 +283,8 @@ class HUD():
         """
         Creates and returns a surface displaying the ammount of fuel left in each of the thrusters on the provided rocket
         
-        :param rockets.rocket rocket: The rocket who's thruster fuel should be displayed.
+        :param rocket: The rocket who's thruster fuel should be displayed.
+        :type rocket: :py:class:`...rockets.rocket` 
         """
 
         thrusters = rocket.thrusters
@@ -318,7 +326,8 @@ class HUD():
         """
         Creates and returns a surface indicating whether or not the provided rocket is currently locked to an angle using SAS.
         
-        :param rockets.rocket rocket: The rocket who's SAS state should be checked.
+        :param rocket: The rocket who's SAS state should be checked.
+        :type rocket: :py:class:`...rockets.rocket` 
         """
 
         indicatorSize = (35,30)
@@ -345,6 +354,9 @@ class HUD():
         """
         Draws relevant information from the provided rocket to the screen, like the throttle,
         velocity, and fuel. Also displays time and zoom information.
+
+        :param rocket: The rocket who's SAS state should be checked.
+        :type rocket: :py:class:`...rockets.rocket` 
         """
         
         navBallPos = (int(pg.display.get_surface().get_width()/2 - self._navBallRadius), int(pg.display.get_surface().get_height()-2*self._navBallRadius))

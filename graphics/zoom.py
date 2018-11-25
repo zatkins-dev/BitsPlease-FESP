@@ -1,17 +1,16 @@
 class Zoom(object):
     """
     Utility class to manage zooming in and out of the rocket
+
+    :param float base_zoom: The default level of zoom
+    :param float min_zoom: The minumum magnification
+    :param float max_zoom: The maximum magnification
     """
     def __init__(self, base_zoom=1, min_zoom=2**-16, max_zoom=8):
         """
         The initialization method sets the zoom variables for the class
 
-        :param base_zoom: The default level of zoom
-        :type base_zoom: integer
-        :param min_zoom: The minumum magnification
-        :type base_zoom: double
-        :param max_zoom: The maximum magnification
-        :type max_zoom: double
+        
         """
         self.__base_zoom = base_zoom
         self.__min_zoom = min_zoom
