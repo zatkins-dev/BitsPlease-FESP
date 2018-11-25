@@ -1,7 +1,8 @@
 from pymunk import Body as Body
 import pygame as pg
-from rockets import Thruster, RCSThruster, SAS, CommandModule
+from rockets import Thruster, RCSThruster, SAS, CommandModule, Tank
 from audio import AudioManager
+
 
 
 class Rocket(Body):
@@ -48,7 +49,7 @@ class Rocket(Body):
         A list of all of the individual :py:class:`Component` s that have been attatched to the rocket.
         The list is presented in the order of :py:class:`Thruster` s, :py:class:`SAS`, :py:class:`CommandModule` s, :py:class:`RCSThruster` s
         """
-        return self.thrusters + self.SASmodules + self.commandModules + self.RCSThrusters
+        return self.tanks + self.thrusters + self.SASmodules + self.commandModules + self.RCSThrusters
 
     @property
     def commandModules(self):
@@ -77,6 +78,10 @@ class Rocket(Body):
         A list of all of the :py:class:`SAS` Modules that have been attatched to the rocket.
         """
         return list(filter(lambda c: isinstance(c, SAS), self._components))
+
+    @property
+    def tanks(self):
+        return list(filter(lambda c: isinstance(c, Tank), self._components))
 
     @property
     def isAngleLocked(self):

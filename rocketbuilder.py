@@ -10,9 +10,10 @@ from pymunk import Shape as Shape
 
 from enum import Enum
 from rockets import Component
-from rockets import Thruster, RCSThruster
+from rockets import Thruster, SolidThruster, LiquidThruster, RCSThruster
 from rockets import SAS
 from rockets import Rocket
+from rockets import Tank
 from rockets import CommandModule
 
 from graphics import Drawer
@@ -40,9 +41,7 @@ class RocketBuilder:
     space = pm.Space(threaded=True)
     space.threads = 2
 
-    #: Enumerator containing the different tabs of components
-    componentTabs = Enum("State", "Thruster Control")
-    #: Holds the list of components to draw to the menu list
+    componentTabs = Enum("State", "Thruster Control Tanks")
     componentList = []
     #: The active category of components from componentTabs
     #: Initialized to the Thruster category
@@ -166,11 +165,11 @@ class RocketBuilder:
         cls.componentList = None
 
         if selectedTab == cls.componentTabs.Thruster:
-            thrusterList = [thruster for thruster in Thruster.__subclasses__() if thruster is not RCSThruster]
-            RCSList = RCSThruster.__subclasses__()
-            cls.componentList = thrusterList + RCSList
+            cls.componentList = [thruster for thruster in SolidThruster.__subclasses__() + LiquidThruster.__subclasses__() + RCSThruster.__subclasses__()]
         elif selectedTab == cls.componentTabs.Control:
-            cls.componentList = SAS.__subclasses__()              
+            cls.componentList = SAS.__subclasses__()  
+        elif selectedTab == cls.componentTabs.Tanks:
+            cls.componentList = Tank.__subclasses__()
 
         # find the number columns that can fit in the surface
         numCols = int((cls.componentSurface.get_width() + buttonMargin) / (buttonSize + buttonMargin))

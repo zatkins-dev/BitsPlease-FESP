@@ -7,6 +7,7 @@ elif os.path.exists(os.path.abspath("../assets")):
 
 from .component import Component
 from .sas import SAS, AdvancedSAS
+from .tank import Tank, TestTank
 from .commandmodule import CommandModule
 from .thruster import *
 from .rocket import Rocket
