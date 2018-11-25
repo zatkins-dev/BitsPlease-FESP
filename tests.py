@@ -370,5 +370,35 @@ class  AudioTestCase(unittest.TestCase):
         audioManager.silenceMusic()
         self.assertFalse(pg.mixer.music.get_busy())
 
+    #TANK TESTS
+    def test_tank_fuel(self):
+        self.newTank = TestTank(self.rocket)
+        self.newTank.fuel = -100
+        self.assertEqual(self.newTank.fuel, 0)
+        self.newTank.fuel = 100
+        self.assertEqual(self.newTank.fuel, 100)
+        
+    def test_tank_reset(self):
+        self.newTank = TestTank(self.rocket)
+        self.newTank.fuel = 0
+        self.tank_capacity = self.newTank.capacity
+        self.newTank.reset()
+        self.assertEqual(self.tank_capacity, self.newTank.fuel)
+
+    #SAS TESTS
+    def test_sas_fuel(self):
+        self.theSAS = self.rocket.SASmodules[0]
+        self.theSAS.fuel = -100
+        self.assertEqual(self.theSAS.fuel, 0)
+        self.theSAS.fuel = 100
+        self.assertEqual(self.theSAS.fuel, 100)
+
+    def test_sas_reset(self):
+        self.theSAS = self.rocket.SASmodules[0]
+        
+        self.sas_maxfuel = self.theSAS.fuel
+        self.theSAS.fuel = 0
+        self.theSAS.reset()
+        self.assertEqual(self.sas_maxfuel, self.theSAS.fuel)
 if __name__ == '__main__':
     unittest.main()
