@@ -88,11 +88,11 @@ def run(rocket=None):
     space.threads = 2
     hud = HUD()
 
-    earth = CelestialBody('earth', space, 9.331*10**22, 796375, 0, 0, 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
+    earth = CelestialBody('earth', space, 9.331*10**22, 796375, (0, 0), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
     celestialBodies.append(earth)
 
     earthMoon1 = CelestialBody('earthMoon1', space, 1.148*10**21, 217125,
-                    796375 + 43500000, 796375, 0.9, None, 0, pm.Body.DYNAMIC)
+                    (796375 + 43500000, 796375), 0.9, None, 0, pm.Body.DYNAMIC)
     celestialBodies.append(earthMoon1)
 
     if rocket is None:

@@ -30,7 +30,7 @@ class CelestialBody():
         shape (Shape): Shape object of planet
 
     """
-    def __init__(self, name_, space_, mass_, radius_, position_x, position_y,
+    def __init__(self, name_, space_, mass_, radius_, position_,
                  elasticity_, atmosphere_color, atmosphere_height, bodytype_):
         self.name = name_
         self.atmosphereColor = atmosphere_color
@@ -41,5 +41,5 @@ class CelestialBody():
         self.shape.mass = mass_
         self.shape.elasticity = elasticity_
         self.shape.collision_type = CT_CELESTIAL_BODY
-        self.body.position = position_x, position_y
+        self.body.position = position_
         space_.add(self.body, self.shape)
