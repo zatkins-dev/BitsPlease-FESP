@@ -37,7 +37,7 @@ class SAS(Component):
         :type transform: :py:class:`pymunk.Transform`
         :param float radius: Radius of the shape, used for smoothing.
         """
-        Component.__init__(self, body, self.vertices, transform, radius)
+        Component.__init__(self, body, self.vertices, self.getInfo()["density"], transform, radius)
         self._SASangle = 0
         self.fuel = self.maxFuel
 
@@ -165,14 +165,6 @@ class SAS(Component):
         the getInfo method.
         """
         return self.getInfo()["maxFuel"]
-
-    @property
-    def density(self):
-        """
-        The density of this specific type of SASModule. This returns the value defined in
-        the getInfo method.
-        """
-        return self.getInfo()["density"]
 
     @classmethod
     @abstractmethod

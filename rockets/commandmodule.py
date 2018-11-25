@@ -15,8 +15,7 @@ class CommandModule(Component):
     #     Component.__init__(self, body, vertices, transform, radius)
 
     def __init__(self, body, transform=None, radius=0):
-        Component.__init__(self, body, self.vertices, transform, radius)
-        self.density = self._density
+        Component.__init__(self, body, self.vertices, self._density, transform, radius)
     
     @property
     def vertices(self):

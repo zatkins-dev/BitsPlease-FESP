@@ -26,9 +26,8 @@ class Thruster(Component):
         :param pymunk.Transform transform: The transform to apply to the Thruster on creation.
         :param float radius: The radius to give to the Thruster's corners.
         """
-        Component.__init__(self, body, self.getInfo()["vertices"], transform, radius)
+        Component.__init__(self, body, self.getInfo()["vertices"], self.getInfo()["density"], transform, radius)
 
-        self.density = self.getInfo()["density"]
         self.fuel = self.getInfo()["maxFuel"]
 
     @property
@@ -166,9 +165,8 @@ class RCSThruster(Thruster):
         :param pymunk.Transform transform: The transform to apply to the Thruster on creation.
         :param float radius: The radius to give to the Thruster's corners.
         """
-        Component.__init__(self, body, self.getInfo()["vertices"], transform, radius)
+        Component.__init__(self, body, self.getInfo()["vertices"], self.getInfo()["density"], transform, radius)
 
-        self.density = self.getInfo()["density"]
         self.fuel = 0
     
     def applyThrust(self):
