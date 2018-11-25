@@ -1,4 +1,5 @@
 import pygame as pg
+
 import pymunk as pm
 from pymunk.vec2d import Vec2d
 import sys
@@ -6,6 +7,9 @@ import os
 import math
 
 from physics import *
+
+from graphics import Video
+Video.init()
 
 from rockets import Thruster
 import rockets.testrocket as tr
@@ -18,7 +22,6 @@ from graphics import Drawer
 from graphics import Trajectory
 from graphics import Explosion
 from graphics import Menu
-from graphics import Video
 from graphics import Zoom
 
 from audio import AudioManager
@@ -28,36 +31,91 @@ import pymunkoptions
 pymunkoptions.options["debug"] = False
 
 class Simulation():
-    ASSETS_PATH = os.path.abspath("assets/")
+    #: Path to game assets
+    ASSETS_PATH = os.path.relpath("assets/")
+    #: Zoom for simulation
     _zoom = Zoom()
+    #: Manages sounds effects and music
+    audioManager = AudioManager()
+    #: All :py:class:`physics.CelestialBody` objects in :py:attr:`space`
+    celestialBodies = []
+    #: :py:class:`pygame.Surface` for the current display
+    screen = Video.get_display()
+    #: Pygame clock to track in game time
+    clock = pg.time.Clock()
+    #: Simulation space, :py:class:`pymunk.Space`
+    space = pm.Space(threaded=True)
+    space.threads = 2
+    #: Heads-Up-Display for the rocket (:py:class:`graphics.HUD`)
+    hud = HUD()
+    #: :py:class:`rockets.Rocket` for the simulation
+    rocket = None
+
 
     @classmethod
     def keyDown(cls, e, key):
+        """
+        Checks if a key is pressed
+
+        :param e: Pygame event
+        :type e: :py:class:`pygame.Event`
+        :param int key: Pygame defined code for key to check against
+        :returns: `True` if key was pressed, `False` otherwise
+        :rtype: bool
+        """
         return e.type == pg.KEYDOWN and e.key == key
 
     @classmethod
     def keyUp(cls, e, key):
+        """
+        Checks if a key is released
+
+        :param e: Pygame event
+        :type e: :py:class:`pygame.Event`
+        :param int key: Pygame defined code for key to check against
+        :returns: `True` if key was released, `False` otherwise
+        :rtype: bool
+        """
         return e.type == pg.KEYUP and e.key == key
 
     @classmethod
     def updateGravity(cls):
+        """
+        Updates the acceleration due to gravity on :py:attr:`rocket`.
+
+        :returns: Change in velocity of rocket
+        :rtype: :py:class:`pymunk.vec2d.Vec2d`
+        """
         deltaV = Vec2d(Physics.netGravity(cls.celestialBodies, cls.rocket.position))
         pm.Body.update_velocity(cls.rocket, deltaV, 1, TimeScale.step_size)
         return deltaV
 
     @classmethod
-    def updateCamera(cls, center):
+    def updateCamera(cls):
+        """
+        Draws the background stars onto :py:attr:`screen`.
+        """
+        center = Drawer.intVec2d(Vec2d(cls.screen.get_size()))
         cls.screen.fill((0, 0, 0))
         graph.drawStars(cls.screen, center)
 
     @classmethod
     def get_altitude(cls):
+        """
+        Calculates the altitude of :py:attr:`rocket` above the closest :py:class:`physics.CelestialBody` in :py:attr:`celestialBodies`.
+
+        :returns: The closest :py:class:`physics.CelestialBody` to :py:attr:`rocket` and the altitude of :py:attr:`rocket` above that :py:class:`physics.CelestialBody`.
+        :rtype: (:py:class:`physics.CelestialBody`, float)
+        """
         closestBody = min(cls.celestialBodies, key=lambda x: (x.body.position - cls.rocket.position).get_length())
         altitude = (closestBody.body.position - cls.rocket.position).get_length() - closestBody.shape.radius
         return (closestBody, altitude)
 
     @classmethod
     def clear_space(cls):
+        """
+        Removes all :py:class:`pymunk.Shape` and :py:class:`pymunk.Body` objects from :py:attr:`space`.
+        """
         for s in cls.space.shapes:
             cls.space.remove(s)
         for b in cls.space.bodies:
@@ -66,6 +124,9 @@ class Simulation():
 
     @classmethod
     def displayMenu(cls):
+        """
+        Draws the menu and allows user to move between game views.
+        """
         Menu.drawMenu(100)
         pg.display.flip()
         if Menu.quitPressed:
@@ -86,18 +147,17 @@ class Simulation():
 
     @classmethod
     def run(cls,rocket=None):
+        """
+        Main execution of the simulation. Initializes space, planets, and rocket and enters event loop to recieve user input.
+
+        :param rocket: Rocket from :py:class:`.RocketBuilder` or `None`.
+        :type rocket: :py:class:`rockets.Rocket`
+        """
         cls._zoom = Zoom()
         Drawer.zoom = cls._zoom
-        cls.audioManager = AudioManager()
-        cls.celestialBodies = []
-        cls.screen = pg.display.get_surface()
-        cls.clock = pg.time.Clock()
         explosion_images = []
         for i in range(5):
                 explosion_images.append(pg.image.load(os.path.join(cls.ASSETS_PATH,"sprites/explosion"+str(i+1)+".png")).convert_alpha())
-        cls.space = pm.Space(threaded=True)
-        cls.space.threads = 2
-        hud = HUD()
 
         earth = CelestialBody('earth', cls.space, 9.331*10**22, 796375, (0, 0), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
         cls.celestialBodies.append(earth)
@@ -112,16 +172,14 @@ class Simulation():
             for component in cls.rocket.components:
                 cls.space.add(component)
 
-        cls.space.damping = 1
-
         x, y = (0, earth.body.position[1] + earth.shape.radius)
         cls.rocket.position = int(x), int(y)
 
         # Add collision handler
         collisions_component_celestialbody = cls.space.add_collision_handler(CT_COMPONENT, CT_CELESTIAL_BODY)
         collisions_component_celestialbody.post_solve = post_solve_component_celestialbody
-
-        cls.rocket_explosion = None
+        
+        rocket_explosion = None
         crashed = False
         menu_enabled = False
         Menu.demoPressed = False
@@ -179,18 +237,18 @@ class Simulation():
 
             cls.offset = Drawer.getOffset(cls.screen, cls.rocket)
 
-            cls.updateCamera(Drawer.intVec2d(Vec2d(cls.screen.get_size())))
+            cls.updateCamera()
             Drawer.drawBackground(closestBody, altitude, cls.offset)
             Trajectory.draw(cls.rocket, cls.celestialBodies, 1000, 1)
             Drawer.drawMultiple(cls.screen, cls.space.shapes, cls.offset)
             Drawer.drawMultiple(cls.screen, cls.celestialBodies, cls.offset)
-            hud.updateHUD(cls.rocket)
+            cls.hud.updateHUD(cls.rocket)
             # Did the cls.rocket blow up?
-            if cls.rocket.destroyed and cls.rocket_explosion is None:
+            if cls.rocket.destroyed and rocket_explosion is None:
                 for c in cls.rocket.components:
                     c.destroyed = True
                 remaining_fuel = sum(map(lambda c: c.fuel if isinstance(c, Thruster) else 0, cls.rocket.components))
-                cls.rocket_explosion = Explosion(remaining_fuel//10, explosion_images)
+                rocket_explosion = Explosion(remaining_fuel//10, explosion_images)
                 cls.rocket.velocity = grav
                 crashed = True
 
@@ -216,11 +274,11 @@ class Simulation():
             (closestBody, altitude) = cls.get_altitude()
 
             cls.offset = Drawer.getOffset(cls.screen, cls.rocket)
-            cls.updateCamera(Drawer.intVec2d(Vec2d(cls.screen.get_size())))
+            cls.updateCamera()
             Drawer.drawBackground(closestBody, altitude, cls.offset)
             Drawer.drawMultiple(cls.screen, cls.space.shapes, cls.offset)
             Drawer.drawMultiple(cls.screen, cls.celestialBodies, cls.offset)
-            Drawer.drawExplosion(cls.screen, cls.rocket_explosion, cls.rocket.position + 20*Vec2d(0,1).rotated(cls.rocket.angle), (150,150), Drawer.getOffset(cls.screen, cls.rocket))
+            Drawer.drawExplosion(cls.screen, rocket_explosion, cls.rocket.position + 20*Vec2d(0,1).rotated(cls.rocket.angle), (150,150), Drawer.getOffset(cls.screen, cls.rocket))
             returnCode = cls.displayMenu()
             if returnCode is not None:
                 return returnCode

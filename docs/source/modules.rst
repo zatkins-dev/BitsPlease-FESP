@@ -8,5 +8,5 @@ BitsPlease-FESP
    physics
    rockets
    rocketbuilder
-   simulationexec
+   simulation
    main
