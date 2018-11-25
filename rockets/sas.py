@@ -6,25 +6,10 @@ from abc import ABC, abstractmethod
 from . import _ASSETS_PATH
 
 class SAS(Component):
-    """SAS component for rocket. Provides encapsulation for
-       SAS autonomous angle and magnitude of SAS force.
-       Must be attached to a body.
-
-    Args:
-        body (Body): Rocket body to attach to
-        vertices (List(Vec2d)): Vertices of Poly shape
-        SASpower (Float): Rotation rate of the rocket from the SAS module
-        angle (Float): Lock angle for the SAS
-        transform (Transform): Transformation to apply to shape
-        radius (Float): Edge radius of shape for smoothing
-
-    Attributes:
-        _SASangle (Float): Lock angle for the SAS
-        _SASpower (Float): Rotation rate of the rocket from the SAS module
-        leftKey (Int): Key to activate left SAS.
-        rightKey (Int): Key to activate right SAS.
-        fuel (Int): Number game ticks of remaining fuel.
-
+    """
+    SAS component for rocket. Provides encapsulation for
+    SAS autonomous angle and magnitude of SAS force.
+    Must be attached to a body.
     """
 
     def __init__(self, body, transform=None, radius=0):
