@@ -3,10 +3,10 @@ from pymunk.vec2d import Vec2d
 
 
 # Exports
-#__all__ = ["CT_COMPONENT", 
-        #    "CT_THRUSTER", 
-        #    "CT_CONSTRAINT", 
-        #    "CT_CELESTIAL_BODY", 
+#__all__ = ["CT_COMPONENT",
+        #    "CT_THRUSTER",
+        #    "CT_CONSTRAINT",
+        #    "CT_CELESTIAL_BODY",
         #    "CT_STRUCTURE",
         #    "pre_solve_component_celestialbody",
         #    "post_solve_component_celestialbody",
@@ -14,7 +14,7 @@ from pymunk.vec2d import Vec2d
 
 
 # NOTE: The following callback functions are used for handling collisions
-# 1. begin 
+# 1. begin
 #       Two shapes just started touching for the first time this step.
 #       func(arbiter, space, data) -> bool
 #
@@ -52,6 +52,12 @@ CT_CELESTIAL_BODY = 1
 
 # Collision Post-Solver: Component, Celestial Body
 def post_solve_component_celestialbody(arbiter, space, data):
+    """
+    Determines what happens when two objects collide.
+
+    :param arbiter: The :py:class:`pymunk.Body whose stats decide if a :py:class:`Component` will break.
+    :type arbiter: :py:class:`pymunk.Body`
+    """
     component = None
     if arbiter.total_impulse.length/50 > _threshold_for_detach:
         print(arbiter.total_impulse.length/50, arbiter.shapes)
@@ -61,8 +67,3 @@ def post_solve_component_celestialbody(arbiter, space, data):
     if component is not None and arbiter.total_impulse.length/50 > _threshold_for_failure:
         component.body.destroyed = True
     return True
-
-
-        
-
-        

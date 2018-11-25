@@ -19,15 +19,6 @@ class AudioManager():
         """
         Initialize the audio mixer in pygame and begin with the initalized
         Sci-fiPulseLoop background music.
-
-        **Preconditions:**
-            1. The music is located in the SOUND_PATH location.
-
-        **Postconditions:**
-            1. The Sci-fiPulseLoop will be playing in the background
-
-        **Returns:**
-            Nothing.
         """
         #initialize the music
         pg.init()
@@ -50,15 +41,6 @@ class AudioManager():
         """
         Detects when the current background music has stopped and will play the
         next background song.
-
-        **Preconditions:**
-            1. All Music in system is located in the SOUND_PATH location.
-
-        **Postconditions:**
-            1. Selected Music will be playing
-
-        **Returns:**
-            Nothing.
         """
         if(pg.mixer.music.get_busy() == False):
             pg.mixer.music.load(os.path.join(self._SOUND_PATH, random.choice(self._MUSIC_LIST)))
@@ -69,14 +51,8 @@ class AudioManager():
         """
         Plays an SAS sound effect until stopped.
 
-        **Preconditions:**
-            1. Sound file located in SOUND_PATH file
-
-        **Postconditions:**
-            1. Sound playing as long as SAS is active.
-
-        **Returns:**
-            Nothing.
+        :param statusConst: If SAS is active
+        :type statusConst: boolean
         """
         if(pg.mixer.Channel(1).get_busy() == False and statusConst == True):
             pg.mixer.Channel(1).play(self._SASSound, loops=1)
@@ -87,14 +63,10 @@ class AudioManager():
         """
         Plays an SAS sound effect until stopped.
 
-        **Preconditions:**
-            1. Sound file located in SOUND_PATH file
-
-        **Postconditions:**
-            1. Sound playing as long as SAS is active.
-
-        **Returns:**
-            Nothing.
+        :param status: If thruster is on rocket
+        :type status: boolean
+        :param amount: Amount of thruster power
+        :type amount: double
         """
         if(status):
             if(pg.mixer.Channel(2).get_busy() == False):
@@ -105,15 +77,6 @@ class AudioManager():
 
     def silenceMusic(self):
         """Stops the music.
-
-        **Preconditions**:
-            None.
-
-        **Postconditions**:
-            1. Construction Music playing.
-
-        **Returns**:
-            Nothing.
         """
         pg.mixer.Channel(2).stop()
         pg.mixer.Channel(1).stop()

@@ -45,36 +45,36 @@ class Rocket(Body):
     @property
     def components(self):
         """
-        A list of all of the individual :py:class:`Component`s that have been attatched to the rocket.
-        The list is presented in the order of :py:class:`Thruster`s, :py:class:`SAS`, :py:class:`CommandModule`s, :py:class:`RCSThruster`s.
+        A list of all of the individual :py:class:`Component` s that have been attatched to the rocket.
+        The list is presented in the order of :py:class:`Thruster` s, :py:class:`SAS`, :py:class:`CommandModule` s, :py:class:`RCSThruster` s
         """
         return self.thrusters + self.SASmodules + self.commandModules + self.RCSThrusters
 
     @property
     def commandModules(self):
         """
-        A list of all of the :py:class:`CommandModule`s that have been attatched to the rocket.
+        A list of all of the :py:class:`CommandModule` s that have been attatched to the rocket.
         """
         return list(filter(lambda c: isinstance(c, CommandModule), self._components))
 
     @property
     def thrusters(self):
         """
-        A list of all of the :py:class:`Thruster`s - but not :py:class:`RCSThruster`s - that have been attatched to the rocket.
+        A list of all of the :py:class:`Thruster` s - but not :py:class:`RCSThruster` s - that have been attatched to the rocket.
         """
         return list(filter(lambda c: isinstance(c, Thruster) and not isinstance(c, RCSThruster), self._components))
 
     @property
     def RCSThrusters(self):
         """
-        A list of all of the :py:class:`RCSThruster`s that have been attatched to the rocket.
+        A list of all of the :py:class:`RCSThruster` s that have been attatched to the rocket.
         """
         return list(filter(lambda c: isinstance(c, RCSThruster), self._components))
 
     @property
     def SASmodules(self):
         """
-        A list of all of the :py:class:`SAS`Modules that have been attatched to the rocket.
+        A list of all of the :py:class:`SAS` Modules that have been attatched to the rocket.
         """
         return list(filter(lambda c: isinstance(c, SAS), self._components))
 

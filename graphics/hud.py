@@ -180,11 +180,11 @@ class HUD():
         :param float zoom: The current zoom level.
         """
 
-        zoomSurfSize = (215,40)
+        zoomSurfSize = (215,35)
         zoomSurfBorder = 5
         zoomSurf = pg.Surface(zoomSurfSize)
         zoomSurf.fill(self._hudBackgroundColor)
-        zoomSurf.fill(self._hudForegroundColor, (zoomSurfBorder,zoomSurfBorder,zoomSurfSize[0]-zoomSurfBorder,zoomSurfSize[1]-2*zoomSurfBorder))
+        zoomSurf.fill(self._hudForegroundColor, (zoomSurfBorder,zoomSurfBorder,zoomSurfSize[0]-zoomSurfBorder,zoomSurfSize[1]-zoomSurfBorder))
 
         zoomString = "Zoom: "
 
@@ -198,7 +198,7 @@ class HUD():
         zoomString += "x"
 
         textSize = self._bigFont.size(zoomString)
-        zoomTextPosition = ((zoomSurf.get_height()-textSize[1])/2 + textSize[0]/2, zoomSurf.get_height()/2)
+        zoomTextPosition = ((zoomSurf.get_height()-textSize[1])/2 + textSize[0]/2, (zoomSurf.get_height() + zoomSurfBorder)/2)
         graph.drawTextCenter(zoomTextPosition, zoomString, self._bigFont, self._fontColor, zoomSurf)
 
         return zoomSurf
@@ -209,11 +209,11 @@ class HUD():
         
         :param float scale: The current ammount time is scaled by.
         """
-        scaleSurfSize = (215,40)
+        scaleSurfSize = (215,35)
         scaleSurfBorder = 5
         scaleSurf = pg.Surface(scaleSurfSize)
         scaleSurf.fill(self._hudBackgroundColor)
-        scaleSurf.fill(self._hudForegroundColor, (scaleSurfBorder,scaleSurfBorder,scaleSurfSize[0]-scaleSurfBorder,scaleSurfSize[1]-2*scaleSurfBorder))
+        scaleSurf.fill(self._hudForegroundColor, (scaleSurfBorder,scaleSurfBorder,scaleSurfSize[0]-scaleSurfBorder,scaleSurfSize[1]-scaleSurfBorder))
 
         scaleString = "Time Scale: "
 
@@ -227,7 +227,7 @@ class HUD():
         scaleString += "x"
 
         textSize = self._bigFont.size(scaleString)
-        scaleTextPosition = ((scaleSurf.get_height()-textSize[1])/2 + textSize[0]/2, scaleSurf.get_height()/2)
+        scaleTextPosition = ((scaleSurf.get_height()-textSize[1])/2 + textSize[0]/2, (scaleSurf.get_height() + scaleSurfBorder)/2)
         graph.drawTextCenter(scaleTextPosition, scaleString, self._bigFont, self._fontColor, scaleSurf)
 
         return scaleSurf
