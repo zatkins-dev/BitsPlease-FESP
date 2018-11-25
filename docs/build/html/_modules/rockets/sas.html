@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>rockets.sas &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">BitsPlease-FESP</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>rockets.sas</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for rockets.sas</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pygame</span> <span class="k">as</span> <span class="nn">pg</span>
+<span class="kn">from</span> <span class="nn">rockets</span> <span class="k">import</span> <span class="n">Component</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_ASSETS_PATH</span>
+
+<div class="viewcode-block" id="SAS"><a class="viewcode-back" href="../../rockets.html#rockets.sas.SAS">[docs]</a><span class="k">class</span> <span class="nc">SAS</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SAS component for rocket. Provides encapsulation for</span>
+<span class="sd">    SAS autonomous angle and magnitude of SAS force.</span>
+<span class="sd">    Must be attached to a body.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes an SAS Module: the underlying component, and the angle &amp; fuel value.</span>
+
+<span class="sd">        :param body: Body to attatch the SASModule to.</span>
+<span class="sd">        :type body: :py:class:`pymunk.Body`</span>
+<span class="sd">        :param transform: Transformation to apply to the shape</span>
+<span class="sd">        :type transform: :py:class:`pymunk.Transform`</span>
+<span class="sd">        :param float radius: Radius of the shape, used for smoothing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Component</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;density&quot;</span><span class="p">],</span> <span class="n">transform</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_SASangle</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxFuel</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">fuel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The current ammount of fuel that the SAS module has for maneuvering.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fuel</span>
+
+    <span class="nd">@fuel</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">fuel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">newFuel</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">newFuel</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fuel</span> <span class="o">=</span> <span class="n">newFuel</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fuel</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="SAS.rotateCounterClockwise"><a class="viewcode-back" href="../../rockets.html#rockets.sas.SAS.rotateCounterClockwise">[docs]</a>    <span class="k">def</span> <span class="nf">rotateCounterClockwise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timescale</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Uses the RCS Thrusters on the host rocket to turn the rocket counter-clockwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">RCSThrusters</span><span class="p">:</span>
+            <span class="c1"># check the direction of each thruster, and apply if it will rotate counter clockwise</span>
+            <span class="k">if</span> <span class="n">ts</span><span class="o">.</span><span class="n">thrustVector</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">ts</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="o">.</span><span class="n">y</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="o">.</span><span class="n">y</span><span class="p">:</span>
+                <span class="c1"># left-directed vector and on the top half of the rocket</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">applyThrust</span><span class="p">(</span><span class="n">timescale</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">ts</span><span class="o">.</span><span class="n">thrustVector</span><span class="o">.</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">ts</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="o">.</span><span class="n">y</span><span class="p">:</span>
+                <span class="c1"># right-directed vector and on the bottom half of the rocket</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">applyThrust</span><span class="p">(</span><span class="n">timescale</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SAS.rotateClockwise"><a class="viewcode-back" href="../../rockets.html#rockets.sas.SAS.rotateClockwise">[docs]</a>    <span class="k">def</span> <span class="nf">rotateClockwise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timescale</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Uses the RCS Thrusters on the host rocket to turn the rocket clockwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">RCSThrusters</span><span class="p">:</span>
+            <span class="c1"># check the direction of each thruster, and apply if it will rotate clockwise</span>
+            <span class="k">if</span> <span class="n">ts</span><span class="o">.</span><span class="n">thrustVector</span><span class="o">.</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">ts</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="o">.</span><span class="n">y</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="o">.</span><span class="n">y</span><span class="p">:</span>
+                <span class="c1"># right-directed vector and on the top half of the rocket</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">applyThrust</span><span class="p">(</span><span class="n">timescale</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">ts</span><span class="o">.</span><span class="n">thrustVector</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">ts</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="o">.</span><span class="n">y</span><span class="p">:</span>
+                <span class="c1"># left-directed vector and on the bottom half of the rocket</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">applyThrust</span><span class="p">(</span><span class="n">timescale</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SAS.holdAngle"><a class="viewcode-back" href="../../rockets.html#rockets.sas.SAS.holdAngle">[docs]</a>    <span class="k">def</span> <span class="nf">holdAngle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timescale</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Will work to hold the rocket at the set SASAngle. This is affected by the SASPower and the Tolerance</span>
+<span class="sd">        parameters of a specific SAS Module.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># move to desired angle</span>
+        <span class="c1"># find the difference between the current angle and the desired angle</span>
+        <span class="n">deltaAngle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SASangle</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span>
+        <span class="k">if</span> <span class="n">deltaAngle</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
+            <span class="n">deltaAngle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SASangle</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+
+        <span class="c1"># now we know how far off we are from the desired angle</span>
+        <span class="c1"># we can check if we&#39;re outside the tolerances to move</span>
+        <span class="k">if</span> <span class="n">deltaAngle</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerance</span> <span class="ow">or</span> <span class="n">deltaAngle</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerance</span><span class="p">:</span>
+            <span class="c1"># we&#39;re outside the expected tolerance, so we need to</span>
+            <span class="c1"># translate the angle into a desired angular velocity</span>
+            <span class="n">targetAngVel</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">atan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SASPower</span> <span class="o">*</span> <span class="n">deltaAngle</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">targetAngVel</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angular_velocity</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rotateCounterClockwise</span><span class="p">(</span><span class="n">timescale</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">targetAngVel</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angular_velocity</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rotateClockwise</span><span class="p">(</span><span class="n">timescale</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SAS.reset"><a class="viewcode-back" href="../../rockets.html#rockets.sas.SAS.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resets the SAS Module, including the set angle and fuel ammount.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_SASangle</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxFuel</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">SASangle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lock angle in radians for the SAS</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SASangle</span>
+
+    <span class="nd">@SASangle</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">SASangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">newAngle</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_SASangle</span> <span class="o">=</span> <span class="n">newAngle</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The vertices of this specific type of SASModule. This returns the value defined in</span>
+<span class="sd">        the getInfo method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;vertices&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">SASPower</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The SASPower of this specific type of SASModule. This returns the value defined in</span>
+<span class="sd">        the getInfo method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;SASPower&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tolerance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The angle tolerance of this specific type of SASModule. This returns the value defined in</span>
+<span class="sd">        the getInfo method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;tolerance&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sprite</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The sprite of this specific type of SASModule. This returns the value defined in</span>
+<span class="sd">        the getInfo method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;sprite&quot;</span><span class="p">]</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">maxFuel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The maximum fuel ammount of this specific type of SASModule. This returns the value defined in</span>
+<span class="sd">        the getInfo method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;maxFuel&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SAS.getInfo"><a class="viewcode-back" href="../../rockets.html#rockets.sas.SAS.getInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method is what will define the properties of a specific SAS subclass.</span>
+<span class="sd">        It should return a dictionary with the following values:</span>
+
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        | Dictionary Key |              Dictionary Value Type              |</span>
+<span class="sd">        +================+=================================================+</span>
+<span class="sd">        |    vertices    |   (*List of* :py:class:`pymunk.vec2d.Vec2d`)    |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |    SASPower    |                    (*float*)                    |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |    tolerance   |        (:py:class:`pymunk.vec2d.Vec2d`)         |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |                | (:py:class:`pygame.surface.Surface`) It is      |</span>
+<span class="sd">        |     sprite     | advised this be stored as a class variable, and |</span>
+<span class="sd">        |                | returned by this method to improve performance. |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |     maxFuel    |             (*float*) Should always be 0        |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        |     density    |                    (*float*)                    |</span>
+<span class="sd">        +----------------+-------------------------------------------------+</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="SAS.getDisplayInfo"><a class="viewcode-back" href="../../rockets.html#rockets.sas.SAS.getDisplayInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getDisplayInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="n">inf</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;SAS Power&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">inf</span><span class="p">[</span><span class="s2">&quot;SASPower&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;Tolerance&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">inf</span><span class="p">[</span><span class="s2">&quot;tolerance&quot;</span><span class="p">]),</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;°&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;RCS Fuel&quot;</span> <span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">inf</span><span class="p">[</span><span class="s2">&quot;maxFuel&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;L&quot;</span>
+        <span class="p">}</span></div></div>
+
+
+<div class="viewcode-block" id="AdvancedSAS"><a class="viewcode-back" href="../../rockets.html#rockets.sas.AdvancedSAS">[docs]</a><span class="k">class</span> <span class="nc">AdvancedSAS</span><span class="p">(</span><span class="n">SAS</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The AdvancedSAS components will all share these properties:</span>
+
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    | Dictionary Key |              Dictionary Value Type                                                                                   |</span>
+<span class="sd">    +================+======================================================================================================================+</span>
+<span class="sd">    |    vertices    | [(-12,4), (-12,-6), (12,-6), (12,4)]                                                                                 |        </span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |    SASPower    | 2.0                                                                                                                  |</span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |    tolerance   | .01                                                                                                                  |</span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |     sprite     | `AdvancedSAS.png &lt;https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/AdvancedSAS.png&gt;`_ |</span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |     maxFuel    | 20,000                                                                                                               |</span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |     density    | 73.8                                                                                                                 |</span>
+<span class="sd">    +----------------+----------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: Holds the SAS sprite to prevent repeated loading. Sprite is </span>
+    <span class="c1">#: `AdvancedSAS.png &lt;https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/AdvancedSAS.png&gt;`_</span>
+    <span class="n">_sprite</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_ASSETS_PATH</span><span class="p">,</span> <span class="s2">&quot;sprites&quot;</span><span class="p">,</span> <span class="s2">&quot;AdvancedSAS.png&quot;</span><span class="p">))</span>
+
+<div class="viewcode-block" id="AdvancedSAS.getInfo"><a class="viewcode-back" href="../../rockets.html#rockets.sas.AdvancedSAS.getInfo">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;vertices&quot;</span><span class="p">:</span>     <span class="p">[(</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">)],</span>
+            <span class="s2">&quot;SASPower&quot;</span><span class="p">:</span>  <span class="mi">2</span><span class="p">,</span>
+            <span class="s2">&quot;tolerance&quot;</span><span class="p">:</span> <span class="o">.</span><span class="mi">01</span><span class="p">,</span>
+            <span class="s2">&quot;sprite&quot;</span><span class="p">:</span>       <span class="bp">cls</span><span class="o">.</span><span class="n">_sprite</span><span class="p">,</span>
+            <span class="s2">&quot;maxFuel&quot;</span><span class="p">:</span>      <span class="mi">20000</span><span class="p">,</span>
+            <span class="s2">&quot;density&quot;</span><span class="p">:</span>      <span class="mi">100</span>
+        <span class="p">}</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

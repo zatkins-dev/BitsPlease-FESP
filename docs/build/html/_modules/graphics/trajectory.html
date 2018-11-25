@@ -1,0 +1,285 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>graphics.trajectory &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">BitsPlease-FESP</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>graphics.trajectory</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for graphics.trajectory</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pygame</span> <span class="k">as</span> <span class="nn">pg</span>
+<span class="kn">from</span> <span class="nn">physics</span> <span class="k">import</span> <span class="n">Physics</span> <span class="k">as</span> <span class="n">phy</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Drawer</span>
+<span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
+
+
+<div class="viewcode-block" id="Trajectory"><a class="viewcode-back" href="../../graphics.html#graphics.Trajectory">[docs]</a><span class="k">class</span> <span class="nc">Trajectory</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Drawer for the projected trajectory of the rocket.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Trajectory.hitsPlanet"><a class="viewcode-back" href="../../graphics.html#graphics.Trajectory.hitsPlanet">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">hitsPlanet</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">planets</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper function that provides a stopping condition </span>
+
+<span class="sd">        :param (float,float) position: Position to check</span>
+<span class="sd">        :param planets: List of planets</span>
+<span class="sd">        :type planets: [:py:class:`physics.CelestialBody`]</span>
+<span class="sd">        :returns: `True` if position is inside one of `planets`, `False` otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">planet</span> <span class="ow">in</span> <span class="n">planets</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">planet</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">point_query</span><span class="p">(</span><span class="n">position</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+    
+<div class="viewcode-block" id="Trajectory.eulers"><a class="viewcode-back" href="../../graphics.html#graphics.Trajectory.eulers">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">eulers</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="n">f_prev</span><span class="p">,</span><span class="n">dt</span><span class="p">,</span><span class="n">dfdt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Uses the forward Euler method to approximate the the value of a function at the next timestep. Specifically, returns :math:`f_{next} = f_{prev} + \Delta t\cdot\\frac{fp}{dt}`, where :math:`\\frac{df}{dt}` is the derivative of the fuction at the previous timestep.</span>
+
+<span class="sd">        :param f_prev: Function value at previous timestep</span>
+<span class="sd">        :type f_prev: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        :param float dt: Small change in time (:math:`\Delta t`), a smaller value yields a more accurate approximation</span>
+<span class="sd">        :param dfdt: Value of the derivative :math:`\\frac{df}{dt}`.</span>
+<span class="sd">        :type dfdt: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        :returns: Projected function value at the next timestep</span>
+<span class="sd">        :rtype: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">f_prev</span> <span class="o">+</span> <span class="n">dt</span><span class="o">*</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">dfdt</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Trajectory.draw"><a class="viewcode-back" href="../../graphics.html#graphics.Trajectory.draw">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rocket</span><span class="p">,</span> <span class="n">planetBodies</span><span class="p">,</span> <span class="n">max_timesteps</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws the projected path of the rocket until a stopping condition is reached, namely:</span>
+<span class="sd">            * A point in the projection goes off the current display.</span>
+<span class="sd">            * A point in the planet intersect a planetary body.</span>
+<span class="sd">            * The iteration count exceeds `max_timesteps`.</span>
+<span class="sd">        </span>
+<span class="sd">        :param rocket: The rocket to project</span>
+<span class="sd">        :type rocket: :py:class:`rockets.Rocket`</span>
+<span class="sd">        :param planetBodies: List of all planetary bodies</span>
+<span class="sd">        :type planetBodies: [:py:class:`physics.CelestialBody`]</span>
+<span class="sd">        :param int max_timesteps: Maximum iterations before stopping</span>
+<span class="sd">        :param float dt: Iteration step size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">surface</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">getOffset</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">rocket</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">rocket</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">length</span><span class="o">+</span><span class="mf">1.01</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">dt</span><span class="o">*-</span><span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dt</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">),</span> <span class="mf">0.01</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+        
+        <span class="n">v_prev</span> <span class="o">=</span> <span class="n">rocket</span><span class="o">.</span><span class="n">velocity</span>
+        <span class="n">pos_prev</span> <span class="o">=</span> <span class="n">rocket</span><span class="o">.</span><span class="n">position</span>
+        <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pos_prev</span><span class="p">)</span>
+        <span class="n">curr_step</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">inRange</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="o">*</span><span class="p">(</span><span class="n">pos_prev</span><span class="o">+</span><span class="n">offset</span><span class="p">))</span> <span class="ow">and</span> <span class="n">curr_step</span> <span class="o">&lt;</span> <span class="n">max_timesteps</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">hitsPlanet</span><span class="p">(</span><span class="n">pos_prev</span><span class="p">,</span> <span class="n">planetBodies</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">40</span> <span class="ow">and</span> <span class="p">(</span><span class="n">pos_prev</span><span class="o">-</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">length</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">v_prev</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">eulers</span><span class="p">(</span><span class="n">v_prev</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">phy</span><span class="o">.</span><span class="n">netGravity</span><span class="p">(</span><span class="n">planetBodies</span><span class="p">,</span> <span class="n">pos_prev</span><span class="p">))</span>
+            <span class="n">pos_prev</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">eulers</span><span class="p">(</span><span class="n">pos_prev</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">v_prev</span><span class="p">)</span>
+            <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pos_prev</span><span class="p">)</span>
+            <span class="n">curr_step</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="n">points</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">offset</span><span class="p">)</span><span class="o">*</span><span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">,</span> <span class="n">points</span><span class="p">))</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">y</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">points</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">pg</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aalines</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="kc">False</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
+            <span class="n">pg</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="kc">False</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">Drawer</span><span class="o">.</span><span class="n">intVec2d</span><span class="p">,</span> <span class="n">points</span><span class="p">)),</span> <span class="mi">2</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
