@@ -12,7 +12,7 @@ def genRocket(space):
     :param space:  Space to hold generated rocket.
     :type space: :py:class:`pymunk.Space`
     """
-    rocket = Rocket(UpGoer2000(None), AdvancedSAS(None), CommandModule(None), LeftRCS(None), RightRCS(None)])
+    rocket = Rocket([UpGoer2000(None), AdvancedSAS(None), CommandModule(None), LeftRCS(None), RightRCS(None)])
     space.add(rocket)
     for c in rocket.components:
         space.add(c)

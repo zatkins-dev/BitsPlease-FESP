@@ -1,12 +1,7 @@
 from pymunk import Body as Body
 import pygame as pg
-<<<<<<< HEAD
-from rockets import Thruster, RCSThruster, Tank
-from rockets import SAS
-=======
-from rockets import Thruster, RCSThruster, SAS, CommandModule
+from rockets import Thruster, RCSThruster, SAS, CommandModule, Tank
 from audio import AudioManager
->>>>>>> project-4
 
 
 
@@ -175,13 +170,7 @@ class Rocket(Body):
 
         for x in self.components:
             if x.get_vertices() == c.get_vertices() :
-<<<<<<< HEAD
-                self.components.remove(x)
-    
-    
-=======
                 self._components.remove(x)
->>>>>>> project-4
 
 
     def debugComponentPrint(self):

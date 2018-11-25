@@ -375,7 +375,6 @@ class DeltaVee(Thruster):
             "maxFuel":      40000,
             "density":      73.8
         }
-<<<<<<< HEAD
 
 
 
@@ -386,7 +385,7 @@ class SandSquid(Thruster):
     _sprite = pg.image.load(os.path.join("assets", "sprites", "SandSquid.png"))
     
     def __init__(self, body, transform=None, radius=0):
-       Thruster.__init__(self, body, self.vertices, transform=transform, radius=radius)
+       Thruster.__init__(self, body, transform=transform,  radius=radius)
 
     @classmethod
     def getInfo(cls):
@@ -417,5 +416,3 @@ class SandSquid(Thruster):
                     return
     
 
-=======
->>>>>>> project-4

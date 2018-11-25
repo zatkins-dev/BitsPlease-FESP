@@ -12,10 +12,6 @@ class SAS(Component):
     Must be attached to a body.
     """
 
-<<<<<<< HEAD
-    def __init__(self,  body, transform=None, radius=0):
-        Component.__init__(self, body, self.vertices, transform, radius)
-=======
     def __init__(self, body, transform=None, radius=0):
         """
         Initializes an SAS Module: the underlying component, and the angle & fuel value.
@@ -27,7 +23,6 @@ class SAS(Component):
         :param float radius: Radius of the shape, used for smoothing.
         """
         Component.__init__(self, body, self.vertices, self.getInfo()["density"], transform, radius)
->>>>>>> project-4
         self._SASangle = 0
         self.fuel = self.maxFuel
 

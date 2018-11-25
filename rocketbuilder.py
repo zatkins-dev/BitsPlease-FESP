@@ -40,13 +40,7 @@ class RocketBuilder:
     space = pm.Space(threaded=True)
     space.threads = 2
 
-<<<<<<< HEAD
     componentTabs = Enum("State", "Thruster Control Tanks")
-=======
-    #: Enumerator containing the different tabs of components
-    componentTabs = Enum("State", "Thruster Control")
-    #: Holds the list of components to draw to the menu list
->>>>>>> project-4
     componentList = []
     #: The active category of components from componentTabs
     #: Initialized to the Thruster category
