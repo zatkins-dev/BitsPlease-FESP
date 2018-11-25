@@ -464,7 +464,7 @@ class SandSquid(LiquidThruster):
     def getInfo(cls):
         return {
             "vertices":     [(5, 0), (-5, 0), (-5, 5), (5, 5)],
-            "thrustForce":  550000,
+            "thrustForce":  55000,
             "thrustVector": Vec2d((0,1)),
             "sprite":       cls._sprite,
             "maxFuel":      1,
