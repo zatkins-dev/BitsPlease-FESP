@@ -23,7 +23,7 @@ from graphics import Video
 class RocketBuilder:
     """
     Gets component information and facilitates the construction of a new and
-    unique :py:class:`rockets.rocket.Rocket` to use in the simulation
+    unique :py:class:`rockets.Rocket` to use in the simulation
     """
     #: The :py:class:`pygame.surface.Surface` that the builder will be drawn to
     surface = None
@@ -40,12 +40,15 @@ class RocketBuilder:
     #: The :py:class:`pymunk.Space` used to construct the rocket
     space = pm.Space(threaded=True)
     space.threads = 2
-
+    
+    #: Categories of :py:class:`rockets.Component`
     componentTabs = Enum("State", "Thruster Control Tanks")
+    #: List of currently displayed :py:class:`rockets.Component` types
     componentList = []
     #: The active category of components from componentTabs
     #: Initialized to the Thruster category
     selectedTab = componentTabs.Thruster
+    print (type(selectedTab))
     
     #: This component will be the base, and can't be removed from the rocket in construction
     _baseComponent = CommandModule(None)
@@ -157,7 +160,8 @@ class RocketBuilder:
         """
         Draws the list of available components to the screen using the provided category.
         
-        :param enum.Enum selectedTab: The currently selected category of components to draw
+        :param string selectedTab: The currently selected category of components to draw
+        :type selectedTab: :py:class:`componentTabs`
         """
         buttonMargin = 10
         buttonSize = 100
@@ -344,7 +348,8 @@ class RocketBuilder:
         Tests if it is possible to place the given component, and will place it if possible.
         Returns True if the component was placed, and False if it was not.
         
-        :param rockets.Component component: The component to attempt to place
+        :param component: The component to attempt to place
+        :type component: :py:class:`rockets.Component`
         """
         #if it's intersecting/directly adjacent to another component on the rocket
         if cls.intersectsWithRocket(component) :
@@ -366,8 +371,9 @@ class RocketBuilder:
         transform needed to translate between the component's inherent verteces
         and the mouse's current position in pymunk space.
 
-        :param rockets.Component component: The component who's position to transform
-        :param Bool reflected: Will reflect the transform about the x axis if set to True
+        :param component: The component who's position to transform
+        :type component: :py:class:`rockets.Component`
+        :param bool reflected: Will reflect the transform about the x axis if set to True
         """
         # pull in component boundaries
         #minX, maxX, minY, maxY = Component.getXYBoundingBox(component._vertices)
@@ -401,7 +407,8 @@ class RocketBuilder:
         """
         Removes a component from the rocket.
 
-        :param rockets.Component component: The component to attempt to remove
+        :param component: The component to attempt to remove
+        :type component: :py:class:`rockets.Component`
         """
         cls.theRocket.removeComponent(component)
    
@@ -411,7 +418,8 @@ class RocketBuilder:
         """
         Tests whether or not a component, if placed at the current mouse position, will intersect with the rocket
 
-        :param rockets.Component component: The component class to test
+        :param component: The component class to test
+        :type component: :py:class:`rockets.Component`
         """
         # make an instance of the component to test with, at the mouse position     
         transform = cls.mousePosToPymunkTransform(component)
@@ -442,7 +450,8 @@ class RocketBuilder:
         """
         A helper method that changes the selected component. This is used in the buttons in the component list
         
-        :param rockets.Component component: The component class to set as active
+        :param component: The component class to set as active
+        :type component: :py:class:`rockets.Component`
         """
         cls.activeComponent = component
 

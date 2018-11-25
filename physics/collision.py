@@ -2,14 +2,14 @@ import pymunk
 from pymunk.vec2d import Vec2d
 
 
-collision_debug_mode = False
-
-# Maximum post-collision force a component can withstand without being destroyed
+#: Maximum post-collision force a component can withstand without being destroyed
 _threshold_for_failure = 100000 # kg*m/s^2
 
 
 # Collision Types
+#: Component collision type
 CT_COMPONENT = 2
+#: CelestialBody collision type
 CT_CELESTIAL_BODY = 1
 
 

@@ -15,7 +15,7 @@ class Rocket(Body):
         Creates a Rocket with the given list of components.
 
         :param components:
-        :type components: list(:py:class:`Component`)
+        :type components: [:py:class:`Component`]
         """
         Body.__init__(self)
         for c in components:
@@ -45,47 +45,50 @@ class Rocket(Body):
     @property
     def components(self):
         """
-        A list of all of the individual :py:class:`Component` s that have been attatched to the rocket.
-        The list is presented in the order of :py:class:`Thruster` s, :py:class:`SAS`, :py:class:`CommandModule` s, :py:class:`RCSThruster` s
+        A list of all of the individual :py:class:`..Component` objects that have been attatched to the rocket.
+        The list is presented in the order of :py:class:`..Thruster`, :py:class:`SAS`, :py:class:`CommandModule`, :py:class:`RCSThruster`
         """
         return self.tanks + self.thrusters + self.SASmodules + self.commandModules + self.RCSThrusters
 
     @property
     def commandModules(self):
         """
-        A list of all of the :py:class:`CommandModule` s that have been attatched to the rocket.
+        A list of all of the :py:class:`..CommandModule` components that have been attatched to the rocket.
         """
         return list(filter(lambda c: isinstance(c, CommandModule), self._components))
 
     @property
     def thrusters(self):
         """
-        A list of all of the :py:class:`Thruster` s - but not :py:class:`RCSThruster` s - that have been attatched to the rocket.
+        A list of all of the :py:class:`..Thruster` components - but not :py:class:`RCSThruster` components - that have been attatched to the rocket.
         """
         return list(filter(lambda c: isinstance(c, Thruster) and not isinstance(c, RCSThruster), self._components))
 
     @property
     def RCSThrusters(self):
         """
-        A list of all of the :py:class:`RCSThruster` s that have been attatched to the rocket.
+        A list of all of the :py:class:`..RCSThruster` components that have been attatched to the rocket.
         """
         return list(filter(lambda c: isinstance(c, RCSThruster), self._components))
 
     @property
     def SASmodules(self):
         """
-        A list of all of the :py:class:`SAS` Modules that have been attatched to the rocket.
+        A list of all of the :py:class:`..SAS` components that have been attatched to the rocket.
         """
         return list(filter(lambda c: isinstance(c, SAS), self._components))
 
     @property
     def tanks(self):
+        """
+        A list of all of the :py:class:`..Tank` components that have been attatched to the rocket.
+        """
         return list(filter(lambda c: isinstance(c, Tank), self._components))
 
     @property
     def isAngleLocked(self):
         """
-        Represents whether or not the rocket is attempting to hold itself to a certain angle.
+        Boolean, whether or not the rocket is attempting to hold itself to a certain angle.
         """
         return self._isAngleLocked
 

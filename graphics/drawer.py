@@ -46,7 +46,7 @@ class Drawer:
     @classmethod
     def drawMultiple(cls, screen, list, offset, color=pg.Color("blue")):
         """
-        Calls :py:meth:`.draw` on a list of drawable objects
+        Calls :py:meth:`draw` on a list of drawable objects
 
         :param screen: Pygame surface to draw to
         :type screen: :py:class:`pygame.Surface`
@@ -90,7 +90,7 @@ class Drawer:
 
         :param screen: Pygame surface to draw to
         :type screen: :py:class:`pygame.Surface`
-        :param shape: `Circle` object to draw
+        :param shape: :py:class:`Circle` object to draw
         :type shape: :py:class:`pymunk.Circle`
         :param offset: Offset bewteen pymunk and pygame coordinates
         :type offset: :py:class:`pymunk.vec2d.Vec2d`
@@ -119,8 +119,8 @@ class Drawer:
 
         :param screen: Pygame surface to draw to
         :type screen: :py:class:`pygame.Surface`
-        :param cb: `CelestialBody` object to draw
-        :type cb: :py:class:`...physics.CelestialBody`
+        :param cb: :py:class:`CelestialBody` object to draw
+        :type cb: :py:class:`physics.CelestialBody`
         :param offset: Offset bewteen pymunk and pygame coordinates
         :type offset: :py:class:`pymunk.vec2d.Vec2d`
         :param color: Color of circle
@@ -155,12 +155,12 @@ class Drawer:
     @classmethod
     def drawExplosion(cls, screen, sprite, position, size, offset):
         """
-        Draws a :py:class:`..Explosion` object
+        Draws a :py:class:`Explosion` object
 
         :param screen: Pygame surface to draw to
         :type screen: :py:class:`pygame.Surface`
         :param sprite: Explosion object to draw
-        :type sprite: :py:class:`..Explosion`
+        :type sprite: :py:class:`Explosion`
         :param (int,int) position: Position in pymunk coordinates to draw the explosion
         :param (int,int) size: Size of explosion
         :param offset: Offset bewteen pymunk and pygame coordinates
@@ -178,12 +178,12 @@ class Drawer:
     @classmethod
     def drawSprite(cls, screen, component, offset):
         """
-        Draws a :py:class:`...rockets.component` object
+        Draws a :py:class:`rockets.Component` object
 
         :param screen: Pygame surface to draw to
         :type screen: :py:class:`pygame.Surface`
         :param shape: `Component` object to draw
-        :type shape: :py:class:`...rockets.Component`
+        :type shape: :py:class:`rockets.Component`
         :param offset: Offset bewteen pymunk and pygame coordinates
         :type offset: :py:class:`pymunk.vec2d.Vec2d` 
         """
@@ -222,7 +222,7 @@ class Drawer:
     @classmethod
     def getXYMinMax(cls, vertices):
         """
-        Helper function to get size for scaled sprite for :py:meth:`.drawSprite`
+        Helper function to get size for scaled sprite for :py:meth:`drawSprite`
 
         :param [(float,float)] vertices: List of component vertices
         :returns: Tuple of (minX, maxX, minY, maxY)
@@ -240,7 +240,7 @@ class Drawer:
     @classmethod
     def scaleSpriteToVerts(cls, sprite, vertices):
         """
-        Helper function to scaled sprite for :py:meth:`.drawSprite`
+        Helper function to scaled sprite for :py:meth:`drawSprite`
 
         :param sprite: Sprite image to draw
         :type sprite: :py:class:`pygame.Surface` 
@@ -257,7 +257,7 @@ class Drawer:
         Draws the planetary atmosphere of the closest body to the rocket based on altitude.
 
         :param closestBody: :py:class:`CelestialBody` closest to the rocket
-        :type closestBody: :py:class:`...physics.CelestialBody`
+        :type closestBody: :py:class:`physics.CelestialBody`
         :param float altitude: Height of the rocket above `closestBody`
         """
         surf = pg.display.get_surface()
@@ -287,7 +287,7 @@ class Drawer:
         :param screen: Current display surface
         :type screen: :py:class:`pygame.Surface` 
         :param rocket: Rocket to place in the center of the screen
-        :type rocket: :py:class:`...rockets.Rocket`
+        :type rocket: :py:class:`rockets.Rocket`
         :returns: Offset to add to pymunk coordinates
         :rtype: :py:class:`pymunk.vec2d.Vec2d`
         """

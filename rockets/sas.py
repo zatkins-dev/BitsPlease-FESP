@@ -215,9 +215,6 @@ class AdvancedSAS(SAS):
 
     @classmethod
     def getInfo(cls):
-        """
-        Returns the dictionary with info specified by SAS.getInfo()
-        """
         return {
             "vertices":     [(-12,4), (-12,-6), (12,-6), (12,4)],
             "SASPower":  2,

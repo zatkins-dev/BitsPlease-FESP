@@ -13,4 +13,6 @@ from .thruster import *
 from .rocket import Rocket
 from . import testrocket
 
+__all__ = ["_ASSETS_PATH", "Component", "SAS", "AdvancedSAS", "Tank", "TestTank", "CommandModule", "Thruster", "DeltaVee", "UpGoer2000", "SandSquid", "RCSThruster", "RightRCS", "LeftRCS", "Rocket", "testrocket"]
+
 

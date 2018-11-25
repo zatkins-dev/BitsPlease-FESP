@@ -14,6 +14,7 @@ class Tank(Component):
     def __init__(self, body, transform=None, radius=0):
         """
         Initializes a Tank
+
         :param body: Body to attatch the Tank to.
         :type body: :py:class:`pymunk.Body`
         :param transform: Transformation to apply to the shape
@@ -41,16 +42,14 @@ class Tank(Component):
     @property
     def sprite(self):
         """
-        The sprite of this specific type of Tank. This returns the value defined in
-        the getInfo method.
+        The sprite of this specific type of Tank. This returns the value defined in the getInfo method.
         """
         return self.getInfo()["sprite"]
 
     @property
     def vertices(self):
         """
-        The vertices of this specific type of Tank. This returns the value defined in
-        the getInfo method.
+        The vertices of this specific type of Tank. This returns the value defined in the getInfo method.
         """
         return self.getInfo()["vertices"]
     
@@ -99,7 +98,7 @@ class TestTank(Tank):
     @classmethod
     def getInfo(cls):
         """
-        Returns a dictionary with the following information
+        Returns unformatted 
         """
         return {
             "vertices":     [(-6, 18), (-6, -18), (6, -18), (6, 18)],

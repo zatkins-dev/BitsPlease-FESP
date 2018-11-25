@@ -1,6 +1,15 @@
 graphics package
 ================
 
+Module contents
+---------------
+
+.. automodule:: graphics
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :private-members:
+
 Submodules
 ----------
 
@@ -68,11 +77,3 @@ graphics.zoom module
     :private-members:
 
 
-Module contents
----------------
-
-.. automodule:: graphics
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :private-members:

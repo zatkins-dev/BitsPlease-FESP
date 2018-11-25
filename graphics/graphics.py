@@ -34,14 +34,16 @@ class Graphics(object):
         :param destSurf: The Surface to draw the button onto.
         :type screen: :py:class:`pygame.Surface`
         :param pos: The positon of the top-left corner of the button
-        :type pos: tuple(int, int)
+        :type pos: (int, int)
         :param size: The width and height respectively of the button
-        :type size: tuple(int, int)
+        :type size: (int, int)
         :param colors: A tuple containing two colors. The first is the unfocused color, and the second is the focused color
-        :type colors: tuple(tuple(int, int, int), tuple(int, int, int))
+        :type colors: (:py:class:`pygame.Color`, :py:class:`pygame.Color`)
         :param buttonContent: This can be either a surface or a string. Either will be drawn to the center of the button
+        :type buttonContent: :py:class:`pygame.Surface` or :py:class:`string`
         :param buttonContentSize: If the button content is a string, this will be the size of font used to render the text. If the content is a surface, this is the ammount of the button the surface will occupy, from 0 to 1
         :param buttonFunction: This is the function that will be executed when the button is clicked on.
+        :type buttonFunction: :py:class:`types.FunctionType`
         """
 
         if type(buttonContent) is pygame.Surface:
@@ -105,12 +107,12 @@ class Graphics(object):
         Utility function that draws a string to the screen
 
         :param position: The XY position of the top-left corner of the text
-        :type position: tuple(int, int)
-        :param str content: The string the be drawn 
+        :type position: (int, int)
+        :param string content: The string the be drawn 
         :param textFont: The font to use to render the text. 
         :type textFont: :py:class:`pygame.font.Font`
         :param color: The rgb color of the text
-        :type color: tuple(int, int, int)
+        :type color: :py:class:`pygame.Color`
         :param surface: The surface to draw to
         :type surface: :py:class:`pygame.Surface`
         """
@@ -130,12 +132,12 @@ class Graphics(object):
         Utility function that draws a string to the screen
 
         :param position: The XY position of the center of the text
-        :type position: tuple(int, int)
+        :type position: (int, int)
         :param str content: The string the be drawn 
         :param textFont: The font to use to render the text. 
         :type textFont: :py:class:`pygame.font.Font`
         :param color: The rgb color of the text
-        :type color: tuple(int, int, int)
+        :type color: :py:class:`pygame.Color`
         :param surface: The surface to draw to
         :type surface: :py:class:`pygame.Surface`
         """
@@ -161,7 +163,7 @@ class Graphics(object):
         :param screen: The :py:class:`pygame.Surface` to draw to.
         :type screen: :py:class:`pygame.Surface`
         :param pos: The position of the rocket, used to offset the stars and create a parallax effect.
-        :type pos: tuple(float, float)
+        :type pos: (float, float)
         """
 
         w, h = screen.get_size()
