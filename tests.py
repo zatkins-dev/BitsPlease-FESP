@@ -1,8 +1,7 @@
 import unittest
 
 from rockets.testrocket import genRocket
-from rockets import *
-
+from rockets import Rocket, CommandModule, UpGoer2000, AdvancedSAS, RightRCS, LeftRCS, TestTank
 import pymunk as pm
 
 class RocketTestCase(unittest.TestCase):
@@ -27,4 +26,8 @@ class RocketTestCase(unittest.TestCase):
             for component in self.rocket.components:
                 self.assertIs(component.body, self.rocket)
 
-            
+        def test_append_component(self):
+            self.newTank = TestTank(self.rocket)
+            self.rocket.addComponent(self.newTank)
+            self.assertIn(self.newTank, self.rocket.components)
+            self.tearDown()
