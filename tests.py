@@ -1,5 +1,5 @@
 import unittest
-from graphics import Video
+from graphics import Video, Zoom
 Video.init()
 
 from rockets.testrocket import genRocket
@@ -46,6 +46,63 @@ class RocketTestCase(unittest.TestCase):
         self.assertIn(self.newTank, self.rocket.components)
         self.tearDown()
 
+    def test_lists(self):
+        self.c1 = UpGoer2000(self.rocket)
+        self.rocket.addComponent(self.c1)
+        self.assertIn(self.c1, self.rocket.components)
+        self.assertIn(self.c1, self.rocket.thrusters)
+        self.assertNotIn(self.c1, self.rocket.SASmodules)
+        self.assertNotIn(self.c1, self.rocket.RCSThrusters)
+        self.assertNotIn(self.c1, self.rocket.tanks)
+
+        self.c2 = DeltaVee(self.rocket)
+        self.rocket.addComponent(self.c2)
+        self.assertIn(self.c2, self.rocket.components)
+        self.assertIn(self.c2, self.rocket.thrusters)
+        self.assertNotIn(self.c2, self.rocket.SASmodules)
+        self.assertNotIn(self.c2, self.rocket.RCSThrusters)
+        self.assertNotIn(self.c2, self.rocket.tanks)
+
+        self.c3 = SandSquid(self.rocket)
+        self.rocket.addComponent(self.c3)
+        self.assertIn(self.c3, self.rocket.components)
+        self.assertIn(self.c3, self.rocket.thrusters)
+        self.assertNotIn(self.c3, self.rocket.SASmodules)
+        self.assertNotIn(self.c3, self.rocket.RCSThrusters)
+        self.assertNotIn(self.c3, self.rocket.tanks)
+
+        self.c4 = RightRCS(self.rocket)
+        self.rocket.addComponent(self.c4)
+        self.assertIn(self.c4, self.rocket.components)
+        self.assertNotIn(self.c4, self.rocket.thrusters)
+        self.assertNotIn(self.c4, self.rocket.SASmodules)
+        self.assertIn(self.c4, self.rocket.RCSThrusters)
+        self.assertNotIn(self.c4, self.rocket.tanks)
+
+        self.c5 = LeftRCS(self.rocket)
+        self.rocket.addComponent(self.c5)
+        self.assertIn(self.c5, self.rocket.components)
+        self.assertNotIn(self.c5, self.rocket.thrusters)
+        self.assertNotIn(self.c5, self.rocket.SASmodules)
+        self.assertIn(self.c5, self.rocket.RCSThrusters)
+        self.assertNotIn(self.c5, self.rocket.tanks)
+
+        self.c6 = AdvancedSAS(self.rocket)
+        self.rocket.addComponent(self.c6)
+        self.assertIn(self.c6, self.rocket.components)
+        self.assertNotIn(self.c6, self.rocket.thrusters)
+        self.assertIn(self.c6, self.rocket.SASmodules)
+        self.assertNotIn(self.c6, self.rocket.RCSThrusters)
+        self.assertNotIn(self.c6, self.rocket.tanks)
+
+        self.c7 = TestTank(self.rocket)
+        self.rocket.addComponent(self.c7)
+        self.assertIn(self.c7, self.rocket.components)
+        self.assertNotIn(self.c7, self.rocket.thrusters)
+        self.assertNotIn(self.c7, self.rocket.SASmodules)
+        self.assertNotIn(self.c7, self.rocket.RCSThrusters)
+        self.assertIn(self.c7, self.rocket.tanks)
+
     def test_thruster_list(self):
         self.thruster1 = UpGoer2000(self.rocket)
         self.rocket.addComponent(self.thruster1)
@@ -66,6 +123,7 @@ class RocketTestCase(unittest.TestCase):
         self.thruster5 = LeftRCS(self.rocket)
         self.rocket.addComponent(self.thruster5)
         self.assertNotIn(self.thruster5, self.rocket.thrusters)
+
     def test_rocket_throttle_bounds(self):
         self.rocket.throttle = 99
         self.assertEqual(self.rocket.throttle, 1)
@@ -369,37 +427,61 @@ class  AudioTestCase(unittest.TestCase):
         #Should stop music
         audioManager.silenceMusic()
         self.assertFalse(pg.mixer.music.get_busy())
-    class  TankTestCase(unittest.TestCase):
-    #TANK TESTS
-        def setup(self)
-            self.newTank = TestTank(self.rocket)
-        def test_tank_fuel(self):
-            self.newTank.fuel = -100
-            self.assertEqual(self.newTank.fuel, 0)
-            self.newTank.fuel = 100
-            self.assertEqual(self.newTank.fuel, 100)
 
-        def test_tank_reset(self):
-            self.newTank.fuel = 0
-            self.tank_capacity = self.newTank.capacity
-            self.newTank.reset()
-            self.assertEqual(self.tank_capacity, self.newTank.fuel)
-    
-    class  SASTestCase(unittest.TestCase):
-    #SAS TESTS
-        def setup(self):
-            self.theSAS = self.rocket.SASmodules[0]
+class  TankTestCase(unittest.TestCase):
+#TANK TESTS
+    def setup(self):
+        self.space = pm.Space(threaded=True)
+        self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
+        self.rocket = Rocket(self.baseComponents)
+        self.newTank = TestTank(self.rocket)
+    def test_tank_fuel(self):
+        self.newTank.fuel = -100
+        self.assertEqual(self.newTank.fuel, 0)
+        self.newTank.fuel = 100
+        self.assertEqual(self.newTank.fuel, 100)
 
-        def test_sas_fuel(self):
-            self.theSAS.fuel = -100
-            self.assertEqual(self.theSAS.fuel, 0)
-            self.theSAS.fuel = 100
-            self.assertEqual(self.theSAS.fuel, 100)
+    def test_tank_reset(self):
+        self.newTank.fuel = 0
+        self.tank_capacity = self.newTank.capacity
+        self.newTank.reset()
+        self.assertEqual(self.tank_capacity, self.newTank.fuel)
 
-        def test_sas_reset(self):
-            self.sas_maxfuel = self.theSAS.fuel
-            self.theSAS.fuel = 0
-            self.theSAS.reset()
-            self.assertEqual(self.sas_maxfuel, self.theSAS.fuel)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3b77d5b5826ee496e3f5b7c6ca08c41734e0c17d
+=======
+>>>>>>> d87349c6f4394c0a755d1e9467740aa9efd4ab87
+class  SASTestCase(unittest.TestCase):
+#SAS TESTS
+    def setup(self):
+        self.space = pm.Space(threaded=True)
+        self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
+        self.rocket = Rocket(self.baseComponents)
+        self.theSAS = self.rocket.SASmodules[0]
+
+    def test_sas_fuel(self):
+        self.theSAS.fuel = -100
+        self.assertEqual(self.theSAS.fuel, 0)
+        self.theSAS.fuel = 100
+        self.assertEqual(self.theSAS.fuel, 100)
+
+    def test_sas_reset(self):
+        self.sas_maxfuel = self.theSAS.fuel
+        self.theSAS.fuel = 0
+        self.theSAS.reset()
+        self.assertEqual(self.sas_maxfuel, self.theSAS.fuel)
+
+class ZoomTestCase(unittest.TestCase):
+    #ZOOM TESTS
+    def setup(self):
+<<<<<<< HEAD
+        self.zoom
+=======
+>>>>>>> 3b77d5b5826ee496e3f5b7c6ca08c41734e0c17d
+=======
+        self.theZoom = self.
+>>>>>>> d87349c6f4394c0a755d1e9467740aa9efd4ab87
 if __name__ == '__main__':
     unittest.main()
