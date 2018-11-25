@@ -30,6 +30,13 @@ class RocketTestCase(unittest.TestCase):
             self.newTank = TestTank(self.rocket)
             self.rocket.addComponent(self.newTank)
             self.assertIn(self.newTank, self.rocket.components)
+
+        def test_remove_component(self):
+            compToRemove = self.baseComponents[0]
+            self.rocket.removeComponent(compToRemove)
+            self.assertNotIn(compToRemove, self.rocket.components)
+
+            self.assertRaises(ValueError, self.rocket.removeComponent, compToRemove)
         
         def test_rocket_throttle_bounds(self):
             self.rocket.throttle = 99
