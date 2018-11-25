@@ -17,7 +17,7 @@ class Trajectory():
 
         :param (float,float) position: Position to check
         :param planets: List of planets
-        :type planets: [:py:class:`...physics.CelestialBody`]
+        :type planets: [:py:class:`physics.CelestialBody`]
         :returns: `True` if position is inside one of `planets`, `False` otherwise
         """
 

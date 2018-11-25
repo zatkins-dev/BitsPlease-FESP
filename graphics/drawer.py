@@ -178,7 +178,7 @@ class Drawer:
     @classmethod
     def drawSprite(cls, screen, component, offset):
         """
-        Draws a :py:class:`...rockets.component` object
+        Draws a :py:class:`rockets.Component` object
 
         :param screen: Pygame surface to draw to
         :type screen: :py:class:`pygame.Surface`
