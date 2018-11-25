@@ -418,21 +418,7 @@ class AudioTestCase(unittest.TestCase):
         self.audioManager.silenceMusic()
         self.assertFalse(pg.mixer.Channel(1).get_busy())
 
-    def test_backgroundMusic(self):
-        #No music should be playing, should now be playing music
-        self.audioManager.musicChecker()
-        self.assertTrue(pg.mixer.music.get_busy())
-
-        #wait 5 seconds
-        time.sleep(5)
-
-        #Try to reset the song, it should not work
-        self.audioManager.musicChecker()
-        self.assertTrue(pg.mixer.music.get_pos() > 4500)
-
-        #Should stop music
-        self.audioManager.silenceMusic()
-        self.assertFalse(pg.mixer.music.get_busy())
+    
 
 class TankTestCase(unittest.TestCase):
 #TANK TESTS
