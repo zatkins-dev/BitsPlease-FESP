@@ -11,14 +11,21 @@ class RocketTestCase(unittest.TestCase):
     def setUp(self):
         self.space = pm.Space(threaded=True)
         self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
-        self.rocket = Rocket(self.baseComponents)
+        self.rocket = genRocket(self.space)
 
     def test_default_rocket(self):
+        self.setUp()
         # test if rocket was actually added to our space
         self.assertEqual(self.rocket.space, self.space)
 
         # test if the components were actually added to the rocket
-        self.assertIs(self.rocket.components, self.baseComponents)
+        for i in range(len(self.baseComponents)):
+            test_type = type(self.baseComponents[i])
+            contains_type = False
+            for c in self.rocket.components:
+                if isinstance(c, test_type):
+                    contains_type = True
+            self.assertEqual(contains_type, True)
 
         # test initial conditions... destroyed, saslock, etc.
         self.assertFalse(self.rocket.destroyed)
