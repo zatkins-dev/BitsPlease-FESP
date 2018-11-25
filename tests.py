@@ -96,6 +96,25 @@ class RocketTestCase(unittest.TestCase):
         self.assertEqual(self.rocket.throttle, 0)
         self.assertEqual(self.rocket.isAngleLocked, False)
 
+class SolidThrusterTestCase(unittest.TestCase):
+    def setUp(self):
+        self.space = pm.Space(threaded=True)
+        self.thruster = UpGoer2000(None)
+        self.rocket = Rocket([self.thruster])
+        self.space.add(self.rocket)
+        self.space.add(self.thruster)
+
+    def test_solid_thruster_contructor(self):
+        self.assertEqual(self.thruster.fuel, self.thruster.maxFuel)
+
+    def test_fuel(self):
+        self.thruster.fuel = 50
+        self.assertEqual(self.thruster.fuel, 50)
+
+        self.thruster.fuel = -100
+        self.assertEqual(self.thruster.fuel, 0)
+
+    def test_apply_thrust_fuel
 
 if __name__ == '__main__':
     unittest.main()
