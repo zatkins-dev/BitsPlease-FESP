@@ -177,6 +177,12 @@ class SolidThruster(Thruster):
         """
         pass
 
+    @classmethod
+    def getDisplayInfo(cls):
+        inf = super().getDisplayInfo()
+        inf["Fuel Type"] = "Solid"
+        return inf
+
 class LiquidThruster(Thruster):
     def __init__(self, body, transform=None, radius=0):
         Component.__init__(self, body, self.getInfo()["vertices"], self.getInfo()["density"], transform, radius)
@@ -198,8 +204,8 @@ class LiquidThruster(Thruster):
                 fuelTank = tank
                 break
         if tank is not None:
-            self.body.apply_impulse_at_local_point(throttle * self.thrust(), (self.center_of_gravity.x, self.center_of_gravity.y))
-            tank.fuel -= throttle * 1
+            self.body.apply_impulse_at_local_point(throttle * timescale * self.thrust(), (self.center_of_gravity.x, self.center_of_gravity.y))
+            tank.fuel -= throttle * timescale * 1
 
     def reset(self):
         super().reset()
@@ -228,6 +234,12 @@ class LiquidThruster(Thruster):
         +----------------+-------------------------------------------------+
         """
         pass
+    
+    @classmethod
+    def getDisplayInfo(cls):
+        inf = super().getDisplayInfo()
+        inf["Fuel Type"] = "Liquid"
+        return inf
 
 class RCSThruster(Thruster):
     """
