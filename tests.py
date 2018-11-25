@@ -147,5 +147,14 @@ class RocketTestCase(unittest.TestCase):
         self.assertEqual(self.theSAS.fuel, 0)
         self.theSAS.fuel = 100
         self.assertEqual(self.theSAS.fuel, 100)
+
+    def test_sas_reset(self):
+        self.theSAS = self.rocket.SASmodules[0]
+        
+        self.sas_maxfuel = self.theSAS.fuel
+        self.theSAS.fuel = 0
+        self.theSAS.reset()
+        self.assertEqual(self.sas_maxfuel, self.theSAS.fuel)
+    
 if __name__ == '__main__':
     unittest.main()
