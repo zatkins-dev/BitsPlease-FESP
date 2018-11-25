@@ -1,5 +1,5 @@
 import unittest
-from graphics import Video, Zoom, Drawer
+from graphics import Video, Zoom, Explosion, Drawer
 Video.init()
 
 from rockets.testrocket import genRocket
@@ -509,9 +509,21 @@ class TimescaleTestCase(unittest.TestCase):
         self.assertTrue(self.timescale.reset())
         self.assertEqual(self.timescale.scale, baseScale)
 
+class ExplosionTestCase(unittest.TestCase):
+    def setUp(self):
+        self.explosion = Explosion(1, range(5))
+
+    def test_explosion_loop(self):
+        numImages = len(self.explosion.images)
+        for i in range(numImages * 2):
+            self.assertEqual(i % numImages, self.explosion.current_frame)
+            self.assertEqual(i % numImages, self.explosion.image)
+
+            self.explosion.update_frame()
+
 class ZoomTestCase(unittest.TestCase):
     #ZOOM TESTS
-    def setup(self):
+    def setUp(self):
         self.zoom = Zoom()
 
     def test_zoom_zoom(self):
