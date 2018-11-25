@@ -11,14 +11,21 @@ class RocketTestCase(unittest.TestCase):
     def setUp(self):
         self.space = pm.Space(threaded=True)
         self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
-        self.rocket = Rocket(self.baseComponents)
+        self.rocket = genRocket(self.space)
 
     def test_default_rocket(self):
+        self.setUp()
         # test if rocket was actually added to our space
         self.assertEqual(self.rocket.space, self.space)
 
         # test if the components were actually added to the rocket
-        self.assertIs(self.rocket.components, self.baseComponents)
+        for i in range(len(self.baseComponents)):
+            test_type = type(self.baseComponents[i])
+            contains_type = False
+            for c in self.rocket.components:
+                if isinstance(c, test_type):
+                    contains_type = True
+            self.assertEqual(contains_type, True)
 
         # test initial conditions... destroyed, saslock, etc.
         self.assertFalse(self.rocket.destroyed)
@@ -35,26 +42,64 @@ class RocketTestCase(unittest.TestCase):
         self.assertIn(self.newTank, self.rocket.components)
         self.tearDown()
 
-    def test_thruster_list(self):
-        self.thruster1 = UpGoer2000(self.rocket)
-        self.rocket.addComponent(self.thruster1)
-        self.assertIn(self.thruster1, self.rocket.thrusters)
+    def test_lists(self):
+        self.c1 = UpGoer2000(self.rocket)
+        self.rocket.addComponent(self.c1)
+        self.assertIn(self.c1, self.rocket.components)
+        self.assertIn(self.c1, self.rocket.thrusters)
+        self.assertNotIn(self.c1, self.rocket.SASmodules)
+        self.assertNotIn(self.c1, self.rocket.RCSThrusters)
+        self.assertNotIn(self.c1, self.rocket.tanks)
 
-        self.thruster2 = DeltaVee(self.rocket)
-        self.rocket.addComponent(self.thruster2)
-        self.assertIn(self.thruster2, self.rocket.thrusters)
+        self.c2 = DeltaVee(self.rocket)
+        self.rocket.addComponent(self.c2)
+        self.assertIn(self.c2, self.rocket.components)
+        self.assertIn(self.c2, self.rocket.thrusters)
+        self.assertNotIn(self.c2, self.rocket.SASmodules)
+        self.assertNotIn(self.c2, self.rocket.RCSThrusters)
+        self.assertNotIn(self.c2, self.rocket.tanks)
 
-        self.thruster3 = SandSquid(self.rocket)
-        self.rocket.addComponent(self.thruster3)
-        self.assertIn(self.thruster3, self.rocket.thrusters)
+        self.c3 = SandSquid(self.rocket)
+        self.rocket.addComponent(self.c3)
+        self.assertIn(self.c3, self.rocket.components)
+        self.assertIn(self.c3, self.rocket.thrusters)
+        self.assertNotIn(self.c3, self.rocket.SASmodules)
+        self.assertNotIn(self.c3, self.rocket.RCSThrusters)
+        self.assertNotIn(self.c3, self.rocket.tanks)
 
-        self.thruster4 = RightRCS(self.rocket)
-        self.rocket.addComponent(self.thruster4)
-        self.assertNotIn(self.thruster4, self.rocket.thrusters)
+        self.c4 = RightRCS(self.rocket)
+        self.rocket.addComponent(self.c4)
+        self.assertIn(self.c4, self.rocket.components)
+        self.assertNotIn(self.c4, self.rocket.thrusters)
+        self.assertNotIn(self.c4, self.rocket.SASmodules)
+        self.assertIn(self.c4, self.rocket.RCSThrusters)
+        self.assertNotIn(self.c4, self.rocket.tanks)
 
-        self.thruster5 = LeftRCS(self.rocket)
-        self.rocket.addComponent(self.thruster5)
-        self.assertNotIn(self.thruster5, self.rocket.thrusters)
+        self.c5 = LeftRCS(self.rocket)
+        self.rocket.addComponent(self.c5)
+        self.assertIn(self.c5, self.rocket.components)
+        self.assertNotIn(self.c5, self.rocket.thrusters)
+        self.assertNotIn(self.c5, self.rocket.SASmodules)
+        self.assertIn(self.c5, self.rocket.RCSThrusters)
+        self.assertNotIn(self.c5, self.rocket.tanks)
+
+        self.c6 = AdvancedSAS(self.rocket)
+        self.rocket.addComponent(self.c6)
+        self.assertIn(self.c6, self.rocket.components)
+        self.assertNotIn(self.c6, self.rocket.thrusters)
+        self.assertIn(self.c6, self.rocket.SASmodules)
+        self.assertNotIn(self.c6, self.rocket.RCSThrusters)
+        self.assertNotIn(self.c6, self.rocket.tanks)
+
+        self.c7 = TestTank(self.rocket)
+        self.rocket.addComponent(self.c7)
+        self.assertIn(self.c7, self.rocket.components)
+        self.assertNotIn(self.c7, self.rocket.thrusters)
+        self.assertNotIn(self.c7, self.rocket.SASmodules)
+        self.assertNotIn(self.c7, self.rocket.RCSThrusters)
+        self.assertIn(self.c7, self.rocket.tanks)
+
+
     def test_rocket_throttle_bounds(self):
         self.rocket.throttle = 99
         self.assertEqual(self.rocket.throttle, 1)
@@ -69,6 +114,7 @@ class RocketTestCase(unittest.TestCase):
         self.rocket.isAngleLocked = True
         self.assertEqual(self.rocket.isAngleLocked, True)
         self.rocket.removeComponent(self.rocket.SASmodules[0])
+        self.rocket.isAngleLocked = True
         self.assertEqual(self.rocket.isAngleLocked, False)
 
     def test_rocket_reset(self):
@@ -77,7 +123,6 @@ class RocketTestCase(unittest.TestCase):
         self.rocket.throttle = 0.5
         self.rocket.isAngleLocked = True
         self.rocket.reset()
-        self.assert(self.rocket.tanks, [])
         self.assertEqual(self.rocket.throttle, 0)
         self.assertEqual(self.rocket.isAngleLocked, False)
 
