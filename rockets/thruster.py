@@ -261,7 +261,7 @@ class RCSThruster(Thruster):
 
         self.fuel = 0
     
-    def applyThrust(self):
+    def applyThrust(self, timescale):
         """
         The RCSThruster applies thrust differently from normal Thrusters. The
         RCSThruster will check if there is an SAS module on the host Rocket
@@ -273,8 +273,8 @@ class RCSThruster(Thruster):
                 sasModule = module
                 break
         if sasModule is not None:
-            self.body.apply_impulse_at_local_point(self.thrust(), (self.center_of_gravity.x, self.center_of_gravity.y))
-            sasModule.fuel -= 1
+            self.body.apply_impulse_at_local_point(self.thrust() * timescale, (self.center_of_gravity.x, self.center_of_gravity.y))
+            sasModule.fuel -= 1 * timescale
 
     def reset(self):
         super().reset()
