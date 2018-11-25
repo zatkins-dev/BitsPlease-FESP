@@ -53,9 +53,20 @@ class CommandModule(Component):
         super().reset()
 
     @classmethod
+    def getInfo(cls):
+        return {
+            "vertices":     [(12, 4), (-12, 4), (0, 42)],
+            "sprite":       cls._sprite,
+            "density":      cls._density,
+        }
+
+    @classmethod
     def getDisplayInfo(cls):
         """
         Return "pretty" info for disply in the rocket builder
+
+        :returns: Dictionary of display properties
+        :rtype: :py:class:`Dict`
         """
         return {
             "Rocket's Base": "The Heart of the Rocket"

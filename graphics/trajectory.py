@@ -17,7 +17,7 @@ class Trajectory():
 
         :param (float,float) position: Position to check
         :param planets: List of planets
-        :type planets: [:py:class:`...physics.CelestialBody`]
+        :type planets: [:py:class:`physics.CelestialBody`]
         :returns: `True` if position is inside one of `planets`, `False` otherwise
         """
 
@@ -31,9 +31,11 @@ class Trajectory():
         """
         Uses the forward Euler method to approximate the the value of a function at the next timestep. Specifically, returns :math:`f_{next} = f_{prev} + \Delta t\cdot\\frac{fp}{dt}`, where :math:`\\frac{df}{dt}` is the derivative of the fuction at the previous timestep.
 
-        :param (float,float) f_prev: Function value at previous timestep
+        :param f_prev: Function value at previous timestep
+        :type f_prev: :py:class:`pymunk.vec2d.Vec2d`
         :param float dt: Small change in time (:math:`\Delta t`), a smaller value yields a more accurate approximation
-        :param (float,float) dfdt: Value of the derivative :math:`\\frac{df}{dt}`.
+        :param dfdt: Value of the derivative :math:`\\frac{df}{dt}`.
+        :type dfdt: :py:class:`pymunk.vec2d.Vec2d`
         :returns: Projected function value at the next timestep
         :rtype: :py:class:`pymunk.vec2d.Vec2d`
         """
@@ -48,9 +50,9 @@ class Trajectory():
             * The iteration count exceeds `max_timesteps`.
         
         :param rocket: The rocket to project
-        :type rocket: :py:class:`...rockets.Rocket`
+        :type rocket: :py:class:`rockets.Rocket`
         :param planetBodies: List of all planetary bodies
-        :type planetBodies: [:py:class:`...physics.CelestialBody`]
+        :type planetBodies: [:py:class:`physics.CelestialBody`]
         :param int max_timesteps: Maximum iterations before stopping
         :param float dt: Iteration step size
         """

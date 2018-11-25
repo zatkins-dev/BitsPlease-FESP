@@ -10,14 +10,7 @@ Welcome to BitsPlease-FESP's documentation!
    :maxdepth: 3
    :caption: Contents:
    
-   main
-   graphics
-   physics
-   rockets
-   rocketbuilder
-   simulationexec
-   
-
+   modules
 
 
 Indices and tables

@@ -44,7 +44,7 @@ class Menu(object):
         Draws the background using the given color and opacity alpha value.
 
         :param color_rgb: The color of the background
-        :type color_rgb: tuple(int, int, int)
+        :type color_rgb: :py:class:`pygame.Color`
         :param int opacity: The alpha value with which to draw the background
         """
         dispSurface = pygame.display.get_surface()

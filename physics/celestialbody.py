@@ -22,15 +22,23 @@ class CelestialBody():
         :type position_: tuple(float, float)
         :param float elasticity_: The elasticity of the planet in collisions.
         :param atmosphere_color: The color of the planet's sky.
-        :type atmosphere_color: tuple(int, int, int)
+        :type atmosphere_color: :py:class:`pygame.Color`
         :param float atmosphere_height: The height of the planet's atmosphere.
         :param int bodytype_: The type of body 
 
         """
+        #: Planet name
         self.name = name_
+        #: Color of planet atmosphere
         self.atmosphereColor = atmosphere_color
+        #: Height of planet atmosphere
         self.atmosphereHeight = atmosphere_height
+        #: :py:class:`pymunk.Body` of the celestial body
+        #: Stores :py:class:`pymunk.vec2d.Vec2d` position
         self.body = pm.Body(body_type=bodytype_)
+        #: :py:class:`pymunk.Circle` of the celestial body
+        #: Stores: :py:class:`float` friction, :py:class:`float` mass,
+        #: :py:class:`float` elasticity, :py:class:`int` collision type
         self.shape = pm.Circle(self.body, radius_)
         self.shape.friction = 0.80
         self.shape.mass = mass_

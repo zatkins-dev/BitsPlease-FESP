@@ -1,6 +1,17 @@
 physics package
 ===============
 
+Module contents
+---------------
+
+.. automodule:: physics
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :private-members:
+    
+
+
 Submodules
 ----------
 
@@ -45,12 +56,3 @@ physics.timescale module
     
 
 
-Module contents
----------------
-
-.. automodule:: physics
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :private-members:
-    

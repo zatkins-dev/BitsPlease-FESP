@@ -6,6 +6,8 @@ BitsPlease-FESP
 
    graphics
    physics
-   rocketbuilder
    rockets
-   simulationexec
+   audioManager
+   rocketbuilder
+   simulation
+   main
