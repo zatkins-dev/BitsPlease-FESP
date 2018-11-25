@@ -40,7 +40,7 @@ class SAS(Component):
         else:
             self._fuel = 0
 
-    def rotateCounterClockwise(self):
+    def rotateCounterClockwise(self, timescale):
         """
         Uses the RCS Thrusters on the host rocket to turn the rocket counter-clockwise.
         """
@@ -49,12 +49,12 @@ class SAS(Component):
             # check the direction of each thruster, and apply if it will rotate counter clockwise
             if ts.thrustVector.x < 0 and ts.center_of_gravity.y > self.body.center_of_gravity.y:
                 # left-directed vector and on the top half of the rocket
-                ts.applyThrust()
+                ts.applyThrust(timescale)
             elif ts.thrustVector.x > 0 and ts.center_of_gravity.y < self.body.center_of_gravity.y:
                 # right-directed vector and on the bottom half of the rocket
-                ts.applyThrust()
+                ts.applyThrust(timescale)
 
-    def rotateClockwise(self):
+    def rotateClockwise(self, timescale):
         """
         Uses the RCS Thrusters on the host rocket to turn the rocket clockwise.
         """
@@ -63,12 +63,12 @@ class SAS(Component):
             # check the direction of each thruster, and apply if it will rotate clockwise
             if ts.thrustVector.x > 0 and ts.center_of_gravity.y > self.body.center_of_gravity.y:
                 # right-directed vector and on the top half of the rocket
-                ts.applyThrust()
+                ts.applyThrust(timescale)
             elif ts.thrustVector.x < 0 and ts.center_of_gravity.y < self.body.center_of_gravity.y:
                 # left-directed vector and on the bottom half of the rocket
-                ts.applyThrust()
+                ts.applyThrust(timescale)
 
-    def holdAngle(self):
+    def holdAngle(self, timescale):
         """
         Will work to hold the rocket at the set SASAngle. This is affected by the SASPower and the Tolerance
         parameters of a specific SAS Module.
@@ -88,9 +88,9 @@ class SAS(Component):
             targetAngVel = .5 * math.atan(self.SASPower * deltaAngle)
 
             if targetAngVel > self.body.angular_velocity:
-                self.rotateCounterClockwise()
+                self.rotateCounterClockwise(timescale)
             elif targetAngVel < self.body.angular_velocity:
-                self.rotateClockwise()
+                self.rotateClockwise(timescale)
 
     def reset(self):
         """

@@ -121,13 +121,13 @@ class Rocket(Body):
         # checking from input from users if not holding
         if self.isAngleLocked:
             for module in self.SASmodules:
-                module.holdAngle()
+                module.holdAngle(timescale)
         else:
             for module in self.SASmodules:
                 if currentKeys[pg.K_a]:
-                    module.rotateCounterClockwise()
+                    module.rotateCounterClockwise(timescale)
                 if currentKeys[pg.K_d]:
-                    module.rotateClockwise()
+                    module.rotateClockwise(timescale)
 
         # apply all of the thrusters, with the current throttle
         if self.throttle is not 0:
