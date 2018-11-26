@@ -207,6 +207,6 @@ class Graphics(object):
 
             paralaxModifier = .05 * Drawer.zoom.zoom
 
-            starX = int(cls._stars[i][0] + paralaxModifier * pos[0]) % cls._starsWidth
-            starY = int(cls._stars[i][1] - paralaxModifier * pos[1]) % cls._starsHeight
+            starX = int(cls._stars[i][0] - paralaxModifier * pos[0]) % cls._starsWidth
+            starY = int(cls._stars[i][1] + paralaxModifier * pos[1]) % cls._starsHeight
             pygame.draw.circle(screen, cls._stars[i][2], (starX, starY), width)

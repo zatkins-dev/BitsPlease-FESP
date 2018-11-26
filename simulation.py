@@ -92,9 +92,8 @@ class Simulation():
         """
         Draws the background stars onto :py:attr:`screen`.
         """
-        center = Drawer.intVec2d(Vec2d(cls.screen.get_size()))
         cls.screen.fill((0, 0, 0))
-        graph.drawStars(cls.screen, center)
+        graph.drawStars(cls.screen, cls.rocket.position)
 
     @classmethod
     def get_altitude(cls):
@@ -260,7 +259,6 @@ class Simulation():
                     return returnCode
             pg.display.flip()
             cls.clock.tick(60)
-            print(cls.clock.get_fps())
 
         Menu.demoPressed = False
         TimeScale.reset()
