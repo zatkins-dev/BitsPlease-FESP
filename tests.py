@@ -407,6 +407,13 @@ class TimescaleTestCase(unittest.TestCase):
     def setUp(self):
         self.timescale = TimeScale()
 
+    def test_scale_reset(self):
+        baseScale = self.timescale._BASE_SCALE
+        self.timescale._set_scale(self.timescale._MIN_SCALE)
+
+        self.assertTrue(self.timescale.reset())
+        self.assertEqual(self.timescale.scale, baseScale)
+
     def test_scale_faster(self):
         scale = self.timescale.scale
         self.timescale.faster()
@@ -437,13 +444,6 @@ class TimescaleTestCase(unittest.TestCase):
         self.timescale._set_scale(self.timescale._MIN_SCALE - 1)
         self.assertEqual(prevScale, self.timescale.scale)
         self.assertFalse(returnVal)
-
-    def test_scale_reset(self):
-        baseScale = self.timescale.scale
-        self.timescale._set_scale(self.timescale._MIN_SCALE)
-
-        self.assertTrue(self.timescale.reset())
-        self.assertEqual(self.timescale.scale, baseScale)
 
 class ExplosionTestCase(unittest.TestCase):
     def setUp(self):
