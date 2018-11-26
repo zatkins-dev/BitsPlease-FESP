@@ -4,8 +4,7 @@ from graphics import Video
 from . import _ASSETS_PATH
 import os
 from enum import Enum
-import unittest
-import tests
+
 
 class Menu(object):
     """
@@ -14,7 +13,7 @@ class Menu(object):
     """
 
     #: The different states that the menu can take
-    State = Enum('State', 'Splash Menu Building Playing Exit')
+    State = Enum('State', 'Splash Menu Building Playing Testing Exit')
 
     #: Becomes true when the first screen (title screen) has been clicked on.
     #: A higher order class can watch this and proceed to the actual menu.
@@ -28,9 +27,13 @@ class Menu(object):
     #: order class can watch htis and take appropriate action on change. 
     builderPressed = False
 
-    #: Becomes true when a the quit button has been pressed. A higher order class can
+    #: Becomes true when the quit button has been pressed. A higher order class can
     #: watch this and take appropriate action on change
     quitPressed = False
+
+    #: Becomes true when the tests button has been pressed. A higher order class can
+    #: watch this and take appropriate action on change
+    testsPressed = False
 
     #: The color to use for the menu buttons
     _menuButtonColor = ((255, 255, 255, 64), (255, 255, 255, 128))
@@ -119,7 +122,7 @@ class Menu(object):
                             cls._builderCallback)
         Graphics.drawButton(surface, buttonPosition(2), buttonSize,
                             cls._menuButtonColor, "Test Suite (Console)", 25,
-                            unittest.main)
+                            cls._testsCallback)
         Graphics.drawButton(surface, buttonPosition(3), buttonSize,
                             cls._menuButtonColor, "Exit to Desktop", 25,
                             cls._quitCallback)
@@ -165,3 +168,11 @@ class Menu(object):
         demoPressed bool to be true.
         """
         cls.demoPressed = True
+
+    @classmethod
+    def _testsCallback(cls):
+        """
+        Callback function to be called when the "test suite" button is clicked. This sets the
+        testsPressed bool to be true.
+        """
+        cls.testsPressed = True

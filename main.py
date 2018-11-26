@@ -15,6 +15,9 @@ from graphics import Menu
 from simulation import Simulation
 from rocketbuilder import RocketBuilder
 
+import unittest
+import tests
+
 
 def main():
     """
@@ -56,6 +59,9 @@ def main():
             elif menu.builderPressed:
                 currentState = State.Building
                 menu.builderPressed = False
+            elif menu.testsPressed:
+                currentState = State.Testing
+                menu.testsPressed = False
             else:
                 menu.drawMenu(100)
 
@@ -65,6 +71,9 @@ def main():
                 currentState = State.Playing
                 rocket = newRocket
 
+        if currentState == State.Testing:
+            unittest.main(module="tests")
+            currentState = State.Menu
 
         if currentState == State.Playing:
             currentState = Simulation.run(rocket)
