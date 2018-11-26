@@ -414,6 +414,7 @@ class TimescaleTestCase(unittest.TestCase):
         self.assertEqual(scale * 2, self.timescale.scale)
 
     def test_scale_slower(self):
+        self.timescale._set_scale(.25)
         scale = self.timescale.scale
         self.timescale.slower()
 
