@@ -267,17 +267,28 @@ class Drawer:
             relHeight = (altitude / closestBody.atmosphereHeight)
             
             # find the opacity, in a quadratically decreasing fasion
-            atmBrightness = 1 - (relHeight)**2
+            atmOpacity = 1 - (relHeight)**2
 
             # scale atmColor
-            atmColor = tuple(list(map(lambda c: atmBrightness*c, atmColor)) +[atmBrightness])
+            atmColor = tuple(map(lambda c: atmOpacity*c, atmColor))
             if cls.zoom.zoom > 2**-5:
+
+                # check if the atmosphere color has an opacity, and combine with it
+                if len(atmColor) is 4:
+                    atmOpacity *= atmColor[3]
+
                 # create a background surface, and blit the background over it
-                surf.fill(atmColor)
+                surf = pg.display.get_surface()
+                surfSize = surf.get_size()
+                background = pg.Surface(surfSize)
+                background.fill(atmColor)
+                background.set_alpha(int(255*atmOpacity))
+                surf.blit(background, (0,0))
             else:
                 r = (closestBody.shape.radius+closestBody.atmosphereHeight)*cls.zoom.zoom
                 pos = cls.to_pygame(closestBody.shape, Vec2d(0, 0), offset)
                 pg.draw.circle(surf, atmColor, [pos[0], surf.get_size()[1]-pos[1]], int(r))
+
 
     @classmethod
     def getOffset(cls, screen, rocket):

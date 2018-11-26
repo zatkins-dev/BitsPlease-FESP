@@ -260,6 +260,7 @@ class Simulation():
                     return returnCode
             pg.display.flip()
             cls.clock.tick(60)
+            print(cls.clock.get_fps())
 
         Menu.demoPressed = False
         TimeScale.reset()
