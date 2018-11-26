@@ -236,9 +236,8 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draws the background stars onto :py:attr:`screen`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">center</span> <span class="o">=</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">intVec2d</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">get_size</span><span class="p">()))</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">fill</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-        <span class="n">graph</span><span class="o">.</span><span class="n">drawStars</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span> <span class="n">center</span><span class="p">)</span></div>
+        <span class="n">graph</span><span class="o">.</span><span class="n">drawStars</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">position</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Simulation.get_altitude"><a class="viewcode-back" href="../simulation.html#simulation.Simulation.get_altitude">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_altitude</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
