@@ -1,0 +1,721 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tests &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">BitsPlease-FESP</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>tests</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tests</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Video</span><span class="p">,</span> <span class="n">Zoom</span><span class="p">,</span> <span class="n">Explosion</span><span class="p">,</span> <span class="n">Drawer</span>
+<span class="n">Video</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">rockets.testrocket</span> <span class="k">import</span> <span class="n">genRocket</span>
+<span class="kn">from</span> <span class="nn">rockets</span> <span class="k">import</span> <span class="n">Rocket</span><span class="p">,</span> <span class="n">CommandModule</span><span class="p">,</span> <span class="n">UpGoer2000</span><span class="p">,</span> <span class="n">DeltaVee</span><span class="p">,</span> <span class="n">SandSquid</span><span class="p">,</span> <span class="n">AdvancedSAS</span><span class="p">,</span> <span class="n">RightRCS</span><span class="p">,</span> <span class="n">LeftRCS</span><span class="p">,</span> <span class="n">TestTank</span>
+<span class="kn">import</span> <span class="nn">pymunk</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">pygame</span> <span class="k">as</span> <span class="nn">pg</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">physics</span> <span class="k">import</span> <span class="n">Physics</span><span class="p">,</span> <span class="n">CelestialBody</span><span class="p">,</span> <span class="n">TimeScale</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">audioManager</span> <span class="k">import</span> <span class="n">AudioManager</span>
+
+<div class="viewcode-block" id="RocketTestCase"><a class="viewcode-back" href="../tests.html#tests.RocketTestCase">[docs]</a><span class="k">class</span> <span class="nc">RocketTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="RocketTestCase.setUp"><a class="viewcode-back" href="../tests.html#tests.RocketTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Space</span><span class="p">(</span><span class="n">threaded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseComponents</span> <span class="o">=</span> <span class="p">[</span><span class="n">CommandModule</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">UpGoer2000</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">AdvancedSAS</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">RightRCS</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">LeftRCS</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span> <span class="o">=</span> <span class="n">Rocket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">baseComponents</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RocketTestCase.test_default_rocket"><a class="viewcode-back" href="../tests.html#tests.RocketTestCase.test_default_rocket">[docs]</a>    <span class="k">def</span> <span class="nf">test_default_rocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span> <span class="o">=</span> <span class="n">genRocket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="p">)</span>
+
+        <span class="c1"># test if rocket was actually added to our space</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="p">)</span>
+
+        <span class="c1"># test if the components were sorted correctly on insert</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocketComponentTypes</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="nb">type</span><span class="p">(</span><span class="n">c</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseComponentsTypes</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="nb">type</span><span class="p">(</span><span class="n">c</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseComponents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertCountEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocketComponentTypes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseComponentsTypes</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RocketTestCase.test_rocket_constructor"><a class="viewcode-back" href="../tests.html#tests.RocketTestCase.test_rocket_constructor">[docs]</a>    <span class="k">def</span> <span class="nf">test_rocket_constructor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># test initial conditions... destroyed, saslock, etc.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">destroyed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># test that the component lists are the same</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertCountEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">components</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseComponents</span><span class="p">)</span>
+
+        <span class="c1"># test that components bodies were made to be the rocket</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIs</span><span class="p">(</span><span class="n">component</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RocketTestCase.test_append_component"><a class="viewcode-back" href="../tests.html#tests.RocketTestCase.test_append_component">[docs]</a>    <span class="k">def</span> <span class="nf">test_append_component</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newTank</span> <span class="o">=</span> <span class="n">TestTank</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">newTank</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">newTank</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tearDown</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RocketTestCase.test_lists"><a class="viewcode-back" href="../tests.html#tests.RocketTestCase.test_lists">[docs]</a>    <span class="k">def</span> <span class="nf">test_lists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c1</span> <span class="o">=</span> <span class="n">UpGoer2000</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">RCSThrusters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">tanks</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">c2</span> <span class="o">=</span> <span class="n">DeltaVee</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">RCSThrusters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">tanks</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">c3</span> <span class="o">=</span> <span class="n">SandSquid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">RCSThrusters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">tanks</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">c4</span> <span class="o">=</span> <span class="n">RightRCS</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">RCSThrusters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">tanks</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">c5</span> <span class="o">=</span> <span class="n">LeftRCS</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">RCSThrusters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">tanks</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">c6</span> <span class="o">=</span> <span class="n">AdvancedSAS</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c6</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">RCSThrusters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">tanks</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">c7</span> <span class="o">=</span> <span class="n">TestTank</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c7</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c7</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c7</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c7</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c7</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">RCSThrusters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c7</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">tanks</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RocketTestCase.test_thruster_list"><a class="viewcode-back" href="../tests.html#tests.RocketTestCase.test_thruster_list">[docs]</a>    <span class="k">def</span> <span class="nf">test_thruster_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thruster1</span> <span class="o">=</span> <span class="n">UpGoer2000</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">thruster2</span> <span class="o">=</span> <span class="n">DeltaVee</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">thruster3</span> <span class="o">=</span> <span class="n">SandSquid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">thruster4</span> <span class="o">=</span> <span class="n">RightRCS</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">thruster5</span> <span class="o">=</span> <span class="n">LeftRCS</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RocketTestCase.test_rocket_throttle_bounds"><a class="viewcode-back" href="../tests.html#tests.RocketTestCase.test_rocket_throttle_bounds">[docs]</a>    <span class="k">def</span> <span class="nf">test_rocket_throttle_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="mi">99</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="o">-</span><span class="mi">99</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RocketTestCase.test_rocket_angle_locking"><a class="viewcode-back" href="../tests.html#tests.RocketTestCase.test_rocket_angle_locking">[docs]</a>    <span class="k">def</span> <span class="nf">test_rocket_angle_locking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">removeComponent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RocketTestCase.test_rocket_reset"><a class="viewcode-back" href="../tests.html#tests.RocketTestCase.test_rocket_reset">[docs]</a>    <span class="k">def</span> <span class="nf">test_rocket_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newTank</span> <span class="o">=</span> <span class="n">TestTank</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">newTank</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">destroyed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">destroyed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="SolidThrusterTestCase"><a class="viewcode-back" href="../tests.html#tests.SolidThrusterTestCase">[docs]</a><span class="k">class</span> <span class="nc">SolidThrusterTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="SolidThrusterTestCase.setUp"><a class="viewcode-back" href="../tests.html#tests.SolidThrusterTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Space</span><span class="p">(</span><span class="n">threaded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span> <span class="o">=</span> <span class="n">UpGoer2000</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span> <span class="o">=</span> <span class="n">Rocket</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolidThrusterTestCase.test_solid_thruster_contructor"><a class="viewcode-back" href="../tests.html#tests.SolidThrusterTestCase.test_solid_thruster_contructor">[docs]</a>    <span class="k">def</span> <span class="nf">test_solid_thruster_contructor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">fuel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">maxFuel</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolidThrusterTestCase.test_fuel"><a class="viewcode-back" href="../tests.html#tests.SolidThrusterTestCase.test_fuel">[docs]</a>    <span class="k">def</span> <span class="nf">test_fuel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">fuel</span> <span class="o">=</span> <span class="mi">50</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">fuel</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">fuel</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">fuel</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolidThrusterTestCase.test_apply_thrust_fuel"><a class="viewcode-back" href="../tests.html#tests.SolidThrusterTestCase.test_apply_thrust_fuel">[docs]</a>    <span class="k">def</span> <span class="nf">test_apply_thrust_fuel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">throttle</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">timeScale</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">prevFuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">fuel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">applyThrust</span><span class="p">(</span><span class="n">throttle</span><span class="p">,</span> <span class="n">timeScale</span><span class="p">)</span>
+        <span class="n">newFuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">fuel</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">newFuel</span><span class="p">,</span> <span class="n">prevFuel</span> <span class="o">-</span> <span class="n">throttle</span> <span class="o">*</span> <span class="n">timeScale</span><span class="p">)</span>
+
+        <span class="n">throttle</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
+        <span class="n">timeScale</span> <span class="o">=</span> <span class="mi">64</span>
+        <span class="n">prevFuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">fuel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">applyThrust</span><span class="p">(</span><span class="n">throttle</span><span class="p">,</span> <span class="n">timeScale</span><span class="p">)</span>
+        <span class="n">newFuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">fuel</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">newFuel</span><span class="p">,</span> <span class="n">prevFuel</span> <span class="o">-</span> <span class="n">throttle</span> <span class="o">*</span> <span class="n">timeScale</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolidThrusterTestCase.test_reset"><a class="viewcode-back" href="../tests.html#tests.SolidThrusterTestCase.test_reset">[docs]</a>    <span class="k">def</span> <span class="nf">test_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">fuel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">maxFuel</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="LiquidThrusterTestCase"><a class="viewcode-back" href="../tests.html#tests.LiquidThrusterTestCase">[docs]</a><span class="k">class</span> <span class="nc">LiquidThrusterTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="LiquidThrusterTestCase.setUp"><a class="viewcode-back" href="../tests.html#tests.LiquidThrusterTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Space</span><span class="p">(</span><span class="n">threaded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span> <span class="o">=</span> <span class="n">SandSquid</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tanks</span> <span class="o">=</span> <span class="p">[</span><span class="n">TestTank</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">TestTank</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span> <span class="o">=</span> <span class="n">Rocket</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tanks</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LiquidThrusterTestCase.test_apply_thrust_fuel"><a class="viewcode-back" href="../tests.html#tests.LiquidThrusterTestCase.test_apply_thrust_fuel">[docs]</a>    <span class="k">def</span> <span class="nf">test_apply_thrust_fuel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">throttle</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">timeScale</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">prevFuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">fuel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">applyThrust</span><span class="p">(</span><span class="n">throttle</span><span class="p">,</span> <span class="n">timeScale</span><span class="p">)</span>
+        <span class="n">newFuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">fuel</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">newFuel</span><span class="p">,</span> <span class="n">prevFuel</span> <span class="o">-</span> <span class="n">throttle</span> <span class="o">*</span> <span class="n">timeScale</span><span class="p">)</span>
+
+        <span class="n">throttle</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
+        <span class="n">timeScale</span> <span class="o">=</span> <span class="mi">64</span>
+        <span class="n">prevFuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">fuel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">applyThrust</span><span class="p">(</span><span class="n">throttle</span><span class="p">,</span> <span class="n">timeScale</span><span class="p">)</span>
+        <span class="n">newFuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thruster</span><span class="o">.</span><span class="n">fuel</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">newFuel</span><span class="p">,</span> <span class="n">prevFuel</span> <span class="o">-</span> <span class="n">throttle</span> <span class="o">*</span> <span class="n">timeScale</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="AudioTestCase"><a class="viewcode-back" href="../tests.html#tests.AudioTestCase">[docs]</a><span class="k">class</span> <span class="nc">AudioTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="AudioTestCase.setUp"><a class="viewcode-back" href="../tests.html#tests.AudioTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Space</span><span class="p">(</span><span class="n">threaded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span> <span class="o">=</span> <span class="n">Rocket</span><span class="p">([])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span> <span class="o">=</span> <span class="n">AudioManager</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">silenceMusic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">init</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="AudioTestCase.test_SoundEffects_thursterDefault"><a class="viewcode-back" href="../tests.html#tests.AudioTestCase.test_SoundEffects_thursterDefault">[docs]</a>    <span class="k">def</span> <span class="nf">test_SoundEffects_thursterDefault</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#Test throttle at 0 + no thrusters - Should not play</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">thrusterSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+
+        <span class="c1">#Test throttle at 1 + no thrusters - Should not play</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">thrusterSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">silenceMusic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="AudioTestCase.test_SoundEffects_thrusterUpgoer"><a class="viewcode-back" href="../tests.html#tests.AudioTestCase.test_SoundEffects_thrusterUpgoer">[docs]</a>    <span class="k">def</span> <span class="nf">test_SoundEffects_thrusterUpgoer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="n">UpGoer2000</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">))</span>
+
+        <span class="c1">#Test throttle at 0 + thruster on rocket - should not play</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">thrusterSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_volume</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1">#Test throttle at 1 + thruster on rocket - should play at max volume</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">thrusterSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_volume</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1">#Should stop sound effect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">silenceMusic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+
+        <span class="c1">#Test throttle at .5 + thruster on rocket - should play at .5 volume</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">thrusterSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_volume</span><span class="p">(),</span> <span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="c1">#Should stop sound effect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">silenceMusic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="AudioTestCase.test_SoundEffects_thrusterDeltaVee"><a class="viewcode-back" href="../tests.html#tests.AudioTestCase.test_SoundEffects_thrusterDeltaVee">[docs]</a>    <span class="k">def</span> <span class="nf">test_SoundEffects_thrusterDeltaVee</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="n">DeltaVee</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">))</span>
+
+        <span class="c1">#Test throttle at 0 + thruster on rocket - should not play</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">thrusterSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_volume</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1">#Test throttle at 1 + thruster on rocket - should play at max volume</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">thrusterSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_volume</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1">#Should stop sound effect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">silenceMusic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+
+        <span class="c1">#Test throttle at .5 + thruster on rocket - should play at .5 volume</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">thrusterSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_volume</span><span class="p">(),</span> <span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="c1">#Should stop sound effect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">silenceMusic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="AudioTestCase.test_SoundEffects_thrusterSandSquid"><a class="viewcode-back" href="../tests.html#tests.AudioTestCase.test_SoundEffects_thrusterSandSquid">[docs]</a>    <span class="k">def</span> <span class="nf">test_SoundEffects_thrusterSandSquid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="n">SandSquid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">))</span>
+
+        <span class="c1">#Test throttle at 0 + thruster on rocket - should not play</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">thrusterSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_volume</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1">#Test throttle at 1 + thruster on rocket - should play at max volume</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">thrusterSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_volume</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1">#Should stop sound effect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">silenceMusic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+
+        <span class="c1">#Test throttle at .5 + thruster on rocket - should play at .5 volume</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">thrusterSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_volume</span><span class="p">(),</span> <span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="c1">#Should stop sound effect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">silenceMusic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="AudioTestCase.test_SoundEffects_SASDefault"><a class="viewcode-back" href="../tests.html#tests.AudioTestCase.test_SoundEffects_SASDefault">[docs]</a>    <span class="k">def</span> <span class="nf">test_SoundEffects_SASDefault</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#With no SAS, no sound should play both times</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">sasSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+
+        <span class="c1">#Should stop sound effect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">silenceMusic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">sasSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+
+        <span class="c1">#Should stop sound effect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">silenceMusic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="AudioTestCase.test_SoundEffects_SASActive"><a class="viewcode-back" href="../tests.html#tests.AudioTestCase.test_SoundEffects_SASActive">[docs]</a>    <span class="k">def</span> <span class="nf">test_SoundEffects_SASActive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">addComponent</span><span class="p">(</span><span class="n">AdvancedSAS</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">))</span>
+
+        <span class="c1">#With SAS inactive, no sound should play</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">sasSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+
+        <span class="c1">#Should stop sound effect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">silenceMusic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+
+        <span class="c1">#With SAS active, sound should play</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">sasSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span>
+
+        <span class="c1">#Should stop sound effect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audioManager</span><span class="o">.</span><span class="n">silenceMusic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Channel</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">get_busy</span><span class="p">())</span></div></div>
+
+
+
+<div class="viewcode-block" id="TankTestCase"><a class="viewcode-back" href="../tests.html#tests.TankTestCase">[docs]</a><span class="k">class</span> <span class="nc">TankTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="c1">#TANK TESTS</span>
+<div class="viewcode-block" id="TankTestCase.setUp"><a class="viewcode-back" href="../tests.html#tests.TankTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Space</span><span class="p">(</span><span class="n">threaded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseComponents</span> <span class="o">=</span> <span class="p">[</span><span class="n">CommandModule</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">UpGoer2000</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">AdvancedSAS</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">RightRCS</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">LeftRCS</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span> <span class="o">=</span> <span class="n">Rocket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">baseComponents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newTank</span> <span class="o">=</span> <span class="n">TestTank</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span></div>
+<div class="viewcode-block" id="TankTestCase.test_tank_fuel"><a class="viewcode-back" href="../tests.html#tests.TankTestCase.test_tank_fuel">[docs]</a>    <span class="k">def</span> <span class="nf">test_tank_fuel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newTank</span><span class="o">.</span><span class="n">fuel</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">newTank</span><span class="o">.</span><span class="n">fuel</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newTank</span><span class="o">.</span><span class="n">fuel</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">newTank</span><span class="o">.</span><span class="n">fuel</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TankTestCase.test_tank_reset"><a class="viewcode-back" href="../tests.html#tests.TankTestCase.test_tank_reset">[docs]</a>    <span class="k">def</span> <span class="nf">test_tank_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newTank</span><span class="o">.</span><span class="n">fuel</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tank_capacity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">newTank</span><span class="o">.</span><span class="n">capacity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newTank</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tank_capacity</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">newTank</span><span class="o">.</span><span class="n">fuel</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="SASTestCase"><a class="viewcode-back" href="../tests.html#tests.SASTestCase">[docs]</a><span class="k">class</span> <span class="nc">SASTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="c1">#SAS TESTS</span>
+<div class="viewcode-block" id="SASTestCase.setUp"><a class="viewcode-back" href="../tests.html#tests.SASTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Space</span><span class="p">(</span><span class="n">threaded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseComponents</span> <span class="o">=</span> <span class="p">[</span><span class="n">CommandModule</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">UpGoer2000</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">AdvancedSAS</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">RightRCS</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">LeftRCS</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span> <span class="o">=</span> <span class="n">Rocket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">baseComponents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theSAS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SASTestCase.test_sas_fuel"><a class="viewcode-back" href="../tests.html#tests.SASTestCase.test_sas_fuel">[docs]</a>    <span class="k">def</span> <span class="nf">test_sas_fuel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theSAS</span><span class="o">.</span><span class="n">fuel</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">theSAS</span><span class="o">.</span><span class="n">fuel</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theSAS</span><span class="o">.</span><span class="n">fuel</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">theSAS</span><span class="o">.</span><span class="n">fuel</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SASTestCase.test_sas_reset"><a class="viewcode-back" href="../tests.html#tests.SASTestCase.test_sas_reset">[docs]</a>    <span class="k">def</span> <span class="nf">test_sas_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sas_maxfuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">theSAS</span><span class="o">.</span><span class="n">fuel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theSAS</span><span class="o">.</span><span class="n">fuel</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theSAS</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sas_maxfuel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">theSAS</span><span class="o">.</span><span class="n">fuel</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="TimescaleTestCase"><a class="viewcode-back" href="../tests.html#tests.TimescaleTestCase">[docs]</a><span class="k">class</span> <span class="nc">TimescaleTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="TimescaleTestCase.setUp"><a class="viewcode-back" href="../tests.html#tests.TimescaleTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span> <span class="o">=</span> <span class="n">TimeScale</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TimescaleTestCase.test_scale_reset"><a class="viewcode-back" href="../tests.html#tests.TimescaleTestCase.test_scale_reset">[docs]</a>    <span class="k">def</span> <span class="nf">test_scale_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">baseScale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">_BASE_SCALE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">_set_scale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">_MIN_SCALE</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">reset</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span> <span class="n">baseScale</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimescaleTestCase.test_scale_faster"><a class="viewcode-back" href="../tests.html#tests.TimescaleTestCase.test_scale_faster">[docs]</a>    <span class="k">def</span> <span class="nf">test_scale_faster</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">faster</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimescaleTestCase.test_scale_slower"><a class="viewcode-back" href="../tests.html#tests.TimescaleTestCase.test_scale_slower">[docs]</a>    <span class="k">def</span> <span class="nf">test_scale_slower</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">_set_scale</span><span class="p">(</span><span class="o">.</span><span class="mi">25</span><span class="p">)</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">slower</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">scale</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimescaleTestCase.test_scale_set"><a class="viewcode-back" href="../tests.html#tests.TimescaleTestCase.test_scale_set">[docs]</a>    <span class="k">def</span> <span class="nf">test_scale_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">returnVal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">_set_scale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">_MAX_SCALE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">_MAX_SCALE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">returnVal</span><span class="p">)</span>
+
+        <span class="n">returnVal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">_set_scale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">_MIN_SCALE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">_MIN_SCALE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">returnVal</span><span class="p">)</span>
+
+        <span class="n">prevScale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">scale</span>
+        <span class="n">returnVal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">_set_scale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">_MAX_SCALE</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">prevScale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">returnVal</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">_set_scale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">_MIN_SCALE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">prevScale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">returnVal</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ExplosionTestCase"><a class="viewcode-back" href="../tests.html#tests.ExplosionTestCase">[docs]</a><span class="k">class</span> <span class="nc">ExplosionTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="ExplosionTestCase.setUp"><a class="viewcode-back" href="../tests.html#tests.ExplosionTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explosion</span> <span class="o">=</span> <span class="n">Explosion</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ExplosionTestCase.test_explosion_loop"><a class="viewcode-back" href="../tests.html#tests.ExplosionTestCase.test_explosion_loop">[docs]</a>    <span class="k">def</span> <span class="nf">test_explosion_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">numImages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">explosion</span><span class="o">.</span><span class="n">images</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numImages</span> <span class="o">*</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">numImages</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">explosion</span><span class="o">.</span><span class="n">current_frame</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">numImages</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">explosion</span><span class="o">.</span><span class="n">image</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">explosion</span><span class="o">.</span><span class="n">update_frame</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="ZoomTestCase"><a class="viewcode-back" href="../tests.html#tests.ZoomTestCase">[docs]</a><span class="k">class</span> <span class="nc">ZoomTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="c1">#ZOOM TESTS</span>
+<div class="viewcode-block" id="ZoomTestCase.setUp"><a class="viewcode-back" href="../tests.html#tests.ZoomTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="n">Zoom</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ZoomTestCase.test_zoom_zoom"><a class="viewcode-back" href="../tests.html#tests.ZoomTestCase.test_zoom_zoom">[docs]</a>    <span class="k">def</span> <span class="nf">test_zoom_zoom</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">curzoom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**-</span><span class="mi">17</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">curzoom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="mi">80000</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">curzoom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ZoomTestCase.test_zoom_zoomin_zoomout"><a class="viewcode-back" href="../tests.html#tests.ZoomTestCase.test_zoom_zoomin_zoomout">[docs]</a>    <span class="k">def</span> <span class="nf">test_zoom_zoomin_zoomout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">curzoom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom_in</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">curzoom</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom_out</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">curzoom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ZoomTestCase.test_zoom_reset"><a class="viewcode-back" href="../tests.html#tests.ZoomTestCase.test_zoom_reset">[docs]</a>    <span class="k">def</span> <span class="nf">test_zoom_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="PhysicsTestCase"><a class="viewcode-back" href="../tests.html#tests.PhysicsTestCase">[docs]</a><span class="k">class</span> <span class="nc">PhysicsTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="PhysicsTestCase.setUp"><a class="viewcode-back" href="../tests.html#tests.PhysicsTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Space</span><span class="p">(</span><span class="n">threaded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PhysicsTestCase.test_gravity"><a class="viewcode-back" href="../tests.html#tests.PhysicsTestCase.test_gravity">[docs]</a>    <span class="k">def</span> <span class="nf">test_gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">c1</span> <span class="o">=</span> <span class="n">CelestialBody</span><span class="p">(</span><span class="s1">&#39;earth&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="p">,</span> <span class="mi">10</span><span class="o">**</span><span class="mi">20</span><span class="p">,</span> <span class="mi">796375</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mf">0.99999</span><span class="p">,</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="mi">100000</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">)</span>
+        <span class="n">testPosition</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Vec2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Physics</span><span class="o">.</span><span class="n">gravity</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">testPosition</span><span class="p">),</span> <span class="n">pm</span><span class="o">.</span><span class="n">Vec2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">6673.84</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="PhysicsTestCase.test_netGravity"><a class="viewcode-back" href="../tests.html#tests.PhysicsTestCase.test_netGravity">[docs]</a>    <span class="k">def</span> <span class="nf">test_netGravity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">c1</span> <span class="o">=</span> <span class="n">CelestialBody</span><span class="p">(</span><span class="s1">&#39;earth&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="p">,</span> <span class="mi">10</span><span class="o">**</span><span class="mi">20</span><span class="p">,</span> <span class="mi">796375</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="mf">0.99999</span><span class="p">,</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="mi">100000</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">)</span>
+        <span class="n">c2</span> <span class="o">=</span> <span class="n">CelestialBody</span><span class="p">(</span><span class="s1">&#39;moon&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="p">,</span> <span class="mi">10</span><span class="o">**</span><span class="mi">15</span><span class="p">,</span> <span class="mi">796375</span><span class="p">,</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mf">0.99999</span><span class="p">,</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="mi">100000</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">)</span>
+        <span class="n">testPosition</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">Physics</span><span class="o">.</span><span class="n">netGravity</span><span class="p">([</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">],</span> <span class="n">testPosition</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="o">.</span><span class="mi">06673839</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">Physics</span><span class="o">.</span><span class="n">netGravity</span><span class="p">([</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">],</span> <span class="n">testPosition</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">6673.84</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="DrawerTestCase"><a class="viewcode-back" href="../tests.html#tests.DrawerTestCase">[docs]</a><span class="k">class</span> <span class="nc">DrawerTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="DrawerTestCase.setUp"><a class="viewcode-back" href="../tests.html#tests.DrawerTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drawer</span> <span class="o">=</span> <span class="n">Drawer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Space</span><span class="p">(</span><span class="n">threaded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseComponents</span> <span class="o">=</span> <span class="p">[</span><span class="n">CommandModule</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">UpGoer2000</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">AdvancedSAS</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">RightRCS</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">LeftRCS</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rocket</span> <span class="o">=</span> <span class="n">Rocket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">baseComponents</span><span class="p">)</span></div>
+<div class="viewcode-block" id="DrawerTestCase.test_drawer_inRange"><a class="viewcode-back" href="../tests.html#tests.DrawerTestCase.test_drawer_inRange">[docs]</a>    <span class="k">def</span> <span class="nf">test_drawer_inRange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">coords</span> <span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">99</span><span class="p">]</span>
+        <span class="n">themax</span> <span class="o">=</span> <span class="p">[</span><span class="mi">77</span><span class="p">,</span> <span class="mi">77</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">Drawer</span><span class="o">.</span><span class="n">inRange</span><span class="p">(</span><span class="n">themax</span><span class="p">,</span> <span class="n">coords</span><span class="p">))</span>
+        <span class="n">coords</span> <span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">Drawer</span><span class="o">.</span><span class="n">inRange</span><span class="p">(</span><span class="n">themax</span><span class="p">,</span> <span class="n">coords</span><span class="p">))</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">exit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

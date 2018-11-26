@@ -11,3 +11,4 @@ BitsPlease-FESP
    rocketbuilder
    simulation
    main
+   tests

@@ -99,6 +99,7 @@
 <li class="toctree-l2"><a class="reference internal" href="rocketbuilder.html">rocketbuilder module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulation.html">simulation module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests module</a></li>
 </ul>
 </li>
 </ul>
@@ -854,7 +855,7 @@ to the display.</p>
 
 <dl class="attribute">
 <dt id="graphics.Menu.State.Exit">
-<code class="descname">Exit</code><em class="property"> = 5</em><a class="headerlink" href="#graphics.Menu.State.Exit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Exit</code><em class="property"> = 6</em><a class="headerlink" href="#graphics.Menu.State.Exit" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -870,6 +871,11 @@ to the display.</p>
 <dl class="attribute">
 <dt id="graphics.Menu.State.Splash">
 <code class="descname">Splash</code><em class="property"> = 1</em><a class="headerlink" href="#graphics.Menu.State.Splash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Menu.State.Testing">
+<code class="descname">Testing</code><em class="property"> = 5</em><a class="headerlink" href="#graphics.Menu.State.Testing" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -903,6 +909,13 @@ splashScreenPressed bool to be true.</p>
 </dd></dl>
 
 <dl class="classmethod">
+<dt id="graphics.Menu._testsCallback">
+<em class="property">classmethod </em><code class="descname">_testsCallback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu._testsCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Menu._testsCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback function to be called when the “test suite” button is clicked. This sets the
+testsPressed bool to be true.</p>
+</dd></dl>
+
+<dl class="classmethod">
 <dt id="graphics.Menu.drawBackground">
 <em class="property">classmethod </em><code class="descname">drawBackground</code><span class="sig-paren">(</span><em>color_rgb</em>, <em>opacity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu.drawBackground"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Menu.drawBackground" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the background using the given color and opacity alpha value.</p>
@@ -922,7 +935,7 @@ splashScreenPressed bool to be true.</p>
 
 <dl class="classmethod">
 <dt id="graphics.Menu.drawMenu">
-<em class="property">classmethod </em><code class="descname">drawMenu</code><span class="sig-paren">(</span><em>opacity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu.drawMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Menu.drawMenu" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">drawMenu</code><span class="sig-paren">(</span><em>opacity</em>, <em>tests=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu.drawMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.Menu.drawMenu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the menu screen and buttons to pygame’s current display surface.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -983,7 +996,7 @@ class can watch this and take appropriate action on change</p>
 <dl class="attribute">
 <dt id="graphics.Menu.quitPressed">
 <code class="descname">quitPressed</code><em class="property"> = False</em><a class="headerlink" href="#graphics.Menu.quitPressed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Becomes true when a the quit button has been pressed. A higher order class can
+<dd><p>Becomes true when the quit button has been pressed. A higher order class can
 watch this and take appropriate action on change</p>
 </dd></dl>
 
@@ -992,6 +1005,13 @@ watch this and take appropriate action on change</p>
 <code class="descname">splashScreenPressed</code><em class="property"> = False</em><a class="headerlink" href="#graphics.Menu.splashScreenPressed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Becomes true when the first screen (title screen) has been clicked on.
 A higher order class can watch this and proceed to the actual menu.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.Menu.testsPressed">
+<code class="descname">testsPressed</code><em class="property"> = False</em><a class="headerlink" href="#graphics.Menu.testsPressed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Becomes true when the tests button has been pressed. A higher order class can
+watch this and take appropriate action on change</p>
 </dd></dl>
 
 </dd></dl>
@@ -1864,7 +1884,7 @@ to the display.</p>
 
 <dl class="attribute">
 <dt id="graphics.menu.Menu.State.Exit">
-<code class="descname">Exit</code><em class="property"> = 5</em><a class="headerlink" href="#graphics.menu.Menu.State.Exit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Exit</code><em class="property"> = 6</em><a class="headerlink" href="#graphics.menu.Menu.State.Exit" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -1880,6 +1900,11 @@ to the display.</p>
 <dl class="attribute">
 <dt id="graphics.menu.Menu.State.Splash">
 <code class="descname">Splash</code><em class="property"> = 1</em><a class="headerlink" href="#graphics.menu.Menu.State.Splash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.menu.Menu.State.Testing">
+<code class="descname">Testing</code><em class="property"> = 5</em><a class="headerlink" href="#graphics.menu.Menu.State.Testing" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1913,6 +1938,13 @@ splashScreenPressed bool to be true.</p>
 </dd></dl>
 
 <dl class="classmethod">
+<dt id="graphics.menu.Menu._testsCallback">
+<em class="property">classmethod </em><code class="descname">_testsCallback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu._testsCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.menu.Menu._testsCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback function to be called when the “test suite” button is clicked. This sets the
+testsPressed bool to be true.</p>
+</dd></dl>
+
+<dl class="classmethod">
 <dt id="graphics.menu.Menu.drawBackground">
 <em class="property">classmethod </em><code class="descname">drawBackground</code><span class="sig-paren">(</span><em>color_rgb</em>, <em>opacity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu.drawBackground"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.menu.Menu.drawBackground" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the background using the given color and opacity alpha value.</p>
@@ -1932,7 +1964,7 @@ splashScreenPressed bool to be true.</p>
 
 <dl class="classmethod">
 <dt id="graphics.menu.Menu.drawMenu">
-<em class="property">classmethod </em><code class="descname">drawMenu</code><span class="sig-paren">(</span><em>opacity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu.drawMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.menu.Menu.drawMenu" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">drawMenu</code><span class="sig-paren">(</span><em>opacity</em>, <em>tests=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics/menu.html#Menu.drawMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graphics.menu.Menu.drawMenu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the menu screen and buttons to pygame’s current display surface.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1993,7 +2025,7 @@ class can watch this and take appropriate action on change</p>
 <dl class="attribute">
 <dt id="graphics.menu.Menu.quitPressed">
 <code class="descname">quitPressed</code><em class="property"> = False</em><a class="headerlink" href="#graphics.menu.Menu.quitPressed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Becomes true when a the quit button has been pressed. A higher order class can
+<dd><p>Becomes true when the quit button has been pressed. A higher order class can
 watch this and take appropriate action on change</p>
 </dd></dl>
 
@@ -2002,6 +2034,13 @@ watch this and take appropriate action on change</p>
 <code class="descname">splashScreenPressed</code><em class="property"> = False</em><a class="headerlink" href="#graphics.menu.Menu.splashScreenPressed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Becomes true when the first screen (title screen) has been clicked on.
 A higher order class can watch this and proceed to the actual menu.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="graphics.menu.Menu.testsPressed">
+<code class="descname">testsPressed</code><em class="property"> = False</em><a class="headerlink" href="#graphics.menu.Menu.testsPressed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Becomes true when the tests button has been pressed. A higher order class can
+watch this and take appropriate action on change</p>
 </dd></dl>
 
 </dd></dl>
