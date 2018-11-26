@@ -59,7 +59,7 @@ class AudioManager():
     @classmethod
     def thrusterSoundEffect(cls, status, amount):
         """
-        Plays an SAS sound effect until stopped.
+        Plays an Thruster sound effect until stopped.
 
         :param status: If thruster is on rocket
         :type status: boolean

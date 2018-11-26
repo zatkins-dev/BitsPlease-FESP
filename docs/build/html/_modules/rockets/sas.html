@@ -149,7 +149,7 @@
 <span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_ASSETS_PATH</span>
 
-<div class="viewcode-block" id="SAS"><a class="viewcode-back" href="../../rockets.html#rockets.sas.SAS">[docs]</a><span class="k">class</span> <span class="nc">SAS</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
+<div class="viewcode-block" id="SAS"><a class="viewcode-back" href="../../rockets.html#rockets.SAS">[docs]</a><span class="k">class</span> <span class="nc">SAS</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    SAS component for rocket. Provides encapsulation for</span>
 <span class="sd">    SAS autonomous angle and magnitude of SAS force.</span>
@@ -184,7 +184,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_fuel</span> <span class="o">=</span> <span class="mi">0</span>
 
-<div class="viewcode-block" id="SAS.rotateCounterClockwise"><a class="viewcode-back" href="../../rockets.html#rockets.sas.SAS.rotateCounterClockwise">[docs]</a>    <span class="k">def</span> <span class="nf">rotateCounterClockwise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timescale</span><span class="p">):</span>
+<div class="viewcode-block" id="SAS.rotateCounterClockwise"><a class="viewcode-back" href="../../rockets.html#rockets.SAS.rotateCounterClockwise">[docs]</a>    <span class="k">def</span> <span class="nf">rotateCounterClockwise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timescale</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Uses the RCS Thrusters on the host rocket to turn the rocket counter-clockwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -198,7 +198,7 @@
                 <span class="c1"># right-directed vector and on the bottom half of the rocket</span>
                 <span class="n">ts</span><span class="o">.</span><span class="n">applyThrust</span><span class="p">(</span><span class="n">timescale</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SAS.rotateClockwise"><a class="viewcode-back" href="../../rockets.html#rockets.sas.SAS.rotateClockwise">[docs]</a>    <span class="k">def</span> <span class="nf">rotateClockwise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timescale</span><span class="p">):</span>
+<div class="viewcode-block" id="SAS.rotateClockwise"><a class="viewcode-back" href="../../rockets.html#rockets.SAS.rotateClockwise">[docs]</a>    <span class="k">def</span> <span class="nf">rotateClockwise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timescale</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Uses the RCS Thrusters on the host rocket to turn the rocket clockwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -212,7 +212,7 @@
                 <span class="c1"># left-directed vector and on the bottom half of the rocket</span>
                 <span class="n">ts</span><span class="o">.</span><span class="n">applyThrust</span><span class="p">(</span><span class="n">timescale</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SAS.holdAngle"><a class="viewcode-back" href="../../rockets.html#rockets.sas.SAS.holdAngle">[docs]</a>    <span class="k">def</span> <span class="nf">holdAngle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timescale</span><span class="p">):</span>
+<div class="viewcode-block" id="SAS.holdAngle"><a class="viewcode-back" href="../../rockets.html#rockets.SAS.holdAngle">[docs]</a>    <span class="k">def</span> <span class="nf">holdAngle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timescale</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Will work to hold the rocket at the set SASAngle. This is affected by the SASPower and the Tolerance</span>
 <span class="sd">        parameters of a specific SAS Module.</span>
@@ -236,7 +236,7 @@
             <span class="k">elif</span> <span class="n">targetAngVel</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angular_velocity</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">rotateClockwise</span><span class="p">(</span><span class="n">timescale</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SAS.reset"><a class="viewcode-back" href="../../rockets.html#rockets.sas.SAS.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SAS.reset"><a class="viewcode-back" href="../../rockets.html#rockets.SAS.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Resets the SAS Module, including the set angle and fuel ammount.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -295,7 +295,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s2">&quot;maxFuel&quot;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="SAS.getInfo"><a class="viewcode-back" href="../../rockets.html#rockets.sas.SAS.getInfo">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="SAS.getInfo"><a class="viewcode-back" href="../../rockets.html#rockets.SAS.getInfo">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -322,7 +322,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="SAS.getDisplayInfo"><a class="viewcode-back" href="../../rockets.html#rockets.sas.SAS.getDisplayInfo">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="SAS.getDisplayInfo"><a class="viewcode-back" href="../../rockets.html#rockets.SAS.getDisplayInfo">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">getDisplayInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="n">inf</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
         <span class="k">return</span> <span class="p">{</span>
@@ -332,7 +332,7 @@
         <span class="p">}</span></div></div>
 
 
-<div class="viewcode-block" id="AdvancedSAS"><a class="viewcode-back" href="../../rockets.html#rockets.sas.AdvancedSAS">[docs]</a><span class="k">class</span> <span class="nc">AdvancedSAS</span><span class="p">(</span><span class="n">SAS</span><span class="p">):</span>
+<div class="viewcode-block" id="AdvancedSAS"><a class="viewcode-back" href="../../rockets.html#rockets.AdvancedSAS">[docs]</a><span class="k">class</span> <span class="nc">AdvancedSAS</span><span class="p">(</span><span class="n">SAS</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The AdvancedSAS components will all share these properties:</span>
 
@@ -357,7 +357,7 @@
     <span class="c1">#: `AdvancedSAS.png &lt;https://github.com/zatkins-school/BitsPlease-FESP/blob/project-4/assets/sprites/AdvancedSAS.png&gt;`_</span>
     <span class="n">_sprite</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_ASSETS_PATH</span><span class="p">,</span> <span class="s2">&quot;sprites&quot;</span><span class="p">,</span> <span class="s2">&quot;AdvancedSAS.png&quot;</span><span class="p">))</span>
 
-<div class="viewcode-block" id="AdvancedSAS.getInfo"><a class="viewcode-back" href="../../rockets.html#rockets.sas.AdvancedSAS.getInfo">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="AdvancedSAS.getInfo"><a class="viewcode-back" href="../../rockets.html#rockets.AdvancedSAS.getInfo">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;vertices&quot;</span><span class="p">:</span>     <span class="p">[(</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">)],</span>
