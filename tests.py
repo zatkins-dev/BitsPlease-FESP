@@ -335,7 +335,7 @@ class AudioTestCase(unittest.TestCase):
 
         self.rocket.isAngleLocked = True
         self.audioManager.sasSoundEffect(len(self.rocket.SASmodules) != 0 and self.rocket.isAngleLocked)
-        self.assertTrue(pg.mixer.Channel(1).get_busy())
+        self.assertFalse(pg.mixer.Channel(1).get_busy())
 
         #Should stop sound effect
         self.audioManager.silenceMusic()
