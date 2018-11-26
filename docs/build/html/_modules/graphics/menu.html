@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>graphics.menu &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">BitsPlease-FESP</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>graphics.menu</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for graphics.menu</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pygame</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Graphics</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Video</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_ASSETS_PATH</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
+
+<div class="viewcode-block" id="Menu"><a class="viewcode-back" href="../../graphics.html#graphics.Menu">[docs]</a><span class="k">class</span> <span class="nc">Menu</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Menu is a class with methods that can draw different menu items or screens</span>
+<span class="sd">    to the display.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: The different states that the menu can take</span>
+    <span class="n">State</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="s1">&#39;Splash Menu Building Playing Exit&#39;</span><span class="p">)</span>
+
+    <span class="c1">#: Becomes true when the first screen (title screen) has been clicked on.</span>
+    <span class="c1">#: A higher order class can watch this and proceed to the actual menu.</span>
+    <span class="n">splashScreenPressed</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">#: Becomes true when the &quot;start demo&quot; button has been pressed. A higher order</span>
+    <span class="c1">#: class can watch this and take appropriate action on change</span>
+    <span class="n">demoPressed</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">#: Becomes true when the Rocket builder button has been pressed. A higher</span>
+    <span class="c1">#: order class can watch htis and take appropriate action on change. </span>
+    <span class="n">builderPressed</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">#: Becomes true when a the quit button has been pressed. A higher order class can</span>
+    <span class="c1">#: watch this and take appropriate action on change</span>
+    <span class="n">quitPressed</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">#: The color to use for the menu buttons</span>
+    <span class="n">_menuButtonColor</span> <span class="o">=</span> <span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">128</span><span class="p">))</span>
+    <span class="c1">#: Icons made by `Freepik &lt;www.freepic.com&gt;`_ from `Flaticon &lt;https://www.flaticon.com/&gt;`_. Licensed by `CC 3.0 BY &lt;http://creativecommons.org/licenses/by/3.0/&gt;`_</span>
+    <span class="n">_fullscreen_icon</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_ASSETS_PATH</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="s2">&quot;open_fullscreen.png&quot;</span><span class="p">)))</span>
+    <span class="c1">#: Icons made by `Freepik &lt;www.freepic.com&gt;`_ from `Flaticon &lt;https://www.flaticon.com/&gt;`_. Licensed by `CC 3.0 BY &lt;http://creativecommons.org/licenses/by/3.0/&gt;`_</span>
+    <span class="n">_windowed_icon</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_ASSETS_PATH</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="s2">&quot;close_fullscreen.png&quot;</span><span class="p">)))</span>
+
+
+<div class="viewcode-block" id="Menu.drawBackground"><a class="viewcode-back" href="../../graphics.html#graphics.Menu.drawBackground">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawBackground</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">color_rgb</span><span class="p">,</span> <span class="n">opacity</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws the background using the given color and opacity alpha value.</span>
+
+<span class="sd">        :param color_rgb: The color of the background</span>
+<span class="sd">        :type color_rgb: :py:class:`pygame.Color`</span>
+<span class="sd">        :param int opacity: The alpha value with which to draw the background</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dispSurface</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span>
+        <span class="n">surfaceSize</span> <span class="o">=</span> <span class="n">dispSurface</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+        <span class="n">background</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span><span class="n">surfaceSize</span><span class="p">)</span>
+        <span class="n">background</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">color_rgb</span><span class="p">)</span>
+        <span class="n">background</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="n">opacity</span><span class="p">)</span>
+        <span class="n">dispSurface</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">background</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Menu.drawSplashScreen"><a class="viewcode-back" href="../../graphics.html#graphics.Menu.drawSplashScreen">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawSplashScreen</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">opacity</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws the title screen to pygame&#39;s current display surface.</span>
+
+<span class="sd">        :param int opacity: The alpha value with which to draw the splash screen background</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">surface</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span>
+        <span class="n">surfaceSize</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+        <span class="n">surfaceCenter</span> <span class="o">=</span> <span class="p">(</span><span class="n">surfaceSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">surfaceSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">titleCenter</span> <span class="o">=</span> <span class="p">(</span><span class="n">surfaceCenter</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">surfaceCenter</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="n">subtitleCenter</span> <span class="o">=</span> <span class="p">(</span><span class="n">surfaceCenter</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">surfaceCenter</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">20</span><span class="p">)</span>
+
+        <span class="c1"># fill surface with black</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">drawBackground</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">opacity</span><span class="p">)</span>
+
+        <span class="c1"># draw a button</span>
+        <span class="n">Graphics</span><span class="o">.</span><span class="n">drawButton</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">surfaceSize</span><span class="p">,</span>
+                            <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+                            <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_splashCallback</span><span class="p">)</span>
+
+        <span class="c1"># In the future, may want to draw an image onto the surface</span>
+        <span class="c1"># as a background</span>
+        <span class="c1"># for now, just draw text</span>
+        <span class="n">titleFont</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s2">&quot;lucidaconsole&quot;</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+        <span class="n">subtitleFont</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s2">&quot;lucidaconsole&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+
+        <span class="n">Graphics</span><span class="o">.</span><span class="n">drawTextCenter</span><span class="p">(</span><span class="n">titleCenter</span><span class="p">,</span> <span class="s2">&quot;Flat Earth Space Program&quot;</span><span class="p">,</span>
+                                <span class="n">titleFont</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+        <span class="n">Graphics</span><span class="o">.</span><span class="n">drawTextCenter</span><span class="p">(</span><span class="n">subtitleCenter</span><span class="p">,</span> <span class="s2">&quot;Click Anywhere to Continue&quot;</span><span class="p">,</span>
+                                <span class="n">subtitleFont</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Menu.drawMenu"><a class="viewcode-back" href="../../graphics.html#graphics.Menu.drawMenu">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">drawMenu</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">opacity</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws the menu screen and buttons to pygame&#39;s current display surface.</span>
+<span class="sd">        </span>
+<span class="sd">        :param int opacity: The alpha value with which to draw the menu background</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">surface</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span>
+        <span class="n">surfaceSize</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+        <span class="n">surfaceCenter</span> <span class="o">=</span> <span class="p">(</span><span class="n">surfaceSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">surfaceSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">titleCenter</span> <span class="o">=</span> <span class="p">(</span><span class="n">surfaceCenter</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">surfaceCenter</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">100</span><span class="p">)</span>
+
+        <span class="c1"># fill screen with black</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">drawBackground</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">opacity</span><span class="p">)</span>
+
+        <span class="n">buttonSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+        <span class="n">buttonPosition</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="p">(</span><span class="n">surfaceCenter</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">buttonSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                                    <span class="n">surfaceCenter</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">buttonSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">65</span><span class="o">*</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">titleFont</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s2">&quot;lucidaconsole&quot;</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+
+        <span class="n">Graphics</span><span class="o">.</span><span class="n">drawTextCenter</span><span class="p">(</span><span class="n">titleCenter</span><span class="p">,</span> <span class="s2">&quot;Flat Earth Space Program&quot;</span><span class="p">,</span>
+                                <span class="n">titleFont</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">))</span>
+        <span class="n">Graphics</span><span class="o">.</span><span class="n">drawButton</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">buttonPosition</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">buttonSize</span><span class="p">,</span>
+                            <span class="bp">cls</span><span class="o">.</span><span class="n">_menuButtonColor</span><span class="p">,</span> <span class="s2">&quot;Start Demo&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span>
+                            <span class="bp">cls</span><span class="o">.</span><span class="n">_demoCallback</span><span class="p">)</span>
+        <span class="n">Graphics</span><span class="o">.</span><span class="n">drawButton</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">buttonPosition</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">buttonSize</span><span class="p">,</span>
+                            <span class="bp">cls</span><span class="o">.</span><span class="n">_menuButtonColor</span><span class="p">,</span> <span class="s2">&quot;Rocket Builder&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span>
+                            <span class="bp">cls</span><span class="o">.</span><span class="n">_builderCallback</span><span class="p">)</span>
+        <span class="n">Graphics</span><span class="o">.</span><span class="n">drawButton</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">buttonPosition</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">buttonSize</span><span class="p">,</span>
+                            <span class="bp">cls</span><span class="o">.</span><span class="n">_menuButtonColor</span><span class="p">,</span> <span class="s2">&quot;Exit to Desktop&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span>
+                            <span class="bp">cls</span><span class="o">.</span><span class="n">_quitCallback</span><span class="p">)</span>
+        
+        <span class="n">fullscreenSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">)</span>
+        <span class="n">fullscreenPos</span> <span class="o">=</span> <span class="p">(</span><span class="mi">25</span><span class="p">,</span><span class="mi">25</span><span class="p">)</span>
+        
+        <span class="n">isFullscreen</span> <span class="o">=</span> <span class="n">Video</span><span class="o">.</span><span class="n">get_fullscreen</span><span class="p">()</span>
+        <span class="n">icon</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_windowed_icon</span> <span class="k">if</span> <span class="n">isFullscreen</span> <span class="k">else</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_fullscreen_icon</span>
+        <span class="n">Graphics</span><span class="o">.</span><span class="n">drawButton</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">fullscreenPos</span><span class="p">,</span> <span class="n">fullscreenSize</span><span class="p">,</span>
+                            <span class="n">pygame</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;black&quot;</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span>
+                            <span class="n">Video</span><span class="o">.</span><span class="n">toggle_fullscreen</span><span class="p">)</span>
+        <span class="n">surface</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">icon</span><span class="p">,</span> <span class="n">fullscreenPos</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Menu._splashCallback"><a class="viewcode-back" href="../../graphics.html#graphics.Menu._splashCallback">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_splashCallback</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback function to be called when the title screen is clicked. This sets the</span>
+<span class="sd">        splashScreenPressed bool to be true.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">splashScreenPressed</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Menu._builderCallback"><a class="viewcode-back" href="../../graphics.html#graphics.Menu._builderCallback">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_builderCallback</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback function to be called when the Rocket Builder button is clicked. This sets the</span>
+<span class="sd">        builderPressed bool to be true.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">builderPressed</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Menu._quitCallback"><a class="viewcode-back" href="../../graphics.html#graphics.Menu._quitCallback">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_quitCallback</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback function to be called when the quit button is clicked. This sets the</span>
+<span class="sd">        quitPressed bool to be true.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">quitPressed</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Menu._demoCallback"><a class="viewcode-back" href="../../graphics.html#graphics.Menu._demoCallback">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_demoCallback</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback function to be called when the &quot;start demo&quot; button is clicked. This sets the</span>
+<span class="sd">        demoPressed bool to be true.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">demoPressed</span> <span class="o">=</span> <span class="kc">True</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

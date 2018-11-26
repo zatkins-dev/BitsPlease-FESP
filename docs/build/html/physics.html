@@ -1,0 +1,738 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>physics package &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="rockets package" href="rockets.html" />
+    <link rel="prev" title="graphics package" href="graphics.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">BitsPlease-FESP</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="graphics.html">graphics package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">physics package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-physics">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-physics.celestialbody">physics.celestialbody module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-physics.collision">physics.collision module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-physics.physics">physics.physics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-physics.timescale">physics.timescale module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rockets.html">rockets package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audioManager.html">audioManager module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rocketbuilder.html">rocketbuilder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation.html">simulation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">BitsPlease-FESP</a> &raquo;</li>
+        
+      <li>physics package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/physics.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="physics-package">
+<h1>physics package<a class="headerlink" href="#physics-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-physics">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-physics" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physics.Physics">
+<em class="property">class </em><code class="descclassname">physics.</code><code class="descname">Physics</code><a class="reference internal" href="_modules/physics/physics.html#Physics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.Physics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Physics is a utility class that is used to encapsulate different physics
+functions to be used in our simulation.
+Currently, it only handles finding the acceleration due to gravity</p>
+<dl class="staticmethod">
+<dt id="physics.Physics.gravity">
+<em class="property">static </em><code class="descname">gravity</code><span class="sig-paren">(</span><em>celestialBody</em>, <em>targetPosition</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/physics.html#Physics.gravity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.Physics.gravity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate gravitational acceleration on target by body/shape pair.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>celestialBody</strong> (<a class="reference internal" href="#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a>) – The planet to use as the gravitational source</li>
+<li><strong>targetPosition</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – The (x,y) position of the target</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Acceleration vector</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="physics.Physics.netGravity">
+<em class="property">static </em><code class="descname">netGravity</code><span class="sig-paren">(</span><em>celestialBodies</em>, <em>targetPosition</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/physics.html#Physics.netGravity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.Physics.netGravity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate gravitational acceleration on a target by several bodies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>celestialBodies</strong> ([<a class="reference internal" href="#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a>]) – The planets to use as the gravitational sources</li>
+<li><strong>targetPosition</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – The (x,y) position of the target</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Acceleration vector</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.Physics._GRAV_CONSTANT">
+<code class="descname">_GRAV_CONSTANT</code><em class="property"> = 6.67384e-11</em><a class="headerlink" href="#physics.Physics._GRAV_CONSTANT" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Gravitational Constant</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="physics.CelestialBody">
+<em class="property">class </em><code class="descclassname">physics.</code><code class="descname">CelestialBody</code><span class="sig-paren">(</span><em>name_</em>, <em>space_</em>, <em>mass_</em>, <em>radius_</em>, <em>position_</em>, <em>elasticity_</em>, <em>atmosphere_color</em>, <em>atmosphere_height</em>, <em>bodytype_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/celestialbody.html#CelestialBody"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.CelestialBody" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Wrapper class for celestial bodies, contains Body and Shape</p>
+<dl class="attribute">
+<dt id="physics.CelestialBody.atmosphereColor">
+<code class="descname">atmosphereColor</code><em class="property"> = None</em><a class="headerlink" href="#physics.CelestialBody.atmosphereColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Color of planet atmosphere</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.CelestialBody.atmosphereHeight">
+<code class="descname">atmosphereHeight</code><em class="property"> = None</em><a class="headerlink" href="#physics.CelestialBody.atmosphereHeight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Height of planet atmosphere</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.CelestialBody.body">
+<code class="descname">body</code><em class="property"> = None</em><a class="headerlink" href="#physics.CelestialBody.body" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Body</span></code> of the celestial body
+Stores <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code> position</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.CelestialBody.name">
+<code class="descname">name</code><em class="property"> = None</em><a class="headerlink" href="#physics.CelestialBody.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Planet name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.CelestialBody.shape">
+<code class="descname">shape</code><em class="property"> = None</em><a class="headerlink" href="#physics.CelestialBody.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Circle</span></code> of the celestial body
+Stores: <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> friction, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> mass,
+<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> elasticity, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> collision type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="physics.TimeScale">
+<em class="property">class </em><code class="descclassname">physics.</code><code class="descname">TimeScale</code><a class="reference internal" href="_modules/physics/timescale.html#TimeScale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.TimeScale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Timescale manages how large the next time step is for the physics and graphics engines.</p>
+<dl class="classmethod">
+<dt id="physics.TimeScale._set_scale">
+<em class="property">classmethod </em><code class="descname">_set_scale</code><span class="sig-paren">(</span><em>scale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/timescale.html#TimeScale._set_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.TimeScale._set_scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the <a class="reference internal" href="#physics.TimeScale.scale" title="physics.TimeScale.scale"><code class="xref py py-attr docutils literal notranslate"><span class="pre">scale</span></code></a> to <cite>scale</cite>, then updates <a class="reference internal" href="#physics.TimeScale.step_size" title="physics.TimeScale.step_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">step_size</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Value to set the step size to.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><cite>True</cite> if set, <cite>False</cite> otherwise</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="physics.TimeScale._update_step_size">
+<em class="property">classmethod </em><code class="descname">_update_step_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/timescale.html#TimeScale._update_step_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.TimeScale._update_step_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the <a class="reference internal" href="#physics.TimeScale.step_size" title="physics.TimeScale.step_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">step_size</span></code></a> variable.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="physics.TimeScale.faster">
+<em class="property">classmethod </em><code class="descname">faster</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/timescale.html#TimeScale.faster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.TimeScale.faster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Doubles the current time scale.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><cite>True</cite> if set, <cite>False</cite> otherwise</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="physics.TimeScale.reset">
+<em class="property">classmethod </em><code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/timescale.html#TimeScale.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.TimeScale.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the time scale to default</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><cite>True</cite> if reset, <cite>False</cite> otherwise</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="physics.TimeScale.slower">
+<em class="property">classmethod </em><code class="descname">slower</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/timescale.html#TimeScale.slower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.TimeScale.slower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Halfs the current time scale.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><cite>True</cite> if set, <cite>False</cite> otherwise</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.TimeScale._BASE_SCALE">
+<code class="descname">_BASE_SCALE</code><em class="property"> = 1</em><a class="headerlink" href="#physics.TimeScale._BASE_SCALE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base timescale</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.TimeScale._BASE_STEP_SIZE">
+<code class="descname">_BASE_STEP_SIZE</code><em class="property"> = 0.015625</em><a class="headerlink" href="#physics.TimeScale._BASE_STEP_SIZE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base step size in seconds</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.TimeScale._MAX_SCALE">
+<code class="descname">_MAX_SCALE</code><em class="property"> = 512.0</em><a class="headerlink" href="#physics.TimeScale._MAX_SCALE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum timescale</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.TimeScale._MIN_SCALE">
+<code class="descname">_MIN_SCALE</code><em class="property"> = 0.125</em><a class="headerlink" href="#physics.TimeScale._MIN_SCALE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum timescale</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.TimeScale.scale">
+<code class="descname">scale</code><em class="property"> = 1</em><a class="headerlink" href="#physics.TimeScale.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current timescale</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.TimeScale.step_size">
+<code class="descname">step_size</code><em class="property"> = 0.015625</em><a class="headerlink" href="#physics.TimeScale.step_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current step size</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="physics.post_solve_component_celestialbody">
+<code class="descclassname">physics.</code><code class="descname">post_solve_component_celestialbody</code><span class="sig-paren">(</span><em>arbiter</em>, <em>space</em>, <em>_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/collision.html#post_solve_component_celestialbody"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.post_solve_component_celestialbody" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines what happens when two objects collide.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>arbiter</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Arbiter</span></code>) – The <code class="xref py py-class docutils literal notranslate"><span class="pre">Arbiter</span></code> that stores data about the collision.</li>
+<li><strong>space</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Space</span></code>) – <code class="xref py py-class docutils literal notranslate"><span class="pre">Space</span></code> within which the collision occurred</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-physics.celestialbody">
+<span id="physics-celestialbody-module"></span><h2>physics.celestialbody module<a class="headerlink" href="#module-physics.celestialbody" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physics.celestialbody.CelestialBody">
+<em class="property">class </em><code class="descclassname">physics.celestialbody.</code><code class="descname">CelestialBody</code><span class="sig-paren">(</span><em>name_</em>, <em>space_</em>, <em>mass_</em>, <em>radius_</em>, <em>position_</em>, <em>elasticity_</em>, <em>atmosphere_color</em>, <em>atmosphere_height</em>, <em>bodytype_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/celestialbody.html#CelestialBody"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.celestialbody.CelestialBody" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Wrapper class for celestial bodies, contains Body and Shape</p>
+<dl class="attribute">
+<dt id="physics.celestialbody.CelestialBody.atmosphereColor">
+<code class="descname">atmosphereColor</code><em class="property"> = None</em><a class="headerlink" href="#physics.celestialbody.CelestialBody.atmosphereColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Color of planet atmosphere</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.celestialbody.CelestialBody.atmosphereHeight">
+<code class="descname">atmosphereHeight</code><em class="property"> = None</em><a class="headerlink" href="#physics.celestialbody.CelestialBody.atmosphereHeight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Height of planet atmosphere</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.celestialbody.CelestialBody.body">
+<code class="descname">body</code><em class="property"> = None</em><a class="headerlink" href="#physics.celestialbody.CelestialBody.body" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Body</span></code> of the celestial body
+Stores <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code> position</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.celestialbody.CelestialBody.name">
+<code class="descname">name</code><em class="property"> = None</em><a class="headerlink" href="#physics.celestialbody.CelestialBody.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Planet name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.celestialbody.CelestialBody.shape">
+<code class="descname">shape</code><em class="property"> = None</em><a class="headerlink" href="#physics.celestialbody.CelestialBody.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Circle</span></code> of the celestial body
+Stores: <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> friction, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> mass,
+<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> elasticity, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> collision type</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-physics.collision">
+<span id="physics-collision-module"></span><h2>physics.collision module<a class="headerlink" href="#module-physics.collision" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="physics.collision.post_solve_component_celestialbody">
+<code class="descclassname">physics.collision.</code><code class="descname">post_solve_component_celestialbody</code><span class="sig-paren">(</span><em>arbiter</em>, <em>space</em>, <em>_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/collision.html#post_solve_component_celestialbody"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.collision.post_solve_component_celestialbody" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines what happens when two objects collide.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>arbiter</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Arbiter</span></code>) – The <code class="xref py py-class docutils literal notranslate"><span class="pre">Arbiter</span></code> that stores data about the collision.</li>
+<li><strong>space</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Space</span></code>) – <code class="xref py py-class docutils literal notranslate"><span class="pre">Space</span></code> within which the collision occurred</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="data">
+<dt id="physics.collision.CT_CELESTIAL_BODY">
+<code class="descclassname">physics.collision.</code><code class="descname">CT_CELESTIAL_BODY</code><em class="property"> = 1</em><a class="headerlink" href="#physics.collision.CT_CELESTIAL_BODY" title="Permalink to this definition">¶</a></dt>
+<dd><p>CelestialBody collision type</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="physics.collision.CT_COMPONENT">
+<code class="descclassname">physics.collision.</code><code class="descname">CT_COMPONENT</code><em class="property"> = 2</em><a class="headerlink" href="#physics.collision.CT_COMPONENT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Component collision type</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="physics.collision._threshold_for_failure">
+<code class="descclassname">physics.collision.</code><code class="descname">_threshold_for_failure</code><em class="property"> = 100000</em><a class="headerlink" href="#physics.collision._threshold_for_failure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum post-collision force a component can withstand without being destroyed</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-physics.physics">
+<span id="physics-physics-module"></span><h2>physics.physics module<a class="headerlink" href="#module-physics.physics" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physics.physics.Physics">
+<em class="property">class </em><code class="descclassname">physics.physics.</code><code class="descname">Physics</code><a class="reference internal" href="_modules/physics/physics.html#Physics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.physics.Physics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Physics is a utility class that is used to encapsulate different physics
+functions to be used in our simulation.
+Currently, it only handles finding the acceleration due to gravity</p>
+<dl class="staticmethod">
+<dt id="physics.physics.Physics.gravity">
+<em class="property">static </em><code class="descname">gravity</code><span class="sig-paren">(</span><em>celestialBody</em>, <em>targetPosition</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/physics.html#Physics.gravity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.physics.Physics.gravity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate gravitational acceleration on target by body/shape pair.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>celestialBody</strong> (<a class="reference internal" href="#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a>) – The planet to use as the gravitational source</li>
+<li><strong>targetPosition</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – The (x,y) position of the target</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Acceleration vector</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="physics.physics.Physics.netGravity">
+<em class="property">static </em><code class="descname">netGravity</code><span class="sig-paren">(</span><em>celestialBodies</em>, <em>targetPosition</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/physics.html#Physics.netGravity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.physics.Physics.netGravity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate gravitational acceleration on a target by several bodies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>celestialBodies</strong> ([<a class="reference internal" href="#physics.CelestialBody" title="physics.CelestialBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">physics.CelestialBody</span></code></a>]) – The planets to use as the gravitational sources</li>
+<li><strong>targetPosition</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code>) – The (x,y) position of the target</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Acceleration vector</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.vec2d.Vec2d</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.physics.Physics._GRAV_CONSTANT">
+<code class="descname">_GRAV_CONSTANT</code><em class="property"> = 6.67384e-11</em><a class="headerlink" href="#physics.physics.Physics._GRAV_CONSTANT" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Gravitational Constant</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-physics.timescale">
+<span id="physics-timescale-module"></span><h2>physics.timescale module<a class="headerlink" href="#module-physics.timescale" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physics.timescale.TimeScale">
+<em class="property">class </em><code class="descclassname">physics.timescale.</code><code class="descname">TimeScale</code><a class="reference internal" href="_modules/physics/timescale.html#TimeScale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.timescale.TimeScale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Timescale manages how large the next time step is for the physics and graphics engines.</p>
+<dl class="classmethod">
+<dt id="physics.timescale.TimeScale._set_scale">
+<em class="property">classmethod </em><code class="descname">_set_scale</code><span class="sig-paren">(</span><em>scale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/timescale.html#TimeScale._set_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.timescale.TimeScale._set_scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the <a class="reference internal" href="#physics.timescale.TimeScale.scale" title="physics.timescale.TimeScale.scale"><code class="xref py py-attr docutils literal notranslate"><span class="pre">scale</span></code></a> to <cite>scale</cite>, then updates <a class="reference internal" href="#physics.timescale.TimeScale.step_size" title="physics.timescale.TimeScale.step_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">step_size</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Value to set the step size to.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><cite>True</cite> if set, <cite>False</cite> otherwise</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="physics.timescale.TimeScale._update_step_size">
+<em class="property">classmethod </em><code class="descname">_update_step_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/timescale.html#TimeScale._update_step_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.timescale.TimeScale._update_step_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the <a class="reference internal" href="#physics.timescale.TimeScale.step_size" title="physics.timescale.TimeScale.step_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">step_size</span></code></a> variable.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="physics.timescale.TimeScale.faster">
+<em class="property">classmethod </em><code class="descname">faster</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/timescale.html#TimeScale.faster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.timescale.TimeScale.faster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Doubles the current time scale.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><cite>True</cite> if set, <cite>False</cite> otherwise</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="physics.timescale.TimeScale.reset">
+<em class="property">classmethod </em><code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/timescale.html#TimeScale.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.timescale.TimeScale.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the time scale to default</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><cite>True</cite> if reset, <cite>False</cite> otherwise</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="physics.timescale.TimeScale.slower">
+<em class="property">classmethod </em><code class="descname">slower</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physics/timescale.html#TimeScale.slower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physics.timescale.TimeScale.slower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Halfs the current time scale.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><cite>True</cite> if set, <cite>False</cite> otherwise</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.timescale.TimeScale._BASE_SCALE">
+<code class="descname">_BASE_SCALE</code><em class="property"> = 1</em><a class="headerlink" href="#physics.timescale.TimeScale._BASE_SCALE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base timescale</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.timescale.TimeScale._BASE_STEP_SIZE">
+<code class="descname">_BASE_STEP_SIZE</code><em class="property"> = 0.015625</em><a class="headerlink" href="#physics.timescale.TimeScale._BASE_STEP_SIZE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base step size in seconds</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.timescale.TimeScale._MAX_SCALE">
+<code class="descname">_MAX_SCALE</code><em class="property"> = 512.0</em><a class="headerlink" href="#physics.timescale.TimeScale._MAX_SCALE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum timescale</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.timescale.TimeScale._MIN_SCALE">
+<code class="descname">_MIN_SCALE</code><em class="property"> = 0.125</em><a class="headerlink" href="#physics.timescale.TimeScale._MIN_SCALE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum timescale</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.timescale.TimeScale.scale">
+<code class="descname">scale</code><em class="property"> = 1</em><a class="headerlink" href="#physics.timescale.TimeScale.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current timescale</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="physics.timescale.TimeScale.step_size">
+<code class="descname">step_size</code><em class="property"> = 0.015625</em><a class="headerlink" href="#physics.timescale.TimeScale.step_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current step size</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="rockets.html" class="btn btn-neutral float-right" title="rockets package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="graphics.html" class="btn btn-neutral" title="graphics package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

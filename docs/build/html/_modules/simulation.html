@@ -1,0 +1,481 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>simulation &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">BitsPlease-FESP</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>simulation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for simulation</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pygame</span> <span class="k">as</span> <span class="nn">pg</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Video</span>
+<span class="n">Video</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">pymunk</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">from</span> <span class="nn">physics</span> <span class="k">import</span> <span class="o">*</span>
+
+
+<span class="kn">from</span> <span class="nn">rockets</span> <span class="k">import</span> <span class="n">Thruster</span>
+<span class="kn">import</span> <span class="nn">rockets.testrocket</span> <span class="k">as</span> <span class="nn">tr</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">reduce</span>
+
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">HUD</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Graphics</span> <span class="k">as</span> <span class="n">graph</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Drawer</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Trajectory</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Explosion</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Menu</span>
+<span class="kn">from</span> <span class="nn">graphics</span> <span class="k">import</span> <span class="n">Zoom</span>
+
+<span class="kn">from</span> <span class="nn">audioManager</span> <span class="k">import</span> <span class="n">AudioManager</span>
+
+
+<span class="kn">import</span> <span class="nn">pymunkoptions</span>
+<span class="n">pymunkoptions</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;debug&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Simulation"><a class="viewcode-back" href="../simulation.html#simulation.Simulation">[docs]</a><span class="k">class</span> <span class="nc">Simulation</span><span class="p">():</span>
+    <span class="c1">#: Path to game assets</span>
+    <span class="n">ASSETS_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s2">&quot;assets/&quot;</span><span class="p">)</span>
+    <span class="c1">#: Zoom for simulation</span>
+    <span class="n">_zoom</span> <span class="o">=</span> <span class="n">Zoom</span><span class="p">()</span>
+    <span class="c1">#: All :py:class:`physics.CelestialBody` objects in :py:attr:`space`</span>
+    <span class="n">celestialBodies</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1">#: :py:class:`pygame.Surface` for the current display</span>
+    <span class="n">screen</span> <span class="o">=</span> <span class="n">Video</span><span class="o">.</span><span class="n">get_display</span><span class="p">()</span>
+    <span class="c1">#: Pygame clock to track in game time</span>
+    <span class="n">clock</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
+    <span class="c1">#: Simulation space, :py:class:`pymunk.Space`</span>
+    <span class="n">space</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Space</span><span class="p">(</span><span class="n">threaded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">space</span><span class="o">.</span><span class="n">threads</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="c1">#: Heads-Up-Display for the rocket (:py:class:`graphics.HUD`)</span>
+    <span class="n">hud</span> <span class="o">=</span> <span class="n">HUD</span><span class="p">()</span>
+    <span class="c1">#: :py:class:`rockets.Rocket` for the simulation</span>
+    <span class="n">rocket</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="Simulation.keyDown"><a class="viewcode-back" href="../simulation.html#simulation.Simulation.keyDown">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">keyDown</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if a key is pressed</span>
+
+<span class="sd">        :param e: Pygame event</span>
+<span class="sd">        :type e: :py:class:`pygame.Event`</span>
+<span class="sd">        :param int key: Pygame defined code for key to check against</span>
+<span class="sd">        :returns: `True` if key was pressed, `False` otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">e</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pg</span><span class="o">.</span><span class="n">KEYDOWN</span> <span class="ow">and</span> <span class="n">e</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">key</span></div>
+
+<div class="viewcode-block" id="Simulation.keyUp"><a class="viewcode-back" href="../simulation.html#simulation.Simulation.keyUp">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">keyUp</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if a key is released</span>
+
+<span class="sd">        :param e: Pygame event</span>
+<span class="sd">        :type e: :py:class:`pygame.Event`</span>
+<span class="sd">        :param int key: Pygame defined code for key to check against</span>
+<span class="sd">        :returns: `True` if key was released, `False` otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">e</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pg</span><span class="o">.</span><span class="n">KEYUP</span> <span class="ow">and</span> <span class="n">e</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">key</span></div>
+
+<div class="viewcode-block" id="Simulation.updateGravity"><a class="viewcode-back" href="../simulation.html#simulation.Simulation.updateGravity">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">updateGravity</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the acceleration due to gravity on :py:attr:`rocket`.</span>
+
+<span class="sd">        :returns: Change in velocity of rocket</span>
+<span class="sd">        :rtype: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">deltaV</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">Physics</span><span class="o">.</span><span class="n">netGravity</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">celestialBodies</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">position</span><span class="p">))</span>
+        <span class="n">pm</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">update_velocity</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="p">,</span> <span class="n">deltaV</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">TimeScale</span><span class="o">.</span><span class="n">step_size</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">deltaV</span></div>
+
+<div class="viewcode-block" id="Simulation.updateCamera"><a class="viewcode-back" href="../simulation.html#simulation.Simulation.updateCamera">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">updateCamera</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws the background stars onto :py:attr:`screen`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">intVec2d</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">get_size</span><span class="p">()))</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">fill</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">drawStars</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span> <span class="n">center</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.get_altitude"><a class="viewcode-back" href="../simulation.html#simulation.Simulation.get_altitude">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_altitude</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the altitude of :py:attr:`rocket` above the closest :py:class:`physics.CelestialBody` in :py:attr:`celestialBodies`.</span>
+
+<span class="sd">        :returns: The closest :py:class:`physics.CelestialBody` to :py:attr:`rocket` and the altitude of :py:attr:`rocket` above that :py:class:`physics.CelestialBody`.</span>
+<span class="sd">        :rtype: (:py:class:`physics.CelestialBody`, float)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">closestBody</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">celestialBodies</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">-</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">position</span><span class="p">)</span><span class="o">.</span><span class="n">get_length</span><span class="p">())</span>
+        <span class="n">altitude</span> <span class="o">=</span> <span class="p">(</span><span class="n">closestBody</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">-</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">position</span><span class="p">)</span><span class="o">.</span><span class="n">get_length</span><span class="p">()</span> <span class="o">-</span> <span class="n">closestBody</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">radius</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">closestBody</span><span class="p">,</span> <span class="n">altitude</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.clear_space"><a class="viewcode-back" href="../simulation.html#simulation.Simulation.clear_space">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">clear_space</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes all :py:class:`pymunk.Shape` and :py:class:`pymunk.Body` objects from :py:attr:`space`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">shapes</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">bodies</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">TimeScale</span><span class="o">.</span><span class="n">step_size</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.displayMenu"><a class="viewcode-back" href="../simulation.html#simulation.Simulation.displayMenu">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">displayMenu</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws the menu and allows user to move between game views.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Menu</span><span class="o">.</span><span class="n">drawMenu</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">Menu</span><span class="o">.</span><span class="n">quitPressed</span><span class="p">:</span>
+            <span class="n">Menu</span><span class="o">.</span><span class="n">quitPressed</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">clear_space</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">Menu</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Exit</span>
+        <span class="k">elif</span> <span class="n">Menu</span><span class="o">.</span><span class="n">demoPressed</span><span class="p">:</span>
+            <span class="n">Menu</span><span class="o">.</span><span class="n">demoPressed</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">clear_space</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">Menu</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Playing</span>
+        <span class="k">elif</span> <span class="n">Menu</span><span class="o">.</span><span class="n">builderPressed</span><span class="p">:</span>
+            <span class="n">Menu</span><span class="o">.</span><span class="n">builderPressed</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">clear_space</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">Menu</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Building</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Simulation.run"><a class="viewcode-back" href="../simulation.html#simulation.Simulation.run">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="n">rocket</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Main execution of the simulation. Initializes space, planets, and rocket and enters event loop to recieve user input.</span>
+
+<span class="sd">        :param rocket: Rocket from :py:class:`.RocketBuilder` or `None`.</span>
+<span class="sd">        :type rocket: :py:class:`rockets.Rocket`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_zoom</span> <span class="o">=</span> <span class="n">Zoom</span><span class="p">()</span>
+        <span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_zoom</span>
+
+        <span class="n">explosion_images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+                <span class="n">explosion_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ASSETS_PATH</span><span class="p">,</span><span class="s2">&quot;sprites/explosion&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">convert_alpha</span><span class="p">())</span>
+
+        <span class="n">earth</span> <span class="o">=</span> <span class="n">CelestialBody</span><span class="p">(</span><span class="s1">&#39;earth&#39;</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="p">,</span> <span class="mf">9.331</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">22</span><span class="p">,</span> <span class="mi">796375</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mf">0.99999</span><span class="p">,</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="mi">100000</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">celestialBodies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">earth</span><span class="p">)</span>
+        <span class="n">earthMoon1</span> <span class="o">=</span> <span class="n">CelestialBody</span><span class="p">(</span><span class="s1">&#39;earthMoon1&#39;</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="p">,</span> <span class="mf">1.148</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">21</span><span class="p">,</span> <span class="mi">217125</span><span class="p">,</span>
+                        <span class="p">(</span><span class="mi">796375</span> <span class="o">+</span> <span class="mi">43500000</span><span class="p">,</span> <span class="mi">796375</span><span class="p">),</span> <span class="mf">0.9</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">celestialBodies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">earthMoon1</span><span class="p">)</span>
+
+        <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span> <span class="o">=</span> <span class="n">rocket</span> <span class="k">if</span> <span class="n">rocket</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">tr</span><span class="o">.</span><span class="n">genRocket</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span> <span class="ow">is</span> <span class="n">rocket</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
+
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">earth</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">earth</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="c1"># Add collision handler</span>
+        <span class="n">collisions_component_celestialbody</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add_collision_handler</span><span class="p">(</span><span class="n">CT_COMPONENT</span><span class="p">,</span> <span class="n">CT_CELESTIAL_BODY</span><span class="p">)</span>
+        <span class="n">collisions_component_celestialbody</span><span class="o">.</span><span class="n">post_solve</span> <span class="o">=</span> <span class="n">post_solve_component_celestialbody</span>
+        
+        <span class="n">rocket_explosion</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">crashed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">menu_enabled</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">Menu</span><span class="o">.</span><span class="n">demoPressed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">Menu</span><span class="o">.</span><span class="n">builderPressed</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">AudioManager</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">crashed</span><span class="p">:</span>
+            <span class="n">AudioManager</span><span class="o">.</span><span class="n">musicChecker</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pg</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pg</span><span class="o">.</span><span class="n">QUIT</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">Menu</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Exit</span>
+                <span class="k">elif</span> <span class="bp">cls</span><span class="o">.</span><span class="n">keyDown</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">pg</span><span class="o">.</span><span class="n">K_ESCAPE</span><span class="p">):</span>
+                    <span class="n">menu_enabled</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">Menu</span><span class="o">.</span><span class="n">demoPressed</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">elif</span> <span class="bp">cls</span><span class="o">.</span><span class="n">keyUp</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">pg</span><span class="o">.</span><span class="n">K_ESCAPE</span><span class="p">):</span>
+                    <span class="n">menu_enabled</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">elif</span> <span class="bp">cls</span><span class="o">.</span><span class="n">keyDown</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">pg</span><span class="o">.</span><span class="n">K_MINUS</span><span class="p">):</span>
+                    <span class="n">TimeScale</span><span class="o">.</span><span class="n">slower</span><span class="p">()</span>
+                <span class="k">elif</span> <span class="bp">cls</span><span class="o">.</span><span class="n">keyDown</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">pg</span><span class="o">.</span><span class="n">K_EQUALS</span><span class="p">):</span>
+                    <span class="n">TimeScale</span><span class="o">.</span><span class="n">faster</span><span class="p">()</span>
+                <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pg</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">:</span>
+                    <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">handleEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+                <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pg</span><span class="o">.</span><span class="n">VIDEORESIZE</span><span class="p">:</span>
+                    <span class="n">Video</span><span class="o">.</span><span class="n">set_display</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">h</span><span class="p">)</span>
+                    <span class="bp">cls</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="n">Video</span><span class="o">.</span><span class="n">get_display</span><span class="p">()</span>
+
+                <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pg</span><span class="o">.</span><span class="n">MOUSEBUTTONDOWN</span> <span class="ow">and</span> <span class="n">menu_enabled</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                        <span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom_out</span><span class="p">()</span>
+                    <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                        <span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">zoom_in</span><span class="p">()</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="n">TimeScale</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+            <span class="n">AudioManager</span><span class="o">.</span><span class="n">thrusterSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">thrusters</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">throttle</span><span class="p">)</span>
+            <span class="n">AudioManager</span><span class="o">.</span><span class="n">sasSoundEffect</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span><span class="p">)</span>
+
+            <span class="n">grav</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">updateGravity</span><span class="p">()</span>
+
+            <span class="p">(</span><span class="n">closestBody</span><span class="p">,</span> <span class="n">altitude</span><span class="p">)</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_altitude</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">altitude</span> <span class="o">&lt;</span> <span class="mi">500000</span><span class="p">:</span>
+                <span class="k">while</span> <span class="n">TimeScale</span><span class="o">.</span><span class="n">scale</span> <span class="o">&gt;</span> <span class="mi">256</span><span class="p">:</span>
+                    <span class="n">TimeScale</span><span class="o">.</span><span class="n">slower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">altitude</span> <span class="o">&lt;</span> <span class="mi">50000</span><span class="p">:</span>
+                <span class="k">while</span> <span class="n">TimeScale</span><span class="o">.</span><span class="n">scale</span> <span class="o">&gt;</span> <span class="mi">32</span><span class="p">:</span>
+                    <span class="n">TimeScale</span><span class="o">.</span><span class="n">slower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">altitude</span> <span class="o">&lt;</span> <span class="mi">25000</span><span class="p">:</span>
+                <span class="k">while</span> <span class="n">TimeScale</span><span class="o">.</span><span class="n">scale</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="n">TimeScale</span><span class="o">.</span><span class="n">slower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">altitude</span> <span class="o">&lt;</span> <span class="mi">12500</span><span class="p">:</span>
+                <span class="k">while</span> <span class="n">TimeScale</span><span class="o">.</span><span class="n">scale</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">TimeScale</span><span class="o">.</span><span class="n">slower</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">TimeScale</span><span class="o">.</span><span class="n">scale</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span><span class="p">:</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">isAngleLocked</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">TimeScale</span><span class="o">.</span><span class="n">step_size</span><span class="p">)</span>
+
+            <span class="bp">cls</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">getOffset</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+
+            <span class="bp">cls</span><span class="o">.</span><span class="n">updateCamera</span><span class="p">()</span>
+            <span class="n">Drawer</span><span class="o">.</span><span class="n">drawBackground</span><span class="p">(</span><span class="n">closestBody</span><span class="p">,</span> <span class="n">altitude</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">offset</span><span class="p">)</span>
+            <span class="n">Trajectory</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">celestialBodies</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">Drawer</span><span class="o">.</span><span class="n">drawMultiple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">shapes</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">offset</span><span class="p">)</span>
+            <span class="n">Drawer</span><span class="o">.</span><span class="n">drawMultiple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">celestialBodies</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">offset</span><span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">hud</span><span class="o">.</span><span class="n">updateHUD</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+            <span class="c1"># Did the cls.rocket blow up?</span>
+            <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">destroyed</span> <span class="ow">and</span> <span class="n">rocket_explosion</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+                    <span class="n">c</span><span class="o">.</span><span class="n">destroyed</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">remaining_fuel</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">fuel</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">Thruster</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">components</span><span class="p">))</span>
+                <span class="n">rocket_explosion</span> <span class="o">=</span> <span class="n">Explosion</span><span class="p">(</span><span class="n">remaining_fuel</span><span class="o">//</span><span class="mi">10</span><span class="p">,</span> <span class="n">explosion_images</span><span class="p">)</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="n">grav</span>
+                <span class="n">crashed</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="n">menu_enabled</span><span class="p">:</span>
+                <span class="n">returnCode</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">displayMenu</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">returnCode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">TimeScale</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+                    <span class="n">Drawer</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+                    <span class="n">AudioManager</span><span class="o">.</span><span class="n">silenceMusic</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="n">returnCode</span>
+            <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+
+        <span class="n">Menu</span><span class="o">.</span><span class="n">demoPressed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">TimeScale</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">displayMenu</span><span class="p">()</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pg</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pg</span><span class="o">.</span><span class="n">QUIT</span> <span class="ow">or</span> <span class="bp">cls</span><span class="o">.</span><span class="n">keyDown</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">pg</span><span class="o">.</span><span class="n">K_ESCAPE</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">Menu</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Exit</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">TimeScale</span><span class="o">.</span><span class="n">step_size</span><span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">closestBody</span><span class="p">,</span> <span class="n">altitude</span><span class="p">)</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_altitude</span><span class="p">()</span>
+
+            <span class="bp">cls</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">getOffset</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">updateCamera</span><span class="p">()</span>
+            <span class="n">Drawer</span><span class="o">.</span><span class="n">drawBackground</span><span class="p">(</span><span class="n">closestBody</span><span class="p">,</span> <span class="n">altitude</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">offset</span><span class="p">)</span>
+            <span class="n">Drawer</span><span class="o">.</span><span class="n">drawMultiple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">shapes</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">offset</span><span class="p">)</span>
+            <span class="n">Drawer</span><span class="o">.</span><span class="n">drawMultiple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">celestialBodies</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">offset</span><span class="p">)</span>
+            <span class="n">Drawer</span><span class="o">.</span><span class="n">drawExplosion</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span> <span class="n">rocket_explosion</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="mi">20</span><span class="o">*</span><span class="n">Vec2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="o">.</span><span class="n">angle</span><span class="p">),</span> <span class="p">(</span><span class="mi">150</span><span class="p">,</span><span class="mi">150</span><span class="p">),</span> <span class="n">Drawer</span><span class="o">.</span><span class="n">getOffset</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rocket</span><span class="p">))</span>
+            <span class="n">returnCode</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">displayMenu</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">returnCode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">returnCode</span>
+            <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>physics.physics &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">BitsPlease-FESP</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>physics.physics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for physics.physics</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
+
+<div class="viewcode-block" id="Physics"><a class="viewcode-back" href="../../physics.html#physics.Physics">[docs]</a><span class="k">class</span> <span class="nc">Physics</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Physics is a utility class that is used to encapsulate different physics</span>
+<span class="sd">    functions to be used in our simulation.</span>
+<span class="sd">    Currently, it only handles finding the acceleration due to gravity</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: The Gravitational Constant</span>
+    <span class="n">_GRAV_CONSTANT</span> <span class="o">=</span> <span class="mf">6.67384</span><span class="o">*</span><span class="p">(</span><span class="mi">10</span><span class="o">**-</span><span class="mi">11</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Physics.gravity"><a class="viewcode-back" href="../../physics.html#physics.Physics.gravity">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">gravity</span><span class="p">(</span><span class="n">celestialBody</span><span class="p">,</span> <span class="n">targetPosition</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate gravitational acceleration on target by body/shape pair.</span>
+
+<span class="sd">        :param celestialBody: The planet to use as the gravitational source</span>
+<span class="sd">        :type celestialBody: :py:class:`physics.CelestialBody`</span>
+<span class="sd">        :param targetPosition: The (x,y) position of the target</span>
+<span class="sd">        :type targetPosition: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        :returns: Acceleration vector</span>
+<span class="sd">        :rtype: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1">#First, find the distance between the body and the target</span>
+        <span class="c1">#Then, Use that distance to calculate gravity</span>
+        <span class="n">dPos</span> <span class="o">=</span> <span class="n">celestialBody</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">targetPosition</span>
+
+        <span class="n">rSquared</span> <span class="o">=</span> <span class="n">dPos</span><span class="o">.</span><span class="n">get_length_sqrd</span><span class="p">()</span>
+
+        <span class="c1">#Now, find acceleration due to gravity in the direction of R</span>
+        <span class="n">accelMagnitude</span> <span class="o">=</span> <span class="n">Physics</span><span class="o">.</span><span class="n">_GRAV_CONSTANT</span> <span class="o">*</span> <span class="n">celestialBody</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">mass</span> <span class="o">/</span> <span class="n">rSquared</span>
+
+        <span class="k">return</span> <span class="n">accelMagnitude</span><span class="o">*</span><span class="n">dPos</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Physics.netGravity"><a class="viewcode-back" href="../../physics.html#physics.Physics.netGravity">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">netGravity</span><span class="p">(</span><span class="n">celestialBodies</span><span class="p">,</span> <span class="n">targetPosition</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate gravitational acceleration on a target by several bodies.</span>
+
+<span class="sd">        :param celestialBodies: The planets to use as the gravitational sources</span>
+<span class="sd">        :type celestialBodies: [:py:class:`physics.CelestialBody`]</span>
+<span class="sd">        :param targetPosition: The (x,y) position of the target</span>
+<span class="sd">        :type targetPosition: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        :returns: Acceleration vector</span>
+<span class="sd">        :rtype: :py:class:`pymunk.vec2d.Vec2d`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">accel</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">celestialBody</span> <span class="ow">in</span> <span class="n">celestialBodies</span><span class="p">:</span>
+            <span class="n">accel</span> <span class="o">+=</span> <span class="n">Physics</span><span class="o">.</span><span class="n">gravity</span><span class="p">(</span><span class="n">celestialBody</span><span class="p">,</span> <span class="n">targetPosition</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">accel</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

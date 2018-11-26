@@ -1,0 +1,391 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>rockets.rocket &mdash; BitsPlease-FESP 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> BitsPlease-FESP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">BitsPlease-FESP</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BitsPlease-FESP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>rockets.rocket</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for rockets.rocket</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pymunk</span> <span class="k">import</span> <span class="n">Body</span> <span class="k">as</span> <span class="n">Body</span>
+<span class="kn">import</span> <span class="nn">pygame</span> <span class="k">as</span> <span class="nn">pg</span>
+<span class="kn">from</span> <span class="nn">rockets</span> <span class="k">import</span> <span class="n">Thruster</span><span class="p">,</span> <span class="n">RCSThruster</span><span class="p">,</span> <span class="n">SAS</span><span class="p">,</span> <span class="n">CommandModule</span><span class="p">,</span> <span class="n">Tank</span>
+
+<div class="viewcode-block" id="Rocket"><a class="viewcode-back" href="../../rockets.html#rocketbuilder.Rocket">[docs]</a><span class="k">class</span> <span class="nc">Rocket</span><span class="p">(</span><span class="n">Body</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extends pymunk.Body, and can hold and represent physics for the components of the rocket.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a Rocket with the given list of components.</span>
+
+<span class="sd">        :param components:</span>
+<span class="sd">        :type components: [:py:class:`Component`]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Body</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">components</span><span class="p">:</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_components</span> <span class="o">=</span> <span class="n">components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">destroyed</span><span class="o">=</span><span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isAngleLocked</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">throttle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The Throttle represents how much of the thrusters&#39; power is being used, from 0 - 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_throttle</span>
+
+    <span class="nd">@throttle</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">throttle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">newThrottle</span><span class="p">):</span>
+        <span class="c1"># never leave the 0 or 1 range</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">newThrottle</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_throttle</span> <span class="o">=</span> <span class="n">newThrottle</span>
+        <span class="k">elif</span> <span class="n">newThrottle</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_throttle</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">newThrottle</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_throttle</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">components</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A list of all of the individual :py:class:`..Component` objects that have been attatched to the rocket.</span>
+<span class="sd">        The list is presented in the order of :py:class:`..Thruster`, :py:class:`SAS`, :py:class:`CommandModule`, :py:class:`RCSThruster`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tanks</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">thrusters</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">SASmodules</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">commandModules</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">RCSThrusters</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">commandModules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A list of all of the :py:class:`..CommandModule` components that have been attatched to the rocket.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">CommandModule</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">thrusters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A list of all of the :py:class:`..Thruster` components - but not :py:class:`RCSThruster` components - that have been attatched to the rocket.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">Thruster</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">RCSThruster</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">RCSThrusters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A list of all of the :py:class:`..RCSThruster` components that have been attatched to the rocket.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">RCSThruster</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">SASmodules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A list of all of the :py:class:`..SAS` components that have been attatched to the rocket.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">SAS</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tanks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A list of all of the :py:class:`..Tank` components that have been attatched to the rocket.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">Tank</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isAngleLocked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Boolean, whether or not the rocket is attempting to hold itself to a certain angle.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_isAngleLocked</span>
+
+    <span class="nd">@isAngleLocked</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">isAngleLocked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">newAngleLocked</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_isAngleLocked</span> <span class="o">=</span> <span class="n">newAngleLocked</span>
+            <span class="k">for</span> <span class="n">sas</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">:</span>
+                <span class="n">sas</span><span class="o">.</span><span class="n">SASangle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_isAngleLocked</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="Rocket.tick"><a class="viewcode-back" href="../../rockets.html#rocketbuilder.Rocket.tick">[docs]</a>    <span class="k">def</span> <span class="nf">tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timescale</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Allows the rocket to perform its functions, checking input and applying thrust and rotation to itself.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># grab the keyboard state</span>
+        <span class="n">currentKeys</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">get_pressed</span><span class="p">()</span>
+
+        <span class="c1"># Check for throttle commands from user</span>
+        <span class="k">if</span> <span class="n">currentKeys</span><span class="p">[</span><span class="n">pg</span><span class="o">.</span><span class="n">K_LSHIFT</span><span class="p">]:</span>    <span class="c1"># increase throttle</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">throttle</span> <span class="o">+=</span> <span class="o">.</span><span class="mi">01</span>
+        <span class="k">if</span> <span class="n">currentKeys</span><span class="p">[</span><span class="n">pg</span><span class="o">.</span><span class="n">K_LCTRL</span><span class="p">]:</span>     <span class="c1"># decrease throttle</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">throttle</span> <span class="o">-=</span> <span class="o">.</span><span class="mi">01</span>
+        <span class="k">if</span> <span class="n">currentKeys</span><span class="p">[</span><span class="n">pg</span><span class="o">.</span><span class="n">K_z</span><span class="p">]:</span>         <span class="c1"># full throttle</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">currentKeys</span><span class="p">[</span><span class="n">pg</span><span class="o">.</span><span class="n">K_x</span><span class="p">]:</span>         <span class="c1"># cut throttle</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># let SAS modules fire rcs thrusters if needed,</span>
+        <span class="c1"># checking from input from users if not holding</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isAngleLocked</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">:</span>
+                <span class="n">module</span><span class="o">.</span><span class="n">holdAngle</span><span class="p">(</span><span class="n">timescale</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SASmodules</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">currentKeys</span><span class="p">[</span><span class="n">pg</span><span class="o">.</span><span class="n">K_a</span><span class="p">]:</span>
+                    <span class="n">module</span><span class="o">.</span><span class="n">rotateCounterClockwise</span><span class="p">(</span><span class="n">timescale</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">currentKeys</span><span class="p">[</span><span class="n">pg</span><span class="o">.</span><span class="n">K_d</span><span class="p">]:</span>
+                    <span class="n">module</span><span class="o">.</span><span class="n">rotateClockwise</span><span class="p">(</span><span class="n">timescale</span><span class="p">)</span>
+
+        <span class="c1"># apply all of the thrusters, with the current throttle</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">throttle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">thruster</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">thrusters</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">thruster</span><span class="o">.</span><span class="n">destroyed</span><span class="p">:</span>
+                    <span class="n">thruster</span><span class="o">.</span><span class="n">applyThrust</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">throttle</span><span class="p">,</span> <span class="n">timescale</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Rocket.handleEvent"><a class="viewcode-back" href="../../rockets.html#rocketbuilder.Rocket.handleEvent">[docs]</a>    <span class="k">def</span> <span class="nf">handleEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A pygame event handler, currently only checks for the SAS angle-toggle key V</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="n">pg</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">:</span>
+            <span class="c1"># new key has been pressed, place edge sensitive</span>
+            <span class="c1"># commands in here, i.e. things that only run once</span>
+            <span class="c1"># per key press</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="ow">is</span> <span class="n">pg</span><span class="o">.</span><span class="n">K_v</span><span class="p">:</span>  <span class="c1"># Toggle SAS Lock</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">isAngleLocked</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isAngleLocked</span></div>
+
+
+<div class="viewcode-block" id="Rocket.addComponent"><a class="viewcode-back" href="../../rockets.html#rocketbuilder.Rocket.addComponent">[docs]</a>    <span class="k">def</span> <span class="nf">addComponent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a new component to the rocket</span>
+
+<span class="sd">        :param c: The component to add to the rocket</span>
+<span class="sd">        :type c: :py:class:`Component`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">c</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Rocket.removeComponent"><a class="viewcode-back" href="../../rockets.html#rocketbuilder.Rocket.removeComponent">[docs]</a>    <span class="k">def</span> <span class="nf">removeComponent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes a component from the rocket</span>
+
+<span class="sd">        :param c: The component to remove from the rocket</span>
+<span class="sd">        :type c: :py:class:`Component`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">()</span> <span class="o">==</span> <span class="n">c</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">()</span> <span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Rocket.debugComponentPrint"><a class="viewcode-back" href="../../rockets.html#rocketbuilder.Rocket.debugComponentPrint">[docs]</a>    <span class="k">def</span> <span class="nf">debugComponentPrint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prints out the verticies of all the components in this rocket.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Rocket.reset"><a class="viewcode-back" href="../../rockets.html#rocketbuilder.Rocket.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resets information about this rocket for purposes of restarting the simulation.</span>
+<span class="sd">        This includes the destroyed flag, the position, velocity, angle, throttle, isAngleLocked,</span>
+<span class="sd">        and also resets every component of the rocket.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">destroyed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_throttle</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_isAngleLocked</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gage Phillips, Zachary Atkins, Jacob Marshall, Thomas Gartman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
