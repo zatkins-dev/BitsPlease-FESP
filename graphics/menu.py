@@ -4,6 +4,8 @@ from graphics import Video
 from . import _ASSETS_PATH
 import os
 from enum import Enum
+import unittest
+import tests
 
 class Menu(object):
     """
@@ -116,6 +118,9 @@ class Menu(object):
                             cls._menuButtonColor, "Rocket Builder", 25,
                             cls._builderCallback)
         Graphics.drawButton(surface, buttonPosition(2), buttonSize,
+                            cls._menuButtonColor, "Test Suite (Console)", 25,
+                            unittest.main)
+        Graphics.drawButton(surface, buttonPosition(3), buttonSize,
                             cls._menuButtonColor, "Exit to Desktop", 25,
                             cls._quitCallback)
         
