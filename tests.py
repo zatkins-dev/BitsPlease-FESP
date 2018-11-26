@@ -324,62 +324,6 @@ class AudioTestCase(unittest.TestCase):
         self.audioManager.silenceMusic()
         self.assertFalse(pg.mixer.Channel(2).get_busy())
 
-    def test_SoundEffects_thrusterRightRCS(self):
-        self.rocket.addComponent(RightRCS(self.rocket))
-
-        #Test throttle at 0 + thruster on rocket - should not play
-        self.rocket.throttle = 0
-        self.audioManager.thrusterSoundEffect(len(self.rocket.thrusters) != 0, self.rocket.throttle)
-        self.assertFalse(pg.mixer.Channel(2).get_busy())
-
-        #Test throttle at 1 + thruster on rocket - should play at max volume
-        self.rocket.throttle = 1
-        self.audioManager.thrusterSoundEffect(len(self.rocket.thrusters) != 0, self.rocket.throttle)
-        self.assertTrue(pg.mixer.Channel(2).get_busy())
-        self.assertEqual(pg.mixer.Channel(2).get_volume(), 1)
-
-        #Should stop sound effect
-        self.audioManager.silenceMusic()
-        self.assertFalse(pg.mixer.Channel(2).get_busy())
-
-        #Test throttle at .5 + thruster on rocket - should play at .5 volume
-        self.rocket.throttle = .5
-        self.audioManager.thrusterSoundEffect(len(self.rocket.thrusters) != 0, self.rocket.throttle)
-        self.assertTrue(pg.mixer.Channel(2).get_busy())
-        self.assertEqual(pg.mixer.Channel(2).get_volume(), .5)
-
-        #Should stop sound effect
-        self.audioManager.silenceMusic()
-        self.assertFalse(pg.mixer.Channel(2).get_busy())
-
-    def test_SoundEffects_thrusterLeftRCS(self):
-        self.rocket.addComponent(LeftRCS(self.rocket))
-
-        #Test throttle at 0 + thruster on rocket - should not play
-        self.rocket.throttle = 0
-        self.audioManager.thrusterSoundEffect(len(self.rocket.thrusters) != 0, self.rocket.throttle)
-        self.assertFalse(pg.mixer.Channel(2).get_busy())
-
-        #Test throttle at 1 + thruster on rocket - should play at max volume
-        self.rocket.throttle = 1
-        self.audioManager.thrusterSoundEffect(len(self.rocket.thrusters) != 0, self.rocket.throttle)
-        self.assertTrue(pg.mixer.Channel(2).get_busy())
-        self.assertEqual(pg.mixer.Channel(2).get_volume(), 1)
-
-        #Should stop sound effect
-        self.audioManager.silenceMusic()
-        self.assertFalse(pg.mixer.Channel(2).get_busy())
-
-        #Test throttle at .5 + thruster on rocket - should play at .5 volume
-        self.rocket.throttle = .5
-        self.audioManager.thrusterSoundEffect(len(self.rocket.thrusters) != 0, self.rocket.throttle)
-        self.assertTrue(pg.mixer.Channel(2).get_busy())
-        self.assertEqual(pg.mixer.Channel(2).get_volume(), .5)
-
-        #Should stop sound effect
-        self.audioManager.silenceMusic()
-        self.assertFalse(pg.mixer.Channel(2).get_busy())
-
     def test_SoundEffects_SASDefault(self):
         #With no SAS, no sound should play both times
         self.rocket.isAngleLocked = False
