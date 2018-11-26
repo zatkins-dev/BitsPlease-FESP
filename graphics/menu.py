@@ -92,7 +92,7 @@ class Menu(object):
                                 subtitleFont, (255, 255, 255))
 
     @classmethod
-    def drawMenu(cls, opacity):
+    def drawMenu(cls, opacity, tests=False):
         """
         Draws the menu screen and buttons to pygame's current display surface.
         
@@ -120,12 +120,17 @@ class Menu(object):
         Graphics.drawButton(surface, buttonPosition(1), buttonSize,
                             cls._menuButtonColor, "Rocket Builder", 25,
                             cls._builderCallback)
-        Graphics.drawButton(surface, buttonPosition(2), buttonSize,
-                            cls._menuButtonColor, "Test Suite (Console)", 25,
-                            cls._testsCallback)
-        Graphics.drawButton(surface, buttonPosition(3), buttonSize,
-                            cls._menuButtonColor, "Exit to Desktop", 25,
-                            cls._quitCallback)
+        if tests:
+            Graphics.drawButton(surface, buttonPosition(2), buttonSize,
+                                cls._menuButtonColor, "Test Suite (Console)", 25,
+                                cls._testsCallback)
+            Graphics.drawButton(surface, buttonPosition(3), buttonSize,
+                                cls._menuButtonColor, "Exit to Desktop", 25,
+                                cls._quitCallback)
+        else:
+            Graphics.drawButton(surface, buttonPosition(2), buttonSize,
+                                cls._menuButtonColor, "Exit to Desktop", 25,
+                                cls._quitCallback)
         
         fullscreenSize = (32,32)
         fullscreenPos = (25,25)

@@ -63,7 +63,7 @@ def main():
                 currentState = State.Testing
                 menu.testsPressed = False
             else:
-                menu.drawMenu(100)
+                menu.drawMenu(100,tests=True)
 
         if currentState == State.Building:
             newRocket = RocketBuilder.run()
@@ -72,7 +72,7 @@ def main():
                 rocket = newRocket
 
         if currentState == State.Testing:
-            unittest.main(module="tests")
+            unittest.main(module="tests", exit=False)
             currentState = State.Menu
 
         if currentState == State.Playing:

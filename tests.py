@@ -241,6 +241,9 @@ class AudioTestCase(unittest.TestCase):
         self.rocket.throttle = 1
         self.audioManager.thrusterSoundEffect(len(self.rocket.thrusters) != 0, self.rocket.throttle)
         self.assertFalse(pg.mixer.Channel(2).get_busy())
+        
+        self.audioManager.silenceMusic()
+        self.assertFalse(pg.mixer.Channel(2).get_busy())
 
     def test_SoundEffects_thrusterUpgoer(self):
         self.rocket.addComponent(UpGoer2000(self.rocket))
@@ -518,4 +521,5 @@ class DrawerTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(exit=False)
+    
