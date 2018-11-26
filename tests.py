@@ -223,8 +223,7 @@ class LiquidThrusterTestCase(unittest.TestCase):
 class AudioTestCase(unittest.TestCase):
     def setUp(self):
         self.space = pm.Space(threaded=True)
-        self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
-        self.rocket = Rocket(self.baseComponents)
+        self.rocket = Rocket([])
         self.audioManager = AudioManager()
         self.audioManager.silenceMusic()
         self.audioManager.init()
