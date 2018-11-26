@@ -159,6 +159,9 @@
 <span class="kn">from</span> <span class="nn">simulation</span> <span class="k">import</span> <span class="n">Simulation</span>
 <span class="kn">from</span> <span class="nn">rocketbuilder</span> <span class="k">import</span> <span class="n">RocketBuilder</span>
 
+<span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">tests</span>
+
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../main.html#main.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -200,8 +203,11 @@
             <span class="k">elif</span> <span class="n">menu</span><span class="o">.</span><span class="n">builderPressed</span><span class="p">:</span>
                 <span class="n">currentState</span> <span class="o">=</span> <span class="n">State</span><span class="o">.</span><span class="n">Building</span>
                 <span class="n">menu</span><span class="o">.</span><span class="n">builderPressed</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">elif</span> <span class="n">menu</span><span class="o">.</span><span class="n">testsPressed</span><span class="p">:</span>
+                <span class="n">currentState</span> <span class="o">=</span> <span class="n">State</span><span class="o">.</span><span class="n">Testing</span>
+                <span class="n">menu</span><span class="o">.</span><span class="n">testsPressed</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">menu</span><span class="o">.</span><span class="n">drawMenu</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+                <span class="n">menu</span><span class="o">.</span><span class="n">drawMenu</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="n">tests</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">currentState</span> <span class="o">==</span> <span class="n">State</span><span class="o">.</span><span class="n">Building</span><span class="p">:</span>
             <span class="n">newRocket</span> <span class="o">=</span> <span class="n">RocketBuilder</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
@@ -209,6 +215,9 @@
                 <span class="n">currentState</span> <span class="o">=</span> <span class="n">State</span><span class="o">.</span><span class="n">Playing</span>
                 <span class="n">rocket</span> <span class="o">=</span> <span class="n">newRocket</span>
 
+        <span class="k">if</span> <span class="n">currentState</span> <span class="o">==</span> <span class="n">State</span><span class="o">.</span><span class="n">Testing</span><span class="p">:</span>
+            <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">module</span><span class="o">=</span><span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">currentState</span> <span class="o">=</span> <span class="n">State</span><span class="o">.</span><span class="n">Menu</span>
 
         <span class="k">if</span> <span class="n">currentState</span> <span class="o">==</span> <span class="n">State</span><span class="o">.</span><span class="n">Playing</span><span class="p">:</span>
             <span class="n">currentState</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">rocket</span><span class="p">)</span>

@@ -149,6 +149,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
 
+
 <div class="viewcode-block" id="Menu"><a class="viewcode-back" href="../../graphics.html#graphics.Menu">[docs]</a><span class="k">class</span> <span class="nc">Menu</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Menu is a class with methods that can draw different menu items or screens</span>
@@ -156,7 +157,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1">#: The different states that the menu can take</span>
-    <span class="n">State</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="s1">&#39;Splash Menu Building Playing Exit&#39;</span><span class="p">)</span>
+    <span class="n">State</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="s1">&#39;Splash Menu Building Playing Testing Exit&#39;</span><span class="p">)</span>
 
     <span class="c1">#: Becomes true when the first screen (title screen) has been clicked on.</span>
     <span class="c1">#: A higher order class can watch this and proceed to the actual menu.</span>
@@ -170,9 +171,13 @@
     <span class="c1">#: order class can watch htis and take appropriate action on change. </span>
     <span class="n">builderPressed</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="c1">#: Becomes true when a the quit button has been pressed. A higher order class can</span>
+    <span class="c1">#: Becomes true when the quit button has been pressed. A higher order class can</span>
     <span class="c1">#: watch this and take appropriate action on change</span>
     <span class="n">quitPressed</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">#: Becomes true when the tests button has been pressed. A higher order class can</span>
+    <span class="c1">#: watch this and take appropriate action on change</span>
+    <span class="n">testsPressed</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="c1">#: The color to use for the menu buttons</span>
     <span class="n">_menuButtonColor</span> <span class="o">=</span> <span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">128</span><span class="p">))</span>
@@ -231,7 +236,7 @@
                                 <span class="n">subtitleFont</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Menu.drawMenu"><a class="viewcode-back" href="../../graphics.html#graphics.Menu.drawMenu">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">drawMenu</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">opacity</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">drawMenu</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">opacity</span><span class="p">,</span> <span class="n">tests</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draws the menu screen and buttons to pygame&#39;s current display surface.</span>
 <span class="sd">        </span>
@@ -259,9 +264,17 @@
         <span class="n">Graphics</span><span class="o">.</span><span class="n">drawButton</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">buttonPosition</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">buttonSize</span><span class="p">,</span>
                             <span class="bp">cls</span><span class="o">.</span><span class="n">_menuButtonColor</span><span class="p">,</span> <span class="s2">&quot;Rocket Builder&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span>
                             <span class="bp">cls</span><span class="o">.</span><span class="n">_builderCallback</span><span class="p">)</span>
-        <span class="n">Graphics</span><span class="o">.</span><span class="n">drawButton</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">buttonPosition</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">buttonSize</span><span class="p">,</span>
-                            <span class="bp">cls</span><span class="o">.</span><span class="n">_menuButtonColor</span><span class="p">,</span> <span class="s2">&quot;Exit to Desktop&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span>
-                            <span class="bp">cls</span><span class="o">.</span><span class="n">_quitCallback</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tests</span><span class="p">:</span>
+            <span class="n">Graphics</span><span class="o">.</span><span class="n">drawButton</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">buttonPosition</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">buttonSize</span><span class="p">,</span>
+                                <span class="bp">cls</span><span class="o">.</span><span class="n">_menuButtonColor</span><span class="p">,</span> <span class="s2">&quot;Test Suite (Console)&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span>
+                                <span class="bp">cls</span><span class="o">.</span><span class="n">_testsCallback</span><span class="p">)</span>
+            <span class="n">Graphics</span><span class="o">.</span><span class="n">drawButton</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">buttonPosition</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">buttonSize</span><span class="p">,</span>
+                                <span class="bp">cls</span><span class="o">.</span><span class="n">_menuButtonColor</span><span class="p">,</span> <span class="s2">&quot;Exit to Desktop&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span>
+                                <span class="bp">cls</span><span class="o">.</span><span class="n">_quitCallback</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">Graphics</span><span class="o">.</span><span class="n">drawButton</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">buttonPosition</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">buttonSize</span><span class="p">,</span>
+                                <span class="bp">cls</span><span class="o">.</span><span class="n">_menuButtonColor</span><span class="p">,</span> <span class="s2">&quot;Exit to Desktop&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span>
+                                <span class="bp">cls</span><span class="o">.</span><span class="n">_quitCallback</span><span class="p">)</span>
         
         <span class="n">fullscreenSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">)</span>
         <span class="n">fullscreenPos</span> <span class="o">=</span> <span class="p">(</span><span class="mi">25</span><span class="p">,</span><span class="mi">25</span><span class="p">)</span>
@@ -303,7 +316,15 @@
 <span class="sd">        Callback function to be called when the &quot;start demo&quot; button is clicked. This sets the</span>
 <span class="sd">        demoPressed bool to be true.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">demoPressed</span> <span class="o">=</span> <span class="kc">True</span></div></div>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">demoPressed</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Menu._testsCallback"><a class="viewcode-back" href="../../graphics.html#graphics.Menu._testsCallback">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_testsCallback</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback function to be called when the &quot;test suite&quot; button is clicked. This sets the</span>
+<span class="sd">        testsPressed bool to be true.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">testsPressed</span> <span class="o">=</span> <span class="kc">True</span></div></div>
 </pre></div>
 
            </div>
