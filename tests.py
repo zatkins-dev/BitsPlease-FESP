@@ -17,6 +17,7 @@ class RocketTestCase(unittest.TestCase):
     def setUp(self):
         self.space = pm.Space(threaded=True)
         self.baseComponents = [CommandModule(None), UpGoer2000(None), AdvancedSAS(None), RightRCS(None), LeftRCS(None)]
+
         self.rocket = Rocket(self.baseComponents)
 
     def test_default_rocket(self):
@@ -25,8 +26,10 @@ class RocketTestCase(unittest.TestCase):
         # test if rocket was actually added to our space
         self.assertEqual(self.rocket.space, self.space)
 
-        # test if the components were actually added to the rocket
-        self.assertIs(self.rocket.components, self.baseComponents)
+        # test if the components were sorted correctly on insert
+        self.rocketComponentTypes = map(lambda c: type(c), self.rocket.components)
+        self.baseComponentsTypes = map(lambda c: type(c), self.baseComponents)
+        self.assertCountEqual(self.rocketComponentTypes, self.baseComponentsTypes)
 
     def test_rocket_constructor(self):
         # test initial conditions... destroyed, saslock, etc.
