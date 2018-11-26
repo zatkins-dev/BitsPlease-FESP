@@ -422,11 +422,11 @@ class TimescaleTestCase(unittest.TestCase):
 
     def test_scale_set(self):
         returnVal = self.timescale._set_scale(self.timescale._MAX_SCALE)
-        self.assertEquals(self.timescale.scale, self.timescale._MAX_SCALE)
+        self.assertEqual(self.timescale.scale, self.timescale._MAX_SCALE)
         self.assertTrue(returnVal)
 
         returnVal = self.timescale._set_scale(self.timescale._MIN_SCALE)
-        self.assertEquals(self.timescale.scale, self.timescale._MIN_SCALE)
+        self.assertEqual(self.timescale.scale, self.timescale._MIN_SCALE)
         self.assertTrue(returnVal)
 
         prevScale = self.timescale.scale
@@ -490,14 +490,15 @@ class PhysicsTestCase(unittest.TestCase):
         c1 = CelestialBody('earth', self.space, 10**20, 796375, (0, 0), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
         testPosition = pm.Vec2d(0, 1000)
 
-        self.assertEqual(Physics.gravity(c1, testPosition), pm.Vec2d(0, 66738400))
+        self.assertEqual(Physics.gravity(c1, testPosition), pm.Vec2d(0, -6673.84))
 
     def test_netGravity(self):
         c1 = CelestialBody('earth', self.space, 10**20, 796375, (0, 1000), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
         c2 = CelestialBody('moon', self.space, 10**15, 796375, (1000, 0), 0.99999, (128,200,255), 100000, pm.Body.DYNAMIC)
         testPosition = (0, 0)
 
-        self.assertEqual(Physics.netGravity([c1,c2], testPosition), pm.Vec2d(66.7384, 66738400))
+        self.assertAlmostEqual(Physics.netGravity([c1,c2], testPosition)[0], .06673839)
+        self.assertAlmostEqual(Physics.netGravity([c1,c2], testPosition)[1], 6673.84)
 
 class DrawerTestCase(unittest.TestCase):
     def setUp(self):
