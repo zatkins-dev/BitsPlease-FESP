@@ -7,6 +7,9 @@ when fuel is exhausted.
 
 To run this prototype, you'll need [Python3](https://www.python.org/downloads/ "Python Foundation Download Page") as well as a few dependencies. Once you have those dependencies, you can run the file `__main__.py` or `main.py`, which will start the program.
 
+### Documentation
+See [BitsPlease-FESP GitHub Pages](https://zatkins-school.github.io/BitsPlease-FESP/) for documentation and artifacts.
+
 ### Dependencies:
  * [Pygame](https://www.pygame.org/wiki/GettingStarted#Pygame%20Installation "Pygame Getting Started Page") `pip install pygame`
  * [Pymunk](http://www.pymunk.org/en/latest/installation.html "Pymunk Installation Instructions") `pip install pymunk`
