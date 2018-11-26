@@ -245,7 +245,7 @@ class AudioTestCase(unittest.TestCase):
         #Test throttle at 0 + thruster on rocket - should not play
         self.rocket.throttle = 0
         self.audioManager.thrusterSoundEffect(len(self.rocket.thrusters) != 0, self.rocket.throttle)
-        self.assertFalse(pg.mixer.Channel(2).get_busy())
+        self.assertEqual(pg.mixer.Channel(2).get_volume(), 0)
 
         #Test throttle at 1 + thruster on rocket - should play at max volume
         self.rocket.throttle = 1
@@ -273,7 +273,7 @@ class AudioTestCase(unittest.TestCase):
         #Test throttle at 0 + thruster on rocket - should not play
         self.rocket.throttle = 0
         self.audioManager.thrusterSoundEffect(len(self.rocket.thrusters) != 0, self.rocket.throttle)
-        self.assertFalse(pg.mixer.Channel(2).get_busy())
+        self.assertEqual(pg.mixer.Channel(2).get_volume(), 0)
 
         #Test throttle at 1 + thruster on rocket - should play at max volume
         self.rocket.throttle = 1
@@ -301,7 +301,7 @@ class AudioTestCase(unittest.TestCase):
         #Test throttle at 0 + thruster on rocket - should not play
         self.rocket.throttle = 0
         self.audioManager.thrusterSoundEffect(len(self.rocket.thrusters) != 0, self.rocket.throttle)
-        self.assertFalse(pg.mixer.Channel(2).get_busy())
+        self.assertEqual(pg.mixer.Channel(2).get_volume(), 0)
 
         #Test throttle at 1 + thruster on rocket - should play at max volume
         self.rocket.throttle = 1
@@ -362,7 +362,7 @@ class AudioTestCase(unittest.TestCase):
         self.audioManager.silenceMusic()
         self.assertFalse(pg.mixer.Channel(1).get_busy())
 
-    
+
 
 class TankTestCase(unittest.TestCase):
 #TANK TESTS
