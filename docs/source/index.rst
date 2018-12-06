@@ -8,12 +8,9 @@ Welcome to BitsPlease-FESP's documentation!
 
 .. toctree::
    :maxdepth: 3
-   :caption: Artifacts:
-   
-   documentation
-
    :caption: Contents:
    
+   documentation
    modules
 
    

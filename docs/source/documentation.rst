@@ -22,9 +22,9 @@ State Diagram
 
 Use-Case Diagram
 ----------------
-`Use-Case Diagram <use case diagram/Use Case Diagram.pdf>`_
+::download:`Use-Case Diagram <use case diagram/Use Case Diagram.pdf>`
 
 Class Diagrams
 --------------
-::download:`Top Level Class Diagram <uml/FESP_CD-All-2.pdf>`_
-::download:`Rockets Class Diagram <uml/CD-Rockets.pdf>`_
+::download:`Top Level Class Diagram <uml/FESP_CD-All-2.pdf>`
+::download:`Rockets Class Diagram <uml/CD-Rockets.pdf>`
