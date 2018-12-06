@@ -666,7 +666,8 @@
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">exit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">HtmlTestRunner</span> <span class="k">import</span> <span class="n">HTMLTestRunner</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">exit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">testRunner</span><span class="o">=</span><span class="n">HTMLTestRunner</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;docs/build/html/test-results/&#39;</span><span class="p">))</span>
     
 </pre></div>
 
