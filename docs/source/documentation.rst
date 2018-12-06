@@ -7,7 +7,7 @@ User's Manual
 
 Deployment Plan
 ---------------
-:::download:`Deployment Plan <path>` 
+:::download:`Deployment Plan <BitsPleaseProject4DeploymentPlan.pdf>`
 
 Maintainence Plan
 -----------------
@@ -21,10 +21,10 @@ State Diagram
 `State Diagram <uml/StateDiagram.html>`_
 
 Use-Case Diagram
------------------------
+----------------
 `Use-Case Diagram <use case diagram/Use Case Diagram.pdf>`_
 
 Class Diagrams
---------------------
-`Top Level Class Diagram <uml/StateDiagram.html>`_
-`Rockets Class Diagram <uml/CD-Rockets.pdf>`_
+--------------
+:::download:`Top Level Class Diagram <uml/FESP_CD-All-2.pdf>`_
+:::download:`Rockets Class Diagram <uml/CD-Rockets.pdf>`_
