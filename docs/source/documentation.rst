@@ -7,7 +7,7 @@ User's Manual
 
 Deployment Plan
 ---------------
-:::download:`Deployment Plan <BitsPleaseProject4DeploymentPlan.pdf>`
+::download:`Deployment Plan <BitsPleaseProject4DeploymentPlan.pdf>`
 
 Maintainence Plan
 -----------------
@@ -26,5 +26,5 @@ Use-Case Diagram
 
 Class Diagrams
 --------------
-:::download:`Top Level Class Diagram <uml/FESP_CD-All-2.pdf>`_
-:::download:`Rockets Class Diagram <uml/CD-Rockets.pdf>`_
+::download:`Top Level Class Diagram <uml/FESP_CD-All-2.pdf>`_
+::download:`Rockets Class Diagram <uml/CD-Rockets.pdf>`_
