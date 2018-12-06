@@ -521,6 +521,14 @@ class DrawerTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    from HtmlTestRunner import HTMLTestRunner
-    unittest.main(exit=False,verbosity=3,testRunner=HTMLTestRunner(output='docs/build/html/test-results/'))
+    runner = None
+    try:
+        from HtmlTestRunner import HTMLTestRunner
+        runner = HTMLTestRunner(output="docs/build/html/test-results")
+    except:
+        pass
+    
+    unittest.main(exit=False,verbosity=2,testRunner=runner)
+        
+    
     
