@@ -72,7 +72,7 @@ def main():
                 rocket = newRocket
 
         if currentState == State.Testing:
-            unittest.main(module="tests", exit=False)
+            unittest.main(module="tests", verbosity=4, exit=False)
             currentState = State.Menu
 
         if currentState == State.Playing:

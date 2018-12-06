@@ -521,5 +521,6 @@ class DrawerTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main(exit=False)
+    from HtmlTestRunner import HTMLTestRunner
+    unittest.main(exit=False,verbosity=3,testRunner=HTMLTestRunner(output='docs/build/html/test-results/'))
     
