@@ -3,11 +3,11 @@ Documentation Artifacts
 
 User's Manual
 -------------
-::download:`User's Manual <user's manual/Flat Earth Space Program User's Manual.pdf>`
+:download:`User's Manual <user's manual/Flat Earth Space Program User's Manual.pdf>`
 
 Deployment Plan
 ---------------
-::download:`Deployment Plan <BitsPleaseProject4DeploymentPlan.pdf>`
+:download:`Deployment Plan <BitsPleaseProject4DeploymentPlan.pdf>`
 
 Maintainence Plan
 -----------------
@@ -22,9 +22,10 @@ State Diagram
 
 Use-Case Diagram
 ----------------
-::download:`Use-Case Diagram <use case diagram/Use Case Diagram.pdf>`
+:download:`Use-Case Diagram <use case diagram/Use Case Diagram.pdf>`
 
 Class Diagrams
 --------------
-::download:`Top Level Class Diagram <uml/FESP_CD-All-2.pdf>`
-::download:`Rockets Class Diagram <uml/CD-Rockets.pdf>`
+:download:`Top Level Class Diagram <uml/FESP_CD-All-2.pdf>`
+
+:download:`Rockets Class Diagram <uml/CD-Rockets.pdf>`
