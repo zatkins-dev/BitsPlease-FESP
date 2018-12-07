@@ -11,6 +11,7 @@ Deployment Plan
 
 Maintainence Plan
 -----------------
+:download:`Maintenance Plan <BitsPleaseProject4MaintenancePlan.pdf>`
 
 Gantt Chart/ Project Backlog
 -----------------------------
